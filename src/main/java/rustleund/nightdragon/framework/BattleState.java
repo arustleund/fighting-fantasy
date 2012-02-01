@@ -201,7 +201,7 @@ public class BattleState {
 		attackStrengths.put(playerAttackStrength, statesForStrength);
 
 		if (fightEnemiesTogether) {
-			for (EnemyState thisEnemy : enemies.getEnemies()) {
+			for (EnemyState thisEnemy : enemies) {
 				doAttackStrengthForEnemy(message, attackStrengths, thisEnemy);
 			}
 		} else {
@@ -240,7 +240,7 @@ public class BattleState {
 		}
 
 		message.append("Your stamina after this round: " + playerState.getStamina().getCurrentValue() + "<br>");
-		for (EnemyState enemy : enemies.getEnemies()) {
+		for (EnemyState enemy : enemies) {
 			if (enemy.isDead()) {
 				message.append(enemy.getName() + " is dead.");
 			} else {
