@@ -9,10 +9,6 @@ import java.util.List;
 
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.FactoryConfigurationError;
-import javax.xml.parsers.ParserConfigurationException;
 
 import rustleund.nightdragon.framework.closures.AddItemClosure;
 import rustleund.nightdragon.framework.closures.LinkClosure;
@@ -23,21 +19,11 @@ import rustleund.nightdragon.framework.closures.TestLuckClosure;
  */
 public class GameController implements HyperlinkListener {
 
-	DocumentBuilder builder = null;
-
-	private List<GameView> gameViews = null;
-
-	private GameState gameState = null;
+	private List<GameView> gameViews;
+	private GameState gameState;
 
 	public GameController() {
 		gameViews = new ArrayList<GameView>();
-		try {
-			builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (FactoryConfigurationError e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void addView(GameView view) {
@@ -74,7 +60,6 @@ public class GameController implements HyperlinkListener {
 	}
 
 	public void useItem(Item item) {
-
 		item.useItem(gameState);
 
 		updateViews();
@@ -142,16 +127,10 @@ public class GameController implements HyperlinkListener {
 		new LinkClosure(pageNumber).execute(gameState);
 	}
 
-	/**
-	 * @return
-	 */
 	public GameState getGameState() {
 		return gameState;
 	}
 
-	/**
-	 * @param state
-	 */
 	public void setGameState(GameState state) {
 		gameState = state;
 	}

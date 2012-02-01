@@ -23,7 +23,7 @@ public class Main {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 
 		// Create and set up the window.
-		JFrame frame = new JFrame("TextSamplerDemo");
+		JFrame frame = new JFrame("Night Dragon");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Create and set up the content pane.
