@@ -4,7 +4,6 @@
 package rustleund.nightdragon.framework.util;
 
 import java.io.File;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,18 +20,17 @@ import rustleund.nightdragon.framework.Item;
  */
 public class ItemUtil {
 
-	private Map<Integer, Item> items = null;
+	private Map items = null;
 
 	private static ItemUtil instance = null;
 
 	private ItemUtil() {
-		items = new HashMap<Integer, Item>();
+		items = new HashMap();
 	}
 
 	public void init() {
+		File itemFile = new File("config/items.xml");
 		try {
-			URL resource = ClassLoader.getSystemResource("config/items.xml");
-			File itemFile = new File(resource.toURI());
 			Document itemDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(itemFile);
 			NodeList itemTags = itemDocument.getElementsByTagName("item");
 			for (int i = 0; i < itemTags.getLength(); i++) {
@@ -70,7 +68,7 @@ public class ItemUtil {
 	}
 
 	public Item getItem(int itemId) {
-		return items.get(itemId);
+		return (Item) items.get(new Integer(itemId));
 	}
 
 }

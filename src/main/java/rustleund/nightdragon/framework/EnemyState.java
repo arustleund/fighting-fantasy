@@ -10,6 +10,8 @@ import org.w3c.dom.Element;
  */
 public class EnemyState extends AbstractEntityState {
 
+	private boolean poisonedWeapon = false;
+
 	public EnemyState(Element enemyTag) {
 		this.name = enemyTag.getAttribute("name");
 
@@ -18,6 +20,14 @@ public class EnemyState extends AbstractEntityState {
 
 		Integer staminaInteger = new Integer(enemyTag.getAttribute("stamina"));
 		this.stamina = new Scale(new Integer(0), staminaInteger, staminaInteger, true);
+
+		if (enemyTag.hasAttribute("poisonedWeapon")) {
+			this.poisonedWeapon = Boolean.valueOf(enemyTag.getAttribute("poisonedWeapon"));
+		}
+	}
+
+	public boolean isPoisonedWeapon() {
+		return this.poisonedWeapon;
 	}
 
 }

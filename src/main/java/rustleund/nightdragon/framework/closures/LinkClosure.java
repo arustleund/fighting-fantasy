@@ -4,8 +4,6 @@
 package rustleund.nightdragon.framework.closures;
 
 import java.io.File;
-import java.net.URL;
-import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,7 +12,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import rustleund.nightdragon.framework.AbstractCommand;
-import rustleund.nightdragon.framework.Command;
+import rustleund.nightdragon.framework.Closure;
 import rustleund.nightdragon.framework.GameState;
 import rustleund.nightdragon.framework.PageState;
 
@@ -35,30 +33,34 @@ public class LinkClosure extends AbstractCommand {
 
 	public LinkClosure(String pageName) {
 		this.pageName = pageName;
+		this.executeSuccessful = true;
 	}
 
-	public boolean execute(GameState gameState) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
+	 */
+	public void execute(GameState gameState) {
+		File targetPage = new File("pages/" + pageName + ".xml");
+		Document targetPageDocument = null;
+
 		try {
-			URL page = ClassLoader.getSystemResource("pages/" + pageName + ".xml");
-			if (page == null) {
-				gameState.setMessage("Page " + pageName + " not found");
-				return false;
-			}
-			File targetPage = new File(page.toURI());
 			DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			Document targetPageDocument = documentBuilder.parse(targetPage);
-			gameState.setPageState(new PageState(targetPageDocument, gameState));
+			targetPageDocument = documentBuilder.parse(targetPage);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		List<Command> immediateCommands = gameState.getPageState().getImmediateCommands();
-		for (Command element : immediateCommands) {
-			if (!element.execute(gameState)) {
-				return false;
+		if (targetPageDocument != null) {
+			gameState.setPageState(new PageState(targetPageDocument, gameState));
+
+			for (Closure closure : gameState.getPageState().getImmediateCommands()) {
+				closure.execute(gameState);
 			}
+			
+			gameState.setPageLoaded(false);
 		}
-		return true;
 	}
 
 }

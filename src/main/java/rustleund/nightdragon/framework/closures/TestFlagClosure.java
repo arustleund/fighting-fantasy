@@ -3,10 +3,11 @@
  */
 package rustleund.nightdragon.framework.closures;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.w3c.dom.Element;
 
 import rustleund.nightdragon.framework.AbstractCommand;
-import rustleund.nightdragon.framework.Command;
+import rustleund.nightdragon.framework.Closure;
 import rustleund.nightdragon.framework.GameState;
 import rustleund.nightdragon.framework.util.AbstractCommandLoader;
 
@@ -16,23 +17,34 @@ import rustleund.nightdragon.framework.util.AbstractCommandLoader;
 public class TestFlagClosure extends AbstractCommand {
 
 	private int flagId = -1;
-
-	private Command successful = null;
-
-	private Command unsuccessful = null;
+	private Closure successful = null;
+	private Closure unsuccessful = null;
 
 	public TestFlagClosure(Element element) {
 		this.flagId = Integer.parseInt(element.getAttribute("id"));
 
-		this.successful = AbstractCommandLoader.loadChainedClosure((Element) element.getElementsByTagName("successful").item(0));
-		this.unsuccessful = AbstractCommandLoader.loadChainedClosure((Element) element.getElementsByTagName("unsuccessful").item(0));
+		this.successful = AbstractCommandLoader.loadClosureFromChildTag(element, "successful");
+		this.unsuccessful = AbstractCommandLoader.loadClosureFromChildTag(element, "unsuccessful");
+
+		this.executeSuccessful = true;
 	}
 
-	public boolean execute(GameState gameState) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
+	 */
+	public void execute(GameState gameState) {
+
 		if (gameState.getPlayerState().getFlagValue(flagId)) {
-			return successful.execute(gameState);
+			successful.execute(gameState);
+		} else {
+			unsuccessful.execute(gameState);
 		}
-		return unsuccessful.execute(gameState);
+	}
+
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

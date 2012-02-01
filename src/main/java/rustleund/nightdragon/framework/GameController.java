@@ -4,7 +4,6 @@
 package rustleund.nightdragon.framework;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.event.HyperlinkEvent;
@@ -23,7 +22,7 @@ public class GameController implements HyperlinkListener {
 	private GameState gameState;
 
 	public GameController() {
-		gameViews = new ArrayList<GameView>();
+		this.gameViews = new ArrayList<GameView>();
 	}
 
 	public void addView(GameView view) {
@@ -31,14 +30,20 @@ public class GameController implements HyperlinkListener {
 	}
 
 	public void updateViews() {
-		for (GameView gameView : gameViews) {
-			gameView.update(gameState);
+		for (GameView view : this.gameViews) {
+			view.update(this.gameState);
 		}
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.event.HyperlinkListener#hyperlinkUpdate(javax.swing.event.HyperlinkEvent)
+	 */
 	public void hyperlinkUpdate(HyperlinkEvent e) {
 		if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+			this.gameState.clearMessage();
+
 			String command = e.getURL().getHost();
 			if (command.equals("link")) {
 				loadPageIntoGameState(e.getURL().getPort());
@@ -55,11 +60,12 @@ public class GameController implements HyperlinkListener {
 			}
 
 			updateViews();
-			gameState.clearMessage();
+			this.gameState.clearMessage();
 		}
 	}
 
 	public void useItem(Item item) {
+		gameState.clearMessage();
 		item.useItem(gameState);
 
 		updateViews();
@@ -82,17 +88,22 @@ public class GameController implements HyperlinkListener {
 	}
 
 	private void doBattle(int battleId) {
-		gameState.setBattleInProgress(true);
-		PageState pageState = gameState.getPageState();
+		PageState pageState = this.gameState.getPageState();
 		BattleState battleState = pageState.getBattle(battleId);
+
+		this.gameState.setBattleInProgress(true);
+		this.gameState.setBattleState(battleState);
+
 		if (!battleState.battleIsOver()) {
 			battleState.incrementGameState();
 			if (battleState.getCurrentBattleMessage() != null) {
 				pageState.replacePagetext(BattleState.START_STRING, BattleState.END_STRING, battleState.getCurrentBattleMessage());
 			}
 			if (battleState.getEnemies().areDead()) {
-				battleState.getEndBattle().execute(gameState);
-				gameState.setBattleInProgress(false);
+				this.gameState.getPlayerState().setNextBattleBattleEffects(null);
+				this.gameState.setBattleInProgress(false);
+				this.gameState.setBattleState(null);
+				battleState.doEndBattle();
 			}
 		}
 	}
@@ -100,19 +111,12 @@ public class GameController implements HyperlinkListener {
 	private void doFlee(int battleId) {
 		PageState pageState = gameState.getPageState();
 		BattleState battleState = pageState.getBattle(battleId);
-		battleState.getPlayerFlee().execute(gameState);
+		battleState.doPlayerFlee();
 	}
 
 	private void doMultiCommand(int multiCommandId) {
-		List<Command> multiCommands = gameState.getPageState().getMultiCommands(multiCommandId);
-		Iterator<Command> iter = multiCommands.iterator();
-		boolean shouldContinue = true;
-		while (shouldContinue && iter.hasNext()) {
-			Command command = iter.next();
-			if (!command.execute(gameState)) {
-				shouldContinue = false;
-			}
-		}
+		Closure multiCommand = this.gameState.getPageState().getMultiCommands(multiCommandId);
+		multiCommand.execute(this.gameState);
 	}
 
 	private void testLuck(int testluckId) {

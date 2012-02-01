@@ -11,7 +11,7 @@ import java.util.StringTokenizer;
 import org.w3c.dom.Element;
 
 import rustleund.nightdragon.framework.AbstractCommand;
-import rustleund.nightdragon.framework.Command;
+import rustleund.nightdragon.framework.Closure;
 import rustleund.nightdragon.framework.GameState;
 import rustleund.nightdragon.framework.PlayerState;
 import rustleund.nightdragon.framework.util.AbstractCommandLoader;
@@ -21,24 +21,29 @@ import rustleund.nightdragon.framework.util.AbstractCommandLoader;
  */
 public class TestAnyFlagClosure extends AbstractCommand {
 
-	private List<Integer> flagIds = null;
-
-	private Command successful = null;
-
-	private Command unsuccessful = null;
+	private List<Integer> flagIds;
+	private Closure successful;
+	private Closure unsuccessful;
 
 	public TestAnyFlagClosure(Element element) {
 		this.flagIds = new ArrayList<Integer>();
 		StringTokenizer tokenizer = new StringTokenizer(element.getAttribute("ids"), ",");
 		while (tokenizer.hasMoreTokens()) {
-			this.flagIds.add(Integer.valueOf(tokenizer.nextToken()));
+			this.flagIds.add(new Integer(tokenizer.nextToken()));
 		}
 
-		this.successful = AbstractCommandLoader.loadChainedClosure((Element) element.getElementsByTagName("successful").item(0));
-		this.unsuccessful = AbstractCommandLoader.loadChainedClosure((Element) element.getElementsByTagName("unsuccessful").item(0));
+		this.successful = AbstractCommandLoader.loadClosureFromChildTag(element, "successful");
+		this.unsuccessful = AbstractCommandLoader.loadClosureFromChildTag(element, "unsuccessful");
+
+		this.executeSuccessful = true;
 	}
 
-	public boolean execute(GameState gameState) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
+	 */
+	public void execute(GameState gameState) {
 		PlayerState playerState = gameState.getPlayerState();
 
 		boolean shouldExecuteSuccessfulClosure = false;
@@ -48,9 +53,10 @@ public class TestAnyFlagClosure extends AbstractCommand {
 		}
 
 		if (shouldExecuteSuccessfulClosure) {
-			return successful.execute(gameState);
+			successful.execute(gameState);
+		} else {
+			unsuccessful.execute(gameState);
 		}
-		return unsuccessful.execute(gameState);
 	}
 
 }

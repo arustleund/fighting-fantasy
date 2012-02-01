@@ -6,11 +6,12 @@ package rustleund.nightdragon.framework;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * @author rustlea
  */
-public class Enemies implements Iterable<EnemyState> {
+public class Enemies {
 
 	protected boolean fightTogether = false;
 	protected List<EnemyState> enemies = null;
@@ -51,9 +52,8 @@ public class Enemies implements Iterable<EnemyState> {
 		return result;
 	}
 
-	@Override
-	public Iterator<EnemyState> iterator() {
-		return this.enemies.iterator();
+	public List<EnemyState> getEnemies() {
+		return this.enemies;
 	}
 
 }

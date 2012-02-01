@@ -11,7 +11,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import rustleund.nightdragon.framework.AbstractCommand;
-import rustleund.nightdragon.framework.Command;
+import rustleund.nightdragon.framework.Closure;
 import rustleund.nightdragon.framework.GameState;
 import rustleund.nightdragon.framework.util.AbstractCommandLoader;
 import rustleund.nightdragon.framework.util.DiceRoller;
@@ -23,19 +23,22 @@ public class RollDiceClosure extends AbstractCommand {
 
 	private int number = 1;
 
-	private Map<Integer, Command> rollMappings = null;
+	private Map rollMappings = null;
 
 	public RollDiceClosure(Element element) {
+
+		this.executeSuccessful = true;
+
 		if (element.hasAttribute("number")) {
 			this.number = Integer.parseInt(element.getAttribute("number"));
 		}
 
-		this.rollMappings = new HashMap<Integer, Command>();
+		this.rollMappings = new HashMap();
 		NodeList doActionsElements = element.getElementsByTagName("doActions");
 		for (int i = 0; i < doActionsElements.getLength(); i++) {
 			Element doActionsElement = (Element) doActionsElements.item(i);
 
-			Command actionsForElement = AbstractCommandLoader.loadChainedClosure(doActionsElement);
+			Closure actionsForElement = AbstractCommandLoader.loadChainedClosure(doActionsElement);
 
 			String rolls = doActionsElement.getAttribute("rolls");
 			StringTokenizer rollTokenizer = new StringTokenizer(rolls, ",");
@@ -46,10 +49,16 @@ public class RollDiceClosure extends AbstractCommand {
 		}
 	}
 
-	public boolean execute(GameState gameState) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
+	 */
+	public void execute(GameState gameState) {
 		int diceRollResult = DiceRoller.rollDice(this.number);
-		this.rollMappings.get(diceRollResult).execute(gameState);
-		return true;
+		if (this.rollMappings.containsKey(diceRollResult)) {
+			((Closure) this.rollMappings.get(new Integer(diceRollResult))).execute(gameState);
+		}
 	}
 
 }

@@ -5,11 +5,13 @@ package rustleund.nightdragon.main;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import rustleund.nightdragon.framework.GameController;
 import rustleund.nightdragon.framework.GameState;
 import rustleund.nightdragon.framework.GameView;
 import rustleund.nightdragon.framework.PlayerState;
+import rustleund.nightdragon.framework.Scale;
 import rustleund.nightdragon.framework.closures.LinkClosure;
 import rustleund.nightdragon.framework.util.ItemUtil;
 
@@ -23,12 +25,12 @@ public class Main {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 
 		// Create and set up the window.
-		JFrame frame = new JFrame("Night Dragon");
+		JFrame frame = new JFrame("TextSamplerDemo");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Create and set up the content pane.
 		JComponent newContentPane = gameView;
-		newContentPane.setOpaque(true); //content panes must be opaque
+		newContentPane.setOpaque(true); // content panes must be opaque
 		frame.setContentPane(newContentPane);
 
 		// Display the window.
@@ -37,16 +39,24 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		
+
+		final boolean isDebugMode = args.length > 0;
+
 		ItemUtil.getInstance().init();
 
 		GameController gameController = new GameController();
 		GameState gameState = new GameState();
 
 		PlayerState playerState = new PlayerState("YOU");
+		if (isDebugMode) {
+			adjustScaleForDebug(playerState.getSkill(), 10);
+			adjustScaleForDebug(playerState.getLuck(), 15);
+			adjustScaleForDebug(playerState.getStamina(), 30);
+			playerState.getGold().adjustCurrentValue(50);
+		}
 
 		gameState.setPlayerState(playerState);
-		
+
 		gameState.setMessage("-");
 
 		gameController.setGameState(gameState);
@@ -54,9 +64,13 @@ public class Main {
 		final GameView gameView = new GameView(gameController);
 
 		gameController.addView(gameView);
-		
-		new LinkClosure("doStats").execute(gameState);
-		
+
+		if (isDebugMode) {
+			new LinkClosure(JOptionPane.showInputDialog("Page")).execute(gameState);
+		} else {
+			new LinkClosure("doStats").execute(gameState);
+		}
+
 		gameView.update(gameState);
 
 		// Schedule a job for the event-dispatching thread:
@@ -67,5 +81,10 @@ public class Main {
 			}
 		});
 
+	}
+
+	private static void adjustScaleForDebug(Scale scale, int newUpper) {
+		scale.adjustUpperBound(newUpper - scale.getUpperBound());
+		scale.adjustCurrentValue(newUpper - scale.getCurrentValue());
 	}
 }

@@ -8,74 +8,63 @@ package rustleund.nightdragon.framework;
  */
 public class GameState {
 
-	private PlayerState playerState = null;
-
-	private PageState pageState = null;
-
-	private String message = null;
-
+	private PlayerState playerState;
+	private PageState pageState;
+	private BattleState battleState;
+	private String message;
 	private boolean isBattleInProgress;
-
-	public GameState() {
-		this.isBattleInProgress = false;
-	}
+	private boolean pageLoaded;
 
 	public void clearMessage() {
 		message = "-";
 	}
 
-	/**
-	 * @return
-	 */
 	public PlayerState getPlayerState() {
 		return playerState;
 	}
 
-	/**
-	 * @param state
-	 */
 	public void setPlayerState(PlayerState state) {
 		playerState = state;
 	}
 
-	/**
-	 * @return
-	 */
 	public PageState getPageState() {
 		return pageState;
 	}
 
-	/**
-	 * @param state
-	 */
 	public void setPageState(PageState state) {
 		pageState = state;
 	}
 
-	/**
-	 * @return
-	 */
 	public String getMessage() {
 		return message;
 	}
 
-	/**
-	 * @param string
-	 */
 	public void setMessage(String string) {
 		message = string;
 	}
 
-	/**
-	 * @return Returns the isBattleInProgress.
-	 */
 	public boolean isBattleInProgress() {
 		return isBattleInProgress;
 	}
-	/**
-	 * @param isBattleInProgress The isBattleInProgress to set.
-	 */
+
 	public void setBattleInProgress(boolean isBattleInProgress) {
 		this.isBattleInProgress = isBattleInProgress;
 	}
+
+	public BattleState getBattleState() {
+		return this.battleState;
+	}
+
+	public void setBattleState(BattleState battleState) {
+		this.battleState = battleState;
+	}
+
+	public boolean isPageLoaded() {
+		return this.pageLoaded;
+	}
+
+	public void setPageLoaded(boolean pageLoaded) {
+		this.pageLoaded = pageLoaded;
+	}
+
 }

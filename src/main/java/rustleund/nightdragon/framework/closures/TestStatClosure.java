@@ -5,7 +5,6 @@ package rustleund.nightdragon.framework.closures;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +12,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.w3c.dom.Element;
 
 import rustleund.nightdragon.framework.AbstractCommand;
-import rustleund.nightdragon.framework.Command;
+import rustleund.nightdragon.framework.Closure;
 import rustleund.nightdragon.framework.GameState;
 import rustleund.nightdragon.framework.PlayerState;
 import rustleund.nightdragon.framework.Scale;
@@ -35,24 +34,17 @@ public class TestStatClosure extends AbstractCommand {
 		VALUES_MAPPINGS.put("notEqual", Arrays.asList(new Boolean[] { Boolean.TRUE, Boolean.FALSE, Boolean.TRUE }));
 	}
 
-	private List<Boolean> acceptableValues = null;
-
-	private Integer valueToCompare = null;
-
-	private String stat = null;
-
-	private Command successful = null;
-
-	private Command unsuccessful = null;
-
+	private List<Boolean> acceptableValues;
+	private Integer valueToCompare;
+	private String stat;
+	private Closure successful;
+	private Closure unsuccessful;
 	private boolean useInitialValue = false;
 
 	public TestStatClosure(Element element) {
-
 		this.stat = element.getAttribute("stat");
 
-		for (Iterator<String> iter = VALUES_MAPPINGS.keySet().iterator(); iter.hasNext();) {
-			String attributeTest = iter.next();
+		for (String attributeTest : VALUES_MAPPINGS.keySet()) {
 			if (element.hasAttribute(attributeTest)) {
 				this.acceptableValues = VALUES_MAPPINGS.get(attributeTest);
 				this.valueToCompare = Integer.valueOf(element.getAttribute(attributeTest));
@@ -60,14 +52,18 @@ public class TestStatClosure extends AbstractCommand {
 			}
 		}
 
-		this.successful = AbstractCommandLoader.loadChainedClosure((Element) element.getElementsByTagName("successful").item(0));
-		this.unsuccessful = AbstractCommandLoader.loadChainedClosure((Element) element.getElementsByTagName("unsuccessful").item(0));
+		this.successful = AbstractCommandLoader.loadClosureFromChildTag(element, "successful");
+		this.unsuccessful = AbstractCommandLoader.loadClosureFromChildTag(element, "unsuccessful");
 
 		this.useInitialValue = element.hasAttribute("useInitialValue") && "true".equals(element.getAttribute("useInitialValue"));
-
 	}
 
-	public boolean execute(GameState gameState) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
+	 */
+	public void execute(GameState gameState) {
 		try {
 			PlayerState playerState = gameState.getPlayerState();
 
@@ -76,24 +72,24 @@ public class TestStatClosure extends AbstractCommand {
 			if (this.useInitialValue) {
 				statValue = statScale.getUpperBound();
 			} else {
-				statValue = statScale.getCurrentValue();
+				statValue = Integer.valueOf(statScale.getCurrentValue());
 			}
 
 			boolean valueIsAcceptable = false;
 			int compareResult = statValue.compareTo(this.valueToCompare);
 
-			valueIsAcceptable |= (acceptableValues.get(0)).booleanValue() && (compareResult < 0);
-			valueIsAcceptable |= (acceptableValues.get(1)).booleanValue() && (compareResult == 0);
-			valueIsAcceptable |= (acceptableValues.get(2)).booleanValue() && (compareResult > 0);
+			valueIsAcceptable |= acceptableValues.get(0) && (compareResult < 0);
+			valueIsAcceptable |= acceptableValues.get(1) && (compareResult == 0);
+			valueIsAcceptable |= acceptableValues.get(2) && (compareResult > 0);
 
 			if (valueIsAcceptable) {
-				return this.successful.execute(gameState);
+				this.successful.execute(gameState);
+			} else {
+				this.unsuccessful.execute(gameState);
 			}
-			return this.unsuccessful.execute(gameState);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
 		}
 	}
 

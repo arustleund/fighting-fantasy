@@ -19,15 +19,22 @@ public class SetFlagClosure extends AbstractCommand {
 	private boolean flagValue = true;
 
 	public SetFlagClosure(Element element) {
+
 		this.flagId = Integer.parseInt(element.getAttribute("id"));
 
 		if (element.hasAttribute("value")) {
 			this.flagValue = BooleanUtils.toBoolean(element.getAttribute("value"));
 		}
+
+		this.executeSuccessful = true;
 	}
 
-	public boolean execute(GameState gameState) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
+	 */
+	public void execute(GameState gameState) {
 		gameState.getPlayerState().setFlag(flagId, flagValue);
-		return true;
 	}
 }

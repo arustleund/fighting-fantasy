@@ -21,34 +21,24 @@ import org.w3c.dom.NodeList;
 
 import rustleund.nightdragon.framework.util.AbstractCommandLoader;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
-
 /**
  * @author rustlea
  */
 public class PageState {
 
 	private GameState gameState = null;
-
 	private String pagetext = null;
-
 	private Map<Integer, Item> items = null;
-
 	private Map<String, Integer> keepMinimums = null;
-
 	private Map<Integer, Element> testLucks = null;
-
-	private List<Command> immediateCommands = null;
-
-	private ListMultimap<Integer, Command> multiCommands = null;
-
+	private List<Closure> immediateCommands = null;
+	private Map<Integer, Closure> multiCommands = null;
 	private Map<Integer, String> texts = null;
-
 	private Map<Integer, BattleState> battles = null;
 
 	public PageState(Document document, GameState gameState) {
-
+		this.gameState = gameState;
+		
 		loadPagetext(document);
 		loadItems(document);
 		loadKeepMinimum(document);
@@ -57,8 +47,6 @@ public class PageState {
 		loadTexts(document);
 		loadMultis(document);
 		loadBattles(document);
-
-		this.gameState = gameState;
 	}
 
 	private void loadPagetext(Document document) {
@@ -74,13 +62,13 @@ public class PageState {
 		for (int i = 0; i < itemTags.getLength(); i++) {
 			Element thisItemTag = (Element) itemTags.item(i);
 			Item thisItem = new Item();
-			Integer thisItemsId = Integer.valueOf(thisItemTag.getAttribute("id"));
+			Integer thisItemsId = new Integer(thisItemTag.getAttribute("id"));
 			thisItem.setId(thisItemsId);
 			thisItem.setName(thisItemTag.getAttribute("name"));
-			thisItem.setPrice(Integer.valueOf(thisItemTag.getAttribute("price")));
+			thisItem.setPrice(new Integer(thisItemTag.getAttribute("price")));
 			String limit = thisItemTag.getAttribute("limit");
 			if (!limit.equals("")) {
-				thisItem.setLimit(Integer.valueOf(limit));
+				thisItem.setLimit(new Integer(limit));
 			}
 			items.put(thisItemsId, thisItem);
 		}
@@ -91,7 +79,7 @@ public class PageState {
 		NodeList keepMinimumTags = document.getElementsByTagName("keepminimum");
 		for (int i = 0; i < keepMinimumTags.getLength(); i++) {
 			Element thisKeepMinimumTag = (Element) keepMinimumTags.item(i);
-			keepMinimums.put(thisKeepMinimumTag.getAttribute("scale"), Integer.valueOf(thisKeepMinimumTag.getAttribute("value")));
+			keepMinimums.put(thisKeepMinimumTag.getAttribute("scale"), new Integer(thisKeepMinimumTag.getAttribute("value")));
 		}
 	}
 
@@ -100,12 +88,12 @@ public class PageState {
 		NodeList testLuckTags = document.getElementsByTagName("testluck");
 		for (int i = 0; i < testLuckTags.getLength(); i++) {
 			Element thisTestLuckTag = (Element) testLuckTags.item(i);
-			testLucks.put(Integer.valueOf(thisTestLuckTag.getAttribute("id")), thisTestLuckTag);
+			testLucks.put(new Integer(thisTestLuckTag.getAttribute("id")), thisTestLuckTag);
 		}
 	}
 
 	private void loadImmediate(Document document) {
-		immediateCommands = new ArrayList<Command>();
+		immediateCommands = new ArrayList<Closure>();
 		NodeList immediateTags = document.getElementsByTagName("immediate");
 		if (immediateTags.getLength() > 0) {
 			NodeList immediateCommandTags = immediateTags.item(0).getChildNodes();
@@ -123,29 +111,26 @@ public class PageState {
 		NodeList textTags = document.getElementsByTagName("text");
 		for (int i = 0; i < textTags.getLength(); i++) {
 			Element thisTextTag = (Element) textTags.item(i);
-			texts.put(Integer.valueOf(thisTextTag.getAttribute("id")), writeTag(thisTextTag));
+			texts.put(new Integer(thisTextTag.getAttribute("id")), writeTag(thisTextTag));
 		}
 	}
 
-	/**
-	 * Must call loadTexts before calling this method
-	 * 
-	 * @param document
-	 */
 	private void loadMultis(Document document) {
-		multiCommands = ArrayListMultimap.create();
+		this.multiCommands = new HashMap<Integer, Closure>();
 		NodeList multiTags = document.getElementsByTagName("multicommand");
 		for (int i = 0; i < multiTags.getLength(); i++) {
 			Element thisMultiTag = (Element) multiTags.item(i);
-			Integer thisMultiId = Integer.valueOf(thisMultiTag.getAttribute("id"));
+			Integer thisMultiId = new Integer(thisMultiTag.getAttribute("id"));
 			NodeList thisMultiTagsCommandTags = thisMultiTag.getChildNodes();
+			List<Closure> subclosures = new ArrayList<Closure>();
 			for (int j = 0; j < thisMultiTagsCommandTags.getLength(); j++) {
 				Node thisMultiTagsCommandTag = thisMultiTagsCommandTags.item(j);
 				if (thisMultiTagsCommandTag instanceof Element) {
-					Command command = AbstractCommandLoader.getAbstractCommand((Element) thisMultiTagsCommandTag);
-					this.multiCommands.put(thisMultiId, command);
+					Closure command = AbstractCommandLoader.getAbstractCommand((Element) thisMultiTagsCommandTag);
+					subclosures.add(command);
 				}
 			}
+			this.multiCommands.put(thisMultiId, new ChainedClosure(subclosures));
 		}
 	}
 
@@ -154,17 +139,17 @@ public class PageState {
 		NodeList battleTags = document.getElementsByTagName("battle");
 		for (int i = 0; i < battleTags.getLength(); i++) {
 			Element thisBattleTag = (Element) battleTags.item(i);
-			Integer thisBattleId = Integer.valueOf(thisBattleTag.getAttribute("id"));
+			Integer thisBattleId = new Integer(thisBattleTag.getAttribute("id"));
 			battles.put(thisBattleId, new BattleState(thisBattleTag, this));
 		}
 	}
 
 	public BattleState getBattle(int battleId) {
-		return battles.get(battleId);
+		return battles.get(new Integer(battleId));
 	}
 
-	public List<Command> getMultiCommands(int multiCommandId) {
-		return this.multiCommands.get(multiCommandId);
+	public Closure getMultiCommands(int multiCommandId) {
+		return this.multiCommands.get(new Integer(multiCommandId));
 	}
 
 	public String getSuccessfulLuckText(int testluckId) {
@@ -176,7 +161,7 @@ public class PageState {
 	}
 
 	private String getLuckTextHelper(int testluckId, String successType) {
-		NodeList testLuckTagSuccessType = testLucks.get(testluckId).getElementsByTagName(successType);
+		NodeList testLuckTagSuccessType = testLucks.get(Integer.valueOf(testluckId)).getElementsByTagName(successType);
 		Node successNodeTextNode = ((Element) testLuckTagSuccessType.item(0)).getElementsByTagName("p").item(0);
 		String result = writeTag(successNodeTextNode);
 		return result;
@@ -195,8 +180,9 @@ public class PageState {
 
 	public Item getItem(int itemId) {
 		Item result = null;
-		if (items.containsKey(itemId)) {
-			result = items.get(itemId);
+		Integer itemIdInteger = new Integer(itemId);
+		if (items.containsKey(itemIdInteger)) {
+			result = items.get(itemIdInteger);
 		}
 		return result;
 	}
@@ -209,7 +195,7 @@ public class PageState {
 		pagetext = string;
 	}
 
-	public List<Command> getImmediateCommands() {
+	public List<Closure> getImmediateCommands() {
 		return immediateCommands;
 	}
 

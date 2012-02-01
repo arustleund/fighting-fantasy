@@ -7,6 +7,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.w3c.dom.Element;
 
 import rustleund.nightdragon.framework.AbstractCommand;
+import rustleund.nightdragon.framework.AbstractEntityState;
 import rustleund.nightdragon.framework.GameState;
 import rustleund.nightdragon.framework.Scale;
 
@@ -16,17 +17,11 @@ import rustleund.nightdragon.framework.Scale;
 public class AdjustScaleClosure extends AbstractCommand {
 
 	private String scaleName = null;
-
 	private String amount;
-
 	private boolean promptOnFail;
-
 	private boolean useAmountAsValue;
-
 	private boolean useAmountAsPercent;
-
 	private String round;
-
 	private boolean adjustInitialValue;
 
 	public AdjustScaleClosure(Element element) {
@@ -37,13 +32,14 @@ public class AdjustScaleClosure extends AbstractCommand {
 		this.useAmountAsPercent = attributeValue(element, "useAmountAsPercent");
 		this.round = element.getAttribute("round");
 		this.adjustInitialValue = attributeValue(element, "adjustInitialValue");
+		this.executeSuccessful = false;
 	}
 
-	public boolean execute(GameState gameState) {
+	public void execute(GameState gameState) {
 		Scale scale = null;
 
 		try {
-			scale = (Scale) PropertyUtils.getProperty(gameState.getPlayerState(), scaleName);
+			scale = (Scale) PropertyUtils.getProperty(entity(gameState), scaleName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -76,14 +72,13 @@ public class AdjustScaleClosure extends AbstractCommand {
 			}
 		}
 
-		boolean executeSuccessful = false;
 		if (promptOnFail) {
 			try {
 				scale.adjustCurrentValue(amountToAdjust);
-				executeSuccessful = true;
+				this.executeSuccessful = true;
 			} catch (IndexOutOfBoundsException e1) {
 				gameState.setMessage("You cannot perform this action");
-				executeSuccessful = false;
+				this.executeSuccessful = false;
 			}
 		} else {
 			if (this.adjustInitialValue) {
@@ -91,9 +86,13 @@ public class AdjustScaleClosure extends AbstractCommand {
 			} else {
 				scale.adjustCurrentValueNoException(amountToAdjust);
 			}
-			executeSuccessful = true;
+			this.executeSuccessful = true;
 		}
-		return executeSuccessful;
+
+	}
+
+	protected AbstractEntityState entity(GameState gameState) {
+		return gameState.getPlayerState();
 	}
 
 }

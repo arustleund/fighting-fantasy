@@ -3,7 +3,9 @@
  */
 package rustleund.nightdragon.framework;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import rustleund.nightdragon.framework.util.DiceRoller;
@@ -14,32 +16,26 @@ import rustleund.nightdragon.framework.util.ItemUtil;
  */
 public class PlayerState extends AbstractEntityState {
 
-	private Scale luck = null;
-
-	private Scale provisions = null;
-
-	private Scale honor = null;
-
-	private Scale nemesis = null;
-
-	private Scale gold = null;
-
-	private Scale time = null;
-
-	private Map<Integer, Item> items = null;
-
-	private Map<Integer, Boolean> flags = null;
+	private Scale luck;
+	private Scale provisions;
+	private Scale honor;
+	private Scale nemesis;
+	private Scale gold;
+	private Scale time;
+	private Map<Integer, Item> items;
+	private Map<Integer, Boolean> flags;
+	private List<BattleEffects> nextBattleBattleEffects;
+	private int poisonDamage;
+	private boolean poisonImmunity = false;
 
 	public PlayerState(String name) {
-
 		int initialSkill = DiceRoller.rollOneDie() + 6;
 		int initialStamina = DiceRoller.rollDice(2) + 12;
 		int initialLuck = DiceRoller.rollOneDie() + 6;
 
-		int initialGold = DiceRoller.rollDice(2) + 13;
+		int initialGold = DiceRoller.rollDice(2) + 3;
 
 		init(name, initialSkill, initialStamina, initialLuck, 12, 0, 0, initialGold, 0);
-
 	}
 
 	public PlayerState(String name, int skill, int stamina, int luck, int provisions, int honor, int nemesis, int gold, int time) {
@@ -48,17 +44,17 @@ public class PlayerState extends AbstractEntityState {
 
 	private void init(String name, int skill, int stamina, int luck, int provisions, int honor, int nemesis, int gold, int time) {
 		this.name = name;
-		this.skill = new Scale(new Integer(0), new Integer(skill), new Integer(skill), true);
-		this.stamina = new Scale(new Integer(0), new Integer(stamina), new Integer(stamina), true);
-		this.luck = new Scale(new Integer(0), new Integer(luck), new Integer(luck), true);
-		this.provisions = new Scale(new Integer(0), new Integer(provisions), new Integer(provisions), true);
-		this.honor = new Scale(null, new Integer(honor), null, true);
-		this.nemesis = new Scale(null, new Integer(nemesis), null, true);
-		this.gold = new Scale(new Integer(0), new Integer(gold), null, false);
-		this.time = new Scale(new Integer(0), new Integer(time), null, true);
+		this.skill = new Scale(0, skill, skill, true);
+		this.stamina = new Scale(0, stamina, stamina, true);
+		this.luck = new Scale(0, luck, luck, true);
+		this.provisions = new Scale(0, provisions, provisions, true);
+		this.honor = new Scale(null, honor, null, true);
+		this.nemesis = new Scale(null, nemesis, null, true);
+		this.gold = new Scale(0, gold, null, false);
+		this.time = new Scale(0, time, null, true);
 
-		items = new HashMap<Integer, Item>();
-		flags = new HashMap<Integer, Boolean>();
+		this.items = new HashMap<Integer, Item>();
+		this.flags = new HashMap<Integer, Boolean>();
 
 		ItemUtil itemUtil = ItemUtil.getInstance();
 
@@ -66,146 +62,144 @@ public class PlayerState extends AbstractEntityState {
 		addItem(itemUtil.getItem(1));
 		addItem(itemUtil.getItem(2));
 		addItem(itemUtil.getItem(3));
-		addItem(itemUtil.getItem(4));
+	}
 
+	public void takePoisonDamage(int amount) {
+		if (!this.poisonImmunity) {
+			this.stamina.adjustCurrentValueNoException(amount * -1);
+			this.poisonDamage += amount;
+		}
+	}
+
+	public void clearPoisonDamage() {
+		this.stamina.adjustCurrentValueNoException(this.poisonDamage);
+		this.poisonDamage = 0;
 	}
 
 	public void addItem(Item toAdd) {
-		if (items.containsKey(toAdd.getId())) {
-			items.get(toAdd.getId()).incrementCount();
+		if (this.items.containsKey(toAdd.getId())) {
+			this.items.get(toAdd.getId()).incrementCount();
 		} else {
-			items.put(toAdd.getId(), toAdd);
+			this.items.put(toAdd.getId(), toAdd);
 		}
 	}
 
 	public void removeOneOfItem(int itemId) {
 		int itemCount = itemCount(itemId);
 		if (itemCount == 1) {
-			items.remove(new Integer(itemId));
+			this.items.remove(itemId);
 		} else if (itemCount != 0) {
-			(items.get(new Integer(itemId))).decrementCount();
+			this.items.get(itemId).decrementCount();
 		}
 	}
 
 	public void removeAllOfItem(int itemId) {
-		items.remove(new Integer(itemId));
+		this.items.remove(itemId);
 	}
 
 	public int itemCount(int itemId) {
-		if (items.containsKey(new Integer(itemId))) {
-			return (items.get(new Integer(itemId))).getCount().intValue();
+		if (this.items.containsKey(itemId)) {
+			return this.items.get(itemId).getCount();
 		}
 		return 0;
 	}
 
 	public void setFlag(int flagId, boolean value) {
-		flags.put(new Integer(flagId), Boolean.valueOf(value));
+		this.flags.put(flagId, value);
 	}
 
 	public boolean getFlagValue(int flagId) {
-		Integer flagIdInteger = new Integer(flagId);
-		if (flags.containsKey(flagIdInteger)) {
-			return (flags.get(flagIdInteger)).booleanValue();
+		if (this.flags.containsKey(flagId)) {
+			return this.flags.get(flagId);
 		}
 		return false;
 	}
 
-	/**
-	 * @return
-	 */
+	public void addNextBattleBattleEffect(BattleEffects battleEffects) {
+		if (this.nextBattleBattleEffects == null) {
+			this.nextBattleBattleEffects = new ArrayList<BattleEffects>();
+		}
+		this.nextBattleBattleEffects.add(battleEffects);
+	}
+
+	public int getPoisonDamage() {
+		return this.poisonDamage;
+	}
+
+	public void setPoisonDamage(int poisonDamage) {
+		this.poisonDamage = poisonDamage;
+	}
+
+	public List<BattleEffects> getNextBattleBattleEffects() {
+		return this.nextBattleBattleEffects;
+	}
+
+	public void setNextBattleBattleEffects(List<BattleEffects> nextBattleBattleEffects) {
+		this.nextBattleBattleEffects = nextBattleBattleEffects;
+	}
+
 	public Scale getGold() {
 		return gold;
 	}
 
-	/**
-	 * @return
-	 */
 	public Scale getHonor() {
 		return honor;
 	}
 
-	/**
-	 * @return
-	 */
 	public Map<Integer, Item> getItems() {
 		return items;
 	}
 
-	/**
-	 * @return
-	 */
 	public Scale getLuck() {
 		return luck;
 	}
 
-	/**
-	 * @return
-	 */
 	public Scale getNemesis() {
 		return nemesis;
 	}
 
-	/**
-	 * @return
-	 */
 	public Scale getProvisions() {
 		return provisions;
 	}
 
-	/**
-	 * @return
-	 */
 	public Scale getTime() {
 		return time;
 	}
 
-	/**
-	 * @param scale
-	 */
 	public void setGold(Scale scale) {
 		gold = scale;
 	}
 
-	/**
-	 * @param scale
-	 */
 	public void setHonor(Scale scale) {
 		honor = scale;
 	}
 
-	/**
-	 * @param list
-	 */
 	public void setItems(Map<Integer, Item> map) {
 		items = map;
 	}
 
-	/**
-	 * @param scale
-	 */
 	public void setLuck(Scale scale) {
 		luck = scale;
 	}
 
-	/**
-	 * @param scale
-	 */
 	public void setNemesis(Scale scale) {
 		nemesis = scale;
 	}
 
-	/**
-	 * @param scale
-	 */
 	public void setProvisions(Scale scale) {
 		provisions = scale;
 	}
 
-	/**
-	 * @param scale
-	 */
 	public void setTime(Scale scale) {
 		time = scale;
+	}
+
+	public boolean isPoisonImmunity() {
+		return this.poisonImmunity;
+	}
+
+	public void setPoisonImmunity(boolean poisonImmunity) {
+		this.poisonImmunity = poisonImmunity;
 	}
 
 }

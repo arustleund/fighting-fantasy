@@ -31,27 +31,19 @@ public class GameView extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -8223557610157876489L;
 
 	private GameController controller = null;
-
 	private JLabel messageLabel = null;
 
-	private JEditorPane htmlEditorPane = null;
+	private JEditorPane htmlEditorPane;
+	private JScrollPane htmlEditorScrollPane;
 
 	private JList inventoryList = null;
-
 	private JLabel skill = null;
-
 	private JLabel stamina = null;
-
 	private JLabel luck = null;
-
 	private JLabel provisions = null;
-
 	private JLabel honor = null;
-
 	private JLabel nemesis = null;
-
 	private JLabel gold = null;
-
 	private JLabel time = null;
 
 	public GameView(GameController controller) {
@@ -76,14 +68,14 @@ public class GameView extends JPanel implements ActionListener {
 		((HTMLDocument) htmlEditorPane.getDocument()).setBase(getBaseUrl());
 		htmlEditorPane.addHyperlinkListener(controller);
 
-		JScrollPane htmlScrollPane = new JScrollPane(htmlEditorPane);
-		htmlScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		htmlScrollPane.setPreferredSize(new Dimension(640, 480));
-		htmlScrollPane.setMinimumSize(new Dimension(10, 10));
+		this.htmlEditorScrollPane = new JScrollPane(htmlEditorPane);
+		this.htmlEditorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		this.htmlEditorScrollPane.setPreferredSize(new Dimension(640, 480));
+		this.htmlEditorScrollPane.setMinimumSize(new Dimension(10, 10));
 
 		JPanel descriptionPanel = new JPanel();
 		descriptionPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Description"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-		descriptionPanel.add(htmlScrollPane);
+		descriptionPanel.add(this.htmlEditorScrollPane);
 
 		add(descriptionPanel, BorderLayout.CENTER);
 
@@ -184,10 +176,13 @@ public class GameView extends JPanel implements ActionListener {
 	}
 
 	public void update(GameState gameState) {
+		this.messageLabel.setText(gameState.getMessage());
 
-		messageLabel.setText(gameState.getMessage());
-
-		htmlEditorPane.setText(gameState.getPageState().getPagetext());
+		this.htmlEditorPane.setText(gameState.getPageState().getPagetext());
+		if (!gameState.isPageLoaded()) {
+			this.htmlEditorPane.setCaretPosition(0);
+			gameState.setPageLoaded(true);
+		}
 
 		PlayerState playerState = gameState.getPlayerState();
 
@@ -203,7 +198,6 @@ public class GameView extends JPanel implements ActionListener {
 		time.setText(playerState.getTime().toString());
 
 		repaint();
-
 	}
 
 }

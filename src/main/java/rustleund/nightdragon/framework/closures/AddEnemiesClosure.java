@@ -4,6 +4,7 @@
 package rustleund.nightdragon.framework.closures;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.w3c.dom.Element;
@@ -20,14 +21,15 @@ import rustleund.nightdragon.framework.GameState;
  */
 public class AddEnemiesClosure extends AbstractCommand {
 
-	private List<EnemyState> enemiesToAdd = null;
+	private List enemiesToAdd = null;
 
 	private int battleId = 0;
 
 	private int waitTime = 0;
 
 	public AddEnemiesClosure(Element element) {
-		this.enemiesToAdd = new ArrayList<EnemyState>();
+		this.executeSuccessful = true;
+		this.enemiesToAdd = new ArrayList();
 
 		Element battleElement = (Element) element.getParentNode().getParentNode().getParentNode();
 		this.battleId = Integer.parseInt(battleElement.getAttribute("id"));
@@ -41,17 +43,16 @@ public class AddEnemiesClosure extends AbstractCommand {
 		}
 	}
 
-	@Override
-	public boolean execute(GameState gameState) {
+	public void execute(GameState gameState) {
 		if (waitTime == 0) {
 			BattleState battleState = gameState.getPageState().getBattle(battleId);
 			Enemies enemies = battleState.getEnemies();
-			for (EnemyState enemy : enemiesToAdd) {
+			for (Iterator iter = enemiesToAdd.iterator(); iter.hasNext();) {
+				EnemyState enemy = (EnemyState) iter.next();
 				enemies.addEnemy(enemy);
 			}
 		}
 		waitTime--;
-		return true;
 	}
 
 }

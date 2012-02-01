@@ -8,12 +8,9 @@ package rustleund.nightdragon.framework;
  */
 public abstract class AbstractEntityState {
 
-	protected String name = null;
-
-	protected Scale skill = null;
-
-	protected Scale stamina = null;
-
+	protected String name;
+	protected Scale skill;
+	protected Scale stamina;
 	protected int attackStrengthModifier = 0;
 
 	public AbstractEntityState() {
@@ -26,8 +23,8 @@ public abstract class AbstractEntityState {
 		this.stamina = new Scale(new Integer(0), new Integer(stamina), new Integer(stamina), true);
 	}
 
-	public int getBaseAttackStrength() {
-		return skill.getCurrentValue() + attackStrengthModifier;
+	public int getAttackStrength() {
+		return this.skill.getCurrentValue() + this.attackStrengthModifier;
 	}
 
 	public boolean isDead() {

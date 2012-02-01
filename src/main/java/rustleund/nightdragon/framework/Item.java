@@ -18,7 +18,7 @@ public class Item {
 
 	private Integer count = null;
 
-	private Command useItem = null;
+	private Closure useItem = null;
 
 	private boolean canUseInBattle;
 
@@ -123,11 +123,18 @@ public class Item {
 		}
 	}
 
-	public Command getUseItem() {
+	/**
+	 * @return Returns the useItem.
+	 */
+	public Closure getUseItem() {
 		return useItem;
 	}
 
-	public void setUseItem(Command useItem) {
+	/**
+	 * @param useItem
+	 *            The useItem to set.
+	 */
+	public void setUseItem(Closure useItem) {
 		this.useItem = useItem;
 	}
 
@@ -140,7 +147,7 @@ public class Item {
 
 	/**
 	 * @param canUseInBattle
-	 *        The canUseInBattle to set.
+	 *            The canUseInBattle to set.
 	 */
 	public void setCanUseInBattle(boolean canUseInBattle) {
 		this.canUseInBattle = canUseInBattle;

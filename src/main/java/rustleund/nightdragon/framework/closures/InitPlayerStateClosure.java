@@ -14,13 +14,17 @@ import rustleund.nightdragon.framework.PlayerState;
  */
 public class InitPlayerStateClosure extends AbstractCommand {
 
-	public InitPlayerStateClosure(@SuppressWarnings("unused") Element element) {
-		// does nothing
+	public InitPlayerStateClosure(Element element) {
+		this.executeSuccessful = true;
 	}
 
-	public boolean execute(GameState gameState) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
+	 */
+	public void execute(GameState gameState) {
 		gameState.setPlayerState(new PlayerState(gameState.getPlayerState().getName()));
-		return true;
 	}
 
 }
