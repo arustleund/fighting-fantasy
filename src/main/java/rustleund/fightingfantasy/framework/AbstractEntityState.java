@@ -19,8 +19,8 @@ public abstract class AbstractEntityState {
 
 	protected AbstractEntityState(String name, int skill, int stamina) {
 		this.name = name;
-		this.skill = new Scale(new Integer(0), new Integer(skill), new Integer(skill), true);
-		this.stamina = new Scale(new Integer(0), new Integer(stamina), new Integer(stamina), true);
+		this.skill = new Scale(0, skill, skill, true);
+		this.stamina = new Scale(0, stamina, stamina, true);
 	}
 
 	public int getAttackStrength() {
