@@ -10,13 +10,6 @@ import org.w3c.dom.Element;
  */
 public abstract class AbstractCommand implements Command {
 
-	protected boolean executeSuccessful;
-
-	@Override
-	public boolean executeWasSuccessful() {
-		return executeSuccessful;
-	}
-
 	protected boolean attributeValue(Element element, String attribute) {
 		return attributeValue(element, attribute, false);
 	}

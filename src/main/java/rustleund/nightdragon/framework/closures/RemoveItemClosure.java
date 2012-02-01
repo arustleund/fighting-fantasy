@@ -16,15 +16,12 @@ public class RemoveItemClosure extends AbstractCommand {
 	private int itemId = 0;
 
 	public RemoveItemClosure(Element element) {
-
-		this.executeSuccessful = true;
-
 		this.itemId = Integer.parseInt(element.getAttribute("id"));
-
 	}
 
-	public void execute(GameState gameState) {
+	public boolean execute(GameState gameState) {
 		gameState.getPlayerState().removeOneOfItem(itemId);
+		return true;
 	}
 
 }

@@ -37,10 +37,9 @@ public class AdjustScaleClosure extends AbstractCommand {
 		this.useAmountAsPercent = attributeValue(element, "useAmountAsPercent");
 		this.round = element.getAttribute("round");
 		this.adjustInitialValue = attributeValue(element, "adjustInitialValue");
-		this.executeSuccessful = false;
 	}
 
-	public void execute(GameState gameState) {
+	public boolean execute(GameState gameState) {
 		Scale scale = null;
 
 		try {
@@ -77,13 +76,14 @@ public class AdjustScaleClosure extends AbstractCommand {
 			}
 		}
 
+		boolean executeSuccessful = false;
 		if (promptOnFail) {
 			try {
 				scale.adjustCurrentValue(amountToAdjust);
-				this.executeSuccessful = true;
+				executeSuccessful = true;
 			} catch (IndexOutOfBoundsException e1) {
 				gameState.setMessage("You cannot perform this action");
-				this.executeSuccessful = false;
+				executeSuccessful = false;
 			}
 		} else {
 			if (this.adjustInitialValue) {
@@ -91,9 +91,9 @@ public class AdjustScaleClosure extends AbstractCommand {
 			} else {
 				scale.adjustCurrentValueNoException(amountToAdjust);
 			}
-			this.executeSuccessful = true;
+			executeSuccessful = true;
 		}
-
+		return executeSuccessful;
 	}
 
 }

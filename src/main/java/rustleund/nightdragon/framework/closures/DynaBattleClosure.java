@@ -56,7 +56,7 @@ public class DynaBattleClosure implements Command {
 	}
 
 	@Override
-	public void execute(GameState gameState) {
+	public boolean execute(GameState gameState) {
 		AbstractEntityState state = null;
 		if (forPlayer) {
 			state = gameState.getPlayerState();
@@ -87,6 +87,7 @@ public class DynaBattleClosure implements Command {
 
 		}
 
+		return true;
 	}
 
 	/**
@@ -199,11 +200,6 @@ public class DynaBattleClosure implements Command {
 	 */
 	public void setStateProperty(String string) {
 		stateProperty = string;
-	}
-
-	@Override
-	public boolean executeWasSuccessful() {
-		return true;
 	}
 
 }

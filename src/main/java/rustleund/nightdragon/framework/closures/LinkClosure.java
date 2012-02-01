@@ -4,6 +4,7 @@
 package rustleund.nightdragon.framework.closures;
 
 import java.io.File;
+import java.net.URL;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -34,12 +35,16 @@ public class LinkClosure extends AbstractCommand {
 
 	public LinkClosure(String pageName) {
 		this.pageName = pageName;
-		this.executeSuccessful = true;
 	}
 
-	public void execute(GameState gameState) {
+	public boolean execute(GameState gameState) {
 		try {
-			File targetPage = new File(ClassLoader.getSystemResource("pages/" + pageName + ".xml").toURI());
+			URL page = ClassLoader.getSystemResource("pages/" + pageName + ".xml");
+			if (page == null) {
+				gameState.setMessage("Page " + pageName + " not found");
+				return false;
+			}
+			File targetPage = new File(page.toURI());
 			DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document targetPageDocument = documentBuilder.parse(targetPage);
 			gameState.setPageState(new PageState(targetPageDocument, gameState));
@@ -49,9 +54,11 @@ public class LinkClosure extends AbstractCommand {
 
 		List<Command> immediateCommands = gameState.getPageState().getImmediateCommands();
 		for (Command element : immediateCommands) {
-			element.execute(gameState);
+			if (!element.execute(gameState)) {
+				return false;
+			}
 		}
-
+		return true;
 	}
 
 }

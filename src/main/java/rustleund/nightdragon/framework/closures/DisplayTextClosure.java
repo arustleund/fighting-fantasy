@@ -17,17 +17,16 @@ public class DisplayTextClosure extends AbstractCommand {
 
 	public DisplayTextClosure(Element element) {
 		this.textId = Integer.parseInt(element.getAttribute("id"));
-		this.executeSuccessful = true;
 	}
 
 	public DisplayTextClosure(int textId) {
 		this.textId = textId;
-		this.executeSuccessful = true;
 	}
 
-	public void execute(GameState gameState) {
+	public boolean execute(GameState gameState) {
 		String text = gameState.getPageState().getTexts().get(textId);
 		gameState.getPageState().addToPagetext(text);
+		return true;
 	}
 
 }

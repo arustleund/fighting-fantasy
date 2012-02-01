@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.apache.commons.collections.Closure;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -27,9 +26,6 @@ public class RollDiceClosure extends AbstractCommand {
 	private Map<Integer, Command> rollMappings = null;
 
 	public RollDiceClosure(Element element) {
-
-		this.executeSuccessful = true;
-
 		if (element.hasAttribute("number")) {
 			this.number = Integer.parseInt(element.getAttribute("number"));
 		}
@@ -50,9 +46,10 @@ public class RollDiceClosure extends AbstractCommand {
 		}
 	}
 
-	public void execute(GameState gameState) {
+	public boolean execute(GameState gameState) {
 		int diceRollResult = DiceRoller.rollDice(this.number);
-		((Closure) this.rollMappings.get(new Integer(diceRollResult))).execute(gameState);
+		this.rollMappings.get(diceRollResult).execute(gameState);
+		return true;
 	}
 
 }

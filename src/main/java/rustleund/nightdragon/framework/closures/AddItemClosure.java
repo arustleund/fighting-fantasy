@@ -27,25 +27,25 @@ public class AddItemClosure extends AbstractCommand {
 		this.itemId = itemId;
 	}
 
-	public void execute(GameState gameState) {
+	public boolean execute(GameState gameState) {
 		PlayerState playerState = gameState.getPlayerState();
 		PageState pageState = gameState.getPageState();
 		Item item = ItemUtil.getInstance().getItem(itemId);
 		if (item.hasLimit() && playerState.itemCount(itemId) >= item.getLimit().intValue()) {
 			gameState.setMessage("You already have the maximum amount of " + item.getName());
-			executeSuccessful = false;
-		} else if (pageState.hasKeepMinimumForScale("gold") && ((playerState.getGold().getCurrentValue() - item.getPrice().intValue()) < pageState.getKeepMinimumForScale("gold"))) {
-			gameState.setMessage("Buying the " + item.getName() + " would put you below the minimum of " + pageState.getKeepMinimumForScale("gold") + " Gold Pieces");
-			executeSuccessful = false;
-		} else if (playerState.getGold().getCurrentValue() < item.getPrice().intValue()) {
-			gameState.setMessage("You do not have sufficient Gold to buy the " + item.getName());
-			executeSuccessful = false;
-		} else {
-			playerState.getGold().adjustCurrentValue(item.getPrice().intValue() * -1);
-			playerState.addItem(item);
-			executeSuccessful = true;
+			return false;
 		}
-
+		if (pageState.hasKeepMinimumForScale("gold") && ((playerState.getGold().getCurrentValue() - item.getPrice().intValue()) < pageState.getKeepMinimumForScale("gold"))) {
+			gameState.setMessage("Buying the " + item.getName() + " would put you below the minimum of " + pageState.getKeepMinimumForScale("gold") + " Gold Pieces");
+			return false;
+		}
+		if (playerState.getGold().getCurrentValue() < item.getPrice().intValue()) {
+			gameState.setMessage("You do not have sufficient Gold to buy the " + item.getName());
+			return false;
+		}
+		playerState.getGold().adjustCurrentValue(item.getPrice().intValue() * -1);
+		playerState.addItem(item);
+		return true;
 	}
 
 }

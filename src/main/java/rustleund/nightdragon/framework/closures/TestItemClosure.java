@@ -22,9 +22,6 @@ public class TestItemClosure extends AbstractCommand {
 	private Command doesNotHaveItem = null;
 
 	public TestItemClosure(Element element) {
-
-		this.executeSuccessful = true;
-
 		this.itemId = Integer.parseInt(element.getAttribute("id"));
 
 		Element hasItemElement = (Element) element.getElementsByTagName("hasItem").item(0);
@@ -32,14 +29,12 @@ public class TestItemClosure extends AbstractCommand {
 
 		Element doesNotHaveItemElement = (Element) element.getElementsByTagName("doesNotHaveItem").item(0);
 		this.doesNotHaveItem = AbstractCommandLoader.loadChainedClosure(doesNotHaveItemElement);
-
 	}
 
-	public void execute(GameState gameState) {
+	public boolean execute(GameState gameState) {
 		if (gameState.getPlayerState().itemCount(itemId) == 0) {
-			doesNotHaveItem.execute(gameState);
-		} else {
-			hasItem.execute(gameState);
+			return doesNotHaveItem.execute(gameState);
 		}
+		return hasItem.execute(gameState);
 	}
 }

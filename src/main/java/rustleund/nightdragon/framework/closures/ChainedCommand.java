@@ -8,23 +8,19 @@ import rustleund.nightdragon.framework.GameState;
 public class ChainedCommand implements Command {
 
 	private List<Command> commands;
-	private boolean successful = true;
 
 	public ChainedCommand(List<Command> commands) {
 		this.commands = commands;
 	}
 
 	@Override
-	public void execute(GameState gameState) {
+	public boolean execute(GameState gameState) {
 		for (Command command : commands) {
-			command.execute(gameState);
-			this.successful &= command.executeWasSuccessful();
+			if (!command.execute(gameState)) {
+				return false;
+			}
 		}
-	}
-
-	@Override
-	public boolean executeWasSuccessful() {
-		return this.successful;
+		return true;
 	}
 
 }

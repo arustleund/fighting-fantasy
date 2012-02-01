@@ -124,8 +124,7 @@ public class GameController implements HyperlinkListener {
 		boolean shouldContinue = true;
 		while (shouldContinue && iter.hasNext()) {
 			Command command = iter.next();
-			command.execute(gameState);
-			if (!command.executeWasSuccessful()) {
+			if (!command.execute(gameState)) {
 				shouldContinue = false;
 			}
 		}

@@ -36,11 +36,9 @@ public class TestAnyFlagClosure extends AbstractCommand {
 
 		this.successful = AbstractCommandLoader.loadChainedClosure((Element) element.getElementsByTagName("successful").item(0));
 		this.unsuccessful = AbstractCommandLoader.loadChainedClosure((Element) element.getElementsByTagName("unsuccessful").item(0));
-
-		this.executeSuccessful = true;
 	}
 
-	public void execute(GameState gameState) {
+	public boolean execute(GameState gameState) {
 		PlayerState playerState = gameState.getPlayerState();
 
 		boolean shouldExecuteSuccessfulClosure = false;
@@ -50,10 +48,9 @@ public class TestAnyFlagClosure extends AbstractCommand {
 		}
 
 		if (shouldExecuteSuccessfulClosure) {
-			successful.execute(gameState);
-		} else {
-			unsuccessful.execute(gameState);
+			return successful.execute(gameState);
 		}
+		return unsuccessful.execute(gameState);
 	}
 
 }

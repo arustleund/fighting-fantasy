@@ -22,21 +22,24 @@ public class MustEatMealClosure extends AbstractCommand {
 		}
 	}
 
-	public void execute(GameState gameState) {
+	public boolean execute(GameState gameState) {
 		PlayerState playerState = gameState.getPlayerState();
 
+		boolean success = true;
 		for (int i = 0; i < this.number; i++) {
-			this.executeSuccessful = true;
+			success = true;
 			if (playerState.getProvisions().getCurrentValue() > 0) {
 				playerState.getProvisions().adjustCurrentValueNoException(-1);
 			} else {
 				playerState.getStamina().adjustCurrentValueNoException(-2);
 				if (playerState.isDead()) {
-					this.executeSuccessful = false;
+					success = false;
 					new LinkClosure("0").execute(gameState);
 				}
 			}
 		}
+
+		return success;
 	}
 
 }

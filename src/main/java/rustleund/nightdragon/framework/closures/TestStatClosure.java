@@ -67,7 +67,7 @@ public class TestStatClosure extends AbstractCommand {
 
 	}
 
-	public void execute(GameState gameState) {
+	public boolean execute(GameState gameState) {
 		try {
 			PlayerState playerState = gameState.getPlayerState();
 
@@ -87,13 +87,13 @@ public class TestStatClosure extends AbstractCommand {
 			valueIsAcceptable |= (acceptableValues.get(2)).booleanValue() && (compareResult > 0);
 
 			if (valueIsAcceptable) {
-				this.successful.execute(gameState);
-			} else {
-				this.unsuccessful.execute(gameState);
+				return this.successful.execute(gameState);
 			}
+			return this.unsuccessful.execute(gameState);
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 
