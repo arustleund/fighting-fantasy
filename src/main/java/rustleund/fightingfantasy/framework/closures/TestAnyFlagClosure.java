@@ -29,7 +29,7 @@ public class TestAnyFlagClosure extends AbstractCommand {
 		this.flagIds = new ArrayList<Integer>();
 		StringTokenizer tokenizer = new StringTokenizer(element.getAttribute("ids"), ",");
 		while (tokenizer.hasMoreTokens()) {
-			this.flagIds.add(new Integer(tokenizer.nextToken()));
+			this.flagIds.add(Integer.valueOf(tokenizer.nextToken()));
 		}
 
 		this.successful = AbstractCommandLoader.loadClosureFromChildTag(element, "successful");
@@ -38,11 +38,7 @@ public class TestAnyFlagClosure extends AbstractCommand {
 		this.executeSuccessful = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
+	@Override
 	public void execute(GameState gameState) {
 		PlayerState playerState = gameState.getPlayerState();
 
