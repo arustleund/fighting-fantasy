@@ -4,17 +4,16 @@
 package rustleund.nightdragon.framework.closures;
 
 import java.io.File;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.commons.collections.Closure;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import rustleund.nightdragon.framework.AbstractCommand;
+import rustleund.nightdragon.framework.Command;
 import rustleund.nightdragon.framework.GameState;
 import rustleund.nightdragon.framework.PageState;
 
@@ -38,15 +37,7 @@ public class LinkClosure extends AbstractCommand {
 		this.executeSuccessful = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
-	public void execute(Object object) {
-
-		GameState gameState = (GameState) object;
-
+	public void execute(GameState gameState) {
 		try {
 			File targetPage = new File(ClassLoader.getSystemResource("pages/" + pageName + ".xml").toURI());
 			DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -56,9 +47,8 @@ public class LinkClosure extends AbstractCommand {
 			e.printStackTrace();
 		}
 
-		List immediateCommands = gameState.getPageState().getImmediateCommands();
-		for (Iterator iter = immediateCommands.iterator(); iter.hasNext();) {
-			Closure element = (Closure) iter.next();
+		List<Command> immediateCommands = gameState.getPageState().getImmediateCommands();
+		for (Command element : immediateCommands) {
 			element.execute(gameState);
 		}
 

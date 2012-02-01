@@ -21,12 +21,12 @@ import rustleund.nightdragon.framework.Item;
  */
 public class ItemUtil {
 
-	private Map items = null;
+	private Map<Integer, Item> items = null;
 
 	private static ItemUtil instance = null;
 
 	private ItemUtil() {
-		items = new HashMap();
+		items = new HashMap<Integer, Item>();
 	}
 
 	public void init() {
@@ -70,7 +70,7 @@ public class ItemUtil {
 	}
 
 	public Item getItem(int itemId) {
-		return (Item) items.get(new Integer(itemId));
+		return items.get(itemId);
 	}
 
 }

@@ -3,10 +3,10 @@
  */
 package rustleund.nightdragon.framework.closures;
 
-import org.apache.commons.collections.Closure;
 import org.w3c.dom.Element;
 
 import rustleund.nightdragon.framework.AbstractCommand;
+import rustleund.nightdragon.framework.Command;
 import rustleund.nightdragon.framework.GameState;
 import rustleund.nightdragon.framework.PlayerState;
 import rustleund.nightdragon.framework.util.AbstractCommandLoader;
@@ -19,9 +19,9 @@ public class TestSkillClosure extends AbstractCommand {
 
 	private int diceRollAdjustment = 0;
 
-	private Closure successful = null;
+	private Command successful = null;
 
-	private Closure unsuccessful = null;
+	private Command unsuccessful = null;
 
 	public TestSkillClosure(Element element) {
 		if (element.hasAttribute("diceRollAdjustment")) {
@@ -34,14 +34,7 @@ public class TestSkillClosure extends AbstractCommand {
 		this.executeSuccessful = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
-	public void execute(Object arg0) {
-		GameState gameState = (GameState) arg0;
-
+	public void execute(GameState gameState) {
 		PlayerState playerState = gameState.getPlayerState();
 
 		if ((DiceRoller.rollDice(2) + diceRollAdjustment) <= playerState.getSkill().getCurrentValue()) {

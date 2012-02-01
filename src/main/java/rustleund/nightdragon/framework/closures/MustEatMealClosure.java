@@ -22,13 +22,7 @@ public class MustEatMealClosure extends AbstractCommand {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
-	public void execute(Object arg0) {
-		GameState gameState = (GameState) arg0;
+	public void execute(GameState gameState) {
 		PlayerState playerState = gameState.getPlayerState();
 
 		for (int i = 0; i < this.number; i++) {

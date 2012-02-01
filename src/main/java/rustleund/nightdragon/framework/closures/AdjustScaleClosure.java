@@ -40,15 +40,7 @@ public class AdjustScaleClosure extends AbstractCommand {
 		this.executeSuccessful = false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
-	public void execute(Object object) {
-
-		GameState gameState = (GameState) object;
-
+	public void execute(GameState gameState) {
 		Scale scale = null;
 
 		try {

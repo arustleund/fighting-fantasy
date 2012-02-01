@@ -23,14 +23,7 @@ public class RemoveItemClosure extends AbstractCommand {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
-	public void execute(Object arg0) {
-		GameState gameState = (GameState) arg0;
-
+	public void execute(GameState gameState) {
 		gameState.getPlayerState().removeOneOfItem(itemId);
 	}
 

@@ -3,10 +3,10 @@
  */
 package rustleund.nightdragon.framework.closures;
 
-import org.apache.commons.collections.Closure;
 import org.w3c.dom.Element;
 
 import rustleund.nightdragon.framework.AbstractCommand;
+import rustleund.nightdragon.framework.Command;
 import rustleund.nightdragon.framework.GameState;
 import rustleund.nightdragon.framework.util.AbstractCommandLoader;
 
@@ -17,9 +17,9 @@ public class TestFlagClosure extends AbstractCommand {
 
 	private int flagId = -1;
 
-	private Closure successful = null;
+	private Command successful = null;
 
-	private Closure unsuccessful = null;
+	private Command unsuccessful = null;
 
 	public TestFlagClosure(Element element) {
 		this.flagId = Integer.parseInt(element.getAttribute("id"));
@@ -30,14 +30,7 @@ public class TestFlagClosure extends AbstractCommand {
 		this.executeSuccessful = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
-	public void execute(Object arg0) {
-		GameState gameState = (GameState) arg0;
-
+	public void execute(GameState gameState) {
 		if (gameState.getPlayerState().getFlagValue(flagId)) {
 			successful.execute(gameState);
 		} else {

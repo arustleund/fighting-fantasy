@@ -201,4 +201,9 @@ public class DynaBattleClosure implements Command {
 		stateProperty = string;
 	}
 
+	@Override
+	public boolean executeWasSuccessful() {
+		return true;
+	}
+
 }

@@ -26,9 +26,9 @@ public class PlayerState extends AbstractEntityState {
 
 	private Scale time = null;
 
-	private Map items = null;
+	private Map<Integer, Item> items = null;
 
-	private Map flags = null;
+	private Map<Integer, Boolean> flags = null;
 
 	public PlayerState(String name) {
 
@@ -57,8 +57,8 @@ public class PlayerState extends AbstractEntityState {
 		this.gold = new Scale(new Integer(0), new Integer(gold), null, false);
 		this.time = new Scale(new Integer(0), new Integer(time), null, true);
 
-		items = new HashMap();
-		flags = new HashMap();
+		items = new HashMap<Integer, Item>();
+		flags = new HashMap<Integer, Boolean>();
 
 		ItemUtil itemUtil = ItemUtil.getInstance();
 
@@ -72,7 +72,7 @@ public class PlayerState extends AbstractEntityState {
 
 	public void addItem(Item toAdd) {
 		if (items.containsKey(toAdd.getId())) {
-			((Item) items.get(toAdd.getId())).incrementCount();
+			items.get(toAdd.getId()).incrementCount();
 		} else {
 			items.put(toAdd.getId(), toAdd);
 		}
@@ -83,7 +83,7 @@ public class PlayerState extends AbstractEntityState {
 		if (itemCount == 1) {
 			items.remove(new Integer(itemId));
 		} else if (itemCount != 0) {
-			((Item) items.get(new Integer(itemId))).decrementCount();
+			(items.get(new Integer(itemId))).decrementCount();
 		}
 	}
 
@@ -93,7 +93,7 @@ public class PlayerState extends AbstractEntityState {
 
 	public int itemCount(int itemId) {
 		if (items.containsKey(new Integer(itemId))) {
-			return ((Item) items.get(new Integer(itemId))).getCount().intValue();
+			return (items.get(new Integer(itemId))).getCount().intValue();
 		}
 		return 0;
 	}
@@ -105,7 +105,7 @@ public class PlayerState extends AbstractEntityState {
 	public boolean getFlagValue(int flagId) {
 		Integer flagIdInteger = new Integer(flagId);
 		if (flags.containsKey(flagIdInteger)) {
-			return ((Boolean) flags.get(flagIdInteger)).booleanValue();
+			return (flags.get(flagIdInteger)).booleanValue();
 		}
 		return false;
 	}
@@ -127,7 +127,7 @@ public class PlayerState extends AbstractEntityState {
 	/**
 	 * @return
 	 */
-	public Map getItems() {
+	public Map<Integer, Item> getItems() {
 		return items;
 	}
 
@@ -176,7 +176,7 @@ public class PlayerState extends AbstractEntityState {
 	/**
 	 * @param list
 	 */
-	public void setItems(Map map) {
+	public void setItems(Map<Integer, Item> map) {
 		items = map;
 	}
 

@@ -3,10 +3,10 @@
  */
 package rustleund.nightdragon.framework.closures;
 
-import org.apache.commons.collections.Closure;
 import org.w3c.dom.Element;
 
 import rustleund.nightdragon.framework.AbstractCommand;
+import rustleund.nightdragon.framework.Command;
 import rustleund.nightdragon.framework.GameState;
 import rustleund.nightdragon.framework.util.AbstractCommandLoader;
 
@@ -17,12 +17,12 @@ public class TestItemClosure extends AbstractCommand {
 
 	private int itemId = -1;
 
-	private Closure hasItem = null;
+	private Command hasItem = null;
 
-	private Closure doesNotHaveItem = null;
+	private Command doesNotHaveItem = null;
 
 	public TestItemClosure(Element element) {
-		
+
 		this.executeSuccessful = true;
 
 		this.itemId = Integer.parseInt(element.getAttribute("id"));
@@ -35,20 +35,11 @@ public class TestItemClosure extends AbstractCommand {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
-	public void execute(Object arg0) {
-
-		GameState gameState = (GameState) arg0;
-
+	public void execute(GameState gameState) {
 		if (gameState.getPlayerState().itemCount(itemId) == 0) {
 			doesNotHaveItem.execute(gameState);
 		} else {
 			hasItem.execute(gameState);
 		}
-
 	}
 }

@@ -25,19 +25,9 @@ public class DisplayTextClosure extends AbstractCommand {
 		this.executeSuccessful = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
-	public void execute(Object object) {
-
-		GameState gameState = (GameState) object;
-
-		String text = (String) gameState.getPageState().getTexts().get(new Integer(textId));
-
+	public void execute(GameState gameState) {
+		String text = gameState.getPageState().getTexts().get(textId);
 		gameState.getPageState().addToPagetext(text);
-
 	}
 
 }

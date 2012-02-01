@@ -3,8 +3,6 @@
  */
 package rustleund.nightdragon.framework;
 
-import org.apache.commons.collections.Closure;
-
 /**
  * @author rustlea
  */
@@ -20,7 +18,7 @@ public class Item {
 
 	private Integer count = null;
 
-	private Closure useItem = null;
+	private Command useItem = null;
 
 	private boolean canUseInBattle;
 
@@ -125,18 +123,11 @@ public class Item {
 		}
 	}
 
-	/**
-	 * @return Returns the useItem.
-	 */
-	public Closure getUseItem() {
+	public Command getUseItem() {
 		return useItem;
 	}
 
-	/**
-	 * @param useItem
-	 *            The useItem to set.
-	 */
-	public void setUseItem(Closure useItem) {
+	public void setUseItem(Command useItem) {
 		this.useItem = useItem;
 	}
 
@@ -149,7 +140,7 @@ public class Item {
 
 	/**
 	 * @param canUseInBattle
-	 *            The canUseInBattle to set.
+	 *        The canUseInBattle to set.
 	 */
 	public void setCanUseInBattle(boolean canUseInBattle) {
 		this.canUseInBattle = canUseInBattle;

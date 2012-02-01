@@ -27,15 +27,7 @@ public class AddItemClosure extends AbstractCommand {
 		this.itemId = itemId;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
-	public void execute(Object object) {
-
-		GameState gameState = (GameState) object;
-
+	public void execute(GameState gameState) {
 		PlayerState playerState = gameState.getPlayerState();
 		PageState pageState = gameState.getPageState();
 		Item item = ItemUtil.getInstance().getItem(itemId);
