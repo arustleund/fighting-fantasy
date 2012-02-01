@@ -1,0 +1,25 @@
+<page>
+	<pagenumber>35</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			The body is that of a dark-haired young man; he is blue with cold and is wearing a simple black robe
+			with a knotted black cord tied round the waist. There is a distinctive tattoo on his left hand which
+			shows a coiled black serpent with red glowing eyes. If you have an ice pick and wish to chip the body
+			away from the ice, click <a href="http://domulti:0">here</a>. If you do not have an ice pick, or you 
+			don't wish to do this, click <a href="http://link:112">here</a>.
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<setFlag id="1" />
+	</immediate>
+	<multicommand id="0">
+		<testItem id="10">
+			<hasItem>
+				<link page="328" />
+			</hasItem>
+			<doesNotHaveItem />
+		</testItem>
+	</multicommand>
+</page>

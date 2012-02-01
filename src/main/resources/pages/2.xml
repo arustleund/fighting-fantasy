@@ -1,0 +1,16 @@
+<page>
+	<pagenumber>2</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			The westward trail to the Mist Crypts is very arduous. You can get almost enough to
+			eat by scrounging and foraging, but you must supplement this with two meals during
+			the lengthy journey. Add 8 to your Time Track, but at last you reach your goal.
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<mustEatMeal amount="2" />
+		<adjustscale type="time" amount="8" />
+	</immediate>
+</page>

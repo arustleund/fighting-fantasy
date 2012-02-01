@@ -1,0 +1,15 @@
+<flags>
+	<flag id="0" description="Stayed the night in Rentarn" />
+	<flag id="1" description="Saw coiled black serpent with red glowing eyes tattoo on body on ice floe" />
+	<flag id="2" description="Double meals aboard the Blackheart" />
+	<flag id="3" description="Militia saw you in the inn in Rentarn" />
+	<flag id="4" description="Tried to escape through the window in the inn in Rentarn" />
+	<flag id="5" description="Being hunted by the militia in Rentarn" />
+	<flag id="6" description="Discovered the name of Stormdrake Pass" />
+	
+	<flag id="7" description="Added skill points to stats rolling" />
+	<flag id="8" description="Added luck points to stats rolling" />
+	<flag id="9" description="Added stamina points to stats rolling" />
+	
+	<flag id="" description="" />
+</flags>

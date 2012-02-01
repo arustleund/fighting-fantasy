@@ -1,0 +1,42 @@
+<page>
+	<pagenumber>68</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			You're not really experienced at haggling over the selling price of furs, but you pocket 5 Gold Pieces
+			for the three beaver skins you were given - and you can always use some extra money! Now, will you:
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<removeItem id="17" />
+		<adjustscale type="gold" amount="5" />
+		<testFlag id="0">
+			<successful>
+				<displayText id="0" />
+			</successful>
+			<unsuccessful>
+				<displayText id="1" />
+			</unsuccessful>
+		</testFlag>
+	</immediate>
+	<text id="0">
+		<p>
+			<table>
+				<tr><td><a href="http://link:236">Buy some extra equipment or food?</a></td></tr>
+				<tr><td><a href="http://link:286">Make for the Rudderless Galley tavern,
+				if you haven't already been there?</a></td></tr>
+				<tr><td><a href="http://link:178">Leave Rentarn, if you've stayed the night here?</a></td></tr>
+			</table>
+		</p>
+	</text>
+	<text id="1">
+		<p>
+			<table>
+				<tr><td><a href="http://link:236">Buy some extra equipment or food?</a></td></tr>
+				<tr><td><a href="http://link:286">Make for the Rudderless Galley tavern,
+				if you haven't already been there?</a></td></tr>
+			</table>
+		</p>
+	</text>
+</page>

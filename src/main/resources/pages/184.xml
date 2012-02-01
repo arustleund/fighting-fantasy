@@ -1,0 +1,17 @@
+<page>
+	<pagenumber>184</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			You row all day and night and most of the next day, just hoping that your navigational instincts as to
+			the direction of north are good. You must eat 2 meals during your journey, and by the time you reach
+			Corpse Bay you are frozen, exhausted and feeling stiff all over. You desperately need rest and hot food!
+			2 is added to your Time Track. Click <a href="http://link:304">here</a> to continue.
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<adjustscale type="provisions" amount="-2" />
+		<adjustscale type="time" amount="2" />
+	</immediate>
+</page>

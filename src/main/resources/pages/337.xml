@@ -1,0 +1,16 @@
+<page>
+	<pagenumber>337</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			The Dwarf spits into the wood fire which warms the cabin. 'Beware of them,' he hisses. 'The grey
+			'uns, they're just the small fry, but the ones in black robes, they're dangerous. Bad men. Seen one
+			or two in the woods, heading northwards. I heard tell they're making for the Dragon Reaches. Come from
+			some place north-west of there. Don't you mix with them.' Now, if you want to ask the Dwarf about
+			something you haven't enquired about already, you can <a href="http://link:90">ask about the Dragon
+			Reaches</a> or <a href="http://link:157">the area around in general</a> or you can just 
+			<a href="http://link:275">turn in for the night and get some sleep</a>.
+			</p>
+		</html>
+	</pagetext>
+</page>

@@ -1,0 +1,14 @@
+<page>
+	<pagenumber>3</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			The body is that of a man who has been robbed, badly beaten and left for dead. He tries to speak but
+			you hush him to be silent. He points east, along a track, and gestures for you to help him. You can
+			<a href="http://link:304">leave him here and continue along the road</a> or you can 
+			<a href="http://link:176">carry him along the track, looking for help</a>, even though it could cost
+			you a lot of time.
+			</p>
+		</html>
+	</pagetext>
+</page>

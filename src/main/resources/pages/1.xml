@@ -1,0 +1,13 @@
+<page>
+	<pagenumber>1</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			A dark morning sky glowers over Port Blacksand and a chill wind blows in from the Sword Coast. 
+			You can <a href="http://link:354">head for Lobster Wharf to find a ship bound for Rentarn</a>, 
+			or <a href="http://link:212">leave the city by Weaver Gate to take the north costal road there</a>. 
+			You may prefer to <a href="http://link:65">buy some extra equipment first</a>.
+			</p>
+		</html>
+	</pagetext>
+</page>

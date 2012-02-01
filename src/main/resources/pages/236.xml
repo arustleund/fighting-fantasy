@@ -1,0 +1,63 @@
+<page>
+	<pagenumber>236</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			You can buy the following items in Rentarn:
+			</p>
+			<p>
+			<table border="0" width="100%">
+				<tr>
+					<td><a href="http://domulti:0">Steel mirror</a></td>
+					<td>4 Gold Pieces</td>
+					<td><a href="http://domulti:1">Longbow and arrows</a></td>
+					<td>5 Gold Pieces</td>
+				</tr>
+				<tr>
+					<td><a href="http://buyItem:6">Rope</a></td>
+					<td>1 Gold Piece</td>
+					<td><a href="http://buyItem:8">Glass bottle</a></td>
+					<td>1 Gold Piece</td>
+				</tr>
+				<tr>
+					<td><a href="http://buyItem:9">Spiked boots</a></td>
+					<td>4 Gold Pieces</td>
+					<td><a href="http://buyItem:10">Ice pick</a></td>
+					<td>3 Gold Pieces</td>
+				</tr>
+				<tr>
+					<td><a href="http://domulti:2">Extra Provisions</a></td>
+					<td>1 Gold Piece each</td>
+					<td><a href="http://buyItem:20">Flask of Walrus Oil</a></td>
+					<td>2 Gold Pieces</td>
+				</tr>
+			</table>
+			</p>
+			<p>
+			Now, will you <a href="http://link:286">make for the Rudderless Galley tavern</a>, if you haven't
+			been there before, or <a href="http://domulti:3">leave Rentarn</a>, if you've already slept and
+			rested here?
+			</p>
+		</html>
+	</pagetext>
+	<multicommand id="0">
+		<addItem id="5" />
+		<adjustscale type="gold" amount="-1" promptOnFail="true" />
+	</multicommand>
+	<multicommand id="1">
+		<addItem id="7" />
+		<adjustscale type="gold" amount="-1" promptOnFail="true" />
+	</multicommand>
+	<multicommand id="2">
+		<adjustscale type="provisions" amount="1" promptOnFail="true" />
+		<adjustscale type="gold" amount="-1" promptOnFail="true" />
+	</multicommand>
+	<multicommand id="3">
+		<testFlag id="0">
+			<successful>
+				<link page="178" />
+			</successful>
+			<unsuccessful />
+		</testFlag>
+	</multicommand>
+</page>

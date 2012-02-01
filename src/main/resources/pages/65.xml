@@ -1,0 +1,80 @@
+<page>
+	<pagenumber>65</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				You can buy almost anything from the unscrupulous merchants of Port Blacksand,
+				but your most likely purchases may well be:
+			</p>
+			<p>
+			<table border="0" width="100%">
+				<tr>
+					<td><a href="http://buyItem:5">Steel mirror</a></td>
+					<td>3 Gold Pieces</td>
+					<td><a href="http://buyItem:6">Rope</a></td>
+					<td>1 Gold Piece</td>
+				</tr>
+				<tr>
+					<td><a href="http://buyItem:7">Longbow and arrows</a></td>
+					<td>4 Gold Pieces</td>
+					<td><a href="http://buyItem:8">Glass bottle</a></td>
+					<td>1 Gold Piece</td>
+				</tr>
+				<tr>
+					<td><a href="http://buyItem:9">Spiked boots</a></td>
+					<td>4 Gold Pieces</td>
+					<td><a href="http://buyItem:10">Ice pick</a></td>
+					<td>3 Gold Pieces</td>
+				</tr>
+				<tr>
+					<td><a href="http://buyItem:11">Flask of liqueur</a></td>
+					<td>3 Gold Pieces</td>
+					<td><a href="http://buyItem:12">Keg of beer</a></td>
+					<td>3 Gold Pieces</td>
+				</tr>
+				<tr>
+					<td><a href="http://buyItem:13">Viewing lens</a></td>
+					<td>4 Gold Pieces</td>
+					<td><a href="http://buyItem:14">Carved ivory polar bear</a></td>
+					<td>4 Gold Pieces</td>
+				</tr>
+				<tr>
+					<td><a href="http://buyItem:15">Potion of STAMINA</a></td>
+					<td>8 Gold Pieces</td>
+					<td><a href="http://buyItem:16">Potion of LUCK</a></td>
+					<td>5 Gold Pieces</td>
+				</tr>
+			</table>
+			</p>
+			<p>
+			The spiked boots will be useful in walking on icy, slippery ground, and the
+			liqueur is invigorating and strengthening (regain 4 lost STAMINA points when
+			you empty the flask). The viewing lens helps you to see distant locations
+			more clearly when you look through it, and it also acts as a magnifying glass.
+			The ivory polar bear just catches your eye; you don't know whether it may be
+			useful or not. The Potion of STAMINA, when drunk, allows you to regain lost
+			STAMINA points equal to half your <i>Initial</i> score (round fractions up).
+			The Potion of LUCK, if drunk, allows you to restore lost LUCK points up to 
+			half your <i>Initial</i> score (round fractions down). Potions and liqueur
+			can be drunk at any time, except during combat.
+			You must keep a minimum of 2 Goals Pieces for the journeys to come.
+			Now you must <a href="http://testluck:0"><i>Test your Luck</i></a>.
+			</p>
+		</html>
+	</pagetext>
+	<keepminimum scale="gold" value="2" />
+	<testluck id="0">
+		<successful>
+			<p>
+			You are Lucky, you <a href="http://link:354">get safely to Lobster Gate if you 
+			seek a ship</a>, or <a href="http://link:212">to Weaver Gate if you're heading 
+			for Rentarn by road</a>.
+			</p>
+		</successful>
+		<unsuccessful>
+			<p>
+			You are Unlucky, <a href="http://link:77">click here</a>.
+			</p>
+		</unsuccessful>
+	</testluck>
+</page>

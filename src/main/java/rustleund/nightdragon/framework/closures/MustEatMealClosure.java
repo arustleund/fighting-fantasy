@@ -1,0 +1,48 @@
+/*
+ * Created on Oct 27, 2005
+ */
+package rustleund.nightdragon.framework.closures;
+
+import org.w3c.dom.Element;
+
+import rustleund.nightdragon.framework.AbstractCommand;
+import rustleund.nightdragon.framework.GameState;
+import rustleund.nightdragon.framework.PlayerState;
+
+/**
+ * @author rustlea
+ */
+public class MustEatMealClosure extends AbstractCommand {
+
+	private int number = 1;
+
+	public MustEatMealClosure(Element element) {
+		if (element.hasAttribute("amount")) {
+			this.number = Integer.parseInt(element.getAttribute("amount"));
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
+	 */
+	public void execute(Object arg0) {
+		GameState gameState = (GameState) arg0;
+		PlayerState playerState = gameState.getPlayerState();
+
+		for (int i = 0; i < this.number; i++) {
+			this.executeSuccessful = true;
+			if (playerState.getProvisions().getCurrentValue() > 0) {
+				playerState.getProvisions().adjustCurrentValueNoException(-1);
+			} else {
+				playerState.getStamina().adjustCurrentValueNoException(-2);
+				if (playerState.isDead()) {
+					this.executeSuccessful = false;
+					new LinkClosure("0").execute(gameState);
+				}
+			}
+		}
+	}
+
+}

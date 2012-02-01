@@ -1,0 +1,59 @@
+<page>
+	<pagenumber>382</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			Skirting round the path taken by the pilgrims, you head eastwards and enter the woodlands. It is
+			very dark below the light-excluding evergreens and the ground is bare, save for a thin carpeting of 
+			pine needles and cones. A haze of blue wood-smoke leads you to a wooden cabin. A woodcutter, you 
+			expect, but you couldn't be more wrong. As you creep up to the back door, past the piles of chopped
+			logs, someone taps you on the back and you whirl around, wondering how on Titan anyone could have
+			surprised you like that. Standing behind you is a Dwarf; he is wearing a chainmail vest and is tapping
+			tobacco into his briarwood pipe, a two-handed battleaxe hanging from one wrist. 'Nosy, aren't you?'
+			he says nonchalantly. 'If you want rest and shelter, my adventurous friend, I'll want something in
+			return.' 
+			</p>
+			<p>
+			The Dwarf isn't after money, having little use for it. You can stay and talk with him if you will
+			give him a <a href="http://domulti:0">Potion</a>, a <a href="http://domulti:1">flask of liqueur</a>, 
+			or a <a href="http://domulti:2">small keg of beer</a>; If you don't have any of these, or won't part
+			with them, you'll have to <a href="http://link:275">sleep outside tonight</a>.
+			</p>
+		</html>
+	</pagetext>
+	<multicommand id="0">
+		<testItem id="15">
+			<hasItem>
+				<removeItem id="15" />
+				<link page="369" />
+			</hasItem>
+			<doesNotHaveItem>
+				<testItem id="16">
+					<hasItem>
+						<removeItem id="16" />
+						<link page="369" />
+					</hasItem>
+					<doesNotHaveItem />
+				</testItem>
+			</doesNotHaveItem>
+		</testItem>
+	</multicommand>
+	<multicommand id="1">
+		<testItem id="11">
+			<hasItem>
+				<removeItem id="11" />
+				<link page="369" />
+			</hasItem>
+			<doesNotHaveItem />
+		</testItem>
+	</multicommand>
+	<multicommand id="2">
+		<testItem id="12">
+			<hasItem>
+				<removeItem id="12" />
+				<link page="369" />
+			</hasItem>
+			<doesNotHaveItem />
+		</testItem>
+	</multicommand>
+</page>

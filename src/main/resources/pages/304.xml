@@ -1,0 +1,42 @@
+<page>
+	<pagenumber>304</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			You round the coastline of Corpse Bay and arrive in Rentarn. 2 is added to your Time Track. This is a
+			trading outpost where fur-trappers and hunters mix with fishermen and, you have no doubt, some
+			Sword Coast pirates. Frost is forming on the wooden roofs of the town's warehouses, taverns and
+			homes even as you look. Dour-faced people are hurrying through the cold, to get home to their
+			suppers and burning wood fires! Will you:
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<adjustscale type="time" amount="2" />
+		<testItem id="17">
+			<hasItem>
+				<displayText id="0" />
+			</hasItem>
+			<doesNotHaveItem>
+				<displayText id="1" />
+			</doesNotHaveItem>
+		</testItem>
+	</immediate>
+	<text id="0">
+		<p>
+			<table>
+				<tr><td><a href="http://link:236">Try to buy some extra equipment or food?</a></td></tr>
+				<tr><td><a href="http://link:68">Sell some furs?</a></td></tr>
+				<tr><td><a href="http://link:286">Head straight for the Rudderless Galley tavern?</a></td></tr>
+			</table>
+		</p>
+	</text>
+	<text id="1">
+		<p>
+			<table>
+				<tr><td><a href="http://link:236">Try to buy some extra equipment or food?</a></td></tr>
+				<tr><td><a href="http://link:286">Head straight for the Rudderless Galley tavern?</a></td></tr>
+			</table>
+		</p>
+	</text>
+</page>

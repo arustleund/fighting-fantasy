@@ -1,0 +1,45 @@
+<page>
+	<pagenumber>122</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			During the first day at sea, you need food to keep yourself warm against the freezing chill
+			of the north wind; you must eat a meal. As dusk begins to fall, there is a commotion on deck
+			as a lookout yells, 'Greels! Two of 'em on the port side!' You soon find out what a Greel is,
+			when a metre-thick, white-furred neck lunges over the port bow and a brutish, eel-like head
+			darts towards you. The beast opens its black-lipped mouth to display rows of backward-pointing
+			teeth as long as daggers. You must <a href="http://dobattle:0">fight</a> for your life!
+			</p>
+			<p>
+			<table border="1">
+				<tr>
+					<td> </td><td>SKILL</td><td>STAMINA</td>
+				</tr>
+				<tr>
+					<td>GREEL</td><td align="right">9</td><td align="right">13</td>
+				</tr>
+			</table>
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<testFlag id="2">
+			<successful>
+				<adjustscale type="provisions" amount="-2" />
+			</successful>
+			<unsuccessful>
+				<adjustscale type="provisions" amount="-1" />
+			</unsuccessful>
+		</testFlag>
+	</immediate>
+	<battle id="0" canFlee="false">
+		<enemies>
+			<enemy name="GREEL" skill="9" stamina="13" />
+		</enemies>
+		<effects>
+			<endBattle>
+				<link page="208" />
+			</endBattle>
+		</effects>
+	</battle>
+</page>

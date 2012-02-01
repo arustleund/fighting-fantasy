@@ -1,0 +1,23 @@
+<page>
+	<pagenumber>176</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			You have to carry the man for half a dozen kilometres before a trapper with a sled overtakes you. The
+			burly trapper recognizes the victim and says he comes from the village of Sharndale, seven kilometres 
+			further along. The two of you unload furs and goods from the sled, put the injured man on it, and you
+			help by carrying the bulky furs along the road to Sharndale. You deliver the man to his family, who make
+			him as comfortable as they can. The weather is closing in, with chill, sleeting rain drifting down from
+			iron-grey clouds, and you'll not get to Rentarn before dark now. You are invited to stay with the family;
+			they will give you some furs by way of thanks, as well as hot food and a comfortable bed for the night.
+			2 is added to your Time Track and you gain 1 point of Honour. Click <a href="http://link:304">here</a>
+			to continue.
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<adjustscale type="time" amount="2" />
+		<adjustscale type="honor" amount="1" />
+		<addItem id="17" />
+	</immediate>
+</page>

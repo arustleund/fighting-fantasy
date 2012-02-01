@@ -1,0 +1,81 @@
+<page>
+	<pagenumber>352</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				<table>
+					<tr><td><a href="http://domulti:0">Use 1 Gold Piece for food?</a></td></tr>
+					<tr><td><a href="http://domulti:1">Use 1 Provision for food?</a></td></tr>
+					<tr><td><a href="http://domulti:2">Spend one day doing menial labour to buy 3 Provisions (adds
+					2 to your Time Track)?</a></td></tr>
+				</table>
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<adjustscale type="time" amount="2" />
+	</immediate>
+	<text id="0">
+		<p>
+			You spend a first fruitless day looking for a place with this name. After this, for every day that 
+			passes, you can <a href="http://domulti:3">roll one die</a>. When you roll a 5 or 6, you can continue.
+			If you wish, you can increase the number rolled on the die by 1 by spending a point of Luck. If you
+			tire of this, you can <a href="http://link:272">try looking for a person named Endimion</a> or
+			<a href="http://link:226">ask questions about the grey-robed men</a>, if you haven't already done this.
+		</p>
+	</text>
+	<text id="1">
+		<p>
+			You did not roll a high enough number. Will you:
+		</p>
+		<p>
+			<table>
+				<tr><td><a href="http://link:352">Continue trying?</a></td></tr>
+				<tr><td><a href="http://link:272">Try looking for a person named Endimion?</a></td></tr>
+				<tr><td><a href="http://link:226">Ask questions about the grey-robed men?</a></td></tr>
+			</table>
+		</p>
+	</text>
+	<text id="2">
+		<p>
+			You rolled a 4 on your dice. Will you:
+		</p>
+		<p>
+			<table>
+				<tr><td><a href="http://domulti:4">Add 1 to your dice roll by spending 1 Luck point?</a></td></tr>
+				<tr><td><a href="http://link:272">Try looking for a person named Endimion?</a></td></tr>
+				<tr><td><a href="http://link:226">Ask questions about the grey-robed men?</a></td></tr>
+			</table>
+		</p>
+	</text>
+	<multicommand id="0">
+		<adjustscale type="gold" amount="-1" promptOnFail="true" />
+		<displayText id="0" />
+	</multicommand>
+	<multicommand id="1">
+		<adjustscale type="provisions" amount="-1" promptOnFail="true" />
+		<displayText id="0" />
+	</multicommand>
+	<multicommand id="2">
+		<adjustscale type="provisions" amount="3" />
+		<adjustscale type="time" amount="2" />
+		<displayText id="0" />
+	</multicommand>
+	<multicommand id="3">
+		<rollDice number="1">
+			<doActions rolls="1,2,3">
+				<displayText id="1" />
+			</doActions>
+			<doActions rolls="4">
+				<displayText id="2" />
+			</doActions>
+			<doActions rolls="5,6">
+				<link page="167" />
+			</doActions>
+		</rollDice>
+	</multicommand>
+	<multicommand id="4">
+		<adjustscale type="luck" amount="-1" promptOnFail="true" />
+		<link page="167" />
+	</multicommand>
+</page>

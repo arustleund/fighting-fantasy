@@ -1,0 +1,16 @@
+<page>
+	<pagenumber>314</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			You open the door - and just fail to take in the scene quickly enough. A guard by the side of the door
+			whacks you hard over the head with a cosh. 2 points are deducted from your Stamina. You are grabbed
+			by the throat and dragged into the room while you are still struggling for your sword, and now you're
+			in deep trouble! Click <a href="http://link:261">here</a> to continue.
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<adjustscale type="stamina" amount="-2" />
+	</immediate>
+</page>

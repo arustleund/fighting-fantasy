@@ -1,0 +1,60 @@
+<page>
+	<pagenumber>261</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			Three grey-robed men are standing in the room and a body lies slumped on the bed; the window to the
+			docks beyond is open. The men have coshes and knives, and they've been expecting you. They are all
+			dark-haired and have an evil glint in their eyes; as one of them slams the door shut behind you, you
+			know you're going to be lucky to survive this! You can fight them one at a time in this enclosed space 
+			as you back into a corner of the room.
+			<a href="http://dobattle:0">BEGIN BATTLE</a>
+			</p>
+			<p>
+			<table border="1">
+				<tr>
+					<td> </td><td>SKILL</td><td>STAMINA</td>
+				</tr>
+				<tr>
+					<td>First ASSASSIN</td><td align="right">8</td><td align="right">7</td>
+				</tr>
+				<tr>
+					<td>Second ASSASSIN</td><td align="right">8</td><td align="right">8</td>
+				</tr>
+				<tr>
+					<td>Third ASSASSIN</td><td align="right">8</td><td align="right">8</td>
+				</tr>
+			</table>
+			</p>
+		</html>
+	</pagetext>
+	<battle id="0" fightEnemiesTogether="false" canFlee="false">
+		<enemies>
+			<enemy name="First ASSASSIN" skill="8" stamina="7" />
+			<enemy name="Second ASSASSIN" skill="8" stamina="8" />
+			<enemy name="Third ASSASSIN" skill="8" stamina="8" />
+		</enemies>
+		<effects>
+			<endBattle>
+				<adjustscale type="gold" amount="3" />
+				<addItem id="18" />
+				<displayText id="0" />
+			</endBattle>
+		</effects>
+	</battle>
+	<text id="0">
+		<p>
+		You turn over the body on the bed; it is that of a Dark Elf, presumably the person you were expecting to
+		meet. His throat has been crushed, and he's beyond help. Frantically searching his body, you find 3 Gold
+		Pieces and a silver plaque clutched in one hand with a single word hastily carved into it: 'Endimion'.
+		Outside the door there's a commotion; someone is banging on it, asking what's been going on. Will you:
+		</p>
+		<p>
+			<table>
+				<tr><td><a href="http://link:30">Open the door?</a></td></tr>
+				<tr><td><a href="http://link:83">Search the bodies of your attackers?</a></td></tr>
+				<tr><td><a href="http://link:109">Leave through the open window?</a></td></tr>
+			</table>
+		</p>
+	</text>
+</page>

@@ -1,0 +1,26 @@
+<page>
+	<pagenumber>279</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			Lord Azzur's militia have no real interest in thieves, but you've certainly caused a rumpus so they
+			escort you to the Watch-house. They detain you for hours, interrogate you over and over again, then
+			extract 3 Gold Pieces from you for wasting their time! 1 is added to your Time Track; if you had no
+			money for your bail, they detain you overnight and make you slop out the cells in the morning (so
+			an extra 1 is added to your Time Track). When they release you, you can <a href="http://link:354">
+			make for Lobster Wharf</a> or <a href="http://link:212">Weaver Gate</a>.
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<testStat stat="gold" atLeast="3">
+			<successful>
+				<adjustscale type="gold" amount="-3" />
+				<adjustscale type="time" amount="1" />
+			</successful>
+			<unsuccessful>
+				<adjustscale type="time" amount="2" />
+			</unsuccessful>
+		</testStat>
+	</immediate>
+</page>

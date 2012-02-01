@@ -1,0 +1,21 @@
+<page>
+	<pagenumber>30</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			You open the door and admit the landlord of the tavern, together with two militiamen. You tell them
+			the truth about what happened here, and they seem ready to believe you. 'Bad sorts, these,' says one
+			of the militia as he turns over the body of one of the grey-robed men with his foot. 'We'll have to
+			take you down to the jailhouse overnight, of course, but sleeping there is not so bad and frankly
+			you may be safer.' Indeed, a night spent in jail means you are warm and well fed - and you even win
+			3 Gold Pieces from your jailers, playing dice! Gain 1 Luck point. Click <a href="http://link:387">
+			here</a> to continue.
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<setFlag id="0" />
+		<adjustscale type="gold" amount="3" />
+		<adjustscale type="luck" amount="1" />
+	</immediate>
+</page>

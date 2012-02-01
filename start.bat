@@ -1,0 +1,1 @@
+java -cp support/commons-beanutils.jar;support/commons-collections-3.0.jar;support/commons-logging.jar;support/commons-logging-api.jar;support/commons-lang-2.1.jar;. rustleund.nightdragon.main.Main

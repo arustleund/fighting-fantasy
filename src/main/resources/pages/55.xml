@@ -1,0 +1,57 @@
+<page>
+	<pagenumber>55</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+			You start from sleep just after midnight when one of the cloaked men stumbles as he heads towards you.
+			You see the knife in his hand gleaming in the pale moonlight, and you grab you sword to defend yourself.
+			Two of the men are awake and ready to fight with their odd, curved blades. You must fight them together.
+			After four Attack Rounds, the third man will have woken and be ready to join the fray as well!
+			<a href="http://dobattle:0">BEGIN BATTLE</a>
+			</p>
+			<p>
+			<table border="1">
+				<tr>
+					<td> </td><td>SKILL</td><td>STAMINA</td>
+				</tr>
+				<tr>
+					<td>First PILGRIM</td><td align="right">8</td><td align="right">7</td>
+				</tr>
+				<tr>
+					<td>Second PILGRIM</td><td align="right">8</td><td align="right">7</td>
+				</tr>
+				<tr>
+					<td>Third PILGRIM</td><td align="right">8</td><td align="right">8</td>
+				</tr>
+			</table>
+			</p>
+		</html>
+	</pagetext>
+	<battle id="0" canFlee="false">
+		<enemies>
+			<enemy name="First PILGRIM" skill="8" stamina="7" />
+			<enemy name="Second PILGRIM" skill="8" stamina="7" />
+		</enemies>
+		<effects>
+			<startRound>
+				<addEnemies wait="4">
+					<enemy name="Third PILGRIM" skill="8" stamina="8" />
+				</addEnemies>
+			</startRound>
+			<endBattle>
+				<adjustscale type="gold" amount="5" />
+				<adjustscale type="provisions" amount="4" />
+				<adjustscale type="nemesis" amount="1" />
+				<displayText id="0" />
+			</endBattle>
+		</effects>
+	</battle>
+	<text id="0">
+		<p>
+			You search the bodies. You can take 5 Gold Pieces and enough Provisions for four meals from them,
+			but you also find a strange mark tattooed on the forearm of each man. The symbol shows a twenty-stranded
+			spider's-web pattern with a black reptilian skull at its centre.
+			1 is added to your Nemesis score, then you <a href="http://link:275">resume your disturbed slumber</a>.
+		</p>
+	</text>
+</page>
