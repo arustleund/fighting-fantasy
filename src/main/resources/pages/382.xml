@@ -23,37 +23,37 @@
 	</pagetext>
 	<multicommand id="0">
 		<testItem id="15">
-			<hasItem>
+			<successful>
 				<removeItem id="15" />
 				<link page="369" />
-			</hasItem>
-			<doesNotHaveItem>
+			</successful>
+			<unsuccessful>
 				<testItem id="16">
-					<hasItem>
+					<successful>
 						<removeItem id="16" />
 						<link page="369" />
-					</hasItem>
-					<doesNotHaveItem />
+					</successful>
+					<unsuccessful />
 				</testItem>
-			</doesNotHaveItem>
+			</unsuccessful>
 		</testItem>
 	</multicommand>
 	<multicommand id="1">
 		<testItem id="11">
-			<hasItem>
+			<successful>
 				<removeItem id="11" />
 				<link page="369" />
-			</hasItem>
-			<doesNotHaveItem />
+			</successful>
+			<unsuccessful />
 		</testItem>
 	</multicommand>
 	<multicommand id="2">
 		<testItem id="12">
-			<hasItem>
+			<successful>
 				<removeItem id="12" />
 				<link page="369" />
-			</hasItem>
-			<doesNotHaveItem />
+			</successful>
+			<unsuccessful />
 		</testItem>
 	</multicommand>
 </page>

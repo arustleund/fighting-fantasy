@@ -1,0 +1,38 @@
+<page>
+	<pagenumber>198</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				Nevill looks rather coldly at you. 'I wouldn't mention Dragons hereabouts if I were you,' and he looks around furtively as if expecting
+				something or someone to leap out of the shadows at him. He pushes you towards the door of his shop, but not before whispering, 'If 
+				you're offered help by a Dragon there, it'll perish if you accept. They're all bound by the Oath, you know.' Then you're out in the
+				street and the door of the shop slams shut behind you. Will you now:`
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<testFlag id="12">
+			<successful><displayText id="0" /></successful>
+			<unsuccessful><displayText id="1" /></unsuccessful>
+		</testFlag>
+	</immediate>
+	<text id="0">
+		<p>
+			<ul>
+				<li><a href="http://link:37">Shop at the Firewater Emporium</a>?</li>
+				<li><a href="http://link:373">Buy some supplies</a>?</li>
+				<li><a href="http://link:268">Leave Ismater</a>?</li>
+			</ul>
+		</p>
+	</text>
+	<text id="1">
+		<p>
+			<ul>
+				<li><a href="http://link:37">Shop at the Firewater Emporium</a>?</li>
+				<li><a href="http://link:373">Buy some supplies</a>?</li>
+				<li><a href="http://link:207">Relax at the taverns of Ismater</a>?</li>
+				<li><a href="http://link:268">Leave Ismater</a>?</li>
+			</ul>
+		</p>
+	</text>
+</page>

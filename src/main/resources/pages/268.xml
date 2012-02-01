@@ -1,0 +1,35 @@
+<page>
+	<pagenumber>268</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				2 is added to your Time Track for time spent in the village.
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<adjustscale type="time" amount="2" />
+		<testFlag id="13">
+			<successful>
+				<displayText id="0" />
+				<adjustscale type="time" amount="2" />
+			</successful>
+			<unsuccessful>
+				<displayText id="1" />
+			</unsuccessful>
+		</testFlag>
+	</immediate>
+	<text id="0">
+		<p>
+			You must march on to a location you haven't visited before, 2 is added to your Time Track. Will you journey:
+			<ul>
+				<li><a href="http://link:334">Eastwards to the lands of the Frost Giants</a>?</li>
+				<li><a href="http://link:217">North then north-east to Slate Peak</a>?</li>
+				<li><a href="http://link:2">South then west to the Mist Crypts</a>?</li>
+			</ul>
+		</p>
+	</text>
+	<text id="1">
+		You have not yet been to the Dragon Conclave, you must do so now; <a href="http://link:23">march off east-north-eastwards</a>.
+	</text>
+</page>

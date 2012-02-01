@@ -1,0 +1,25 @@
+<page>
+	<pagenumber>309</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				The Black Dragon grins in a way you do not find entirely wholesome; he has a hungry look about him. 'The Ancient lies to the 
+				north of here. But we do not know where; the Loremaster knows how to find the Ancient's caves. We know that, if you find
+				sword, shield, and armour, you will find him; we also know that he has a wandering servant of strange aspect who travels
+				in the Icefinger Mountains. By great good fortune you might encounter him &#8212; though, from what little we know, he will
+				not be what you expect!'
+			</p>
+			<p>
+				The Dragons give you further information. The Stalkers which serve the Ancient are reptiles, mutated Dragon hatchlings stolen
+				and distorted by magic. The Dragons look angry when they speak of these creatures, and they warn you that Stalkers grow more
+				numerous as time passes! There are also robed men, acolytes and assassins, who serve the Ancient, and they hold sway over the town
+				of Carnex &#8212; beware that place! All this takes time to learn, so 1 is added to your Time Track. The Conclave has told you
+				the essence of your task now: to find sword, shield and armour, and the Loremaster too. It is time to meet your destiny!
+				Click <a href="http://link:378">here</a> to continue.
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<adjustscale type="time" amount="1" />
+	</immediate>
+</page>

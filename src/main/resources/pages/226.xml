@@ -1,0 +1,17 @@
+<page>
+	<pagenumber>226</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				No one wishes to talk about the men in grey, but some dark, hooded eyes are watching you ...
+				1 is added to your Nemesis score. You have to <a href="http://link:352">continue looking for either a place named Endimion</a> or 
+				<a href="http://link:272">a person with that name</a>.
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<adjustscale type="time" amount="2" />
+		<adjustscale type="nemesis" amount="1" />
+		<setFlag id="10" />
+	</immediate>
+</page>

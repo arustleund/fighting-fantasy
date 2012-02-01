@@ -1,0 +1,24 @@
+<page>
+	<pagenumber>52</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				Looking carefully all around and with your heart racing, you turn up at the back yard of the tavern as the moon is a sliver in the
+				sky. Is this an ambush? Your thoughts are interrupted as a grey-robed man melts out of the shadows to your left and waves you
+				towards a dark back alley. You want to ask many questions, but he hushes you. 'I may not have much time. I didn't know what the
+				others were doing. They claimed to be mean of learning, you see. The Cult leaders live in the Towers of the Sages, and at first
+				they advised the town elders, and advised them well. Several of us were only too ready to join, to help them teach people to read
+				and write, and learn the rudiments of a little magic ... I'm sorry, I'm getting ahead of myself. I'm from Carnex. You are a marked
+				man -- you may not know it, but the shadow of the Night Dragon and its appalling servants are upon you now. You must be an enemy of
+				the Cult, and for that reason you may be a friend. If you want to learn more of the Night Dragon you must head for Carnex. But at all
+				costs beware the ...' Suddenly, a wide-headed arrow is protruding from the back of his neck at a grotesque angle. You turn and are
+				already running when his body hits the ground; you can't hope to fight enemies you can't see in the pitch darkness. You will have to
+				leave Ismater now and sleep rough on the edge of town, hoping that whoever slew your informant won't find you. 1 is added to you
+				Nemesis score. Click <a href="http://link:268">here</a> to continue.
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<adjustscale type="nemesis" amount="1" />
+	</immediate>
+</page>

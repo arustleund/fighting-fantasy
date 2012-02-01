@@ -1,0 +1,53 @@
+<page>
+	<pagenumber>23</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				Travelling along this broken trail is tricky. <a href="http://domulti:0"><i>Test your skill</i></a>.
+			</p>
+		</html>
+	</pagetext>
+	<text id="0">
+		<p>
+			You negotiate the trail safely.
+		</p>
+	</text>
+	<text id="1">
+		<p>
+			You stumble several times on the treacherous, rocky ground and twist your ankle, losing 2 points from your
+			Stamina.
+		</p>
+	</text>
+	<text id="2">
+		<p>
+			2 is added to your Time Track, and you must now eat a meal. It is mid-afternoon when you see a large, winged creature in the sky,
+			certainly no bird; your hope, that it may be a Dragon, is rewarded. But what a surprise you get &#8212; this is a green Dragon, normally
+			a dweller in forests or jungles, not in the cold wastes of the northern lands! The beast lands close by and simply nods his massive
+			head towards you. You clamber on to his back and hold on for dear life as he rises into the sky and flaps imperiously to a distant peak,
+			where he lands and deposits you beside a huge cave mouth. Stepping off your enormous mount, you see that the tunnel opens into a vast
+			crater in the mountain, probably half a kilometre wide. Within the crater, awaiting your descent down a seemingly endless set of 
+			chiselled stone steps, is a circle of six huge adult Dragons &#8212; black, white, red, green, gold and silver. You are one of a mere 
+			handful of people alive on Titan ever to have been invited to such a conclave! Click <a href="http://link:49">here</a> to continue.
+		</p>
+	</text>
+	<multicommand id="0">
+		<testSkill>
+			<successful>
+				<displayText id="0" />
+				<displayText id="2" />
+				<adjustscale type="time" amount="2" />
+				<mustEatMeal amount="1" />
+			</successful>
+			<unsuccessful>
+				<adjustscale type="stamina" amount="-2" />
+				<displayText id="1" />
+				<displayText id="2" />
+				<adjustscale type="time" amount="2" />
+				<mustEatMeal amount="1" />
+			</unsuccessful>
+		</testSkill>
+	</multicommand>
+	<immediate>
+		<setFlag id="13" />
+	</immediate>
+</page>

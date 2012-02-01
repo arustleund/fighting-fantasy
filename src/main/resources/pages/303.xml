@@ -1,0 +1,39 @@
+<page>
+	<pagenumber>303</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				'Pardon me, I must have made a mistake,' the man says smoothly. 'I did not mean to attract unwanted attention. Allow me to leave
+				you in peace.' He gets up to go. If you want to attack him, click <a href="http://link:257">here</a>. If you wish to follow him,
+				click <a href="http://link:344">here</a>. If you prefer to let him leave and yourself go elsewhere in the town, will you:
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<testFlag id="11">
+			<successful>
+				<displayText id="0" />
+			</successful>
+			<unsuccessful>
+				<displayText id="1" />
+			</unsuccessful>
+		</testFlag>
+	</immediate>
+	<text id="0">
+		<p>
+			<ul>
+				<li><a href="http://link:373">Leave and buy some supplies</a>?</li>
+				<li><a href="http://link:268">Leave Ismater and head elsewhere</a>?</li>
+			</ul>
+		</p>
+	</text>
+	<text id="1">
+		<p>
+			<ul>
+				<li><a href="http://link:373">Leave and buy some supplies</a>?</li>
+				<li><a href="http://link:10">Leave and explore Ismater</a>?</li>
+				<li><a href="http://link:268">Leave Ismater and head elsewhere</a>?</li>
+			</ul>
+		</p>
+	</text>
+</page>

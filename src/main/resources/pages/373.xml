@@ -1,0 +1,111 @@
+<page>
+	<pagenumber>373</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				In the ordinary trading posts of Ismater, you can buy the following:
+			</p>
+			<p>
+				<table border="0" width="100%">
+					<tr>
+						<td><a href="http://domulti:0">Extra Provisions</a></td>
+						<td>1 Gold Piece each</td>
+						<td><a href="http://buyItem:6">Rope</a></td>
+						<td>1 Gold Piece</td>
+					</tr>
+					<tr>
+						<td><a href="http://domulti:1">Longbow and arrows</a></td>
+						<td>5 Gold Pieces</td>
+						<td><a href="http://buyItem:8">Glass bottle</a></td>
+						<td>1 Gold Piece</td>
+					</tr>
+					<tr>
+						<td><a href="http://buyItem:10">Ice pick</a></td>
+						<td>3 Gold Pieces</td>
+						<td><a href="http://domulti:2">Flask of Walrus Oil</a></td>
+						<td>3 Gold Pieces</td>
+					</tr>
+					<tr>
+						<td><a href="http://domulti:3">Keg of beer</a></td>
+						<td>4 Gold Pieces</td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+			</p>
+			<p>
+				Other items these simple shops supply are hardly useful to you -- thick furs, evil-looking animal traps, harpoons and the like.
+				After making any purchases, will you now:
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<testFlag id="11">
+			<successful>
+				<testFlag id="12">
+					<successful>
+						<displayText id="0" />
+					</successful>
+					<unsuccessful>
+						<displayText id="1" />
+					</unsuccessful>
+				</testFlag>
+			</successful>
+			<unsuccessful>
+				<testFlag id="12">
+					<successful>
+						<displayText id="2" />
+					</successful>
+					<unsuccessful>
+						<displayText id="3" />
+					</unsuccessful>
+				</testFlag>
+			</unsuccessful>
+		</testFlag>
+	</immediate>
+	<multicommand id="0">
+		<adjustscale type="gold" amount="-1" promptOnFail="true" />
+		<adjustscale type="provisions" amount="1" promptOnFail="true" />
+	</multicommand>
+	<multicommand id="1">
+		<addItem id="7" price="5" />
+	</multicommand>
+	<multicommand id="2">
+		<addItem id="20" price="3" />
+	</multicommand>
+	<multicommand id="3">
+		<addItem id="12" price="4" />
+	</multicommand>
+	<text id="0">
+		<p>
+			<ul>
+				<li><a href="http://link:268">Leave Ismater</a>?</li>
+			</ul>
+		</p>
+	</text>
+	<text id="1">
+		<p>
+			<ul>
+				<li><a href="http://link:268">Leave Ismater</a>?</li>
+				<li><a href="http://link:207">Relax in the taverns</a>?</li>
+			</ul>
+		</p>
+	</text>
+	<text id="2">
+		<p>
+			<ul>
+				<li><a href="http://link:268">Leave Ismater</a>?</li>
+				<li><a href="http://link:10">Explore the village</a>?</li>
+			</ul>
+		</p>
+	</text>
+	<text id="3">
+		<p>
+			<ul>
+				<li><a href="http://link:268">Leave Ismater</a>?</li>
+				<li><a href="http://link:10">Explore the village</a>?</li>
+				<li><a href="http://link:207">Relax in the taverns</a>?</li>
+			</ul>
+		</p>
+	</text>
+</page>

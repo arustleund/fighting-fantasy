@@ -29,4 +29,24 @@
 	<item id="18" name="'Endimion' Silver Plaque" price="0" limit="1" />
 	<item id="19" name="Brass Dwarven Coin" price="2" limit="1" />
 	<item id="20" name="Flask of Walrus Oil" price="2" limit="1" />
+	<item id="21" name="Larssen's Fire Water" price="5" limit="4" />
+	<item id="22" name="Potion of Invisibility" price="6" limit="1" />
+	<item id="23" name="Bottle of Catstink" price="3" limit="1" />
+	<item id="24" name="Vial of smoke powder" price="2" limit="1" />
+	<item id="25" name="Tattooing ink and needle" price="3" limit="1" />
+	<item id="26" name="Poison Antidote (dose)" price="1" canUseInBattle="false">
+		<clearPoisonDamage />
+	</item>
+	<item id="27" name="Poison Salve (vial)" price="3" canUseInBattle="false">
+		<addBattleEffectsForNextBattle>
+			<battleEffects>
+				<startBattle>
+					<setPoisonImmunity immune="true" />
+				</startBattle>
+				<endBattle>
+					<setPoisonImmunity immune="false" />
+				</endBattle>
+			</battleEffects>
+		</addBattleEffectsForNextBattle>
+	</item>
 </items>

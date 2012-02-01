@@ -1,0 +1,31 @@
+<page>
+	<pagenumber>58</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				Searching the area around the mountain is time-consuming. 1 is added to your Time Track.
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<adjustscale type="time" amount="1" />
+		<testStat stat="nemesis" atLeast="5">
+			<successful>
+				<displayText id="0" />
+			</successful>
+			<unsuccessful>
+				<displayText id="1" />
+			</unsuccessful>
+		</testStat>
+	</immediate>
+	<text id="0">
+		<p>
+			Your Nemesis score is 5 or higher, click <a href="http://link:137">here</a> to continue.
+		</p>
+	</text>
+	<text id="1">
+		<p>
+			Your Nemesis score is less than 5, click <a href="http://link:169">here</a> to continue.
+		</p>
+	</text>
+</page>

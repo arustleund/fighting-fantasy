@@ -1,0 +1,39 @@
+<page>
+	<pagenumber>10</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				There aren't many sights of interest in Ismater, as you find out during your exhaustive search through the place (1 is added to your
+				Time Track). You do find two odd-looking little shops, though: the Firewater Emporium, with a window stacked full of exotic bottles,
+				and a very dirty and run-down little shop which has a wooden sign with flaking paint on which you can just make out the letters,
+				'EVIL'. If you want to enter the Firewater Emporium, click <a href="http://link:37">here</a>. If you want to enter the other shop,
+				click <a href="http://link:238">here</a>. If you don't wish to enter either, will you:
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<adjustscale type="time" amount="1" />
+		<setFlag id="11" />
+		<testFlag id="12">
+			<successful><displayText id="0" /></successful>
+			<unsuccessful><displayText id="1" /></unsuccessful>
+		</testFlag>
+	</immediate>
+	<text id="0">
+		<p>
+			<ul>
+				<li><a href="http://link:373">Buy some supplies</a>?</li>
+				<li><a href="http://link:268">Leave Ismater</a>?</li>
+			</ul>
+		</p>
+	</text>
+	<text id="1">
+		<p>
+			<ul>
+				<li><a href="http://link:373">Buy some supplies</a>?</li>
+				<li><a href="http://link:268">Leave Ismater</a>?</li>
+				<li><a href="http://link:207">Relax in the taverns</a>?</li>
+			</ul>
+		</p>
+	</text>
+</page>

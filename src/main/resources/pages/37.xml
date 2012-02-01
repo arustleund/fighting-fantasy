@@ -1,0 +1,83 @@
+<page>
+	<pagenumber>37</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				You ask the eager, squinting Gnome about the many potent bottles of dubious spirits you see around the shop. 'Best of them all, sir,
+				is Larssen's Firewater. Five Gold Pieces a bottle, sir, and you'll find no better in all the north, that's the truth.' Now this
+				is a steep price, so you haggle with the Gnome, who reluctantly agrees to part with this fine spirit for only 4 Gold Pieces a bottle, 
+				as long as you buy at least two bottles (you cannot carry more than four; if you buy only one, you must pay 5 Gold Pieces for it).
+				An empty corked bottle will cost you 1 Gold Piece.
+				<ul>
+					<li><a href="http://buyItem:21">Buy 1 Larssen's Firewater</a></li>
+					<li><a href="http://domulti:0">Buy 2 Larssen's Firewaters</a></li>
+					<li><a href="http://buyItem:8">Buy an empty corked bottle</a></li>
+				</ul>
+				After making any purchase you fancy, will you:
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<testFlag id="14">
+			<successful>
+				<testFlag id="12">
+					<successful>
+						<displayText id="0" />
+					</successful>
+					<unsuccessful>
+						<displayText id="2" />
+					</unsuccessful>
+				</testFlag>
+			</successful>
+			<unsuccessful>
+				<testFlag id="12">
+					<successful>
+						<displayText id="1" />
+					</successful>
+					<unsuccessful>
+						<displayText id="3" />
+					</unsuccessful>
+				</testFlag>
+			</unsuccessful>
+		</testFlag>
+	</immediate>
+	<multicommand id="0">
+		<addItem id="21" price="4" quantity="2" />
+	</multicommand>
+	<text id="0">
+		<p>
+			<ul>
+				<li><a href="http://link:373">Buy some supplies</a>?</li>
+				<li><a href="http://link:268">Leave Ismater</a>?</li>
+			</ul>
+		</p>
+	</text>
+	<text id="1">
+		<p>
+			<ul>
+				<li><a href="http://link:238">Try the shop with the 'EVIL' sign</a>?</li>
+				<li><a href="http://link:373">Buy some supplies</a>?</li>
+				<li><a href="http://link:268">Leave Ismater</a>?</li>
+			</ul>
+		</p>
+	</text>
+	<text id="2">
+		<p>
+			<ul>
+				<li><a href="http://link:373">Buy some supplies</a>?</li>
+				<li><a href="http://link:207">Relax in the taverns</a>?</li>
+				<li><a href="http://link:268">Leave Ismater</a>?</li>
+			</ul>
+		</p>
+	</text>
+	<text id="3">
+		<p>
+			<ul>
+				<li><a href="http://link:238">Try the shop with the 'EVIL' sign</a>?</li>
+				<li><a href="http://link:373">Buy some supplies</a>?</li>
+				<li><a href="http://link:207">Relax in the taverns</a>?</li>
+				<li><a href="http://link:268">Leave Ismater</a>?</li>
+			</ul>
+		</p>
+	</text>
+</page>

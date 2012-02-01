@@ -1,0 +1,77 @@
+<page>
+	<pagenumber>137</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				As you make your way towards the eastern face of the mountain, a black-cloaked creature two metres tall leaps out from behind the cover
+				of a large rock to attack you! Its body is vaguely human in proportion, but its great, green, scaly head is reptilian and its arms end in
+				four-fingered, clawed hands. Its yellow, slitted eyes are full of hatred and menace as it snarls and spits at you and foetid, 
+				brown-yellow wisps of noxious gas drift out of its fanged mouth! One of the Night Dragon's Stalkers is upon you, and battling it will be
+				difficult. During each Attack Round, whenever you have a lower Attack Strength than your enemy, you must <i>Test Your Skill</i>.
+				If you ever fail the test, the Stalker breaths over you and its foul breath weakens you; you will have to subtract 2 points from your
+				Attack Strength during the rest of this combat, and 1 point from your Attack Strength in the next combat you face.
+			</p>
+			<p>
+				<table border="1">
+					<tr>
+						<td> </td><td>SKILL</td><td>STAMINA</td>
+					</tr>
+					<tr>
+						<td>GREEN STALKER</td><td align="right">10</td><td align="right">10</td>
+					</tr>
+				</table>
+			</p>
+			<p>
+				Click <a href="http://dobattle:0">here</a> to begin the battle.
+			</p>
+		</html>
+	</pagetext>
+	<battle id="0" canFlee="false">
+		<enemies>
+			<enemy name="GREEN STALKER" skill="10" stamina="10" />
+		</enemies>
+		<effects>
+			<playerHit>
+				<testFlag id="15">
+					<successful />
+					<unsuccessful>
+						<testSkill>
+							<successful />
+							<unsuccessful>
+								<setFlag id="15" />
+								<addBattleMessage message="You failed the Skill test, the Stalker breathes over you and its foul breath weakens you&lt;br&gt;" />
+								<adjustPlayerAttackStrength amount="-2" />
+								<addBattleEffectsToCurrentBattle>
+									<battleEffects>
+										<endBattle>
+											<adjustPlayerAttackStrength amount="2" />
+											<addBattleEffectsForNextBattle>
+												<battleEffects>
+													<startBattle>
+														<adjustPlayerAttackStrength amount="-1" />
+													</startBattle>
+													<endBattle>
+														<adjustPlayerAttackStrength amount="1" />
+													</endBattle>
+												</battleEffects>
+											</addBattleEffectsForNextBattle>
+										</endBattle>
+									</battleEffects>
+								</addBattleEffectsToCurrentBattle>
+							</unsuccessful>
+						</testSkill>
+					</unsuccessful>
+				</testFlag>
+			</playerHit>
+			<endBattle>
+				<displayText id="0" />
+				<adjustscale type="nemesis" amount="1" />
+			</endBattle>
+		</effects>
+	</battle>
+	<text id="0">
+		You slay the horror; its eyes gaze at you with a malign menace as it perishes, as if someone -- or some<i>thing</i> -- else was still looking
+		at you. 1 is added to your Nemesis score. Now you can <a href="http://link:169">continue your search round this mountain</a> or
+		<a href="http://link:78">return to the tunnel entrance you know of and enter there</a>. 
+	</text>
+</page>

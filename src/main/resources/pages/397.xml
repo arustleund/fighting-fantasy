@@ -1,0 +1,28 @@
+<page>
+	<pagenumber>397</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				You can get menial labouring work, hauling bundles of furs and logs, for a meagre 2 Gold Pieces a day (plus free food and board).
+				Each day you spend working, 2 is added to your Time Track, and time is precious on your quest! Click 
+				<a href="http://domulti:0">here</a> to work. Click <a href="http://domulti:1">here</a> when you've finished your work stint.
+			</p>
+		</html>
+	</pagetext>
+	<text id="0">
+		Will you now:
+		<ul>
+			<li><a href="http://link:373">Buy some supplies</a>?</li>
+			<li><a href="http://link:10">Explore the village</a>?</li>
+			<li><a href="http://link:207">Relax in the taverns</a>?</li>
+		</ul>
+	</text>
+	<multicommand id="0">
+		<adjustscale type="gold" amount="2" />
+		<adjustscale type="time" amount="2" />
+		<link page="397" />
+	</multicommand>
+	<multicommand id="1">
+		<displayText id="0" />
+	</multicommand>
+</page>

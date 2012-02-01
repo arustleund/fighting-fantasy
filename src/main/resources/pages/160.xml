@@ -1,0 +1,37 @@
+<page>
+	<pagenumber>160</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				Nevill's demeanour changes abruptly; he looks filled with fear. 'Walls have ears,' he hisses, 'never mention those men! They come from
+				Carnex. They brew ale there, so they say, and they do deliver it here, but they're bad, vile, blackhearted scum. Don't speak of them
+				here!' He ushers you out of his shop. Now, will you:
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<testFlag id="12">
+			<successful><displayText id="0" /></successful>
+			<unsuccessful><displayText id="1" /></unsuccessful>
+		</testFlag>
+	</immediate>
+	<text id="0">
+		<p>
+			<ul>
+				<li><a href="http://link:37">Shop at the Firewater Emporium</a>?</li>
+				<li><a href="http://link:373">Buy some supplies</a>?</li>
+				<li><a href="http://link:268">Leave Ismater</a>?</li>
+			</ul>
+		</p>
+	</text>
+	<text id="1">
+		<p>
+			<ul>
+				<li><a href="http://link:37">Shop at the Firewater Emporium</a>?</li>
+				<li><a href="http://link:373">Buy some supplies</a>?</li>
+				<li><a href="http://link:207">Relax at the taverns of Ismater</a>?</li>
+				<li><a href="http://link:268">Leave Ismater</a>?</li>
+			</ul>
+		</p>
+	</text>
+</page>

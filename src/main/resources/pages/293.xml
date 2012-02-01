@@ -1,0 +1,30 @@
+<page>
+	<pagenumber>293</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				'Who are you looking at?' you enquire as you sit down beside the robed man, staring deep into his eyes.
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<testStat stat="nemesis" lessThan="4">
+			<successful>
+				<displayText id="0" />
+			</successful>
+			<unsuccessful>
+				<displayText id="1" />
+			</unsuccessful>
+		</testStat>
+	</immediate>
+	<text id="0">
+		<p>
+			Your Nemesis score is 3 or below, click <a href="http://link:303">here</a>.
+		</p>
+	</text>
+	<text id="1">
+		<p>
+			Your Nemesis score is 4 or higher, click <a href="http://link:357">here</a>.
+		</p>
+	</text>
+</page>

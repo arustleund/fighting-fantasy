@@ -1,0 +1,69 @@
+	<immediate>
+		
+	</immediate>
+	
+	<text id="0">
+		
+	</text>
+	
+	<battle id="0" canFlee="false">
+		<enemies>
+			<enemy name="GREEN STALKER" skill="10" stamina="10" />
+		</enemies>
+		<effects>
+			<endBattle>
+				<link page="208" />
+			</endBattle>
+		</effects>
+	</battle>
+
+		<setFlag id="0" />
+		
+		<testFlag id="12">
+			<successful>
+				
+			</successful>
+			<unsuccessful>
+				
+			</unsuccessful>
+		</testFlag>
+		
+		<testStat stat="stamina" atLeast="20">
+			<successful>
+				<displayText id="0" />
+			</successful>
+			<unsuccessful>
+				<displayText id="1" />
+			</unsuccessful>
+		</testStat>
+		
+		<displayText id="0" />
+		
+		<link page="208" />
+		
+		<adjustscale type="time" amount="2" promptOnFail="true" />
+		<!-- time, stamina, nemesis, honor -->
+		
+		<addItem id="21" price="4" quantity="2" pageLimit="4" />
+		
+		<clearPoisonDamage />
+		
+		<setPoisonImmunity immune="false" />
+		
+		<mustEatMeal amount="2" />
+		
+		<addBattleEffectsForNextBattle>
+			<battleEffects>
+				<startBattle>
+					
+				</startBattle>
+			</battleEffects>
+		</addBattleEffectsForNextBattle>
+
+	<multicommand id="0">
+		
+	</multicommand>
+	
+	<a href="http://buyItem:21"></a>
+	<a href="http://domulti:0"></a>
+	Click <a href="http://dobattle:0">here</a> to begin the battle.

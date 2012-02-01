@@ -1,0 +1,24 @@
+<page>
+	<pagenumber>240</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				The Dragon speaks to you as you wheel through the skies. 'The Ancient has one great weakness. Light will blind and distract him,
+				if you can find magical light to fling into his face. The greatest of all magical treasures the Loremaster can guide you to is
+				the Magic Mirror within the Dreamtime. Make sure you find this; your quest will be far harder without it. If the Mirror calls for
+				sacrifice on your part, do not deny it.'
+			</p>
+			<p>
+				Hours pass and the Dragon finally lands at your chosen destination. But just as he does so, he gives a terrible cough and chokes
+				on his own blood as you stagger away, horrified at his convulsions. The Dragon has broken the Oath by giving you aid, and as a result
+				he is dying. This event will be sensed far away ... 1 is added to your Nemesis score. Now, which destination did you choose? If
+				you chose to be taken to the sword, click <a href="http://link:21">here</a>. If you chose to be taken to the armour, click
+				<a href="http://link:5">here</a>. If you chose to be taken to the shield, the Dragon has taken you most, but not all, of the great
+				distance to it; click <a href="http://link:334">here</a>.
+			</p>
+		</html>
+	</pagetext>
+	<immediate>
+		<adjustscale type="nemesis" amount="1" />
+	</immediate>
+</page>

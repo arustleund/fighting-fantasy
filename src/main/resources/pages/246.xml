@@ -1,0 +1,38 @@
+<page>
+	<pagenumber>246</pagenumber>
+	<pagetext>
+		<html>
+			<p>
+				<table>
+					<tr><td><a href="http://domulti:0">Use 1 Gold Piece for food?</a></td></tr>
+					<tr><td><a href="http://domulti:1">Use 1 Provision for food?</a></td></tr>
+					<tr><td><a href="http://domulti:2">Spend one day doing menial labour to buy 3 Provisions?</a></td></tr>
+				</table>
+			</p>
+		</html>
+	</pagetext>
+	<text id="0">
+		<p>
+			On a chill, grey day you trudge round the town asking for Endimion and again getting no helpful
+			response; late in the afternoon you see a grey-robed figure disappearing in through the back door of a leather tanner's
+			workshop. If you want to follow the man, click <a href="http://link:213">here</a>. Otherwise, that's the end of this day; you can 
+			spend the next one <a href="http://link:272">asking for a person named Endimion</a> or <a href="http://link:352">for a place with 
+			that name</a>.
+		</p>
+	</text>
+	<immediate>
+		<adjustscale type="time" amount="2" />
+	</immediate>
+	<multicommand id="0">
+		<adjustscale type="gold" amount="-1" promptOnFail="true" />
+		<displayText id="0" />
+	</multicommand>
+	<multicommand id="1">
+		<adjustscale type="provisions" amount="-1" promptOnFail="true" />
+		<displayText id="0" />
+	</multicommand>
+	<multicommand id="2">
+		<adjustscale type="provisions" amount="3" />
+		<link page="246" />
+	</multicommand>
+</page>

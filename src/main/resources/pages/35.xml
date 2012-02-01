@@ -16,10 +16,10 @@
 	</immediate>
 	<multicommand id="0">
 		<testItem id="10">
-			<hasItem>
+			<successful>
 				<link page="328" />
-			</hasItem>
-			<doesNotHaveItem />
+			</successful>
+			<unsuccessful />
 		</testItem>
 	</multicommand>
 </page>

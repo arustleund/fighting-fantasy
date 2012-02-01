@@ -41,16 +41,14 @@
 		</html>
 	</pagetext>
 	<multicommand id="0">
-		<addItem id="5" />
-		<adjustscale type="gold" amount="-1" promptOnFail="true" />
+		<addItem id="5" price="4" />
 	</multicommand>
 	<multicommand id="1">
-		<addItem id="7" />
-		<adjustscale type="gold" amount="-1" promptOnFail="true" />
+		<addItem id="7" price="5" />
 	</multicommand>
 	<multicommand id="2">
-		<adjustscale type="provisions" amount="1" promptOnFail="true" />
 		<adjustscale type="gold" amount="-1" promptOnFail="true" />
+		<adjustscale type="provisions" amount="1" promptOnFail="true" />
 	</multicommand>
 	<multicommand id="3">
 		<testFlag id="0">

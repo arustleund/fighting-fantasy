@@ -14,12 +14,12 @@
 	<immediate>
 		<adjustscale type="time" amount="2" />
 		<testItem id="17">
-			<hasItem>
+			<successful>
 				<displayText id="0" />
-			</hasItem>
-			<doesNotHaveItem>
+			</successful>
+			<unsuccessful>
 				<displayText id="1" />
-			</doesNotHaveItem>
+			</unsuccessful>
 		</testItem>
 	</immediate>
 	<text id="0">

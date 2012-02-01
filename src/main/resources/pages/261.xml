@@ -37,7 +37,6 @@
 		<effects>
 			<endBattle>
 				<adjustscale type="gold" amount="3" />
-				<addItem id="18" />
 				<displayText id="0" />
 			</endBattle>
 		</effects>

@@ -1,0 +1,50 @@
+<page>
+	<pagenumber>109</pagenumber>
+	<pagetext>
+		<html>
+		</html>
+	</pagetext>
+	<immediate>
+		<testFlag id="3">
+			<successful>
+				<displayText id="0" />
+			</successful>
+			<unsuccessful>
+				<displayText id="1" />
+			</unsuccessful>
+		</testFlag>
+	</immediate>
+	<text id="0">
+		<p>
+			<a href="http://domulti:0"><i>Test your Skill</i></a> (adding 2).
+		</p>
+	</text>
+	<text id="1">
+		<p>
+			You easily escape, click <a href="http://link:387">here</a>.
+		</p>
+	</text>
+	<text id="2">
+		<p>
+			You evade them and jump down into the back streets, where you evade their pursuit.
+			But now you're going to be hunted by the militia, which will make your quest
+			very difficult in the future. Click <a href="http://link:387">here</a> to continue.
+		</p>
+	</text>
+	<text id="3">
+		<p>
+			You are caught by the guards. Click <a href="http://link:143">here</a> to continue.
+		</p>
+	</text>
+	<multicommand id="0">
+		<testSkill diceRollAdjustment="2">
+			<successful>
+				<displayText id="2" />
+				<setFlag id="5" />
+			</successful>
+			<unsuccessful>
+				<displayText id="3" />
+			</unsuccessful>
+		</testSkill>
+	</multicommand>
+</page>

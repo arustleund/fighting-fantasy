@@ -3,8 +3,17 @@
 	<pagetext>
 		<html>
 			<p>
-			
+			 	You have not discovered the name of the pass you must journey to.
+			 	<a href="http://link:286">You must visit the Rudderless Galley tavern</a>.
 			</p>
 		</html>
 	</pagetext>
+	<immediate>
+		<testFlag id="6">
+			<successful>
+				<link page="124" />
+			</successful>
+			<unsuccessful />
+		</testFlag>
+	</immediate>
 </page>
