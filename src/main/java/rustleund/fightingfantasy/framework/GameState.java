@@ -1,0 +1,70 @@
+/*
+ * Created on Jun 17, 2004
+ */
+package rustleund.fightingfantasy.framework;
+
+/**
+ * @author rustlea
+ */
+public class GameState {
+
+	private PlayerState playerState;
+	private PageState pageState;
+	private BattleState battleState;
+	private String message;
+	private boolean isBattleInProgress;
+	private boolean pageLoaded;
+
+	public void clearMessage() {
+		message = "-";
+	}
+
+	public PlayerState getPlayerState() {
+		return playerState;
+	}
+
+	public void setPlayerState(PlayerState state) {
+		playerState = state;
+	}
+
+	public PageState getPageState() {
+		return pageState;
+	}
+
+	public void setPageState(PageState state) {
+		pageState = state;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String string) {
+		message = string;
+	}
+
+	public boolean isBattleInProgress() {
+		return isBattleInProgress;
+	}
+
+	public void setBattleInProgress(boolean isBattleInProgress) {
+		this.isBattleInProgress = isBattleInProgress;
+	}
+
+	public BattleState getBattleState() {
+		return this.battleState;
+	}
+
+	public void setBattleState(BattleState battleState) {
+		this.battleState = battleState;
+	}
+
+	public boolean isPageLoaded() {
+		return this.pageLoaded;
+	}
+
+	public void setPageLoaded(boolean pageLoaded) {
+		this.pageLoaded = pageLoaded;
+	}
+
+}
