@@ -47,7 +47,7 @@ public class LinkClosure extends AbstractCommand {
 
 		try {
 			DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			targetPageDocument = documentBuilder.parse(targetPage);
+			targetPageDocument = documentBuilder.parse(ClassLoader.getSystemResourceAsStream("nightdragon/pages/" + pageName + ".xml"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

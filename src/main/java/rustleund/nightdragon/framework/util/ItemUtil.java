@@ -3,7 +3,6 @@
  */
 package rustleund.nightdragon.framework.util;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,18 +19,17 @@ import rustleund.nightdragon.framework.Item;
  */
 public class ItemUtil {
 
-	private Map items = null;
+	private Map<Integer, Item> items = null;
 
 	private static ItemUtil instance = null;
 
 	private ItemUtil() {
-		items = new HashMap();
+		items = new HashMap<Integer, Item>();
 	}
 
 	public void init() {
-		File itemFile = new File("config/items.xml");
 		try {
-			Document itemDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(itemFile);
+			Document itemDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(ClassLoader.getSystemResourceAsStream("nightdragon/config/items.xml"));
 			NodeList itemTags = itemDocument.getElementsByTagName("item");
 			for (int i = 0; i < itemTags.getLength(); i++) {
 				loadItemTag((Element) itemTags.item(i));
@@ -68,7 +66,7 @@ public class ItemUtil {
 	}
 
 	public Item getItem(int itemId) {
-		return (Item) items.get(new Integer(itemId));
+		return items.get(new Integer(itemId));
 	}
 
 }
