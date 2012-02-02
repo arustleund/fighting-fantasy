@@ -1,0 +1,58 @@
+/*
+ * Created on Jul 7, 2004
+ */
+package rustleund.fightingfantasy.framework.closures.impl;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import rustleund.fightingfantasy.framework.base.GameState;
+import rustleund.fightingfantasy.framework.base.PageState;
+import rustleund.fightingfantasy.framework.closures.Closure;
+
+/**
+ * @author rustlea
+ */
+public class LinkClosure extends AbstractClosure {
+
+	private String pageName;
+
+	public LinkClosure(Element element) {
+		this(element.getAttribute("page"));
+	}
+
+	public LinkClosure(int pageNumber) {
+		this(pageNumber + "");
+	}
+
+	public LinkClosure(String pageName) {
+		this.pageName = pageName;
+	}
+
+	@Override
+	public boolean execute(GameState gameState) {
+		Document targetPageDocument = null;
+		try {
+			DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			targetPageDocument = documentBuilder.parse(ClassLoader.getSystemResourceAsStream("nightdragon/pages/" + pageName + ".xml"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if (targetPageDocument != null) {
+			gameState.setPageState(new PageState(targetPageDocument, gameState));
+
+			for (Closure closure : gameState.getPageState().getImmediateCommands()) {
+				closure.execute(gameState);
+			}
+
+			gameState.setPageLoaded(false);
+		}
+
+		return true;
+	}
+
+}

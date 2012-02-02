@@ -10,12 +10,12 @@ import javax.swing.JOptionPane;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import rustleund.fightingfantasy.framework.GameController;
-import rustleund.fightingfantasy.framework.GameState;
-import rustleund.fightingfantasy.framework.GameView;
-import rustleund.fightingfantasy.framework.PlayerState;
-import rustleund.fightingfantasy.framework.Scale;
-import rustleund.fightingfantasy.framework.closures.LinkClosure;
+import rustleund.fightingfantasy.framework.base.GameController;
+import rustleund.fightingfantasy.framework.base.GameState;
+import rustleund.fightingfantasy.framework.base.GameView;
+import rustleund.fightingfantasy.framework.base.PlayerState;
+import rustleund.fightingfantasy.framework.base.Scale;
+import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
 import rustleund.fightingfantasy.framework.util.ItemUtil;
 import rustleund.fightingfantasy.ioc.SpringContext;
 

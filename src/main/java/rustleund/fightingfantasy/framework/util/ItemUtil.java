@@ -12,7 +12,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import rustleund.fightingfantasy.framework.Item;
+import rustleund.fightingfantasy.framework.base.Item;
+import rustleund.fightingfantasy.framework.closures.impl.DefaultClosureLoader;
 
 /**
  * @author rustlea
@@ -48,7 +49,7 @@ public class ItemUtil {
 			item.setLimit(new Integer(itemElement.getAttribute("limit")));
 		}
 		if (itemElement.hasChildNodes()) {
-			item.setUseItem(AbstractCommandLoader.loadChainedClosure(itemElement));
+			item.setUseItem(DefaultClosureLoader.loadChainedClosure(itemElement));
 		}
 		if (itemElement.hasAttribute("canUseInBattle")) {
 			item.setCanUseInBattle(Boolean.getBoolean(itemElement.getAttribute("canUseInBattle")));
