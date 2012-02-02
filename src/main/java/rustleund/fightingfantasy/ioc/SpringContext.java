@@ -32,7 +32,8 @@ import rustleund.fightingfantasy.framework.closures.impl.RestoreScaleClosure;
 import rustleund.fightingfantasy.framework.closures.impl.RollDiceClosure;
 import rustleund.fightingfantasy.framework.closures.impl.SetFlagClosure;
 import rustleund.fightingfantasy.framework.closures.impl.SetPoisonImmunity;
-import rustleund.fightingfantasy.framework.closures.impl.TestAnyFlagClosure;
+import rustleund.fightingfantasy.framework.closures.impl.TestAnyFlagPredicate;
+import rustleund.fightingfantasy.framework.closures.impl.TestClosure;
 import rustleund.fightingfantasy.framework.closures.impl.TestFlagClosure;
 import rustleund.fightingfantasy.framework.closures.impl.TestItemClosure;
 import rustleund.fightingfantasy.framework.closures.impl.TestLuckClosure;
@@ -59,7 +60,7 @@ public class SpringContext {
 		mappings.put("testLuck", new ElementConstructorClosureFunction(TestLuckClosure.class));
 		mappings.put("testSkill", new ElementConstructorClosureFunction(TestSkillClosure.class));
 		mappings.put("testFlag", new ElementConstructorClosureFunction(TestFlagClosure.class));
-		mappings.put("testAnyFlag", new ElementConstructorClosureFunction(TestAnyFlagClosure.class));
+		mappings.put("testAnyFlag", testAnyFlagClosureFunction());
 		mappings.put("setFlag", new ElementConstructorClosureFunction(SetFlagClosure.class));
 		mappings.put("testStat", new ElementConstructorClosureFunction(TestStatClosure.class));
 		mappings.put("restoreScale", new ElementConstructorClosureFunction(RestoreScaleClosure.class));
@@ -83,6 +84,16 @@ public class SpringContext {
 			@Override
 			public Closure apply(Element input) {
 				return new LinkClosure(input, closureLoader(), battleEffectsLoader());
+			}
+		};
+	}
+
+	@Bean
+	public Function<Element, Closure> testAnyFlagClosureFunction() {
+		return new Function<Element, Closure>() {
+			@Override
+			public Closure apply(Element input) {
+				return new TestClosure(new TestAnyFlagPredicate(input), closureLoader(), input);
 			}
 		};
 	}
