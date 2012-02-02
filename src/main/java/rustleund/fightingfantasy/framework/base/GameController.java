@@ -10,6 +10,7 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import rustleund.fightingfantasy.framework.closures.Closure;
+import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.AddItemClosure;
 import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
 import rustleund.fightingfantasy.framework.closures.impl.TestLuckClosure;
@@ -19,11 +20,16 @@ import rustleund.fightingfantasy.framework.closures.impl.TestLuckClosure;
  */
 public class GameController implements HyperlinkListener {
 
+	private ClosureLoader closureLoader;
+	private BattleEffectsLoader battleEffectsLoader;
+
 	private List<GameView> gameViews;
 	private GameState gameState;
 
-	public GameController() {
+	public GameController(ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
 		this.gameViews = new ArrayList<GameView>();
+		this.closureLoader = closureLoader;
+		this.battleEffectsLoader = battleEffectsLoader;
 	}
 
 	public void addView(GameView view) {
@@ -125,7 +131,7 @@ public class GameController implements HyperlinkListener {
 	}
 
 	private void loadPageIntoGameState(int pageNumber) {
-		new LinkClosure(pageNumber).execute(gameState);
+		new LinkClosure(pageNumber, closureLoader, battleEffectsLoader).execute(gameState);
 	}
 
 	public GameState getGameState() {

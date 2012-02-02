@@ -13,12 +13,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import rustleund.fightingfantasy.framework.base.Item;
-import rustleund.fightingfantasy.framework.closures.impl.DefaultClosureLoader;
+import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 
 /**
  * @author rustlea
  */
 public class ItemUtil {
+
+	private ClosureLoader closureLoader;
 
 	private Map<Integer, Item> items = null;
 
@@ -28,7 +30,9 @@ public class ItemUtil {
 		items = new HashMap<Integer, Item>();
 	}
 
-	public void init() {
+	public void init(ClosureLoader closureLoader) {
+		this.closureLoader = closureLoader;
+
 		try {
 			Document itemDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(ClassLoader.getSystemResourceAsStream("nightdragon/config/items.xml"));
 			NodeList itemTags = itemDocument.getElementsByTagName("item");
@@ -49,7 +53,7 @@ public class ItemUtil {
 			item.setLimit(new Integer(itemElement.getAttribute("limit")));
 		}
 		if (itemElement.hasChildNodes()) {
-			item.setUseItem(DefaultClosureLoader.loadChainedClosure(itemElement));
+			item.setUseItem(this.closureLoader.loadClosureFromChildren(itemElement));
 		}
 		if (itemElement.hasAttribute("canUseInBattle")) {
 			item.setCanUseInBattle(Boolean.getBoolean(itemElement.getAttribute("canUseInBattle")));

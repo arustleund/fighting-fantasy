@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.w3c.dom.Element;
 
+import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
+import rustleund.fightingfantasy.framework.base.impl.DefaultBattleEffectsLoader;
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.AddBattleEffectsForNextBattleClosure;
@@ -49,7 +51,7 @@ public class SpringContext {
 		mappings.put("adjustscale", new ElementConstructorClosureFunction(AdjustScaleClosure.class));
 		mappings.put("adjustEnemyScale", new ElementConstructorClosureFunction(AdjustEnemyScaleClosure.class));
 		mappings.put("displayText", new ElementConstructorClosureFunction(DisplayTextClosure.class));
-		mappings.put("link", new ElementConstructorClosureFunction(LinkClosure.class));
+		mappings.put("link", linkClosureFunction());
 		mappings.put("addEnemies", new ElementConstructorClosureFunction(AddEnemiesClosure.class));
 		mappings.put("addItem", new ElementConstructorClosureFunction(AddItemClosure.class));
 		mappings.put("testItem", new ElementConstructorClosureFunction(TestItemClosure.class));
@@ -73,6 +75,21 @@ public class SpringContext {
 		mappings.put("adjustPlayerAttackStrength", new ElementConstructorClosureFunction(AdjustPlayerAttackStrength.class));
 
 		return new DefaultClosureLoader(mappings);
+	}
+
+	@Bean
+	public Function<Element, Closure> linkClosureFunction() {
+		return new Function<Element, Closure>() {
+			@Override
+			public Closure apply(Element input) {
+				return new LinkClosure(input, closureLoader(), battleEffectsLoader());
+			}
+		};
+	}
+
+	@Bean
+	public BattleEffectsLoader battleEffectsLoader() {
+		return new DefaultBattleEffectsLoader(closureLoader());
 	}
 
 }

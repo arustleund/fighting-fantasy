@@ -29,6 +29,7 @@ import rustleund.fightingfantasy.framework.closures.impl.ChainedClosure;
 public class PageState {
 
 	private ClosureLoader closureLoader;
+	private BattleEffectsLoader battleEffectsLoader;
 
 	private GameState gameState = null;
 	private String pagetext = null;
@@ -40,11 +41,12 @@ public class PageState {
 	private Map<Integer, String> texts = null;
 	private Map<Integer, BattleState> battles = null;
 
-	public PageState(ClosureLoader closureLoader, Document document, GameState gameState) {
+	public PageState(ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader, Document document, GameState gameState) {
 		this.closureLoader = closureLoader;
+		this.battleEffectsLoader = battleEffectsLoader;
 
 		this.gameState = gameState;
-		
+
 		loadPagetext(document);
 		loadItems(document);
 		loadKeepMinimum(document);
@@ -145,7 +147,7 @@ public class PageState {
 		for (int i = 0; i < battleTags.getLength(); i++) {
 			Element thisBattleTag = (Element) battleTags.item(i);
 			Integer thisBattleId = new Integer(thisBattleTag.getAttribute("id"));
-			battles.put(thisBattleId, new BattleState(thisBattleTag, this));
+			battles.put(thisBattleId, new BattleState(thisBattleTag, this, this.closureLoader, this.battleEffectsLoader));
 		}
 	}
 

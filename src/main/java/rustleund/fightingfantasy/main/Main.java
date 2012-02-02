@@ -10,11 +10,13 @@ import javax.swing.JOptionPane;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.GameController;
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.GameView;
 import rustleund.fightingfantasy.framework.base.PlayerState;
 import rustleund.fightingfantasy.framework.base.Scale;
+import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
 import rustleund.fightingfantasy.framework.util.ItemUtil;
 import rustleund.fightingfantasy.ioc.SpringContext;
@@ -46,10 +48,14 @@ public class Main {
 		final boolean isDebugMode = args.length > 0;
 
 		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringContext.class);
+		SpringContext springContext = applicationContext.getBean(SpringContext.class);
 
-		ItemUtil.getInstance().init();
+		ClosureLoader closureLoader = springContext.closureLoader();
+		BattleEffectsLoader battleEffectsLoader = springContext.battleEffectsLoader();
 
-		GameController gameController = new GameController();
+		ItemUtil.getInstance().init(closureLoader);
+
+		GameController gameController = new GameController(closureLoader, battleEffectsLoader);
 		GameState gameState = new GameState();
 
 		PlayerState playerState = new PlayerState("YOU");
@@ -71,9 +77,9 @@ public class Main {
 		gameController.addView(gameView);
 
 		if (isDebugMode) {
-			new LinkClosure(JOptionPane.showInputDialog("Page")).execute(gameState);
+			new LinkClosure(JOptionPane.showInputDialog("Page"), closureLoader, battleEffectsLoader).execute(gameState);
 		} else {
-			new LinkClosure("doStats").execute(gameState);
+			new LinkClosure("doStats", closureLoader, battleEffectsLoader).execute(gameState);
 		}
 
 		gameView.update(gameState);

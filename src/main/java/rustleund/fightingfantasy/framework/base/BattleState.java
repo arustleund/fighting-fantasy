@@ -13,6 +13,7 @@ import java.util.TreeMap;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
 import rustleund.fightingfantasy.framework.util.DiceRoller;
 
@@ -23,6 +24,9 @@ public class BattleState {
 
 	public static final String START_STRING = "<!-- START BATTLE -->";
 	public static final String END_STRING = "<!-- END BATTLE -->";
+
+	private BattleEffectsLoader battleEffectsLoader;
+	private ClosureLoader closureLoader;
 
 	private Integer id;
 	private Enemies enemies;
@@ -40,7 +44,10 @@ public class BattleState {
 		BEGINNING, END
 	}
 
-	public BattleState(Element battleTag, PageState pageState) {
+	public BattleState(Element battleTag, PageState pageState, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
+		this.closureLoader = closureLoader;
+		this.battleEffectsLoader = battleEffectsLoader;
+
 		this.pageState = pageState;
 
 		this.id = new Integer(battleTag.getAttribute("id"));
@@ -87,7 +94,7 @@ public class BattleState {
 
 	private void loadEffectsFromTag(Element effectsTag) {
 		BattleEffects initialBattleEffects = new BattleEffects();
-		BattleEffectsLoaderUtil.loadBattleEffectsFromTag(initialBattleEffects, effectsTag);
+		battleEffectsLoader.loadBattleEffectsFromTag(initialBattleEffects, effectsTag);
 		this.allBattleEffects.add(initialBattleEffects);
 	}
 
@@ -125,7 +132,7 @@ public class BattleState {
 			doEndRound();
 
 			if (getPlayerState().isDead()) {
-				new LinkClosure(0).execute(this.pageState.getGameState());
+				new LinkClosure(0, this.closureLoader, this.battleEffectsLoader).execute(this.pageState.getGameState());
 			}
 		}
 	}
