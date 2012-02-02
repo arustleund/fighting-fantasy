@@ -7,6 +7,9 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import rustleund.fightingfantasy.framework.GameController;
 import rustleund.fightingfantasy.framework.GameState;
 import rustleund.fightingfantasy.framework.GameView;
@@ -14,6 +17,7 @@ import rustleund.fightingfantasy.framework.PlayerState;
 import rustleund.fightingfantasy.framework.Scale;
 import rustleund.fightingfantasy.framework.closures.LinkClosure;
 import rustleund.fightingfantasy.framework.util.ItemUtil;
+import rustleund.fightingfantasy.ioc.SpringContext;
 
 /**
  * @author rustlea
@@ -39,8 +43,9 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-
 		final boolean isDebugMode = args.length > 0;
+
+		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringContext.class);
 
 		ItemUtil.getInstance().init();
 
