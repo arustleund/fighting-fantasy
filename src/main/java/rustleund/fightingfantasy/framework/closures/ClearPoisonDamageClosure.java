@@ -11,11 +11,9 @@ public class ClearPoisonDamageClosure implements Closure {
 		// Nothing needed
 	}
 
-	public void execute(GameState gameState) {
+	@Override
+	public boolean execute(GameState gameState) {
 		gameState.getPlayerState().clearPoisonDamage();
-	}
-
-	public boolean executeWasSuccessful() {
 		return true;
 	}
 

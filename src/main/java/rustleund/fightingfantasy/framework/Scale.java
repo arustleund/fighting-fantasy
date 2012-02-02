@@ -105,6 +105,7 @@ public class Scale {
 		return currentValue.intValue() == 0;
 	}
 
+	@Override
 	public String toString() {
 		StringBuffer result = new StringBuffer(currentValue.toString());
 		if (upperBound != null) {

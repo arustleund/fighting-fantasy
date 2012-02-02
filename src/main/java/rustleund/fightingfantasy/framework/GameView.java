@@ -159,11 +159,7 @@ public class GameView extends JPanel implements ActionListener {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
+	@Override
 	public void actionPerformed(ActionEvent event) {
 		if ("use item".equals(event.getActionCommand())) {
 			Item selectedItem = (Item) inventoryList.getSelectedValue();

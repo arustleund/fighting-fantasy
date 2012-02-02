@@ -25,24 +25,17 @@ public class TestFlagClosure extends AbstractCommand {
 
 		this.successful = AbstractCommandLoader.loadClosureFromChildTag(element, "successful");
 		this.unsuccessful = AbstractCommandLoader.loadClosureFromChildTag(element, "unsuccessful");
-
-		this.executeSuccessful = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
-	public void execute(GameState gameState) {
-
+	@Override
+	public boolean execute(GameState gameState) {
 		if (gameState.getPlayerState().getFlagValue(flagId)) {
-			successful.execute(gameState);
-		} else {
-			unsuccessful.execute(gameState);
+			return successful.execute(gameState);
 		}
+		return unsuccessful.execute(gameState);
 	}
 
+	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}

@@ -32,10 +32,10 @@ public class AdjustScaleClosure extends AbstractCommand {
 		this.useAmountAsPercent = attributeValue(element, "useAmountAsPercent");
 		this.round = element.getAttribute("round");
 		this.adjustInitialValue = attributeValue(element, "adjustInitialValue");
-		this.executeSuccessful = false;
 	}
 
-	public void execute(GameState gameState) {
+	@Override
+	public boolean execute(GameState gameState) {
 		Scale scale = null;
 
 		try {
@@ -75,19 +75,17 @@ public class AdjustScaleClosure extends AbstractCommand {
 		if (promptOnFail) {
 			try {
 				scale.adjustCurrentValue(amountToAdjust);
-				this.executeSuccessful = true;
 			} catch (IndexOutOfBoundsException e1) {
 				gameState.setMessage("You cannot perform this action");
-				this.executeSuccessful = false;
+				return false;
 			}
-		} else {
-			if (this.adjustInitialValue) {
-				scale.adjustUpperBound(amountToAdjust);
-			} else {
-				scale.adjustCurrentValueNoException(amountToAdjust);
-			}
-			this.executeSuccessful = true;
 		}
+		if (this.adjustInitialValue) {
+			scale.adjustUpperBound(amountToAdjust);
+		} else {
+			scale.adjustCurrentValueNoException(amountToAdjust);
+		}
+		return true;
 
 	}
 

@@ -2,13 +2,11 @@ package rustleund.fightingfantasy.framework;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 public class ChainedClosure implements Closure {
 
 	private List<Closure> closures;
-	private boolean executeSuccessful = true;
 
 	public ChainedClosure() {
 		this.closures = new ArrayList<Closure>();
@@ -26,21 +24,19 @@ public class ChainedClosure implements Closure {
 		this.closures.add(closure);
 	}
 
-	public void execute(GameState gameState) {
+	@Override
+	public boolean execute(GameState gameState) {
 		if (this.closures != null) {
-			Iterator<Closure> closureIter = this.closures.iterator();
-			while (this.executeSuccessful && closureIter.hasNext()) {
-				Closure closure = closureIter.next();
-				closure.execute(gameState);
-				this.executeSuccessful = closure.executeWasSuccessful();
+			for (Closure closure : this.closures) {
+				if (!closure.execute(gameState)) {
+					return false;
+				}
 			}
 		}
+		return true;
 	}
 
-	public boolean executeWasSuccessful() {
-		return this.executeSuccessful;
-	}
-
+	@Override
 	public String toString() {
 		return this.closures.toString();
 	}

@@ -13,8 +13,10 @@ public class SetPoisonImmunity extends AbstractCommand {
 		this.immune = attributeValue(element, "immune", true);
 	}
 
-	public void execute(GameState gameState) {
+	@Override
+	public boolean execute(GameState gameState) {
 		gameState.getPlayerState().setPoisonImmunity(this.immune);
+		return true;
 	}
 
 }

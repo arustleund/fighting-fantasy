@@ -7,8 +7,8 @@ import java.util.StringTokenizer;
 import org.w3c.dom.Element;
 
 import rustleund.fightingfantasy.framework.AbstractCommand;
-import rustleund.fightingfantasy.framework.GameState;
 import rustleund.fightingfantasy.framework.BattleState.BattleMessagePosition;
+import rustleund.fightingfantasy.framework.GameState;
 
 public class ClearBattleMessageClosure extends AbstractCommand {
 
@@ -25,7 +25,7 @@ public class ClearBattleMessageClosure extends AbstractCommand {
 	}
 
 	@Override
-	public void execute(GameState gameState) {
+	public boolean execute(GameState gameState) {
 		if (this.positionsToClear == null) {
 			gameState.getBattleState().clearAllAdditionalMessages();
 		} else {
@@ -33,6 +33,7 @@ public class ClearBattleMessageClosure extends AbstractCommand {
 				gameState.getBattleState().clearAdditionalMessage(position);
 			}
 		}
+		return true;
 	}
 
 }

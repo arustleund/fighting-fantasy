@@ -44,6 +44,7 @@ public class Item {
 		name = string;
 	}
 
+	@Override
 	public String toString() {
 		return (count + " - " + name);
 	}

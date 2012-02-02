@@ -34,12 +34,10 @@ public class TestAnyFlagClosure extends AbstractCommand {
 
 		this.successful = AbstractCommandLoader.loadClosureFromChildTag(element, "successful");
 		this.unsuccessful = AbstractCommandLoader.loadClosureFromChildTag(element, "unsuccessful");
-
-		this.executeSuccessful = true;
 	}
 
 	@Override
-	public void execute(GameState gameState) {
+	public boolean execute(GameState gameState) {
 		PlayerState playerState = gameState.getPlayerState();
 
 		boolean shouldExecuteSuccessfulClosure = false;
@@ -49,10 +47,9 @@ public class TestAnyFlagClosure extends AbstractCommand {
 		}
 
 		if (shouldExecuteSuccessfulClosure) {
-			successful.execute(gameState);
-		} else {
-			unsuccessful.execute(gameState);
+			return successful.execute(gameState);
 		}
+		return unsuccessful.execute(gameState);
 	}
 
 }

@@ -20,22 +20,16 @@ public class TestItemClosure extends AbstractCommand {
 	private Closure doesNotHaveItem;
 
 	public TestItemClosure(Element element) {
-		this.executeSuccessful = true;
 		this.itemId = Integer.parseInt(element.getAttribute("id"));
 		this.hasItem = AbstractCommandLoader.loadClosureFromChildTag(element, "successful");
 		this.doesNotHaveItem = AbstractCommandLoader.loadClosureFromChildTag(element, "unsuccessful");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
-	public void execute(GameState gameState) {
+	@Override
+	public boolean execute(GameState gameState) {
 		if (gameState.getPlayerState().itemCount(this.itemId) == 0) {
-			this.doesNotHaveItem.execute(gameState);
-		} else {
-			this.hasItem.execute(gameState);
+			return this.doesNotHaveItem.execute(gameState);
 		}
+		return this.hasItem.execute(gameState);
 	}
 }

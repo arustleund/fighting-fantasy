@@ -15,11 +15,9 @@ public class AdjustPlayerAttackStrength implements Closure {
 		}
 	}
 
-	public void execute(GameState gameState) {
+	@Override
+	public boolean execute(GameState gameState) {
 		gameState.getPlayerState().setAttackStrengthModifier(gameState.getPlayerState().getAttackStrengthModifier() + this.amount);
-	}
-
-	public boolean executeWasSuccessful() {
 		return true;
 	}
 

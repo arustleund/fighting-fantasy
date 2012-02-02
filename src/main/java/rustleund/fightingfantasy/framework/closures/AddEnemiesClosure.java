@@ -25,7 +25,6 @@ public class AddEnemiesClosure extends AbstractCommand {
 	private int waitTime;
 
 	public AddEnemiesClosure(Element element) {
-		this.executeSuccessful = true;
 		this.enemiesToAdd = new ArrayList<EnemyState>();
 
 		Element battleElement = (Element) element.getParentNode().getParentNode().getParentNode();
@@ -39,7 +38,8 @@ public class AddEnemiesClosure extends AbstractCommand {
 		}
 	}
 
-	public void execute(GameState gameState) {
+	@Override
+	public boolean execute(GameState gameState) {
 		if (waitTime == 0) {
 			BattleState battleState = gameState.getPageState().getBattle(battleId);
 			Enemies enemies = battleState.getEnemies();
@@ -48,6 +48,7 @@ public class AddEnemiesClosure extends AbstractCommand {
 			}
 		}
 		waitTime--;
+		return true;
 	}
 
 }

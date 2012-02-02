@@ -17,13 +17,11 @@ public class AddBattleEffectsToCurrentBattleClosure implements Closure {
 		this.battleEffects = BattleEffectsLoaderUtil.loadAllBattleEffectsFromTag(element);
 	}
 
-	public void execute(GameState gameState) {
+	@Override
+	public boolean execute(GameState gameState) {
 		if (this.battleEffects != null) {
 			gameState.getBattleState().getAllBattleEffects().addAll(this.battleEffects);
 		}
-	}
-
-	public boolean executeWasSuccessful() {
 		return true;
 	}
 

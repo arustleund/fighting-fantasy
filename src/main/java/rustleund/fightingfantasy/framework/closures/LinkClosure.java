@@ -31,15 +31,10 @@ public class LinkClosure extends AbstractCommand {
 
 	public LinkClosure(String pageName) {
 		this.pageName = pageName;
-		this.executeSuccessful = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
-	public void execute(GameState gameState) {
+	@Override
+	public boolean execute(GameState gameState) {
 		Document targetPageDocument = null;
 		try {
 			DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -57,6 +52,8 @@ public class LinkClosure extends AbstractCommand {
 
 			gameState.setPageLoaded(false);
 		}
+
+		return true;
 	}
 
 }

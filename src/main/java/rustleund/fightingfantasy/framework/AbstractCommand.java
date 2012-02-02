@@ -10,14 +10,6 @@ import org.w3c.dom.Element;
  */
 public abstract class AbstractCommand implements Closure {
 
-	protected boolean executeSuccessful = true;
-
-	public abstract void execute(GameState gameState);
-
-	public boolean executeWasSuccessful() {
-		return executeSuccessful;
-	}
-
 	protected boolean attributeValue(Element element, String attribute) {
 		return attributeValue(element, attribute, false);
 	}

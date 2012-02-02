@@ -28,24 +28,16 @@ public class TestSkillClosure extends AbstractCommand {
 
 		this.successful = AbstractCommandLoader.loadClosureFromChildTag(element, "successful");
 		this.unsuccessful = AbstractCommandLoader.loadClosureFromChildTag(element, "unsuccessful");
-
-		this.executeSuccessful = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
-	public void execute(GameState gameState) {
-
+	@Override
+	public boolean execute(GameState gameState) {
 		PlayerState playerState = gameState.getPlayerState();
 
 		if ((DiceRoller.rollDice(2) + diceRollAdjustment) <= playerState.getSkill().getCurrentValue()) {
-			successful.execute(gameState);
-		} else {
-			unsuccessful.execute(gameState);
+			return successful.execute(gameState);
 		}
+		return unsuccessful.execute(gameState);
 	}
 
 }

@@ -91,6 +91,7 @@ public abstract class AbstractEntityState {
 		attackStrengthModifier = i;
 	}
 
+	@Override
 	public String toString() {
 		return (name + ": SKILL: " + skill + " STAMINA: " + stamina);
 	}

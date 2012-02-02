@@ -58,12 +58,8 @@ public class TestStatClosure extends AbstractCommand {
 		this.useInitialValue = element.hasAttribute("useInitialValue") && "true".equals(element.getAttribute("useInitialValue"));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
-	public void execute(GameState gameState) {
+	@Override
+	public boolean execute(GameState gameState) {
 		try {
 			PlayerState playerState = gameState.getPlayerState();
 
@@ -83,13 +79,12 @@ public class TestStatClosure extends AbstractCommand {
 			valueIsAcceptable |= acceptableValues.get(2) && (compareResult > 0);
 
 			if (valueIsAcceptable) {
-				this.successful.execute(gameState);
-			} else {
-				this.unsuccessful.execute(gameState);
+				return this.successful.execute(gameState);
 			}
-
+			return this.unsuccessful.execute(gameState);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 

@@ -15,12 +15,13 @@ import rustleund.fightingfantasy.framework.PlayerState;
 public class InitPlayerStateClosure extends AbstractCommand {
 
 	public InitPlayerStateClosure(@SuppressWarnings("unused") Element element) {
-		this.executeSuccessful = true;
+		// Must be here to satisfy contract
 	}
 
 	@Override
-	public void execute(GameState gameState) {
+	public boolean execute(GameState gameState) {
 		gameState.setPlayerState(new PlayerState(gameState.getPlayerState().getName()));
+		return true;
 	}
 
 }

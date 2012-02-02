@@ -35,11 +35,7 @@ public class GameController implements HyperlinkListener {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.event.HyperlinkListener#hyperlinkUpdate(javax.swing.event.HyperlinkEvent)
-	 */
+	@Override
 	public void hyperlinkUpdate(HyperlinkEvent e) {
 		if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 			this.gameState.clearMessage();

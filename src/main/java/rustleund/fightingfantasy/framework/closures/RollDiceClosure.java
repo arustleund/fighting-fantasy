@@ -26,9 +26,6 @@ public class RollDiceClosure extends AbstractCommand {
 	private Map<Integer, Closure> rollMappings;
 
 	public RollDiceClosure(Element element) {
-
-		this.executeSuccessful = true;
-
 		if (element.hasAttribute("number")) {
 			this.number = Integer.parseInt(element.getAttribute("number"));
 		}
@@ -50,11 +47,12 @@ public class RollDiceClosure extends AbstractCommand {
 	}
 
 	@Override
-	public void execute(GameState gameState) {
+	public boolean execute(GameState gameState) {
 		int diceRollResult = DiceRoller.rollDice(this.number);
 		if (this.rollMappings.containsKey(diceRollResult)) {
 			this.rollMappings.get(diceRollResult).execute(gameState);
 		}
+		return true;
 	}
 
 }

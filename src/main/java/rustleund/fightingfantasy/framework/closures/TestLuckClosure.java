@@ -20,20 +20,14 @@ public class TestLuckClosure extends AbstractCommand {
 
 	public TestLuckClosure(Element element) {
 		this.testLuckId = Integer.parseInt(element.getAttribute("id"));
-		this.executeSuccessful = true;
 	}
 
 	public TestLuckClosure(int testLuckId) {
 		this.testLuckId = testLuckId;
-		this.executeSuccessful = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
-	public void execute(GameState gameState) {
+	@Override
+	public boolean execute(GameState gameState) {
 		PlayerState playerState = gameState.getPlayerState();
 		PageState pageState = gameState.getPageState();
 
@@ -46,6 +40,8 @@ public class TestLuckClosure extends AbstractCommand {
 
 		pageState.addToPagetext(luckText);
 		playerState.getLuck().adjustCurrentValueNoException(-1);
+
+		return true;
 	}
 
 }

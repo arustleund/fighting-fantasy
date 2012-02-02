@@ -19,15 +19,10 @@ public class RestoreScaleClosure extends AbstractCommand {
 
 	public RestoreScaleClosure(Element element) {
 		this.scaleName = element.getAttribute("type");
-		this.executeSuccessful = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.commons.collections.Closure#execute(java.lang.Object)
-	 */
-	public void execute(GameState gameState) {
+	@Override
+	public boolean execute(GameState gameState) {
 
 		Scale scale = null;
 
@@ -38,6 +33,8 @@ public class RestoreScaleClosure extends AbstractCommand {
 		}
 
 		scale.restorePreviousValue();
+
+		return true;
 	}
 
 }
