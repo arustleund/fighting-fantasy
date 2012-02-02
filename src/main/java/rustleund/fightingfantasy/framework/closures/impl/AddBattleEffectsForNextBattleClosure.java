@@ -13,8 +13,8 @@ public class AddBattleEffectsForNextBattleClosure implements Closure {
 
 	private List<BattleEffects> nextBattleBattleEffects;
 
-	public AddBattleEffectsForNextBattleClosure(Element element) {
-		this.nextBattleBattleEffects = BattleEffectsLoader.loadAllBattleEffectsFromTag(element);
+	public AddBattleEffectsForNextBattleClosure(Element element, BattleEffectsLoader battleEffectsLoader) {
+		this.nextBattleBattleEffects = battleEffectsLoader.loadAllBattleEffectsFromTag(element);
 	}
 
 	@Override

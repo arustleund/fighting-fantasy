@@ -63,14 +63,14 @@ public class SpringContext {
 		mappings.put("setFlag", new ElementConstructorClosureFunction(SetFlagClosure.class));
 		mappings.put("testStat", new ElementConstructorClosureFunction(TestStatClosure.class));
 		mappings.put("restoreScale", new ElementConstructorClosureFunction(RestoreScaleClosure.class));
-		mappings.put("rollDice", new ElementConstructorClosureFunction(RollDiceClosure.class));
+		mappings.put("rollDice", rollDiceClosureFunction());
 		mappings.put("initPlayer", new ElementConstructorClosureFunction(InitPlayerStateClosure.class));
-		mappings.put("mustEatMeal", new ElementConstructorClosureFunction(MustEatMealClosure.class));
+		mappings.put("mustEatMeal", mustEatMealClosureFunction());
 		mappings.put("addBattleMessage", new ElementConstructorClosureFunction(AddBattleMessageClosure.class));
 		mappings.put("clearBattleMessage", new ElementConstructorClosureFunction(ClearBattleMessageClosure.class));
 		mappings.put("clearPoisonDamage", new ElementConstructorClosureFunction(ClearPoisonDamageClosure.class));
-		mappings.put("addBattleEffectsForNextBattle", new ElementConstructorClosureFunction(AddBattleEffectsForNextBattleClosure.class));
-		mappings.put("addBattleEffectsToCurrentBattle", new ElementConstructorClosureFunction(AddBattleEffectsToCurrentBattleClosure.class));
+		mappings.put("addBattleEffectsForNextBattle", addBattleEffectsForNextBattleClosureFunction());
+		mappings.put("addBattleEffectsToCurrentBattle", addBattleEffectsToCurrentBattleClosureFunction());
 		mappings.put("setPoisonImmunity", new ElementConstructorClosureFunction(SetPoisonImmunity.class));
 		mappings.put("adjustPlayerAttackStrength", new ElementConstructorClosureFunction(AdjustPlayerAttackStrength.class));
 
@@ -83,6 +83,46 @@ public class SpringContext {
 			@Override
 			public Closure apply(Element input) {
 				return new LinkClosure(input, closureLoader(), battleEffectsLoader());
+			}
+		};
+	}
+
+	@Bean
+	public Function<Element, Closure> rollDiceClosureFunction() {
+		return new Function<Element, Closure>() {
+			@Override
+			public Closure apply(Element input) {
+				return new RollDiceClosure(input, closureLoader());
+			}
+		};
+	}
+
+	@Bean
+	public Function<Element, Closure> mustEatMealClosureFunction() {
+		return new Function<Element, Closure>() {
+			@Override
+			public Closure apply(Element input) {
+				return new MustEatMealClosure(input, closureLoader(), battleEffectsLoader());
+			}
+		};
+	}
+
+	@Bean
+	public Function<Element, Closure> addBattleEffectsForNextBattleClosureFunction() {
+		return new Function<Element, Closure>() {
+			@Override
+			public Closure apply(Element input) {
+				return new AddBattleEffectsForNextBattleClosure(input, battleEffectsLoader());
+			}
+		};
+	}
+
+	@Bean
+	public Function<Element, Closure> addBattleEffectsToCurrentBattleClosureFunction() {
+		return new Function<Element, Closure>() {
+			@Override
+			public Closure apply(Element input) {
+				return new AddBattleEffectsToCurrentBattleClosure(input, battleEffectsLoader());
 			}
 		};
 	}

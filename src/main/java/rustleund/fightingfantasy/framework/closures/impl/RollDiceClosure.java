@@ -12,6 +12,7 @@ import org.w3c.dom.NodeList;
 
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.closures.Closure;
+import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.util.DiceRoller;
 
 /**
@@ -20,10 +21,9 @@ import rustleund.fightingfantasy.framework.util.DiceRoller;
 public class RollDiceClosure extends AbstractClosure {
 
 	private int number = 1;
-
 	private Map<Integer, Closure> rollMappings;
 
-	public RollDiceClosure(Element element) {
+	public RollDiceClosure(Element element, ClosureLoader closureLoader) {
 		if (element.hasAttribute("number")) {
 			this.number = Integer.parseInt(element.getAttribute("number"));
 		}
@@ -33,7 +33,7 @@ public class RollDiceClosure extends AbstractClosure {
 		for (int i = 0; i < doActionsElements.getLength(); i++) {
 			Element doActionsElement = (Element) doActionsElements.item(i);
 
-			Closure actionsForElement = DefaultClosureLoader.loadChainedClosure(doActionsElement);
+			Closure actionsForElement = closureLoader.loadClosureFromChildren(doActionsElement);
 
 			String rolls = doActionsElement.getAttribute("rolls");
 			StringTokenizer rollTokenizer = new StringTokenizer(rolls, ",");
