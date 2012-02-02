@@ -1,6 +1,3 @@
-/*
- * Created on Oct 14, 2005
- */
 package rustleund.fightingfantasy.framework.closures.impl;
 
 import java.util.Arrays;
@@ -14,12 +11,10 @@ import org.w3c.dom.Element;
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.PlayerState;
 import rustleund.fightingfantasy.framework.base.Scale;
-import rustleund.fightingfantasy.framework.closures.Closure;
 
-/**
- * @author rustlea
- */
-public class TestStatClosure extends AbstractClosure {
+import com.google.common.base.Predicate;
+
+public class TestStatPredicate implements Predicate<GameState> {
 
 	private static final Map<String, List<Boolean>> VALUES_MAPPINGS = new HashMap<String, List<Boolean>>();
 
@@ -35,11 +30,9 @@ public class TestStatClosure extends AbstractClosure {
 	private List<Boolean> acceptableValues;
 	private Integer valueToCompare;
 	private String stat;
-	private Closure successful;
-	private Closure unsuccessful;
-	private boolean useInitialValue = false;
+	private boolean useInitialValue;
 
-	public TestStatClosure(Element element) {
+	public TestStatPredicate(Element element) {
 		this.stat = element.getAttribute("stat");
 
 		for (String attributeTest : VALUES_MAPPINGS.keySet()) {
@@ -50,23 +43,20 @@ public class TestStatClosure extends AbstractClosure {
 			}
 		}
 
-		this.successful = DefaultClosureLoader.loadClosureFromChildTag(element, "successful");
-		this.unsuccessful = DefaultClosureLoader.loadClosureFromChildTag(element, "unsuccessful");
-
 		this.useInitialValue = element.hasAttribute("useInitialValue") && "true".equals(element.getAttribute("useInitialValue"));
 	}
 
 	@Override
-	public boolean execute(GameState gameState) {
+	public boolean apply(GameState gameState) {
 		try {
 			PlayerState playerState = gameState.getPlayerState();
 
 			Scale statScale = (Scale) PropertyUtils.getProperty(playerState, this.stat);
-			Integer statValue = null;
+			Integer statValue;
 			if (this.useInitialValue) {
 				statValue = statScale.getUpperBound();
 			} else {
-				statValue = Integer.valueOf(statScale.getCurrentValue());
+				statValue = statScale.getCurrentValue();
 			}
 
 			boolean valueIsAcceptable = false;
@@ -77,13 +67,12 @@ public class TestStatClosure extends AbstractClosure {
 			valueIsAcceptable |= acceptableValues.get(2) && (compareResult > 0);
 
 			if (valueIsAcceptable) {
-				return this.successful.execute(gameState);
+				return true;
 			}
-			return this.unsuccessful.execute(gameState);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
 		}
+		return false;
 	}
 
 }

@@ -34,11 +34,11 @@ import rustleund.fightingfantasy.framework.closures.impl.SetFlagClosure;
 import rustleund.fightingfantasy.framework.closures.impl.SetPoisonImmunity;
 import rustleund.fightingfantasy.framework.closures.impl.TestAnyFlagPredicate;
 import rustleund.fightingfantasy.framework.closures.impl.TestClosure;
-import rustleund.fightingfantasy.framework.closures.impl.TestFlagClosure;
-import rustleund.fightingfantasy.framework.closures.impl.TestItemClosure;
+import rustleund.fightingfantasy.framework.closures.impl.TestFlagPredicate;
+import rustleund.fightingfantasy.framework.closures.impl.TestItemPredicate;
 import rustleund.fightingfantasy.framework.closures.impl.TestLuckClosure;
-import rustleund.fightingfantasy.framework.closures.impl.TestSkillClosure;
-import rustleund.fightingfantasy.framework.closures.impl.TestStatClosure;
+import rustleund.fightingfantasy.framework.closures.impl.TestSkillPredicate;
+import rustleund.fightingfantasy.framework.closures.impl.TestStatPredicate;
 
 import com.google.common.base.Function;
 
@@ -55,14 +55,14 @@ public class SpringContext {
 		mappings.put("link", linkClosureFunction());
 		mappings.put("addEnemies", new ElementConstructorClosureFunction(AddEnemiesClosure.class));
 		mappings.put("addItem", new ElementConstructorClosureFunction(AddItemClosure.class));
-		mappings.put("testItem", new ElementConstructorClosureFunction(TestItemClosure.class));
+		mappings.put("testItem", testItemClosureFunction());
 		mappings.put("removeItem", new ElementConstructorClosureFunction(RemoveItemClosure.class));
 		mappings.put("testLuck", new ElementConstructorClosureFunction(TestLuckClosure.class));
-		mappings.put("testSkill", new ElementConstructorClosureFunction(TestSkillClosure.class));
-		mappings.put("testFlag", new ElementConstructorClosureFunction(TestFlagClosure.class));
+		mappings.put("testSkill", testSkillClosureFunction());
+		mappings.put("testFlag", testFlagClosureFunction());
 		mappings.put("testAnyFlag", testAnyFlagClosureFunction());
 		mappings.put("setFlag", new ElementConstructorClosureFunction(SetFlagClosure.class));
-		mappings.put("testStat", new ElementConstructorClosureFunction(TestStatClosure.class));
+		mappings.put("testStat", testStatClosureFunction());
 		mappings.put("restoreScale", new ElementConstructorClosureFunction(RestoreScaleClosure.class));
 		mappings.put("rollDice", rollDiceClosureFunction());
 		mappings.put("initPlayer", new ElementConstructorClosureFunction(InitPlayerStateClosure.class));
@@ -84,6 +84,46 @@ public class SpringContext {
 			@Override
 			public Closure apply(Element input) {
 				return new LinkClosure(input, closureLoader(), battleEffectsLoader());
+			}
+		};
+	}
+
+	@Bean
+	public Function<Element, Closure> testItemClosureFunction() {
+		return new Function<Element, Closure>() {
+			@Override
+			public Closure apply(Element input) {
+				return new TestClosure(new TestItemPredicate(input), closureLoader(), input);
+			}
+		};
+	}
+
+	@Bean
+	public Function<Element, Closure> testSkillClosureFunction() {
+		return new Function<Element, Closure>() {
+			@Override
+			public Closure apply(Element input) {
+				return new TestClosure(new TestSkillPredicate(input), closureLoader(), input);
+			}
+		};
+	}
+
+	@Bean
+	public Function<Element, Closure> testStatClosureFunction() {
+		return new Function<Element, Closure>() {
+			@Override
+			public Closure apply(Element input) {
+				return new TestClosure(new TestStatPredicate(input), closureLoader(), input);
+			}
+		};
+	}
+
+	@Bean
+	public Function<Element, Closure> testFlagClosureFunction() {
+		return new Function<Element, Closure>() {
+			@Override
+			public Closure apply(Element input) {
+				return new TestClosure(new TestFlagPredicate(input), closureLoader(), input);
 			}
 		};
 	}

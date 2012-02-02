@@ -19,7 +19,7 @@ public class TestAnyFlagPredicate implements Predicate<GameState> {
 	/**
 	 * Main constructor
 	 * 
-	 * @param An {@link Element} that represents an {@code<anyFlag />} element
+	 * @param An {@link Element} that represents an {@code<anyFlag />} element. Must contain an <code>ids</code> attribute with comma-separated integers representing flag ids.
 	 */
 	public TestAnyFlagPredicate(Element element) {
 		this.flagIds = new ArrayList<Integer>();
