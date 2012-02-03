@@ -33,7 +33,6 @@ public class PageState {
 
 	private GameState gameState = null;
 	private String pagetext = null;
-	private Map<Integer, Item> items = null;
 	private Map<String, Integer> keepMinimums = null;
 	private Map<Integer, Element> testLucks = null;
 	private List<Closure> immediateCommands = null;
@@ -48,13 +47,12 @@ public class PageState {
 		this.gameState = gameState;
 
 		loadPagetext(document);
-		loadItems(document);
-		loadKeepMinimum(document);
-		loadTestLucks(document);
-		loadImmediate(document);
-		loadTexts(document);
-		loadMultis(document);
 		loadBattles(document);
+		loadImmediate(document);
+		loadKeepMinimum(document);
+		loadMultis(document);
+		loadTestLucks(document);
+		loadTexts(document);
 	}
 
 	private void loadPagetext(Document document) {
@@ -64,30 +62,12 @@ public class PageState {
 		pagetext = writeTag(htmlNode);
 	}
 
-	private void loadItems(Document document) {
-		items = new HashMap<Integer, Item>();
-		NodeList itemTags = document.getElementsByTagName("item");
-		for (int i = 0; i < itemTags.getLength(); i++) {
-			Element thisItemTag = (Element) itemTags.item(i);
-			Item thisItem = new Item();
-			Integer thisItemsId = new Integer(thisItemTag.getAttribute("id"));
-			thisItem.setId(thisItemsId);
-			thisItem.setName(thisItemTag.getAttribute("name"));
-			thisItem.setPrice(new Integer(thisItemTag.getAttribute("price")));
-			String limit = thisItemTag.getAttribute("limit");
-			if (!limit.equals("")) {
-				thisItem.setLimit(new Integer(limit));
-			}
-			items.put(thisItemsId, thisItem);
-		}
-	}
-
 	private void loadKeepMinimum(Document document) {
 		keepMinimums = new HashMap<String, Integer>();
 		NodeList keepMinimumTags = document.getElementsByTagName("keepminimum");
 		for (int i = 0; i < keepMinimumTags.getLength(); i++) {
 			Element thisKeepMinimumTag = (Element) keepMinimumTags.item(i);
-			keepMinimums.put(thisKeepMinimumTag.getAttribute("scale"), new Integer(thisKeepMinimumTag.getAttribute("value")));
+			keepMinimums.put(thisKeepMinimumTag.getAttribute("scale"), Integer.valueOf(thisKeepMinimumTag.getAttribute("value")));
 		}
 	}
 
@@ -183,15 +163,6 @@ public class PageState {
 			return keepMinimums.get(scaleType);
 		}
 		return -1;
-	}
-
-	public Item getItem(int itemId) {
-		Item result = null;
-		Integer itemIdInteger = new Integer(itemId);
-		if (items.containsKey(itemIdInteger)) {
-			result = items.get(itemIdInteger);
-		}
-		return result;
 	}
 
 	public String getPagetext() {

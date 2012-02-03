@@ -16,10 +16,10 @@ public class EnemyState extends AbstractEntityState {
 		this.name = enemyTag.getAttribute("name");
 
 		Integer skillInteger = new Integer(enemyTag.getAttribute("skill"));
-		this.skill = new Scale(new Integer(0), skillInteger, skillInteger, true);
+		this.skill = new Scale(0, skillInteger, skillInteger, true);
 
 		Integer staminaInteger = new Integer(enemyTag.getAttribute("stamina"));
-		this.stamina = new Scale(new Integer(0), staminaInteger, staminaInteger, true);
+		this.stamina = new Scale(0, staminaInteger, staminaInteger, true);
 
 		if (enemyTag.hasAttribute("poisonedWeapon")) {
 			this.poisonedWeapon = Boolean.valueOf(enemyTag.getAttribute("poisonedWeapon"));

@@ -61,7 +61,10 @@ public class BattleState {
 		loadEnemies((Element) battleTag.getElementsByTagName("enemies").item(0));
 
 		this.allBattleEffects = new ArrayList<BattleEffects>();
-		loadEffects((Element) battleTag.getElementsByTagName("effects").item(0), pageState.getGameState().getPlayerState());
+		NodeList effectsNodeList = battleTag.getElementsByTagName("effects");
+		if (effectsNodeList.getLength() > 0) {
+			loadEffects((Element) effectsNodeList.item(0), pageState.getGameState().getPlayerState());
+		}
 
 		this.additionalMessages = new HashMap<BattleMessagePosition, String>();
 	}

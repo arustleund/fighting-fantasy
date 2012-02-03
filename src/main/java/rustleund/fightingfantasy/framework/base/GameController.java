@@ -48,18 +48,19 @@ public class GameController implements HyperlinkListener {
 			this.gameState.clearMessage();
 
 			String command = e.getURL().getHost();
+			int port = e.getURL().getPort();
 			if (command.equals("link")) {
-				loadPageIntoGameState(e.getURL().getPort());
+				loadPageIntoGameState(port);
 			} else if (command.equals("buyItem")) {
-				addItemToInventory(e.getURL().getPort());
+				addItemToInventory(port);
 			} else if (command.equals("testluck")) {
-				testLuck(e.getURL().getPort());
+				testLuck(port);
 			} else if (command.equals("domulti")) {
-				doMultiCommand(e.getURL().getPort());
+				doMultiCommand(port);
 			} else if (command.equals("dobattle")) {
-				doBattle(e.getURL().getPort());
+				doBattle(port);
 			} else if (command.equals("doflee")) {
-				doFlee(e.getURL().getPort());
+				doFlee(port);
 			}
 
 			updateViews();

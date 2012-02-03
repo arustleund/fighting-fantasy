@@ -1,69 +1,154 @@
-	<immediate>
-		
-	</immediate>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- <page> is the main element of the schema. No attributes. -->
+<page>
+	<!-- <pagenumber> is for reference only. No attributes. Content is the page number. -->
+	<pagenumber>106</pagenumber>
 	
-	<text id="0">
-		
-	</text>
-	
+	<!-- 
+	<pagetext> is required. This is the text that will display when the user first goes to the page.
+	No attributes. HTML content. Must start with a <html> tag.
+	 -->
+	<pagetext>
+		<html>
+			<!-- Some commands are supported within hyperlinks -->
+			
+			<!-- Goes to the pagenumber specified by the port. -->
+			<a href="http://link:14">Go to page 14</a>
+			
+			<!-- Buys the item with the ID specified by the port. -->
+			<a href="http://buyItem:21">Buy Item 21</a>
+			
+			<!-- Performs the <testLuck> with the ID specified by the port. -->
+			<a href="http://testluck:0">Test Luck 0</a>
+			
+			<!-- Performs the <multicommand> with the ID specified by the port. -->
+			<a href="http://domulti:0">Perform multicommand 0</a>
+			
+			<!-- Starts the <battle> with the ID specified by the port. -->
+			<a href="http://dobattle:0">Start battle 0</a>
+			
+			<!-- Flees the <battle> with the ID specified by the port. -->
+			<a href="http://doflee:0">Flee battle 0</a>
+		</html>
+	</pagetext>
+
+	<!-- 
+	<battle> defines a battle that can be fought on this page. More than one <battle> can be defined. Not required.
+	Attributes:
+		id: Required. unique identifier that can be referred to by links and other commands. Only has to be unique for this page.
+		canFlee: Not Required. Default: false. Set to "true" if the player can flee the battle, "false" if they are not allowed to
+		fightEnemiesTogether: Not Required. Default: true. Set to "true" if all enemies should attack at once, "false" if the enemies
+		can be battled one at a time.
+	-->
 	<battle id="0" canFlee="false">
+		<!-- <enemies> defines the enemies to be fought in this battle. It is Required, and there can be only one. -->
 		<enemies>
+			<!-- List all of the enemies here. No limit. At least one is required. -->
+			<!-- 
+			<enemy> defines an enemy to be fought in the battle.
+			Attributes:
+				name: Required. The name that will be displayed for this enemy during the battle.
+				skill: Required. The enemy's skill level.
+				stamina: Required. The enemy's stamina level.
+				poisonedWeapon: Not Required. Default: false. Set to "true" if the enemy has a poisoned weapon.
+			 -->
 			<enemy name="GREEN STALKER" skill="10" stamina="10" />
+			<enemy name="GREEN STALKER W POISON" skill="12" stamina="8" poisonedWeapon="true" />
 		</enemies>
+		<!-- <effects> defines any effects that should be executed at certain times in the battle. Not required. -->
 		<effects>
+			<!-- executed at the start of the battle before any attacks. Not Required. -->
+			<startBattle>
+				<!-- put any number of commands here (see command reference below) -->
+			</startBattle>
+			
+			<!-- executed at the start of every round of battle before any attacks. Not Required. -->
+			<startRound>
+				<!-- put any number of commands here (see command reference below) -->
+			</startRound>
+			
+			<!-- executed every time the player is hit with an attack. Not Required. -->
+			<playerHit>
+				<!-- put any number of commands here (see command reference below) -->
+			</playerHit>
+			
+			<!-- executed at the end of every round of battle after all attacks. Not Required. -->
+			<endRound>
+				<!-- put any number of commands here (see command reference below) -->
+			</endRound>
+			
+			<!-- executed at the end of the battle when all enemies are dead. Not Required. -->
 			<endBattle>
-				<link page="208" />
+				<!-- put any number of commands here (see command reference below) -->
 			</endBattle>
+			
+			<!-- executed if/when the player flees the battle. Not Required. -->
+			<playerFlee>
+				<!-- put any number of commands here (see command reference below) -->
+			</playerFlee>
 		</effects>
 	</battle>
 
-		<setFlag id="0" />
+	<!-- <immediate> defines any commands that should be executed as soon as the page loads. Not Required. -->
+	<immediate>
+		<!-- put any number of commands here (see command reference below) -->
+	</immediate>
+	
+	<!-- <keepminimum> places a hard limit on a player scale. Used to control the <addItem> action. <addItem> action will
+	not succeed unless the player can keep at least the number specified by <keepminimum>. Not Required.
+	Attributes:
+		scale: the player scale to test. Required.
+		value: the minimum value required to satisfy the requirement. Required. -->
+	<keepminimum scale="gold" value="2" />
+
+	<text id="0">
 		
-		<testFlag id="12">
-			<successful>
-				
-			</successful>
-			<unsuccessful>
-				
-			</unsuccessful>
-		</testFlag>
-		
-		<testStat stat="stamina" atLeast="20">
-			<successful>
-				<displayText id="0" />
-			</successful>
-			<unsuccessful>
-				<displayText id="1" />
-			</unsuccessful>
-		</testStat>
-		
-		<displayText id="0" />
-		
-		<link page="208" />
-		
-		<adjustscale type="time" amount="2" promptOnFail="true" />
-		<!-- time, stamina, nemesis, honor -->
-		
-		<addItem id="21" price="4" quantity="2" pageLimit="4" />
-		
-		<clearPoisonDamage />
-		
-		<setPoisonImmunity immune="false" />
-		
-		<mustEatMeal amount="2" />
-		
-		<addBattleEffectsForNextBattle>
-			<battleEffects>
-				<startBattle>
-					
-				</startBattle>
-			</battleEffects>
-		</addBattleEffectsForNextBattle>
+	</text>
+
+	<setFlag id="0" />
+
+	<testFlag id="12">
+		<successful>
+
+		</successful>
+		<unsuccessful>
+
+		</unsuccessful>
+	</testFlag>
+
+	<testStat stat="stamina" atLeast="20">
+		<successful>
+			<displayText id="0" />
+		</successful>
+		<unsuccessful>
+			<displayText id="1" />
+		</unsuccessful>
+	</testStat>
+
+	<displayText id="0" />
+
+	<link page="208" />
+
+	<adjustscale type="time" amount="2" promptOnFail="true" />
+	<!-- time, stamina, nemesis, honor -->
+
+	<addItem id="21" price="4" quantity="2" pageLimit="4" />
+
+	<clearPoisonDamage />
+
+	<setPoisonImmunity immune="false" />
+
+	<mustEatMeal amount="2" />
+
+	<addBattleEffectsForNextBattle>
+		<battleEffects>
+			<startBattle>
+
+			</startBattle>
+		</battleEffects>
+	</addBattleEffectsForNextBattle>
 
 	<multicommand id="0">
-		
+
 	</multicommand>
-	
-	<a href="http://buyItem:21"></a>
-	<a href="http://domulti:0"></a>
-	Click <a href="http://dobattle:0">here</a> to begin the battle.
+</page>
