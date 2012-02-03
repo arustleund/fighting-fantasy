@@ -16,7 +16,7 @@ import rustleund.fightingfantasy.framework.base.Scale;
 public class AdjustScaleClosure extends AbstractClosure {
 
 	private String scaleName = null;
-	private String amount;
+	private String stringAmount;
 	private boolean promptOnFail;
 	private boolean useAmountAsValue;
 	private boolean useAmountAsPercent;
@@ -25,7 +25,7 @@ public class AdjustScaleClosure extends AbstractClosure {
 
 	public AdjustScaleClosure(Element element) {
 		this.scaleName = element.getAttribute("type");
-		this.amount = element.getAttribute("amount");
+		this.stringAmount = element.getAttribute("amount");
 		this.promptOnFail = attributeValue(element, "promptOnFail");
 		this.useAmountAsValue = attributeValue(element, "useAmountAsValue");
 		this.useAmountAsPercent = attributeValue(element, "useAmountAsPercent");
@@ -41,6 +41,7 @@ public class AdjustScaleClosure extends AbstractClosure {
 			scale = (Scale) PropertyUtils.getProperty(entity(gameState), scaleName);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		}
 
 		int amountToAdjust;
@@ -49,7 +50,7 @@ public class AdjustScaleClosure extends AbstractClosure {
 			if (scale.getUpperBound() == null) {
 				throw new IllegalArgumentException("Scale must have an upper bound");
 			}
-			double percentAdjustment = Double.parseDouble(this.amount);
+			double percentAdjustment = Double.parseDouble(this.stringAmount);
 			double percentResult = scale.getUpperBound().intValue() * percentAdjustment;
 			if ("up".equalsIgnoreCase(this.round)) {
 				amountToAdjust = (int) Math.ceil(percentResult);
@@ -59,7 +60,7 @@ public class AdjustScaleClosure extends AbstractClosure {
 				amountToAdjust = (int) percentResult;
 			}
 		} else {
-			amountToAdjust = Integer.parseInt(this.amount);
+			amountToAdjust = Integer.parseInt(this.stringAmount);
 			if (this.useAmountAsValue) {
 				if (this.adjustInitialValue) {
 					if (scale.getUpperBound() != null) {
@@ -74,6 +75,7 @@ public class AdjustScaleClosure extends AbstractClosure {
 		if (promptOnFail) {
 			try {
 				scale.adjustCurrentValue(amountToAdjust);
+				return true;
 			} catch (IndexOutOfBoundsException e1) {
 				gameState.setMessage("You cannot perform this action");
 				return false;

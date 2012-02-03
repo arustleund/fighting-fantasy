@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import rustleund.fightingfantasy.framework.util.DiceRoller;
-import rustleund.fightingfantasy.framework.util.ItemUtil;
 
 /**
  * @author rustlea
@@ -28,21 +27,21 @@ public class PlayerState extends AbstractEntityState {
 	private int poisonDamage;
 	private boolean poisonImmunity = false;
 
-	public PlayerState(String name) {
+	public PlayerState(String name, List<Item> items) {
 		int initialSkill = DiceRoller.rollOneDie() + 6;
 		int initialStamina = DiceRoller.rollDice(2) + 12;
 		int initialLuck = DiceRoller.rollOneDie() + 6;
 
 		int initialGold = DiceRoller.rollDice(2) + 3;
 
-		init(name, initialSkill, initialStamina, initialLuck, 12, 0, 0, initialGold, 0);
+		init(name, initialSkill, initialStamina, initialLuck, 12, 0, 0, initialGold, 0, items);
 	}
 
-	public PlayerState(String name, int skill, int stamina, int luck, int provisions, int honor, int nemesis, int gold, int time) {
-		init(name, skill, stamina, luck, provisions, honor, nemesis, gold, time);
+	public PlayerState(String name, int skill, int stamina, int luck, int provisions, int honor, int nemesis, int gold, int time, List<Item> items) {
+		init(name, skill, stamina, luck, provisions, honor, nemesis, gold, time, items);
 	}
 
-	private void init(String name, int skill, int stamina, int luck, int provisions, int honor, int nemesis, int gold, int time) {
+	private void init(String name, int skill, int stamina, int luck, int provisions, int honor, int nemesis, int gold, int time, List<Item> items) {
 		this.name = name;
 		this.skill = new Scale(0, skill, skill, true);
 		this.stamina = new Scale(0, stamina, stamina, true);
@@ -56,12 +55,9 @@ public class PlayerState extends AbstractEntityState {
 		this.items = new HashMap<Integer, Item>();
 		this.flags = new HashMap<Integer, Boolean>();
 
-		ItemUtil itemUtil = ItemUtil.getInstance();
-
-		addItem(itemUtil.getItem(0));
-		addItem(itemUtil.getItem(1));
-		addItem(itemUtil.getItem(2));
-		addItem(itemUtil.getItem(3));
+		for (Item item : items) {
+			addItem(item);
+		}
 	}
 
 	public void takePoisonDamage(int amount) {

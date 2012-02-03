@@ -3,6 +3,8 @@
  */
 package rustleund.fightingfantasy.main;
 
+import java.util.ArrayList;
+
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -14,6 +16,7 @@ import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.GameController;
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.GameView;
+import rustleund.fightingfantasy.framework.base.Item;
 import rustleund.fightingfantasy.framework.base.PlayerState;
 import rustleund.fightingfantasy.framework.base.Scale;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
@@ -58,7 +61,7 @@ public class Main {
 		GameController gameController = new GameController(closureLoader, battleEffectsLoader);
 		GameState gameState = new GameState();
 
-		PlayerState playerState = new PlayerState("YOU");
+		PlayerState playerState = new PlayerState("YOU", new ArrayList<Item>());
 		if (isDebugMode) {
 			adjustScaleForDebug(playerState.getSkill(), 10);
 			adjustScaleForDebug(playerState.getLuck(), 15);
