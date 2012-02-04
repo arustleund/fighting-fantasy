@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.StyleSheet;
 
 /**
  * @author rustlea
@@ -65,7 +66,10 @@ public class GameView extends JPanel implements ActionListener {
 
 		htmlEditorPane = new JEditorPane("text/html", "");
 		htmlEditorPane.setEditable(false);
-		((HTMLDocument) htmlEditorPane.getDocument()).setBase(getBaseUrl());
+		HTMLDocument htmlDocument = (HTMLDocument) htmlEditorPane.getDocument();
+		htmlDocument.setBase(getBaseUrl());
+		StyleSheet styleSheet = htmlDocument.getStyleSheet();
+		styleSheet.addRule("body { font-family: \"Arial\",arial,sans-serif; margin: 5px; }");
 		htmlEditorPane.addHyperlinkListener(controller);
 
 		this.htmlEditorScrollPane = new JScrollPane(htmlEditorPane);
