@@ -57,15 +57,15 @@ public class AddItemClosure extends AbstractClosure {
 			gameState.setMessage("This location cannot sell any more of the " + item.getName());
 			return false;
 		}
-		if (pageState.hasKeepMinimumForScale("gold") && ((playerState.getGold().getCurrentValue() - getPrice(item.getPrice())) < pageState.getKeepMinimumForScale("gold"))) {
+		if (pageState.hasKeepMinimumForScale("gold") && ((playerState.getGold().getCurrentValue() - getPrice(item.getDefaultPrice())) < pageState.getKeepMinimumForScale("gold"))) {
 			gameState.setMessage("Buying the " + item.getName() + " would put you below the minimum of " + pageState.getKeepMinimumForScale("gold") + " Gold Pieces");
 			return false;
 		}
-		if (playerState.getGold().getCurrentValue() < getPrice(item.getPrice())) {
+		if (playerState.getGold().getCurrentValue() < getPrice(item.getDefaultPrice())) {
 			gameState.setMessage("You do not have sufficient Gold to buy the " + item.getName());
 			return false;
 		}
-		playerState.getGold().adjustCurrentValue(getPrice(item.getPrice()) * -1);
+		playerState.getGold().adjustCurrentValue(getPrice(item.getDefaultPrice()) * -1);
 		for (int i = 0; i < this.quantity; i++) {
 			playerState.addItem(item);
 			this.pageBuys++;

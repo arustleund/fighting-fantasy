@@ -40,10 +40,10 @@ public class DefaultItemUtil implements ItemUtil {
 	}
 
 	private void loadItemTag(Element itemElement) {
-		Item item = new Item();
-		item.setId(new Integer(itemElement.getAttribute("id")));
-		item.setName(itemElement.getAttribute("name"));
-		item.setPrice(Integer.valueOf(itemElement.getAttribute("price")));
+		Integer id = Integer.valueOf(itemElement.getAttribute("id"));
+		String itemName = itemElement.getAttribute("name");
+		Integer defaultPrice = Integer.valueOf(itemElement.getAttribute("price"));
+		Item item = new Item(id, itemName, defaultPrice);
 		if (itemElement.hasAttribute("limit")) {
 			item.setLimit(Integer.valueOf(itemElement.getAttribute("limit")));
 		}
