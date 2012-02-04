@@ -7,14 +7,16 @@ import org.w3c.dom.Element;
 
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.Item;
+import rustleund.fightingfantasy.framework.base.ItemUtil;
 import rustleund.fightingfantasy.framework.base.PageState;
 import rustleund.fightingfantasy.framework.base.PlayerState;
-import rustleund.fightingfantasy.framework.util.ItemUtil;
 
 /**
  * @author rustlea
  */
 public class AddItemClosure extends AbstractClosure {
+
+	private ItemUtil itemUtil;
 
 	private int itemId;
 	private int price = -1;
@@ -22,7 +24,9 @@ public class AddItemClosure extends AbstractClosure {
 	private int pageLimit = -1;
 	private int pageBuys = 0;
 
-	public AddItemClosure(Element addItemElement) {
+	public AddItemClosure(Element addItemElement, ItemUtil itemUtil) {
+		this.itemUtil = itemUtil;
+
 		this.itemId = Integer.valueOf(addItemElement.getAttribute("id"));
 		if (addItemElement.hasAttribute("price")) {
 			this.price = Integer.valueOf(addItemElement.getAttribute("price"));
@@ -35,15 +39,16 @@ public class AddItemClosure extends AbstractClosure {
 		}
 	}
 
-	public AddItemClosure(int itemId) {
+	public AddItemClosure(int itemId, ItemUtil itemUtil) {
 		this.itemId = itemId;
+		this.itemUtil = itemUtil;
 	}
 
 	@Override
 	public boolean execute(GameState gameState) {
 		PlayerState playerState = gameState.getPlayerState();
 		PageState pageState = gameState.getPageState();
-		Item item = ItemUtil.getInstance().getItem(itemId);
+		Item item = this.itemUtil.getItem(itemId);
 		if (item.hasLimit() && playerState.itemCount(itemId) + this.quantity > item.getLimit()) {
 			gameState.setMessage("Buying the " + item.getName() + " would put you above the maximum amount allowed (" + item.getLimit() + ")");
 			return false;

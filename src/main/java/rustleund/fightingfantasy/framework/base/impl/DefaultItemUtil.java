@@ -1,8 +1,6 @@
-/*
- * Created on Jul 12, 2004
- */
-package rustleund.fightingfantasy.framework.util;
+package rustleund.fightingfantasy.framework.base.impl;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,28 +11,25 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import rustleund.fightingfantasy.framework.base.Item;
+import rustleund.fightingfantasy.framework.base.ItemUtil;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 
-/**
- * @author rustlea
- */
-public class ItemUtil {
+public class DefaultItemUtil implements ItemUtil {
 
 	private ClosureLoader closureLoader;
 
-	private Map<Integer, Item> items = null;
+	private Map<Integer, Item> items;
 
-	private static ItemUtil instance = null;
-
-	private ItemUtil() {
-		items = new HashMap<Integer, Item>();
+	public DefaultItemUtil(ClosureLoader closureLoader) {
+		this.closureLoader = closureLoader;
 	}
 
-	public void init(ClosureLoader closureLoader) {
-		this.closureLoader = closureLoader;
+	@Override
+	public void init(File itemConfiguration) {
+		this.items = new HashMap<Integer, Item>();
 
 		try {
-			Document itemDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(ClassLoader.getSystemResourceAsStream("nightdragon/config/items.xml"));
+			Document itemDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(itemConfiguration);
 			NodeList itemTags = itemDocument.getElementsByTagName("item");
 			for (int i = 0; i < itemTags.getLength(); i++) {
 				loadItemTag((Element) itemTags.item(i));
@@ -48,9 +43,9 @@ public class ItemUtil {
 		Item item = new Item();
 		item.setId(new Integer(itemElement.getAttribute("id")));
 		item.setName(itemElement.getAttribute("name"));
-		item.setPrice(new Integer(itemElement.getAttribute("price")));
+		item.setPrice(Integer.valueOf(itemElement.getAttribute("price")));
 		if (itemElement.hasAttribute("limit")) {
-			item.setLimit(new Integer(itemElement.getAttribute("limit")));
+			item.setLimit(Integer.valueOf(itemElement.getAttribute("limit")));
 		}
 		if (itemElement.hasChildNodes()) {
 			item.setUseItem(this.closureLoader.loadClosureFromChildren(itemElement));
@@ -63,15 +58,9 @@ public class ItemUtil {
 		items.put(item.getId(), item);
 	}
 
-	public static ItemUtil getInstance() {
-		if (instance == null) {
-			instance = new ItemUtil();
-		}
-		return instance;
-	}
-
+	@Override
 	public Item getItem(int itemId) {
-		return items.get(new Integer(itemId));
+		return this.items.get(itemId);
 	}
 
 }

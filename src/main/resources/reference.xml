@@ -184,6 +184,8 @@
 		<enemy name="Third PILGRIM" skill="8" stamina="8" />
 	</addEnemies>
 
+	<addItem id="21" price="4" quantity="2" pageLimit="4" />
+
 	<setFlag id="0" />
 
 	<testFlag id="12">
@@ -211,7 +213,6 @@
 	<adjustscale type="time" amount="2" promptOnFail="true" />
 	<!-- time, stamina, nemesis, honor -->
 
-	<addItem id="21" price="4" quantity="2" pageLimit="4" />
 
 	<clearPoisonDamage />
 

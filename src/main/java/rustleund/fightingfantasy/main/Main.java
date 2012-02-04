@@ -3,6 +3,8 @@
  */
 package rustleund.fightingfantasy.main;
 
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
@@ -17,11 +19,11 @@ import rustleund.fightingfantasy.framework.base.GameController;
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.GameView;
 import rustleund.fightingfantasy.framework.base.Item;
+import rustleund.fightingfantasy.framework.base.ItemUtil;
 import rustleund.fightingfantasy.framework.base.PlayerState;
 import rustleund.fightingfantasy.framework.base.Scale;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
-import rustleund.fightingfantasy.framework.util.ItemUtil;
 import rustleund.fightingfantasy.ioc.SpringContext;
 
 /**
@@ -55,10 +57,15 @@ public class Main {
 
 		ClosureLoader closureLoader = springContext.closureLoader();
 		BattleEffectsLoader battleEffectsLoader = springContext.battleEffectsLoader();
+		ItemUtil itemUtil = springContext.itemUtil();
 
-		ItemUtil.getInstance().init(closureLoader);
+		try {
+			itemUtil.init(new File(ClassLoader.getSystemResource("nightdragon/config/items.xml").toURI()));
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
 
-		GameController gameController = new GameController(closureLoader, battleEffectsLoader);
+		GameController gameController = new GameController(closureLoader, battleEffectsLoader, itemUtil);
 		GameState gameState = new GameState();
 
 		PlayerState playerState = new PlayerState("YOU", new ArrayList<Item>());

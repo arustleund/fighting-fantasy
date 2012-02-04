@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.w3c.dom.Element;
 
 import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
+import rustleund.fightingfantasy.framework.base.ItemUtil;
 import rustleund.fightingfantasy.framework.base.impl.DefaultBattleEffectsLoader;
+import rustleund.fightingfantasy.framework.base.impl.DefaultItemUtil;
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.AddBattleEffectsForNextBattleClosure;
@@ -53,14 +55,14 @@ public class SpringContext {
 		mappings.put("addBattleEffectsToCurrentBattle", addBattleEffectsToCurrentBattleClosureFunction());
 		mappings.put("addBattleMessage", new ElementConstructorClosureFunction(AddBattleMessageClosure.class));
 		mappings.put("addEnemies", new ElementConstructorClosureFunction(AddEnemiesClosure.class));
-		mappings.put("addItem", new ElementConstructorClosureFunction(AddItemClosure.class));
+		mappings.put("addItem", addItemClosureFunction());
 		mappings.put("adjustEnemyScale", new ElementConstructorClosureFunction(AdjustEnemyScaleClosure.class));
 		mappings.put("adjustPlayerAttackStrength", new ElementConstructorClosureFunction(AdjustPlayerAttackStrength.class));
 		mappings.put("adjustscale", new ElementConstructorClosureFunction(AdjustScaleClosure.class));
 		mappings.put("clearBattleMessage", new ElementConstructorClosureFunction(ClearBattleMessageClosure.class));
 		mappings.put("clearPoisonDamage", new ElementConstructorClosureFunction(ClearPoisonDamageClosure.class));
 		mappings.put("displayText", new ElementConstructorClosureFunction(DisplayTextClosure.class));
-		mappings.put("initPlayer", new ElementConstructorClosureFunction(InitPlayerStateClosure.class));
+		mappings.put("initPlayer", initPlayerStateClosureFunction());
 		mappings.put("link", linkClosureFunction());
 		mappings.put("mustEatMeal", mustEatMealClosureFunction());
 		mappings.put("removeItem", new ElementConstructorClosureFunction(RemoveItemClosure.class));
@@ -76,6 +78,26 @@ public class SpringContext {
 		mappings.put("testStat", testStatClosureFunction());
 
 		return new DefaultClosureLoader(mappings);
+	}
+
+	@Bean
+	public Function<Element, Closure> initPlayerStateClosureFunction() {
+		return new Function<Element, Closure>() {
+			@Override
+			public Closure apply(Element input) {
+				return new InitPlayerStateClosure(itemUtil());
+			}
+		};
+	}
+
+	@Bean
+	public Function<Element, Closure> addItemClosureFunction() {
+		return new Function<Element, Closure>() {
+			@Override
+			public Closure apply(Element input) {
+				return new AddItemClosure(input, itemUtil());
+			}
+		};
 	}
 
 	@Bean
@@ -181,6 +203,11 @@ public class SpringContext {
 	@Bean
 	public BattleEffectsLoader battleEffectsLoader() {
 		return new DefaultBattleEffectsLoader(closureLoader());
+	}
+
+	@Bean
+	public ItemUtil itemUtil() {
+		return new DefaultItemUtil(closureLoader());
 	}
 
 }

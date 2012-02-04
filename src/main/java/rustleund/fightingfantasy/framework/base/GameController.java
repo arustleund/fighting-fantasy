@@ -22,14 +22,16 @@ public class GameController implements HyperlinkListener {
 
 	private ClosureLoader closureLoader;
 	private BattleEffectsLoader battleEffectsLoader;
+	private ItemUtil itemUtil;
 
 	private List<GameView> gameViews;
 	private GameState gameState;
 
-	public GameController(ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
+	public GameController(ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader, ItemUtil itemUtil) {
 		this.gameViews = new ArrayList<GameView>();
 		this.closureLoader = closureLoader;
 		this.battleEffectsLoader = battleEffectsLoader;
+		this.itemUtil = itemUtil;
 	}
 
 	public void addView(GameView view) {
@@ -128,7 +130,7 @@ public class GameController implements HyperlinkListener {
 	}
 
 	public void addItemToInventory(int itemId) {
-		new AddItemClosure(itemId).execute(gameState);
+		new AddItemClosure(itemId, itemUtil).execute(gameState);
 	}
 
 	private void loadPageIntoGameState(int pageNumber) {

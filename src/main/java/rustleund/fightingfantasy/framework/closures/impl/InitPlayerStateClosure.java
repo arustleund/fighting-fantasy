@@ -3,11 +3,9 @@
  */
 package rustleund.fightingfantasy.framework.closures.impl;
 
-import org.w3c.dom.Element;
-
 import rustleund.fightingfantasy.framework.base.GameState;
+import rustleund.fightingfantasy.framework.base.ItemUtil;
 import rustleund.fightingfantasy.framework.base.PlayerState;
-import rustleund.fightingfantasy.framework.util.ItemUtil;
 
 import com.google.common.collect.Lists;
 
@@ -16,14 +14,15 @@ import com.google.common.collect.Lists;
  */
 public class InitPlayerStateClosure extends AbstractClosure {
 
-	public InitPlayerStateClosure(@SuppressWarnings("unused") Element element) {
-		// Must be here to satisfy contract
+	private ItemUtil itemUtl;
+
+	public InitPlayerStateClosure(ItemUtil itemUtil) {
+		this.itemUtl = itemUtil;
 	}
 
 	@Override
 	public boolean execute(GameState gameState) {
-		ItemUtil iu = ItemUtil.getInstance();
-		gameState.setPlayerState(new PlayerState(gameState.getPlayerState().getName(), Lists.newArrayList(iu.getItem(0), iu.getItem(1), iu.getItem(2), iu.getItem(3))));
+		gameState.setPlayerState(new PlayerState(gameState.getPlayerState().getName(), Lists.newArrayList(itemUtl.getItem(0), itemUtl.getItem(1), itemUtl.getItem(2), itemUtl.getItem(3))));
 		return true;
 	}
 
