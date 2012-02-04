@@ -49,31 +49,31 @@ public class SpringContext {
 	public ClosureLoader closureLoader() {
 		Map<String, Function<Element, Closure>> mappings = new HashMap<String, Function<Element, Closure>>();
 
-		mappings.put("adjustscale", new ElementConstructorClosureFunction(AdjustScaleClosure.class));
-		mappings.put("adjustEnemyScale", new ElementConstructorClosureFunction(AdjustEnemyScaleClosure.class));
-		mappings.put("displayText", new ElementConstructorClosureFunction(DisplayTextClosure.class));
-		mappings.put("link", linkClosureFunction());
-		mappings.put("addEnemies", new ElementConstructorClosureFunction(AddEnemiesClosure.class));
-		mappings.put("addItem", new ElementConstructorClosureFunction(AddItemClosure.class));
-		mappings.put("testItem", testItemClosureFunction());
-		mappings.put("removeItem", new ElementConstructorClosureFunction(RemoveItemClosure.class));
-		mappings.put("testLuck", new ElementConstructorClosureFunction(TestLuckClosure.class));
-		mappings.put("testSkill", testSkillClosureFunction());
-		mappings.put("testFlag", testFlagClosureFunction());
-		mappings.put("testAnyFlag", testAnyFlagClosureFunction());
-		mappings.put("setFlag", new ElementConstructorClosureFunction(SetFlagClosure.class));
-		mappings.put("testStat", testStatClosureFunction());
-		mappings.put("restoreScale", new ElementConstructorClosureFunction(RestoreScaleClosure.class));
-		mappings.put("rollDice", rollDiceClosureFunction());
-		mappings.put("initPlayer", new ElementConstructorClosureFunction(InitPlayerStateClosure.class));
-		mappings.put("mustEatMeal", mustEatMealClosureFunction());
-		mappings.put("addBattleMessage", new ElementConstructorClosureFunction(AddBattleMessageClosure.class));
-		mappings.put("clearBattleMessage", new ElementConstructorClosureFunction(ClearBattleMessageClosure.class));
-		mappings.put("clearPoisonDamage", new ElementConstructorClosureFunction(ClearPoisonDamageClosure.class));
 		mappings.put("addBattleEffectsForNextBattle", addBattleEffectsForNextBattleClosureFunction());
 		mappings.put("addBattleEffectsToCurrentBattle", addBattleEffectsToCurrentBattleClosureFunction());
-		mappings.put("setPoisonImmunity", new ElementConstructorClosureFunction(SetPoisonImmunity.class));
+		mappings.put("addBattleMessage", new ElementConstructorClosureFunction(AddBattleMessageClosure.class));
+		mappings.put("addEnemies", new ElementConstructorClosureFunction(AddEnemiesClosure.class));
+		mappings.put("addItem", new ElementConstructorClosureFunction(AddItemClosure.class));
+		mappings.put("adjustEnemyScale", new ElementConstructorClosureFunction(AdjustEnemyScaleClosure.class));
 		mappings.put("adjustPlayerAttackStrength", new ElementConstructorClosureFunction(AdjustPlayerAttackStrength.class));
+		mappings.put("adjustscale", new ElementConstructorClosureFunction(AdjustScaleClosure.class));
+		mappings.put("clearBattleMessage", new ElementConstructorClosureFunction(ClearBattleMessageClosure.class));
+		mappings.put("clearPoisonDamage", new ElementConstructorClosureFunction(ClearPoisonDamageClosure.class));
+		mappings.put("displayText", new ElementConstructorClosureFunction(DisplayTextClosure.class));
+		mappings.put("initPlayer", new ElementConstructorClosureFunction(InitPlayerStateClosure.class));
+		mappings.put("link", linkClosureFunction());
+		mappings.put("mustEatMeal", mustEatMealClosureFunction());
+		mappings.put("removeItem", new ElementConstructorClosureFunction(RemoveItemClosure.class));
+		mappings.put("restoreScale", new ElementConstructorClosureFunction(RestoreScaleClosure.class));
+		mappings.put("rollDice", rollDiceClosureFunction());
+		mappings.put("setFlag", new ElementConstructorClosureFunction(SetFlagClosure.class));
+		mappings.put("setPoisonImmunity", new ElementConstructorClosureFunction(SetPoisonImmunity.class));
+		mappings.put("testAnyFlag", testAnyFlagClosureFunction());
+		mappings.put("testFlag", testFlagClosureFunction());
+		mappings.put("testItem", testItemClosureFunction());
+		mappings.put("testLuck", new ElementConstructorClosureFunction(TestLuckClosure.class));
+		mappings.put("testSkill", testSkillClosureFunction());
+		mappings.put("testStat", testStatClosureFunction());
 
 		return new DefaultClosureLoader(mappings);
 	}

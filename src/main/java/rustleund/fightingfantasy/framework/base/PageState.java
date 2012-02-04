@@ -76,7 +76,7 @@ public class PageState {
 		NodeList testLuckTags = document.getElementsByTagName("testluck");
 		for (int i = 0; i < testLuckTags.getLength(); i++) {
 			Element thisTestLuckTag = (Element) testLuckTags.item(i);
-			testLucks.put(new Integer(thisTestLuckTag.getAttribute("id")), thisTestLuckTag);
+			testLucks.put(Integer.valueOf(thisTestLuckTag.getAttribute("id")), thisTestLuckTag);
 		}
 	}
 

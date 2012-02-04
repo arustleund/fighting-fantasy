@@ -35,7 +35,7 @@
 	<!-- 
 	<battle> defines a battle that can be fought on this page. More than one <battle> can be defined. Not required.
 	Attributes:
-		id: Required. unique identifier that can be referred to by links and other commands. Only has to be unique for this page.
+		id: Required. unique (to this page) identifier that can be referred to by links and other commands.
 		canFlee: Not Required. Default: false. Set to "true" if the player can flee the battle, "false" if they are not allowed to
 		fightEnemiesTogether: Not Required. Default: true. Set to "true" if all enemies should attack at once, "false" if the enemies
 		can be battled one at a time.
@@ -89,21 +89,61 @@
 		</effects>
 	</battle>
 
-	<!-- <immediate> defines any commands that should be executed as soon as the page loads. Not Required. -->
+	<!-- <immediate> defines any commands that should be executed as soon as the page loads. Not Required. No limit.
+	No attributes. -->
 	<immediate>
 		<!-- put any number of commands here (see command reference below) -->
 	</immediate>
 	
 	<!-- <keepminimum> places a hard limit on a player scale. Used to control the <addItem> action. <addItem> action will
-	not succeed unless the player can keep at least the number specified by <keepminimum>. Not Required.
+	not succeed unless the player can keep at least the number specified by <keepminimum>. Not Required. No limit.
 	Attributes:
 		scale: the player scale to test. Required.
 		value: the minimum value required to satisfy the requirement. Required. -->
 	<keepminimum scale="gold" value="2" />
+	
+	<!-- <multicommand> allows the user to specify a set of commands to be executed by a user action on the page (usually 
+	a hyperlink). Not Required. No limit. 
+	Attributes:
+		id: a unique (to this page) identifier that can be referenced by hyperlinks in the text. Required.
+	-->
+	<multicommand id="0">
+		<!-- put any number of commands here (see command reference below) -->
+	</multicommand>
 
+	<!-- <text> defines a group of page text to be displayed at a later time, triggered by an action (usually a hyperlink).
+	First child element will usually be a <p> element. Not Required. No limit.
+	Attributes:
+		id: a unique (to this page) identifier that can be referenced by hyperlinks in the text. Required.
+	 -->	
 	<text id="0">
-		
+		<p>
+			This text will be displayed when an action displays it.
+		</p>
 	</text>
+	
+	<!-- <testluck> defines a "Test Your Luck" instance that can be referenced by other commands or a link.
+	Not required. No Limit.
+	Attributes:
+		id: a unique (to this page) identifier that can be referenced by hyperlinks in the text. Required.
+	-->
+	<testluck id="0">
+		<!-- Text to display if the test is successful. The first child must be a <p> element. -->
+		<successful>
+			<p>
+				Text that displays if the test was successful.
+			</p>
+		</successful>
+		<!-- Text to display if the test is unsuccessful. The first child must be a <p> element. -->
+		<unsuccessful>
+			<p>
+				Text that displays if the test was unsuccessful.
+			</p>
+		</unsuccessful>
+	</testluck>
+	
+	<!-- COMMAND REFERENCE -->
+	<!-- The following commands can be included anywhere a command is valid -->
 
 	<setFlag id="0" />
 
@@ -147,8 +187,5 @@
 			</startBattle>
 		</battleEffects>
 	</addBattleEffectsForNextBattle>
-
-	<multicommand id="0">
-
-	</multicommand>
+	
 </page>
