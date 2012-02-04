@@ -145,6 +145,45 @@
 	<!-- COMMAND REFERENCE -->
 	<!-- The following commands can be included anywhere a command is valid -->
 
+	<!-- Adds the listed battle effects to the next battle that the player is in. -->
+	<addBattleEffectsForNextBattle>
+		<!-- Set children that specify the effects (see <effects> tag under <battle> for more information). -->
+		<battleEffects>
+			<startBattle>
+
+			</startBattle>
+		</battleEffects>
+	</addBattleEffectsForNextBattle>
+	
+	<!-- Immediately adds the listed battle effects to the current battle that the player is in. Player must be in battle. -->
+	<addBattleEffectsToCurrentBattle>
+		<!-- Set children that specify the effects (see <effects> tag under <battle> for more information). -->
+		<battleEffects>
+			<startBattle>
+
+			</startBattle>
+		</battleEffects>
+	</addBattleEffectsToCurrentBattle>
+	
+	<!-- <addBattleMessage> adds a message to the current battle text. Only one message can be displayed in a position at one time.
+	Attributes:
+		message: Required. The message to display.
+		messagePosition: Not Required. Defaults to END. If present, must be one of BEGINNING or END. Defines where the message should
+		be displayed in relation to the existing battle text.
+	-->
+	<addBattleMessage message="This is the message to display." messagePosition="END" />
+	
+	<!-- <addEnemies> adds the <enemy>s defined to the current battle after the specified number of rounds. This command would
+	normally be added under the <startRound> section of a battle effects. If the battle is over before the wait time is over,
+	the enemies will not appear and the battle will be over normally.
+	Attributes:
+		wait: Required. The number of rounds to wait before adding the enemies. For example, if wait is set to 4, there will be 4
+		rounds without the listed enemies. They will appear in the 5th round.
+	-->
+	<addEnemies wait="4">
+		<enemy name="Third PILGRIM" skill="8" stamina="8" />
+	</addEnemies>
+
 	<setFlag id="0" />
 
 	<testFlag id="12">
@@ -180,12 +219,6 @@
 
 	<mustEatMeal amount="2" />
 
-	<addBattleEffectsForNextBattle>
-		<battleEffects>
-			<startBattle>
-
-			</startBattle>
-		</battleEffects>
-	</addBattleEffectsForNextBattle>
+	
 	
 </page>
