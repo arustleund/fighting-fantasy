@@ -230,7 +230,7 @@
 	
 	<!-- <link> immediately sends the player to the specified page.
 	Attributes:
-		page: Required. Integer. The page number to send the player to.
+		page: Required. The page id to send the player to.
 	-->
 	<link page="208" />
 	
@@ -251,12 +251,23 @@
 
 	<setFlag id="0" />
 
-	<testFlag id="12">
+	<setPoisonImmunity immune="false" />
+	
+	<testAnyFlag ids="8,9">
 		<successful>
-
+			<!-- put any number of commands here -->
 		</successful>
 		<unsuccessful>
-
+			<!-- put any number of commands here -->
+		</unsuccessful>
+	</testAnyFlag>
+	
+	<testFlag id="12">
+		<successful>
+			<!-- put any number of commands here -->
+		</successful>
+		<unsuccessful>
+			<!-- put any number of commands here -->
 		</unsuccessful>
 	</testFlag>
 
@@ -270,7 +281,5 @@
 	</testStat>
 
 	<displayText id="0" />
-
-	<setPoisonImmunity immune="false" />
 
 </page>
