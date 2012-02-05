@@ -214,6 +214,40 @@
 		strength. 
 	-->
 	<adjustPlayerAttackStrength amount="-2" />
+	
+	<adjustScale type="time" amount="2" promptOnFail="true" />
+	
+	<clearBattleMessage positionsToClear="BEGINNING" />
+	
+	<clearPoisonDamage />
+	
+	<displayText id="0" />
+	
+	<!-- <initPlayer> initializes the player's state at the beginning of the game. Should be first command called on the first page.
+	Should only be called once per game. No attributes.
+	-->
+	<initPlayer />
+	
+	<!-- <link> immediately sends the player to the specified page.
+	Attributes:
+		page: Required. Integer. The page number to send the player to.
+	-->
+	<link page="208" />
+	
+	<mustEatMeal amount="2" />
+	
+	<removeItem id="11" />
+	
+	<restoreScale type="gold" />
+	
+	<rollDice number="1">
+		<doActions rolls="1">
+			<!-- put any number of commands here -->
+		</doActions>
+		<doActions rolls="5,6">
+			<!-- put any number of commands here -->
+		</doActions>
+	</rollDice>
 
 	<setFlag id="0" />
 
@@ -237,18 +271,6 @@
 
 	<displayText id="0" />
 
-	<link page="208" />
-
-	<adjustScale type="time" amount="2" promptOnFail="true" />
-	<!-- time, stamina, nemesis, honor -->
-
-
-	<clearPoisonDamage />
-
 	<setPoisonImmunity immune="false" />
 
-	<mustEatMeal amount="2" />
-
-	
-	
 </page>
