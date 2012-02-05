@@ -10,7 +10,7 @@
 	</pagetext>
 	<immediate>
 		<removeItem id="17" />
-		<adjustscale type="gold" amount="5" />
+		<adjustScale type="gold" amount="5" />
 		<testFlag id="0">
 			<successful>
 				<displayText id="0" />

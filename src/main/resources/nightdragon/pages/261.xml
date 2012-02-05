@@ -36,7 +36,7 @@
 		</enemies>
 		<effects>
 			<endBattle>
-				<adjustscale type="gold" amount="3" />
+				<adjustScale type="gold" amount="3" />
 				<displayText id="0" />
 			</endBattle>
 		</effects>

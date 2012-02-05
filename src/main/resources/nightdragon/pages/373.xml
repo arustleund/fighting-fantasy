@@ -64,8 +64,8 @@
 		</testFlag>
 	</immediate>
 	<multicommand id="0">
-		<adjustscale type="gold" amount="-1" promptOnFail="true" />
-		<adjustscale type="provisions" amount="1" promptOnFail="true" />
+		<adjustScale type="gold" amount="-1" promptOnFail="true" />
+		<adjustScale type="provisions" amount="1" promptOnFail="true" />
 	</multicommand>
 	<multicommand id="1">
 		<addItem id="7" price="5" />

@@ -15,11 +15,11 @@
 	<immediate>
 		<testStat stat="gold" atLeast="3">
 			<successful>
-				<adjustscale type="gold" amount="-3" />
-				<adjustscale type="time" amount="1" />
+				<adjustScale type="gold" amount="-3" />
+				<adjustScale type="time" amount="1" />
 			</successful>
 			<unsuccessful>
-				<adjustscale type="time" amount="2" />
+				<adjustScale type="time" amount="2" />
 			</unsuccessful>
 		</testStat>
 	</immediate>

@@ -14,12 +14,12 @@
 		</html>
 	</pagetext>
 	<immediate>
-		<adjustscale type="provisions" amount="-3" />
-		<adjustscale type="time" amount="6" />
+		<adjustScale type="provisions" amount="-3" />
+		<adjustScale type="time" amount="6" />
 	</immediate>
 	<multicommand id="0">
-		<adjustscale type="gold" amount="-2" promptOnFail="true" />
-		<adjustscale type="stamina" amount="4" />
+		<adjustScale type="gold" amount="-2" promptOnFail="true" />
+		<adjustScale type="stamina" amount="4" />
 		<displayText id="0" />
 	</multicommand>
 	<multicommand id="1">

@@ -35,14 +35,14 @@
 			<successful>
 				<displayText id="0" />
 				<displayText id="2" />
-				<adjustscale type="time" amount="2" />
+				<adjustScale type="time" amount="2" />
 				<mustEatMeal amount="1" />
 			</successful>
 			<unsuccessful>
-				<adjustscale type="stamina" amount="-2" />
+				<adjustScale type="stamina" amount="-2" />
 				<displayText id="1" />
 				<displayText id="2" />
-				<adjustscale type="time" amount="2" />
+				<adjustScale type="time" amount="2" />
 				<mustEatMeal amount="1" />
 			</unsuccessful>
 		</testSkill>

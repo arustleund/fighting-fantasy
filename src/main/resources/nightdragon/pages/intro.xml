@@ -83,7 +83,7 @@
 		</html>
 	</pagetext>
 	<immediate>
-		<adjustscale type="gold" amount="10" />
+		<adjustScale type="gold" amount="10" />
 		<addItem id="4" />
 	</immediate>
 </page>

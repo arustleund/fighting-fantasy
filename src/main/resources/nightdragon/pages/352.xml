@@ -10,7 +10,7 @@
 				<rollDice number="1">
 					<doActions rolls="1,2,3,4,5">
 						<displayText id="50" />
-						<adjustscale type="time" amount="2" />
+						<adjustScale type="time" amount="2" />
 					</doActions>
 					<doActions rolls="6">
 						<link page="194" />
@@ -19,7 +19,7 @@
 			</successful>
 			<unsuccessful>
 				<displayText id="50" />
-				<adjustscale type="time" amount="2" />
+				<adjustScale type="time" amount="2" />
 			</unsuccessful>
 		</testFlag>
 	</immediate>
@@ -96,7 +96,7 @@
 		</p>
 	</text>
 	<multicommand id="0">
-		<adjustscale type="gold" amount="-1" promptOnFail="true" />
+		<adjustScale type="gold" amount="-1" promptOnFail="true" />
 		<testFlag id="10">
 			<successful>
 				<displayText id="10" />
@@ -107,7 +107,7 @@
 		</testFlag>
 	</multicommand>
 	<multicommand id="1">
-		<adjustscale type="provisions" amount="-1" promptOnFail="true" />
+		<adjustScale type="provisions" amount="-1" promptOnFail="true" />
 		<testFlag id="10">
 			<successful>
 				<displayText id="10" />
@@ -118,7 +118,7 @@
 		</testFlag>
 	</multicommand>
 	<multicommand id="2">
-		<adjustscale type="provisions" amount="3" />
+		<adjustScale type="provisions" amount="3" />
 		<link page="352" />
 	</multicommand>
 	<multicommand id="3">
@@ -144,25 +144,25 @@
 				</testFlag>
 			</doActions>
 			<doActions rolls="5,6">
-				<adjustscale type="time" amount="2" />
+				<adjustScale type="time" amount="2" />
 				<link page="167" />
 			</doActions>
 		</rollDice>
 	</multicommand>
 	<!-- Use luck after roll -->
 	<multicommand id="4">
-		<adjustscale type="luck" amount="-1" promptOnFail="true" />
-		<adjustscale type="time" amount="2" />
+		<adjustScale type="luck" amount="-1" promptOnFail="true" />
+		<adjustScale type="time" amount="2" />
 		<link page="167" />
 	</multicommand>
 	<!-- Look for person after roll -->
 	<multicommand id="5">
-		<adjustscale type="time" amount="2" />
+		<adjustScale type="time" amount="2" />
 		<link page="272" />
 	</multicommand>
 	<!-- Ask about grey men after roll -->
 	<multicommand id="6">
-		<adjustscale type="time" amount="2" />
+		<adjustScale type="time" amount="2" />
 		<link page="226" />
 	</multicommand>
 </page>

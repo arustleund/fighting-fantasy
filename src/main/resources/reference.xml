@@ -198,6 +198,23 @@
 	-->
 	<addItem id="21" price="4" quantity="2" pageLimit="4" />
 
+	<!-- <adjustEnemyScale> would typically be used as a battle effect against an enemy. The enemy's skill or stamina can be altered.
+	Attributes:
+		enemyId: Not Required. The index of the enemy in the current battle's enemy list. Defaults to the first non-dead enemy.
+		type: Required. Can be one of "stamina" or "skill". This is the attribute that will be changed.
+		amount: Required. Integer. The amount to adjust the attribute by. Use a negative number to subtract from the value.
+	-->
+	<adjustEnemyScale enemyId="0" type="stamina" amount="-3" />
+
+	<!-- <adjustPlayerAttackStrength> permanently modifies the player's attack strength during the current battle and all
+	subsequent battles. To set attack strength back at the end of the battle, use another one of these commands at the endbattle
+	battle effect.
+	Attributes:
+		amount: Required. Integer. The amount to modifier the player's attack strength by. Use a negative number to lessen the attack 
+		strength. 
+	-->
+	<adjustPlayerAttackStrength amount="-2" />
+
 	<setFlag id="0" />
 
 	<testFlag id="12">
@@ -222,7 +239,7 @@
 
 	<link page="208" />
 
-	<adjustscale type="time" amount="2" promptOnFail="true" />
+	<adjustScale type="time" amount="2" promptOnFail="true" />
 	<!-- time, stamina, nemesis, honor -->
 
 

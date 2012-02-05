@@ -25,10 +25,10 @@
 	<immediate>
 		<testFlag id="2">
 			<successful>
-				<adjustscale type="provisions" amount="-2" />
+				<adjustScale type="provisions" amount="-2" />
 			</successful>
 			<unsuccessful>
-				<adjustscale type="provisions" amount="-1" />
+				<adjustScale type="provisions" amount="-1" />
 			</unsuccessful>
 		</testFlag>
 	</immediate>

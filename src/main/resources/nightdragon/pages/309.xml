@@ -20,6 +20,6 @@
 		</html>
 	</pagetext>
 	<immediate>
-		<adjustscale type="time" amount="1" />
+		<adjustScale type="time" amount="1" />
 	</immediate>
 </page>

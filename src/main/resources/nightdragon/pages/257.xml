@@ -11,8 +11,8 @@
 		</html>
 	</pagetext>
 	<immediate>
-		<adjustscale type="nemesis" amount="1" />
-		<adjustscale type="luck" amount="-1" />
+		<adjustScale type="nemesis" amount="1" />
+		<adjustScale type="luck" amount="-1" />
 		<testFlag id="11">
 			<successful>
 				<displayText id="0" />

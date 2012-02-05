@@ -39,9 +39,9 @@
 				</addEnemies>
 			</startRound>
 			<endBattle>
-				<adjustscale type="gold" amount="5" />
-				<adjustscale type="provisions" amount="4" />
-				<adjustscale type="nemesis" amount="1" />
+				<adjustScale type="gold" amount="5" />
+				<adjustScale type="provisions" amount="4" />
+				<adjustScale type="nemesis" amount="1" />
 				<displayText id="0" />
 			</endBattle>
 		</effects>

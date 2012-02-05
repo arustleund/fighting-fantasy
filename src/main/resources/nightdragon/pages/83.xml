@@ -14,7 +14,7 @@
 		</html>
 	</pagetext>
 	<immediate>
-		<adjustscale type="gold" amount="3" />
+		<adjustScale type="gold" amount="3" />
 		<setFlag id="3" />
 	</immediate>
 	<multicommand id="0">

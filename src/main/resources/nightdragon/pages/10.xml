@@ -12,7 +12,7 @@
 		</html>
 	</pagetext>
 	<immediate>
-		<adjustscale type="time" amount="1" />
+		<adjustScale type="time" amount="1" />
 		<setFlag id="11" />
 		<testFlag id="12">
 			<successful><displayText id="0" /></successful>

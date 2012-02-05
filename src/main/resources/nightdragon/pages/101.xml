@@ -35,7 +35,7 @@
 			</playerFlee>
 			<endBattle>
 				<restoreScale type="gold" />
-				<adjustscale type="gold" amount="4" />
+				<adjustScale type="gold" amount="4" />
 				<displayText id="1" />
 			</endBattle>
 		</effects>

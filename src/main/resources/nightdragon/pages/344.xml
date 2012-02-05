@@ -9,7 +9,7 @@
 		</html>
 	</pagetext>
 	<immediate>
-		<adjustscale type="luck" amount="-1" />
+		<adjustScale type="luck" amount="-1" />
 		<testFlag id="11">
 			<successful><displayText id="0" /></successful>
 			<unsuccessful><displayText id="1" /></unsuccessful>

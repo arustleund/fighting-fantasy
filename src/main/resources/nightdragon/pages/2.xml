@@ -12,6 +12,6 @@
 	</pagetext>
 	<immediate>
 		<mustEatMeal amount="2" />
-		<adjustscale type="time" amount="8" />
+		<adjustScale type="time" amount="8" />
 	</immediate>
 </page>

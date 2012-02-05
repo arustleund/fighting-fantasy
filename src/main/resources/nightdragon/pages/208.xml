@@ -19,7 +19,7 @@
 		</html>
 	</pagetext>
 	<immediate>
-		<adjustscale type="time" amount="2" />
+		<adjustScale type="time" amount="2" />
 		<testFlag id="2">
 			<successful>
 				<mustEatMeal amount="2" />

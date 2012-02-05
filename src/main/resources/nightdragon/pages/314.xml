@@ -11,6 +11,6 @@
 		</html>
 	</pagetext>
 	<immediate>
-		<adjustscale type="stamina" amount="-2" />
+		<adjustScale type="stamina" amount="-2" />
 	</immediate>
 </page>

@@ -32,12 +32,12 @@
 		</p>
 	</text>
 	<multicommand id="0">
-		<adjustscale type="gold" amount="-4" promptOnFail="true" />
+		<adjustScale type="gold" amount="-4" promptOnFail="true" />
 		<setFlag id="2" />
 		<link page="122" />
 	</multicommand>
 	<multicommand id="1">
-		<adjustscale type="gold" amount="-10" promptOnFail="true" />
+		<adjustScale type="gold" amount="-10" promptOnFail="true" />
 		<link page="122" />
 	</multicommand>
 </page>

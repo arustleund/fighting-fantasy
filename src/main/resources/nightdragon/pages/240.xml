@@ -19,6 +19,6 @@
 		</html>
 	</pagetext>
 	<immediate>
-		<adjustscale type="nemesis" amount="1" />
+		<adjustScale type="nemesis" amount="1" />
 	</immediate>
 </page>

@@ -12,7 +12,7 @@
 		</html>
 	</pagetext>
 	<immediate>
-		<adjustscale type="time" amount="2" />
+		<adjustScale type="time" amount="2" />
 		<testItem id="17">
 			<successful>
 				<displayText id="0" />

@@ -8,11 +8,11 @@
 		</html>
 	</pagetext>
 	<immediate>
-		<adjustscale type="time" amount="2" />
+		<adjustScale type="time" amount="2" />
 		<testFlag id="13">
 			<successful>
 				<displayText id="0" />
-				<adjustscale type="time" amount="2" />
+				<adjustScale type="time" amount="2" />
 			</successful>
 			<unsuccessful>
 				<displayText id="1" />

@@ -11,18 +11,18 @@
 	<item id="9" name="Spiked boots" price="4" limit="1" />
 	<item id="10" name="Ice pick" price="3" limit="1" />
 	<item id="11" name="Flask of liqueur" price="3" canUseInBattle="false">
-		<adjustscale type="stamina" amount="4" />
+		<adjustScale type="stamina" amount="4" />
 		<removeItem id="11" />
 	</item>
 	<item id="12" name="Keg of beer" price="3" />
 	<item id="13" name="Viewing lens" price="4" limit="1" />
 	<item id="14" name="Carved ivory polar bear" price="4" limit="1" />
 	<item id="15" name="Potion of STAMINA" price="8" canUseInBattle="false">
-		<adjustscale type="stamina" amount="0.5" useAmountAsPercent="true" round="up" />
+		<adjustScale type="stamina" amount="0.5" useAmountAsPercent="true" round="up" />
 		<removeItem id="15" />
 	</item>
 	<item id="16" name="Potion of LUCK" price="5" canUseInBattle="false">
-		<adjustscale type="luck" amount="0.5" useAmountAsPercent="true" round="down" />
+		<adjustScale type="luck" amount="0.5" useAmountAsPercent="true" round="down" />
 		<removeItem id="16" />
 	</item>
 	<item id="17" name="Furs" price="0" />

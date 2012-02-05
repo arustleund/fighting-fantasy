@@ -8,7 +8,7 @@
 		</html>
 	</pagetext>
 	<immediate>
-		<adjustscale type="time" amount="1" />
+		<adjustScale type="time" amount="1" />
 		<testStat stat="nemesis" atLeast="5">
 			<successful>
 				<displayText id="0" />

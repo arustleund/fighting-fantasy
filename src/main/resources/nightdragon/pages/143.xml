@@ -14,11 +14,11 @@
 		<testFlag id="4">
 			<successful>
 				<displayText id="0" />
-				<adjustscale type="time" amount="10" />
+				<adjustScale type="time" amount="10" />
 			</successful>
 			<unsuccessful>
 				<displayText id="1" />
-				<adjustscale type="time" amount="4" />
+				<adjustScale type="time" amount="4" />
 			</unsuccessful>
 		</testFlag>
 	</immediate>

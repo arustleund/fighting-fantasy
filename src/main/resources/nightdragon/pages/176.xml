@@ -16,8 +16,8 @@
 		</html>
 	</pagetext>
 	<immediate>
-		<adjustscale type="time" amount="2" />
-		<adjustscale type="honor" amount="1" />
+		<adjustScale type="time" amount="2" />
+		<adjustScale type="honor" amount="1" />
 		<addItem id="17" />
 	</immediate>
 </page>

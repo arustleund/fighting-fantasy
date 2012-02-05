@@ -15,7 +15,7 @@
 	</pagetext>
 	<immediate>
 		<setFlag id="0" />
-		<adjustscale type="gold" amount="3" />
-		<adjustscale type="luck" amount="1" />
+		<adjustScale type="gold" amount="3" />
+		<adjustScale type="luck" amount="1" />
 	</immediate>
 </page>

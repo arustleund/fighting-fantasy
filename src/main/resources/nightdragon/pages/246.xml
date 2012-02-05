@@ -21,18 +21,18 @@
 		</p>
 	</text>
 	<immediate>
-		<adjustscale type="time" amount="2" />
+		<adjustScale type="time" amount="2" />
 	</immediate>
 	<multicommand id="0">
-		<adjustscale type="gold" amount="-1" promptOnFail="true" />
+		<adjustScale type="gold" amount="-1" promptOnFail="true" />
 		<displayText id="0" />
 	</multicommand>
 	<multicommand id="1">
-		<adjustscale type="provisions" amount="-1" promptOnFail="true" />
+		<adjustScale type="provisions" amount="-1" promptOnFail="true" />
 		<displayText id="0" />
 	</multicommand>
 	<multicommand id="2">
-		<adjustscale type="provisions" amount="3" />
+		<adjustScale type="provisions" amount="3" />
 		<link page="246" />
 	</multicommand>
 </page>

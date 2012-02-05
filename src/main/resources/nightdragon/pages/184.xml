@@ -11,7 +11,7 @@
 		</html>
 	</pagetext>
 	<immediate>
-		<adjustscale type="provisions" amount="-2" />
-		<adjustscale type="time" amount="2" />
+		<adjustScale type="provisions" amount="-2" />
+		<adjustScale type="time" amount="2" />
 	</immediate>
 </page>

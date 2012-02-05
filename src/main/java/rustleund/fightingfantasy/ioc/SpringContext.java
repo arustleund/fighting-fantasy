@@ -58,7 +58,7 @@ public class SpringContext {
 		mappings.put("addItem", addItemClosureFunction());
 		mappings.put("adjustEnemyScale", new ElementConstructorClosureFunction(AdjustEnemyScaleClosure.class));
 		mappings.put("adjustPlayerAttackStrength", new ElementConstructorClosureFunction(AdjustPlayerAttackStrength.class));
-		mappings.put("adjustscale", new ElementConstructorClosureFunction(AdjustScaleClosure.class));
+		mappings.put("adjustScale", new ElementConstructorClosureFunction(AdjustScaleClosure.class));
 		mappings.put("clearBattleMessage", new ElementConstructorClosureFunction(ClearBattleMessageClosure.class));
 		mappings.put("clearPoisonDamage", new ElementConstructorClosureFunction(ClearPoisonDamageClosure.class));
 		mappings.put("displayText", new ElementConstructorClosureFunction(DisplayTextClosure.class));

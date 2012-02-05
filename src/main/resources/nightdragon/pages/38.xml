@@ -41,7 +41,7 @@
 						<addBattleMessage message="The acid hits the ASSASSIN!" messagePosition="BEGINNING" />
 					</doActions>
 					<doActions rolls="5,6">
-						<adjustscale type="stamina" amount="-3" />
+						<adjustScale type="stamina" amount="-3" />
 						<addBattleMessage message="The acid hits you!" messagePosition="BEGINNING" />
 					</doActions>
 				</rollDice>
@@ -50,8 +50,8 @@
 				<clearBattleMessage />
 			</endRound>
 			<endBattle>
-				<adjustscale type="gold" amount="6" />
-				<adjustscale type="nemesis" amount="1" />
+				<adjustScale type="gold" amount="6" />
+				<adjustScale type="nemesis" amount="1" />
 				<displayText id="0" />
 			</endBattle>
 		</effects>

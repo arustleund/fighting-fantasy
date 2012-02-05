@@ -15,8 +15,8 @@
 		</html>
 	</pagetext>
 	<immediate>
-		<adjustscale type="gold" amount="4" />
-		<adjustscale type="provisions" amount="2" />
+		<adjustScale type="gold" amount="4" />
+		<adjustScale type="provisions" amount="2" />
 	</immediate>
 	<testluck id="0">
 		<successful>

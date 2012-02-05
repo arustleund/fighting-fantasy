@@ -65,7 +65,7 @@
 			</playerHit>
 			<endBattle>
 				<displayText id="0" />
-				<adjustscale type="nemesis" amount="1" />
+				<adjustScale type="nemesis" amount="1" />
 			</endBattle>
 		</effects>
 	</battle>

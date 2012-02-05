@@ -33,7 +33,7 @@
 		</p>
 	</text>
 	<multicommand id="0">
-		<adjustscale type="time" amount="1" />
+		<adjustScale type="time" amount="1" />
 		<link page="52" />
 	</multicommand>
 </page>

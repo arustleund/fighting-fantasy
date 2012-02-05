@@ -18,8 +18,8 @@
 		</ul>
 	</text>
 	<multicommand id="0">
-		<adjustscale type="gold" amount="2" />
-		<adjustscale type="time" amount="2" />
+		<adjustScale type="gold" amount="2" />
+		<adjustScale type="time" amount="2" />
 		<link page="397" />
 	</multicommand>
 	<multicommand id="1">

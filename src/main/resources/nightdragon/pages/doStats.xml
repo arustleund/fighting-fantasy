@@ -31,8 +31,8 @@
 				<testFlag id="7">
 					<successful />
 					<unsuccessful>
-						<adjustscale type="skill" amount="1" adjustInitialValue="true" />
-						<adjustscale type="skill" amount="1" />
+						<adjustScale type="skill" amount="1" adjustInitialValue="true" />
+						<adjustScale type="skill" amount="1" />
 						<setFlag id="7" value="true" />
 						<testAnyFlag ids="8,9">
 							<successful>
@@ -52,8 +52,8 @@
 				<testFlag id="8">
 					<successful />
 					<unsuccessful>
-						<adjustscale type="luck" amount="1" adjustInitialValue="true" />
-						<adjustscale type="luck" amount="1" />
+						<adjustScale type="luck" amount="1" adjustInitialValue="true" />
+						<adjustScale type="luck" amount="1" />
 						<setFlag id="8" value="true" />
 						<testAnyFlag ids="7,9">
 							<successful>
@@ -70,8 +70,8 @@
 		<testFlag id="9">
 			<successful />
 			<unsuccessful>
-				<adjustscale type="stamina" amount="2" adjustInitialValue="true" />
-				<adjustscale type="stamina" amount="2" />
+				<adjustScale type="stamina" amount="2" adjustInitialValue="true" />
+				<adjustScale type="stamina" amount="2" />
 				<setFlag id="9" value="true" />
 				<testAnyFlag ids="7,8">
 					<successful>

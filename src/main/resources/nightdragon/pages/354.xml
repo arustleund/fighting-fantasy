@@ -15,7 +15,7 @@
 		</html>
 	</pagetext>
 	<multicommand id="0">
-		<adjustscale type="gold" amount="-10" promptOnFail="true" />
+		<adjustScale type="gold" amount="-10" promptOnFail="true" />
 		<link page="122" />
 	</multicommand>
 </page>
