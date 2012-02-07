@@ -3,17 +3,28 @@
  */
 package rustleund.fightingfantasy.framework.base;
 
+import java.io.File;
+
 /**
  * @author rustlea
  */
 public class GameState {
 
+	private File baseDirectory;
 	private PlayerState playerState;
 	private PageState pageState;
 	private BattleState battleState;
 	private String message;
 	private boolean isBattleInProgress;
 	private boolean pageLoaded;
+
+	public File getBaseDirectory() {
+		return this.baseDirectory;
+	}
+
+	public void setBaseDirectory(File baseDirectory) {
+		this.baseDirectory = baseDirectory;
+	}
 
 	public void clearMessage() {
 		message = "-";

@@ -3,6 +3,8 @@
  */
 package rustleund.fightingfantasy.framework.closures.impl;
 
+import java.io.File;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -44,7 +46,7 @@ public class LinkClosure extends AbstractClosure {
 		Document targetPageDocument = null;
 		try {
 			DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			targetPageDocument = documentBuilder.parse(ClassLoader.getSystemResourceAsStream("nightdragon/pages/" + pageName + ".xml"));
+			targetPageDocument = documentBuilder.parse(new File(gameState.getBaseDirectory(), "pages/" + pageName + ".xml"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
