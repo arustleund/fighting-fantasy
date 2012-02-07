@@ -21,8 +21,8 @@ public class Scale {
 	public Scale(Integer lowerBound, Integer currentValue, Integer upperBound, boolean doOperationOnFail) {
 		this.lowerBound = lowerBound;
 		if (currentValue == null) {
-			this.currentValue = new Integer(0);
-			this.previousValue = new Integer(0);
+			this.currentValue = 0;
+			this.previousValue = 0;
 		} else {
 			this.currentValue = currentValue;
 			this.previousValue = currentValue;

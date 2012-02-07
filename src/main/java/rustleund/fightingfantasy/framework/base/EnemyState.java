@@ -15,10 +15,10 @@ public class EnemyState extends AbstractEntityState {
 	public EnemyState(Element enemyTag) {
 		this.name = enemyTag.getAttribute("name");
 
-		Integer skillInteger = new Integer(enemyTag.getAttribute("skill"));
+		Integer skillInteger = Integer.valueOf(enemyTag.getAttribute("skill"));
 		this.skill = new Scale(0, skillInteger, skillInteger, true);
 
-		Integer staminaInteger = new Integer(enemyTag.getAttribute("stamina"));
+		Integer staminaInteger = Integer.valueOf(enemyTag.getAttribute("stamina"));
 		this.stamina = new Scale(0, staminaInteger, staminaInteger, true);
 
 		if (enemyTag.hasAttribute("poisonedWeapon")) {

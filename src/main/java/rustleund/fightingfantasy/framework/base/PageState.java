@@ -99,7 +99,7 @@ public class PageState {
 		NodeList textTags = document.getElementsByTagName("text");
 		for (int i = 0; i < textTags.getLength(); i++) {
 			Element thisTextTag = (Element) textTags.item(i);
-			texts.put(new Integer(thisTextTag.getAttribute("id")), writeTag(thisTextTag));
+			texts.put(Integer.valueOf(thisTextTag.getAttribute("id")), writeTag(thisTextTag));
 		}
 	}
 
@@ -108,7 +108,7 @@ public class PageState {
 		NodeList multiTags = document.getElementsByTagName("multicommand");
 		for (int i = 0; i < multiTags.getLength(); i++) {
 			Element thisMultiTag = (Element) multiTags.item(i);
-			Integer thisMultiId = new Integer(thisMultiTag.getAttribute("id"));
+			Integer thisMultiId = Integer.valueOf(thisMultiTag.getAttribute("id"));
 			NodeList thisMultiTagsCommandTags = thisMultiTag.getChildNodes();
 			List<Closure> subclosures = new ArrayList<Closure>();
 			for (int j = 0; j < thisMultiTagsCommandTags.getLength(); j++) {
@@ -126,17 +126,17 @@ public class PageState {
 		NodeList battleTags = document.getElementsByTagName("battle");
 		for (int i = 0; i < battleTags.getLength(); i++) {
 			Element thisBattleTag = (Element) battleTags.item(i);
-			Integer thisBattleId = new Integer(thisBattleTag.getAttribute("id"));
+			Integer thisBattleId = Integer.valueOf(thisBattleTag.getAttribute("id"));
 			battles.put(thisBattleId, new BattleState(thisBattleTag, this, this.closureLoader, this.battleEffectsLoader));
 		}
 	}
 
 	public BattleState getBattle(int battleId) {
-		return battles.get(new Integer(battleId));
+		return battles.get(battleId);
 	}
 
 	public Closure getMultiCommands(int multiCommandId) {
-		return this.multiCommands.get(new Integer(multiCommandId));
+		return this.multiCommands.get(multiCommandId);
 	}
 
 	public String getSuccessfulLuckText(int testluckId) {

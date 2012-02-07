@@ -50,7 +50,7 @@ public class BattleState {
 
 		this.pageState = pageState;
 
-		this.id = new Integer(battleTag.getAttribute("id"));
+		this.id = Integer.valueOf(battleTag.getAttribute("id"));
 
 		if (battleTag.hasAttribute("fightEnemiesTogether")) {
 			this.fightEnemiesTogether = battleTag.getAttribute("fightEnemiesTogether").equalsIgnoreCase("true");
@@ -109,8 +109,8 @@ public class BattleState {
 		}
 	}
 
-	private Integer getAttackStrengthFor(AbstractEntityState aState) {
-		return new Integer(aState.getAttackStrength() + DiceRoller.rollDice(2));
+	private int getAttackStrengthFor(AbstractEntityState aState) {
+		return aState.getAttackStrength() + DiceRoller.rollDice(2);
 	}
 
 	public boolean battleIsOver() {
