@@ -35,14 +35,14 @@ public class Scale {
 		int tempResult = currentValue.intValue() + amount;
 		if (adjustmentIsWithinBounds(amount, tempResult)) {
 			previousValue = currentValue;
-			currentValue = new Integer(tempResult);
+			currentValue = tempResult;
 		} else {
 			if (doOperationOnFail) {
 				previousValue = currentValue;
 				if (amount > 0) {
-					currentValue = new Integer(upperBound.intValue());
+					currentValue = upperBound;
 				} else {
-					currentValue = new Integer(lowerBound.intValue());
+					currentValue = lowerBound;
 				}
 			}
 			throw new IndexOutOfBoundsException();
@@ -62,13 +62,13 @@ public class Scale {
 	public void adjustUpperBound(int amount) {
 		if (upperBound == null) {
 			// Assume null means zero in this case
-			upperBound = new Integer(amount);
+			upperBound = amount;
 		} else {
-			upperBound = new Integer(upperBound.intValue() + amount);
+			upperBound = upperBound + amount;
 		}
-		if (currentValue.intValue() > upperBound.intValue()) {
+		if (currentValue > upperBound) {
 			previousValue = currentValue;
-			currentValue = new Integer(upperBound.intValue());
+			currentValue = upperBound;
 		}
 	}
 
