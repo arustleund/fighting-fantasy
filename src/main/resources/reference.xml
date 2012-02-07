@@ -270,16 +270,34 @@
 			<!-- put any number of commands here -->
 		</unsuccessful>
 	</testFlag>
+	
+	<testItem id="17">
+		<successful>
+			<!-- put any number of commands here -->
+		</successful>
+		<unsuccessful>
+			<!-- put any number of commands here -->
+		</unsuccessful>
+	</testItem>
+	
+	<testLuckCommand id="0" />
+	
+	<testSkill diceRollAdjustment="2">
+		<successful>
+			<!-- put any number of commands here -->
+		</successful>
+		<unsuccessful>
+			<!-- put any number of commands here -->
+		</unsuccessful>
+	</testSkill>
 
 	<testStat stat="stamina" atLeast="20">
 		<successful>
-			<displayText id="0" />
+			<!-- put any number of commands here -->
 		</successful>
 		<unsuccessful>
-			<displayText id="1" />
+			<!-- put any number of commands here -->
 		</unsuccessful>
 	</testStat>
-
-	<displayText id="0" />
 
 </page>
