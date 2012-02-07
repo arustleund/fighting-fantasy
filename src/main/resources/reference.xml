@@ -221,6 +221,10 @@
 	
 	<clearPoisonDamage />
 	
+	<!-- <displayText> immediately displays the <text> element with the given id at the bottom of the text area.
+	Attributes:
+		id: Required. The id of the <text> element to display.
+	-->
 	<displayText id="0" />
 	
 	<!-- <initPlayer> initializes the player's state at the beginning of the game. Should be first command called on the first page.
