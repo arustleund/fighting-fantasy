@@ -9,13 +9,9 @@ package rustleund.fightingfantasy.framework.base;
 public class Scale {
 
 	private Integer lowerBound = null;
-
 	private Integer currentValue = null;
-
 	private Integer previousValue = null;
-
 	private Integer upperBound = null;
-
 	private boolean doOperationOnFail = false;
 
 	public Scale(Integer lowerBound, Integer currentValue, Integer upperBound, boolean doOperationOnFail) {
@@ -55,7 +51,7 @@ public class Scale {
 		this.currentValue = oldPrevious;
 	}
 
-	public boolean adjustmentIsWithinBounds(int amount, int tempResult) {
+	private boolean adjustmentIsWithinBounds(int amount, int tempResult) {
 		return (upperBound == null && amount >= 0) || (amount <= 0 && lowerBound == null) || (upperBound != null && amount >= 0 && tempResult <= upperBound.intValue()) || (lowerBound != null && amount <= 0 && tempResult >= lowerBound.intValue());
 	}
 
@@ -87,10 +83,6 @@ public class Scale {
 
 	public int getCurrentValue() {
 		return currentValue.intValue();
-	}
-
-	public Integer getLowerBound() {
-		return lowerBound;
 	}
 
 	public Integer getUpperBound() {
