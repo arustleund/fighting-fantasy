@@ -3,19 +3,32 @@
  */
 package rustleund.fightingfantasy.framework.base;
 
+import com.google.common.collect.Range;
+import com.google.common.collect.Ranges;
+
 /**
  * @author rustlea
  */
 public class Scale {
 
-	private Integer lowerBound = null;
-	private Integer currentValue = null;
-	private Integer previousValue = null;
-	private Integer upperBound = null;
+	private int currentValue;
+	private int previousValue;
+
+	private Range<Integer> range;
+
 	private boolean doOperationOnFail = false;
 
 	public Scale(Integer lowerBound, Integer currentValue, Integer upperBound, boolean doOperationOnFail) {
-		this.lowerBound = lowerBound;
+		if (lowerBound == null && upperBound == null) {
+			this.range = Ranges.all();
+		} else if (lowerBound == null) {
+			this.range = Ranges.atMost(upperBound);
+		} else if (upperBound == null) {
+			this.range = Ranges.atLeast(lowerBound);
+		} else {
+			this.range = Ranges.closed(lowerBound, upperBound);
+		}
+
 		if (currentValue == null) {
 			this.currentValue = 0;
 			this.previousValue = 0;
@@ -23,22 +36,21 @@ public class Scale {
 			this.currentValue = currentValue;
 			this.previousValue = currentValue;
 		}
-		this.upperBound = upperBound;
 		this.doOperationOnFail = doOperationOnFail;
 	}
 
 	public void adjustCurrentValue(int amount) throws IndexOutOfBoundsException {
-		int tempResult = currentValue.intValue() + amount;
-		if (adjustmentIsWithinBounds(amount, tempResult)) {
+		int tempResult = currentValue + amount;
+		if (adjustmentIsWithinBounds(tempResult)) {
 			previousValue = currentValue;
 			currentValue = tempResult;
 		} else {
 			if (doOperationOnFail) {
 				previousValue = currentValue;
 				if (amount > 0) {
-					currentValue = upperBound;
+					currentValue = this.range.upperEndpoint();
 				} else {
-					currentValue = lowerBound;
+					currentValue = this.range.lowerEndpoint();
 				}
 			}
 			throw new IndexOutOfBoundsException();
@@ -46,25 +58,32 @@ public class Scale {
 	}
 
 	public void restorePreviousValue() {
-		Integer oldPrevious = this.previousValue;
+		int oldPrevious = this.previousValue;
 		this.previousValue = this.currentValue;
 		this.currentValue = oldPrevious;
 	}
 
-	private boolean adjustmentIsWithinBounds(int amount, int tempResult) {
-		return (upperBound == null && amount >= 0) || (amount <= 0 && lowerBound == null) || (upperBound != null && amount >= 0 && tempResult <= upperBound.intValue()) || (lowerBound != null && amount <= 0 && tempResult >= lowerBound.intValue());
+	private boolean adjustmentIsWithinBounds(int tempResult) {
+		return this.range.contains(tempResult);
 	}
 
 	public void adjustUpperBound(int amount) {
-		if (upperBound == null) {
-			// Assume null means zero in this case
-			upperBound = amount;
+		int newUpperBound;
+		if (this.range.hasUpperBound()) {
+			newUpperBound = this.range.upperEndpoint() + amount;
 		} else {
-			upperBound = upperBound + amount;
+			newUpperBound = amount;
 		}
-		if (currentValue > upperBound) {
+
+		if (this.range.hasLowerBound()) {
+			this.range = Ranges.closed(this.range.lowerEndpoint(), newUpperBound);
+		} else {
+			this.range = Ranges.atMost(newUpperBound);
+		}
+
+		if (currentValue > this.range.upperEndpoint()) {
 			previousValue = currentValue;
-			currentValue = upperBound;
+			currentValue = this.range.upperEndpoint();
 		}
 	}
 
@@ -82,27 +101,27 @@ public class Scale {
 	}
 
 	public int getCurrentValue() {
-		return currentValue.intValue();
+		return this.currentValue;
 	}
 
 	public Integer getUpperBound() {
-		return upperBound;
+		return this.range.hasUpperBound() ? this.range.upperEndpoint() : null;
 	}
 
 	public boolean isFull() {
-		return currentValue.equals(upperBound);
+		return this.range.hasUpperBound() && this.range.upperEndpoint().equals(this.currentValue);
 	}
 
 	public boolean isEmpty() {
-		return currentValue.intValue() == 0;
+		return this.currentValue == 0;
 	}
 
 	@Override
 	public String toString() {
-		StringBuffer result = new StringBuffer(currentValue.toString());
-		if (upperBound != null) {
+		StringBuffer result = new StringBuffer("" + this.currentValue);
+		if (this.range.hasUpperBound()) {
 			result.append("/");
-			result.append(upperBound.toString());
+			result.append(this.range.upperEndpoint());
 		}
 		return result.toString();
 	}

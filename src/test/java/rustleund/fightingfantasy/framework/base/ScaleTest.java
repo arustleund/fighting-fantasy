@@ -203,4 +203,25 @@ public class ScaleTest {
 		assertFalse(testee.isEmpty());
 	}
 
+	@Test
+	public void testToString() {
+		Scale testee = new Scale(0, 0, 10, false);
+		assertEquals("0/10", testee.toString());
+
+		testee = new Scale(null, 0, 10, false);
+		assertEquals("0/10", testee.toString());
+
+		testee = new Scale(null, 0, null, false);
+		assertEquals("0", testee.toString());
+
+		testee = new Scale(0, 5, 12, false);
+		assertEquals("5/12", testee.toString());
+
+		testee = new Scale(null, 5, 12, false);
+		assertEquals("5/12", testee.toString());
+
+		testee = new Scale(null, 5, null, false);
+		assertEquals("5", testee.toString());
+	}
+
 }
