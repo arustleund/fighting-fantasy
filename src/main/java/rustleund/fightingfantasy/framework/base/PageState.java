@@ -47,12 +47,12 @@ public class PageState {
 		this.gameState = gameState;
 
 		loadPagetext(document);
-		loadBattles(document);
 		loadImmediate(document);
-		loadKeepMinimum(document);
 		loadMultis(document);
-		loadTestLucks(document);
+		loadBattles(document);
 		loadTexts(document);
+		loadTestLucks(document);
+		loadKeepMinimum(document);
 	}
 
 	private void loadPagetext(Document document) {

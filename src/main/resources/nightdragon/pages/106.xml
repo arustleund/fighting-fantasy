@@ -1,4 +1,7 @@
-<page>
+<page
+	xmlns="http://www.rustleund.com/fighting-fantasy/page"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.rustleund.com/fighting-fantasy/page ../../page.xsd">
 	<pagenumber>106</pagenumber>
 	<pagetext>
 		<html>
@@ -45,18 +48,18 @@
 			</p>
 		</html>
 	</pagetext>
-	<multicommand id="0">
-		<addItem id="15" price="7" pageLimit="1" />
-	</multicommand>
-	<multicommand id="1">
-		<addItem id="16" price="4" pageLimit="1" />
-	</multicommand>
 	<immediate>
 		<testFlag id="12">
 			<successful><displayText id="0" /></successful>
 			<unsuccessful><displayText id="1" /></unsuccessful>
 		</testFlag>
 	</immediate>
+	<multicommand id="0">
+		<addItem id="15" price="7" pageLimit="1" />
+	</multicommand>
+	<multicommand id="1">
+		<addItem id="16" price="4" pageLimit="1" />
+	</multicommand>
 	<text id="0">
 		<p>
 			<ul>

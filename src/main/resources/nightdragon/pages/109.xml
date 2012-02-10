@@ -1,4 +1,7 @@
-<page>
+<page
+	xmlns="http://www.rustleund.com/fighting-fantasy/page"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.rustleund.com/fighting-fantasy/page ../../page.xsd">
 	<pagenumber>109</pagenumber>
 	<pagetext>
 		<html>
@@ -14,6 +17,17 @@
 			</unsuccessful>
 		</testFlag>
 	</immediate>
+	<multicommand id="0">
+		<testSkill diceRollAdjustment="2">
+			<successful>
+				<displayText id="2" />
+				<setFlag id="5" />
+			</successful>
+			<unsuccessful>
+				<displayText id="3" />
+			</unsuccessful>
+		</testSkill>
+	</multicommand>
 	<text id="0">
 		<p>
 			<a href="http://domulti:0"><i>Test your Skill</i></a> (adding 2).
@@ -36,15 +50,4 @@
 			You are caught by the guards. Click <a href="http://link:143">here</a> to continue.
 		</p>
 	</text>
-	<multicommand id="0">
-		<testSkill diceRollAdjustment="2">
-			<successful>
-				<displayText id="2" />
-				<setFlag id="5" />
-			</successful>
-			<unsuccessful>
-				<displayText id="3" />
-			</unsuccessful>
-		</testSkill>
-	</multicommand>
 </page>

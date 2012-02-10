@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.rustleund.com/fighting-fantasy/page" xmlns:tns="http://www.rustleund.com/fighting-fantasy/page" elementFormDefault="qualified">
+
+	<element name="page" type="tns:page"></element>
+
+	<complexType name="page">
+		<sequence>
+			<element name="pagenumber" type="string" maxOccurs="1" minOccurs="1"></element>
+			<element name="pagetext" type="tns:pagetextContent" maxOccurs="1" minOccurs="1"></element>
+			<element name="immediate" type="tns:commands" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="multicommand" type="tns:multicommand" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="battle" type="tns:battle" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="text" type="tns:text" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testluck" type="tns:testluck" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="keepminimum" type="tns:keepminimum" minOccurs="0" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="pagetextHtmlContent" mixed="true">
+		<sequence>
+			<any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+		</sequence>
+	</complexType>
+
+	<complexType name="pagetextContent">
+		<sequence>
+			<element name="html" type="tns:pagetextHtmlContent" maxOccurs="1" minOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+
+	<complexType name="text">
+		<sequence>
+			<any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+		</sequence>
+		<attribute name="id" type="int" use="required"></attribute>
+	</complexType>
+
+	<complexType name="commands">
+		<choice minOccurs="0" maxOccurs="unbounded">
+			<element name="adjustScale" type="tns:adjustScale" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="setFlag" type="tns:setFlag" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testFlag" type="tns:testFlag" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="displayText" type="tns:displayText" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="restoreScale" type="tns:restoreScale" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="addItem" type="tns:addItem" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testSkill" type="tns:testSkill" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testItem" type="tns:testItem" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="initPlayer" minOccurs="0" maxOccurs="unbounded">
+				<complexType></complexType>
+			</element>
+			<element name="testStat" type="tns:testStat" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="link" type="tns:link" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testAnyFlag" type="tns:testAnyFlag" minOccurs="0" maxOccurs="unbounded"></element>
+		</choice>
+	</complexType>
+
+	<complexType name="adjustScale">
+		<attribute name="type" use="required" type="tns:scales"></attribute>
+		<attribute name="amount" type="double" use="required"></attribute>
+		<attribute name="promptOnFail" type="boolean" use="optional"></attribute>
+		<attribute name="useAmountAsValue" type="boolean" use="optional"></attribute>
+		<attribute name="useAmountAsPercent" type="boolean" use="optional"></attribute>
+		<attribute name="round" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="up"></enumeration>
+					<enumeration value="down"></enumeration>
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="adjustInitialValue" type="boolean" use="optional"></attribute>
+	</complexType>
+
+	<simpleType name="scales">
+		<restriction base="string">
+			<enumeration value="time"></enumeration>
+			<enumeration value="gold"></enumeration>
+			<enumeration value="luck"></enumeration>
+			<enumeration value="skill"></enumeration>
+			<enumeration value="stamina"></enumeration>
+			<enumeration value="provisions"></enumeration>
+			<enumeration value="honor"></enumeration>
+			<enumeration value="nemesis"></enumeration>
+		</restriction>
+	</simpleType>
+
+	<complexType name="setFlag">
+		<annotation>
+			<documentation>Sets a flag (true/false) for the entire game. Flags must be uniquely identified.</documentation>
+		</annotation>
+		<attribute name="id" type="int" use="required">
+			<annotation>
+				<documentation>The unique identifier of the flag to set.</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="value" type="boolean" use="optional"></attribute>
+	</complexType>
+
+	<complexType name="testFlag">
+		<complexContent>
+			<extension base="tns:testContent">
+				<attribute name="id" type="int"></attribute>
+
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="testContent">
+		<sequence minOccurs="1" maxOccurs="1">
+			<element name="successful" type="tns:commands" minOccurs="1" maxOccurs="1"></element>
+			<element name="unsuccessful" type="tns:commands" minOccurs="1" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="displayText">
+		<attribute name="id" type="int" use="required"></attribute>
+	</complexType>
+
+	<complexType name="battle">
+		<sequence>
+			<element name="enemies" type="tns:enemies" minOccurs="1" maxOccurs="1"></element>
+			<element name="effects" type="tns:battleEffects" minOccurs="0" maxOccurs="1"></element>
+		</sequence>
+		<attribute name="id" type="int" use="required"></attribute>
+		<attribute name="fightEnemiesTogether" type="boolean" use="optional"></attribute>
+		<attribute name="canFlee" type="boolean" use="optional"></attribute>
+	</complexType>
+
+	<complexType name="enemies">
+		<sequence>
+			<element name="enemy" type="tns:enemy" minOccurs="1" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="enemy">
+		<attribute name="name" type="string" use="required">
+			<annotation>
+				<documentation>The name of the enemy.</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="skill" type="int" use="required">
+			<annotation>
+				<documentation>The enemy's skill level.</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="stamina" type="int" use="required">
+			<annotation>
+				<documentation>The enemy's stamina level.</documentation>
+			</annotation>
+		</attribute>
+		<attribute name="poisonedWeapon" type="boolean" use="optional">
+			<annotation>
+				<documentation>true if the enemy has a poisoned weapon.</documentation>
+			</annotation>
+		</attribute>
+	</complexType>
+
+    <complexType name="battleEffects">
+    	<sequence>
+    		<element name="startBattle" type="tns:commands" minOccurs="0" maxOccurs="1"></element>
+    		<element name="startRound" type="tns:commands" minOccurs="0" maxOccurs="1"></element>
+    		<element name="playerFlee" type="tns:commands" minOccurs="0" maxOccurs="1"></element>
+    		<element name="playerHit" type="tns:commands" minOccurs="0" maxOccurs="1"></element>
+    		<element name="endRound" type="tns:commands" minOccurs="0" maxOccurs="1"></element>
+    		<element name="endBattle" type="tns:commands" minOccurs="0" maxOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="restoreScale">
+    	<attribute name="type" type="tns:scales" use="required"></attribute>
+    </complexType>
+
+    <complexType name="testluck">
+    	<sequence>
+    		<element name="successful" type="tns:testluckContent" minOccurs="1" maxOccurs="1"></element>
+    		<element name="unsuccessful" type="tns:testluckContent" minOccurs="1" maxOccurs="1"></element>
+    	</sequence>
+    	<attribute name="id" type="int" use="required"></attribute>
+    </complexType>
+
+    <complexType name="testluckContent">
+    	<sequence>
+    		<element name="p" type="tns:pagetextHtmlContent"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="multicommand">
+    	<complexContent>
+    		<extension base="tns:commands">
+    			<attribute name="id" type="int" use="required"></attribute>
+
+    		</extension>
+    	</complexContent>
+    </complexType>
+
+    <complexType name="addItem">
+    	<attribute name="id" type="int" use="required"></attribute>
+    	<attribute name="price" type="int" use="optional"></attribute>
+    	<attribute name="quantity" type="int" use="optional"></attribute>
+    	<attribute name="pageLimit" type="int" use="optional"></attribute>
+    </complexType>
+
+    <complexType name="testSkill">
+    	<complexContent>
+    		<extension base="tns:testContent">
+    			<attribute name="diceRollAdjustment" type="int" use="optional"></attribute>
+
+    		</extension>
+    	</complexContent>
+    </complexType>
+
+    <complexType name="keepminimum">
+    	<attribute name="scale" type="tns:scales" use="required"></attribute>
+    	<attribute name="value" type="int" use="required"></attribute>
+    </complexType>
+
+    <complexType name="testItem">
+    	<complexContent>
+    		<extension base="tns:testContent">
+    			<attribute name="id" type="int" use="required"></attribute>
+    		</extension>
+    	</complexContent>
+    </complexType>
+
+    <complexType name="testStat">
+    	<complexContent>
+    		<extension base="tns:testContent">
+    			<attribute name="stat" type="tns:scales" use="required"></attribute>
+    			<attribute name="lessThan" type="int" use="optional"></attribute>
+    			<attribute name="greaterThan" type="int" use="optional"></attribute>
+    			<attribute name="atLeast" type="int" use="optional"></attribute>
+    			<attribute name="atMost" type="int" use="optional"></attribute>
+    			<attribute name="equal" type="int" use="optional"></attribute>
+    			<attribute name="notEqual" type="int" use="optional"></attribute>
+    			<attribute name="useInitialValue" type="boolean" use="optional"></attribute>
+    		</extension>
+    	</complexContent>
+    </complexType>
+
+    <complexType name="link">
+    	<attribute name="page" type="string" use="required"></attribute>
+    </complexType>
+
+    <complexType name="testAnyFlag">
+    	<complexContent>
+    		<extension base="tns:testContent">
+    			<attribute name="ids" type="string" use="required"></attribute>
+    		</extension>
+    	</complexContent>
+    </complexType>
+</schema>
