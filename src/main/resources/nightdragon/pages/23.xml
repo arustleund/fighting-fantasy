@@ -10,6 +10,26 @@
 			</p>
 		</html>
 	</pagetext>
+	<immediate>
+		<setFlag id="13" />
+	</immediate>
+	<multicommand id="0">
+		<testSkill>
+			<successful>
+				<displayText id="0" />
+				<displayText id="2" />
+				<adjustScale type="time" amount="2" />
+				<mustEatMeal amount="1" />
+			</successful>
+			<unsuccessful>
+				<adjustScale type="stamina" amount="-2" />
+				<displayText id="1" />
+				<displayText id="2" />
+				<adjustScale type="time" amount="2" />
+				<mustEatMeal amount="1" />
+			</unsuccessful>
+		</testSkill>
+	</multicommand>
 	<text id="0">
 		<p>
 			You negotiate the trail safely.
@@ -33,24 +53,4 @@
 			handful of people alive on Titan ever to have been invited to such a conclave! Click <a href="http://link:49">here</a> to continue.
 		</p>
 	</text>
-	<multicommand id="0">
-		<testSkill>
-			<successful>
-				<displayText id="0" />
-				<displayText id="2" />
-				<adjustScale type="time" amount="2" />
-				<mustEatMeal amount="1" />
-			</successful>
-			<unsuccessful>
-				<adjustScale type="stamina" amount="-2" />
-				<displayText id="1" />
-				<displayText id="2" />
-				<adjustScale type="time" amount="2" />
-				<mustEatMeal amount="1" />
-			</unsuccessful>
-		</testSkill>
-	</multicommand>
-	<immediate>
-		<setFlag id="13" />
-	</immediate>
 </page>

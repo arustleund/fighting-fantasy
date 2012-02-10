@@ -38,25 +38,41 @@
 
 	<complexType name="commands">
 		<choice minOccurs="0" maxOccurs="unbounded">
-			<element name="adjustScale" type="tns:adjustScale" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="setFlag" type="tns:setFlag" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="testFlag" type="tns:testFlag" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="displayText" type="tns:displayText" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="restoreScale" type="tns:restoreScale" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="addBattleEffectsForNextBattle" type="tns:addBattleEffects" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="addBattleEffectsToCurrentBattle" type="tns:addBattleEffects" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="addBattleMessage" type="tns:addBattleMessage" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="addItem" type="tns:addItem" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="testSkill" type="tns:testSkill" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="testItem" type="tns:testItem" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="adjustEnemyScale" type="tns:adjustEnemyScale" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="adjustPlayerAttackStrength" type="tns:adjustPlayerAttackStrength" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="adjustScale" type="tns:adjustScale" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="clearBattleMessage" type="tns:clearBattleMessage" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="displayText" type="tns:displayText" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="initPlayer" minOccurs="0" maxOccurs="unbounded">
 				<complexType></complexType>
 			</element>
-			<element name="testStat" type="tns:testStat" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="link" type="tns:link" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="mustEatMeal" type="tns:mustEatMeal" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="removeItem" type="tns:removeItem" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="restoreScale" type="tns:restoreScale" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="rollDice" type="tns:rollDice" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="setFlag" type="tns:setFlag" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testAnyFlag" type="tns:testAnyFlag" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testFlag" type="tns:testFlag" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testItem" type="tns:testItem" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testSkill" type="tns:testSkill" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testStat" type="tns:testStat" minOccurs="0" maxOccurs="unbounded"></element>
 		</choice>
 	</complexType>
 
 	<complexType name="adjustScale">
-		<attribute name="type" use="required" type="tns:scales"></attribute>
+		<complexContent>
+			<extension base="tns:adjustScaleBase">
+				<attribute name="type" use="required" type="tns:scales"></attribute>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="adjustScaleBase">
 		<attribute name="amount" type="double" use="required"></attribute>
 		<attribute name="promptOnFail" type="boolean" use="optional"></attribute>
 		<attribute name="useAmountAsValue" type="boolean" use="optional"></attribute>
@@ -74,11 +90,11 @@
 
 	<simpleType name="scales">
 		<restriction base="string">
+			<enumeration value="skill"></enumeration>
+			<enumeration value="stamina"></enumeration>
 			<enumeration value="time"></enumeration>
 			<enumeration value="gold"></enumeration>
 			<enumeration value="luck"></enumeration>
-			<enumeration value="skill"></enumeration>
-			<enumeration value="stamina"></enumeration>
 			<enumeration value="provisions"></enumeration>
 			<enumeration value="honor"></enumeration>
 			<enumeration value="nemesis"></enumeration>
@@ -205,7 +221,6 @@
     	<complexContent>
     		<extension base="tns:testContent">
     			<attribute name="diceRollAdjustment" type="int" use="optional"></attribute>
-
     		</extension>
     	</complexContent>
     </complexType>
@@ -248,5 +263,72 @@
     			<attribute name="ids" type="string" use="required"></attribute>
     		</extension>
     	</complexContent>
+    </complexType>
+
+    <complexType name="removeItem">
+    	<attribute name="id" type="int" use="required"></attribute>
+    </complexType>
+
+    <complexType name="mustEatMeal">
+    	<attribute name="amount" type="int" use="optional"></attribute>
+    </complexType>
+
+    <complexType name="rollDice">
+    	<sequence>
+    		<element name="doActions" minOccurs="1" maxOccurs="unbounded">
+    			<complexType>
+    				<complexContent>
+    					<extension base="tns:commands">
+    						<attribute name="rolls" type="string" use="required"></attribute>
+    					</extension>
+    				</complexContent>
+    			</complexType>
+    		</element>
+    	</sequence>
+    	<attribute name="number" type="int" use="optional"></attribute>
+    </complexType>
+
+    <simpleType name="enemyScales">
+    	<restriction base="string">
+    		<enumeration value="skill"></enumeration>
+    		<enumeration value="stamina"></enumeration>
+    	</restriction>
+    </simpleType>
+
+    <complexType name="adjustEnemyScale">
+    	<complexContent>
+    		<extension base="tns:adjustScaleBase">
+    			<attribute name="enemyId" type="int" use="optional"></attribute>
+
+    			<attribute name="type" type="tns:enemyScales" use="required"></attribute>
+    		</extension>
+    	</complexContent>
+    </complexType>
+
+    <complexType name="addBattleMessage">
+    	<attribute name="message" type="string" use="required"></attribute>
+    	<attribute name="messagePosition" use="optional">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="BEGINNING"></enumeration>
+					<enumeration value="END"></enumeration>
+				</restriction>
+			</simpleType>
+		</attribute>
+    </complexType>
+
+    <complexType name="clearBattleMessage">
+    	<attribute name="positionsToClear" type="string" use="optional"></attribute>
+    </complexType>
+
+    <complexType name="adjustPlayerAttackStrength">
+    	<attribute name="amount" type="int" use="required"></attribute>
+    </complexType>
+
+
+    <complexType name="addBattleEffects">
+    	<sequence>
+    		<element name="battleEffects" type="tns:battleEffects" minOccurs="1" maxOccurs="unbounded"></element>
+    	</sequence>
     </complexType>
 </schema>

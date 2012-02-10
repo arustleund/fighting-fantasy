@@ -17,23 +17,6 @@
 	<immediate>
 		<adjustScale type="time" amount="2" />
 	</immediate>
-	<text id="0">
-		<p>
-			You spend a wasted day asking around for a person with the name of Endimion, but all
-			the people you question shake their heads and go about their business and you get nowhere.
-			If you want to spend another day trying this same strategy, click <a href="http://link:246">here</a>.
-			Alternatively, you could <a href="http://link:352">try looking for a place called Endimion</a> 
-			or <a href="http://link:226">start asking questions about the grey-robed men</a>.
-		</p>
-	</text>
-	<text id="1">
-		<p>
-			You spend a wasted day asking around for a person with the name of Endimion, but all
-			the people you question shake their heads and go about their business and you get nowhere.
-			If you want to spend another day trying this same strategy, click <a href="http://link:246">here</a>.
-			Alternatively, you could <a href="http://link:352">try looking for a place called Endimion</a>.
-		</p>
-	</text>
 	<multicommand id="0">
 		<adjustScale type="gold" amount="-1" promptOnFail="true" />
 		<testFlag id="10">
@@ -60,4 +43,21 @@
 		<adjustScale type="provisions" amount="3" />
 		<link page="272" />
 	</multicommand>
+	<text id="0">
+		<p>
+			You spend a wasted day asking around for a person with the name of Endimion, but all
+			the people you question shake their heads and go about their business and you get nowhere.
+			If you want to spend another day trying this same strategy, click <a href="http://link:246">here</a>.
+			Alternatively, you could <a href="http://link:352">try looking for a place called Endimion</a> 
+			or <a href="http://link:226">start asking questions about the grey-robed men</a>.
+		</p>
+	</text>
+	<text id="1">
+		<p>
+			You spend a wasted day asking around for a person with the name of Endimion, but all
+			the people you question shake their heads and go about their business and you get nowhere.
+			If you want to spend another day trying this same strategy, click <a href="http://link:246">here</a>.
+			Alternatively, you could <a href="http://link:352">try looking for a place called Endimion</a>.
+		</p>
+	</text>
 </page>

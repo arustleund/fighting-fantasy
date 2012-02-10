@@ -26,6 +26,76 @@
 			</unsuccessful>
 		</testFlag>
 	</immediate>
+	<multicommand id="0">
+		<adjustScale type="gold" amount="-1" promptOnFail="true" />
+		<testFlag id="10">
+			<successful>
+				<displayText id="10" />
+			</successful>
+			<unsuccessful>
+				<displayText id="0" />
+			</unsuccessful>
+		</testFlag>
+	</multicommand>
+	<multicommand id="1">
+		<adjustScale type="provisions" amount="-1" promptOnFail="true" />
+		<testFlag id="10">
+			<successful>
+				<displayText id="10" />
+			</successful>
+			<unsuccessful>
+				<displayText id="0" />
+			</unsuccessful>
+		</testFlag>
+	</multicommand>
+	<multicommand id="2">
+		<adjustScale type="provisions" amount="3" />
+		<link page="352" />
+	</multicommand>
+	<multicommand id="3">
+		<rollDice number="1">
+			<doActions rolls="1,2,3">
+				<testFlag id="10">
+					<successful>
+						<displayText id="11" />
+					</successful>
+					<unsuccessful>
+						<displayText id="1" />
+					</unsuccessful>
+				</testFlag>
+			</doActions>
+			<doActions rolls="4">
+				<testFlag id="10">
+					<successful>
+						<displayText id="12" />
+					</successful>
+					<unsuccessful>
+						<displayText id="2" />
+					</unsuccessful>
+				</testFlag>
+			</doActions>
+			<doActions rolls="5,6">
+				<adjustScale type="time" amount="2" />
+				<link page="167" />
+			</doActions>
+		</rollDice>
+	</multicommand>
+	<!-- Use luck after roll -->
+	<multicommand id="4">
+		<adjustScale type="luck" amount="-1" promptOnFail="true" />
+		<adjustScale type="time" amount="2" />
+		<link page="167" />
+	</multicommand>
+	<!-- Look for person after roll -->
+	<multicommand id="5">
+		<adjustScale type="time" amount="2" />
+		<link page="272" />
+	</multicommand>
+	<!-- Ask about grey men after roll -->
+	<multicommand id="6">
+		<adjustScale type="time" amount="2" />
+		<link page="226" />
+	</multicommand>
 	<text id="50">
 		<p>
 			<table>
@@ -98,74 +168,4 @@
 			</table>
 		</p>
 	</text>
-	<multicommand id="0">
-		<adjustScale type="gold" amount="-1" promptOnFail="true" />
-		<testFlag id="10">
-			<successful>
-				<displayText id="10" />
-			</successful>
-			<unsuccessful>
-				<displayText id="0" />
-			</unsuccessful>
-		</testFlag>
-	</multicommand>
-	<multicommand id="1">
-		<adjustScale type="provisions" amount="-1" promptOnFail="true" />
-		<testFlag id="10">
-			<successful>
-				<displayText id="10" />
-			</successful>
-			<unsuccessful>
-				<displayText id="0" />
-			</unsuccessful>
-		</testFlag>
-	</multicommand>
-	<multicommand id="2">
-		<adjustScale type="provisions" amount="3" />
-		<link page="352" />
-	</multicommand>
-	<multicommand id="3">
-		<rollDice number="1">
-			<doActions rolls="1,2,3">
-				<testFlag id="10">
-					<successful>
-						<displayText id="11" />
-					</successful>
-					<unsuccessful>
-						<displayText id="1" />
-					</unsuccessful>
-				</testFlag>
-			</doActions>
-			<doActions rolls="4">
-				<testFlag id="10">
-					<successful>
-						<displayText id="12" />
-					</successful>
-					<unsuccessful>
-						<displayText id="2" />
-					</unsuccessful>
-				</testFlag>
-			</doActions>
-			<doActions rolls="5,6">
-				<adjustScale type="time" amount="2" />
-				<link page="167" />
-			</doActions>
-		</rollDice>
-	</multicommand>
-	<!-- Use luck after roll -->
-	<multicommand id="4">
-		<adjustScale type="luck" amount="-1" promptOnFail="true" />
-		<adjustScale type="time" amount="2" />
-		<link page="167" />
-	</multicommand>
-	<!-- Look for person after roll -->
-	<multicommand id="5">
-		<adjustScale type="time" amount="2" />
-		<link page="272" />
-	</multicommand>
-	<!-- Ask about grey men after roll -->
-	<multicommand id="6">
-		<adjustScale type="time" amount="2" />
-		<link page="226" />
-	</multicommand>
 </page>

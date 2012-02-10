@@ -12,14 +12,6 @@
 			</p>
 		</html>
 	</pagetext>
-	<text id="0">
-		Will you now:
-		<ul>
-			<li><a href="http://link:373">Buy some supplies</a>?</li>
-			<li><a href="http://link:10">Explore the village</a>?</li>
-			<li><a href="http://link:207">Relax in the taverns</a>?</li>
-		</ul>
-	</text>
 	<multicommand id="0">
 		<adjustScale type="gold" amount="2" />
 		<adjustScale type="time" amount="2" />
@@ -28,4 +20,14 @@
 	<multicommand id="1">
 		<displayText id="0" />
 	</multicommand>
+	<text id="0">
+		<p>
+			Will you now:
+			<ul>
+				<li><a href="http://link:373">Buy some supplies</a>?</li>
+				<li><a href="http://link:10">Explore the village</a>?</li>
+				<li><a href="http://link:207">Relax in the taverns</a>?</li>
+			</ul>
+		</p>
+	</text>
 </page>

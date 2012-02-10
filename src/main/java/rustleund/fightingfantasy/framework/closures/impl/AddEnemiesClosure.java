@@ -26,7 +26,11 @@ public class AddEnemiesClosure extends AbstractClosure {
 	public AddEnemiesClosure(Element element) {
 		this.enemiesToAdd = new ArrayList<EnemyState>();
 
-		Element battleElement = (Element) element.getParentNode().getParentNode().getParentNode();
+		Element battleElement = (Element) element.getParentNode();
+		while (!battleElement.getNodeName().equals("battle")) {
+			battleElement = (Element) battleElement.getParentNode();
+		}
+
 		this.battleId = Integer.parseInt(battleElement.getAttribute("id"));
 		this.waitTime = Integer.parseInt(element.getAttribute("wait"));
 

@@ -73,8 +73,10 @@
 		</effects>
 	</battle>
 	<text id="0">
-		You slay the horror; its eyes gaze at you with a malign menace as it perishes, as if someone -- or some<i>thing</i> -- else was still looking
-		at you. 1 is added to your Nemesis score. Now you can <a href="http://link:169">continue your search round this mountain</a> or
-		<a href="http://link:78">return to the tunnel entrance you know of and enter there</a>. 
+		<p>
+			You slay the horror; its eyes gaze at you with a malign menace as it perishes, as if someone -- or some<i>thing</i> -- else was still looking
+			at you. 1 is added to your Nemesis score. Now you can <a href="http://link:169">continue your search round this mountain</a> or
+			<a href="http://link:78">return to the tunnel entrance you know of and enter there</a>.
+		</p> 
 	</text>
 </page>

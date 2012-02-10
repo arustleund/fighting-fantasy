@@ -18,6 +18,15 @@
 			</unsuccessful>
 		</testStat>
 	</immediate>
+	<multicommand id="0">
+		<adjustScale type="gold" amount="-4" promptOnFail="true" />
+		<setFlag id="2" />
+		<link page="122" />
+	</multicommand>
+	<multicommand id="1">
+		<adjustScale type="gold" amount="-10" promptOnFail="true" />
+		<link page="122" />
+	</multicommand>
 	<text id="0">
 		<p>
 			You have a Stamina of 20 or more, the first mate looks you over and decides you're a strong
@@ -34,13 +43,4 @@
 			Pieces</a>; otherwise you must <a href="http://link:212">travel by land</a>.
 		</p>
 	</text>
-	<multicommand id="0">
-		<adjustScale type="gold" amount="-4" promptOnFail="true" />
-		<setFlag id="2" />
-		<link page="122" />
-	</multicommand>
-	<multicommand id="1">
-		<adjustScale type="gold" amount="-10" promptOnFail="true" />
-		<link page="122" />
-	</multicommand>
 </page>

@@ -18,6 +18,10 @@
 			<unsuccessful><displayText id="1" /></unsuccessful>
 		</testFlag>
 	</immediate>
+	<multicommand id="0">
+		<adjustScale type="time" amount="1" />
+		<link page="52" />
+	</multicommand>
 	<text id="0">
 		<p>
 			<ul>
@@ -35,8 +39,4 @@
 			</ul>
 		</p>
 	</text>
-	<multicommand id="0">
-		<adjustScale type="time" amount="1" />
-		<link page="52" />
-	</multicommand>
 </page>
