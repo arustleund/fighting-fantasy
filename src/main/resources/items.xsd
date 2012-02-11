@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema 
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.rustleund.com/fighting-fantasy/items" 
+	elementFormDefault="qualified" 
+	xmlns:items="http://www.rustleund.com/fighting-fantasy/items"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.rustleund.com/fighting-fantasy/page page.xsd"
+	xmlns:page="http://www.rustleund.com/fighting-fantasy/page"
+>
+    <import schemaLocation="page.xsd" namespace="http://www.rustleund.com/fighting-fantasy/page"></import>
+    <element name="items" type="items:items"></element>
+
+	<complexType name="items">
+		<sequence>
+			<element name="item" type="items:item" minOccurs="0" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="item">
+		<complexContent>
+			<extension base="page:commands">
+				<attribute name="id" type="int" use="required"></attribute>
+
+
+				<attribute name="name" type="string" use="required"></attribute>
+
+
+				<attribute name="price">
+					<simpleType>
+						<restriction base="int">
+							<minInclusive value="0"></minInclusive>
+						</restriction>
+					</simpleType>
+				</attribute>
+
+
+				<attribute name="limit" use="optional">
+					<simpleType>
+						<restriction base="int">
+							<minInclusive value="1"></minInclusive>
+						</restriction>
+					</simpleType>
+				</attribute>
+
+
+				<attribute name="canUseInBattle" type="boolean" use="optional"></attribute>
+
+			</extension>
+		</complexContent>
+	</complexType>
+</schema>
