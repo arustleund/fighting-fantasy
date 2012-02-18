@@ -8,9 +8,14 @@
 	<element name="page" type="page:page"></element>
 
 	<complexType name="page">
-		<sequence>
-			<element name="pagenumber" type="string" maxOccurs="1" minOccurs="1"></element>
-			<element name="pagetext" type="page:pagetextContent" maxOccurs="1" minOccurs="1"></element>
+        <annotation>
+        	<documentation>The main element of a page.</documentation>
+        </annotation>
+        <sequence>
+			<element name="pagetext" type="page:pagetextContent" maxOccurs="1" minOccurs="1">
+				<annotation>
+					<documentation>This contains the main text that will be displayed to the user when the page loads.</documentation>
+				</annotation></element>
 			<element name="immediate" type="page:commands" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="multicommand" type="page:multicommand" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="battle" type="page:battle" minOccurs="0" maxOccurs="unbounded"></element>
@@ -21,13 +26,19 @@
 	</complexType>
 
 	<complexType name="pagetextHtmlContent" mixed="true">
-		<sequence>
+        <annotation>
+        	<documentation>Should be valid HTML.</documentation>
+        </annotation>
+        <sequence>
 			<any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
 		</sequence>
 	</complexType>
 
 	<complexType name="pagetextContent">
-		<sequence>
+        <annotation>
+        	<documentation>The HTML content of the page text. Must be contained within an <html> tag.</documentation>
+        </annotation>
+        <sequence>
 			<element name="html" type="page:pagetextHtmlContent" maxOccurs="1" minOccurs="1"></element>
 		</sequence>
 	</complexType>

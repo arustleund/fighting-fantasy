@@ -189,7 +189,6 @@ public class BattleState {
 	}
 
 	private void doDamage() {
-
 		StringBuffer message = new StringBuffer(START_STRING);
 		message.append("<p>");
 
