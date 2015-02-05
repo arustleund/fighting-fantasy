@@ -4,7 +4,6 @@
 package rustleund.fightingfantasy.framework.base;
 
 import com.google.common.collect.Range;
-import com.google.common.collect.Ranges;
 
 /**
  * @author rustlea
@@ -20,13 +19,13 @@ public class Scale {
 
 	public Scale(Integer lowerBound, Integer currentValue, Integer upperBound, boolean doOperationOnFail) {
 		if (lowerBound == null && upperBound == null) {
-			this.range = Ranges.all();
+			this.range = Range.all();
 		} else if (lowerBound == null) {
-			this.range = Ranges.atMost(upperBound);
+			this.range = Range.atMost(upperBound);
 		} else if (upperBound == null) {
-			this.range = Ranges.atLeast(lowerBound);
+			this.range = Range.atLeast(lowerBound);
 		} else {
-			this.range = Ranges.closed(lowerBound, upperBound);
+			this.range = Range.closed(lowerBound, upperBound);
 		}
 
 		if (currentValue == null) {
@@ -76,9 +75,9 @@ public class Scale {
 		}
 
 		if (this.range.hasLowerBound()) {
-			this.range = Ranges.closed(this.range.lowerEndpoint(), newUpperBound);
+			this.range = Range.closed(this.range.lowerEndpoint(), newUpperBound);
 		} else {
-			this.range = Ranges.atMost(newUpperBound);
+			this.range = Range.atMost(newUpperBound);
 		}
 
 		if (currentValue > this.range.upperEndpoint()) {
