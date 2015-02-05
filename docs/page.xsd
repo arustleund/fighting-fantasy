@@ -36,7 +36,7 @@
 
 	<complexType name="pagetextContent">
         <annotation>
-        	<documentation>The HTML content of the page text. Must be contained within an <html> tag.</documentation>
+        	<documentation>The HTML content of the page text. Must be contained within an <![CDATA[<html>]]> tag.</documentation>
         </annotation>
         <sequence>
 			<element name="html" type="page:pagetextHtmlContent" maxOccurs="1" minOccurs="1"></element>

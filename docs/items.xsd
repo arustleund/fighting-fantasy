@@ -5,10 +5,12 @@
 	elementFormDefault="qualified" 
 	xmlns:items="http://www.rustleund.com/fighting-fantasy/items"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://www.rustleund.com/fighting-fantasy/page page.xsd"
+	xsi:schemaLocation="http://www.rustleund.com/fighting-fantasy/page
+		https://github.com/arustleund/fighting-fantasy/raw/master/docs/page.xsd"
 	xmlns:page="http://www.rustleund.com/fighting-fantasy/page"
 >
-    <import schemaLocation="page.xsd" namespace="http://www.rustleund.com/fighting-fantasy/page"></import>
+    <import schemaLocation="https://github.com/arustleund/fighting-fantasy/raw/master/docs/page.xsd" 
+    	namespace="http://www.rustleund.com/fighting-fantasy/page" />
     <element name="items" type="items:items"></element>
 
 	<complexType name="items">

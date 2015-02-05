@@ -1,7 +1,8 @@
 <items
 	xmlns="http://www.rustleund.com/fighting-fantasy/items"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.rustleund.com/fighting-fantasy/items ../../items.xsd"
+	xsi:schemaLocation="http://www.rustleund.com/fighting-fantasy/items
+		https://github.com/arustleund/fighting-fantasy/raw/master/docs/items.xsd"
 	xmlns:page="http://www.rustleund.com/fighting-fantasy/page"
 >
 	<item id="0" name="Sword" price="0" limit="1" />
