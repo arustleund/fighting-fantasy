@@ -22,6 +22,20 @@ public class GameState {
 		return this.baseDirectory;
 	}
 
+	/**
+	 * @return The {@link File} representing the directory that images are stored in
+	 */
+	public File getImagesDirectory() {
+		return new File(this.baseDirectory, "images");
+	}
+
+	/**
+	 * @return The {@link File} representing the directory that pages are stored in
+	 */
+	public File getPagesDirectory() {
+		return new File(this.baseDirectory, "pages");
+	}
+
 	public void setBaseDirectory(File baseDirectory) {
 		this.baseDirectory = baseDirectory;
 	}

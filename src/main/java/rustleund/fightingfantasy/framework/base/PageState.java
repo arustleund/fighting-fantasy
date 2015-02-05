@@ -31,6 +31,7 @@ public class PageState {
 	private ClosureLoader closureLoader;
 	private BattleEffectsLoader battleEffectsLoader;
 
+	private String pageName;
 	private GameState gameState = null;
 	private String pagetext = null;
 	private Map<String, Integer> keepMinimums = null;
@@ -40,10 +41,11 @@ public class PageState {
 	private Map<Integer, String> texts = null;
 	private Map<Integer, BattleState> battles = null;
 
-	public PageState(ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader, Document document, GameState gameState) {
+	public PageState(String pageName, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader, Document document, GameState gameState) {
 		this.closureLoader = closureLoader;
 		this.battleEffectsLoader = battleEffectsLoader;
 
+		this.pageName = pageName;
 		this.gameState = gameState;
 
 		loadPagetext(document);
@@ -226,4 +228,7 @@ public class PageState {
 		return texts;
 	}
 
+	public String getPageName() {
+		return this.pageName;
+	}
 }

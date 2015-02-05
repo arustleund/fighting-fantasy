@@ -26,7 +26,7 @@ public class DefaultItemUtil implements ItemUtil {
 
 	@Override
 	public void init(File itemConfiguration) {
-		this.items = new HashMap<Integer, Item>();
+		this.items = new HashMap<>();
 
 		try {
 			Document itemDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(itemConfiguration);
@@ -51,7 +51,7 @@ public class DefaultItemUtil implements ItemUtil {
 			item.setUseItem(this.closureLoader.loadClosureFromChildren(itemElement));
 		}
 		if (itemElement.hasAttribute("canUseInBattle")) {
-			item.setCanUseInBattle(Boolean.getBoolean(itemElement.getAttribute("canUseInBattle")));
+			item.setCanUseInBattle(Boolean.valueOf(itemElement.getAttribute("canUseInBattle")));
 		} else {
 			item.setCanUseInBattle(true);
 		}

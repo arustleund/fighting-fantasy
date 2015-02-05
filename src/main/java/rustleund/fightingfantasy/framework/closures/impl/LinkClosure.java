@@ -46,13 +46,13 @@ public class LinkClosure extends AbstractClosure {
 		Document targetPageDocument = null;
 		try {
 			DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			targetPageDocument = documentBuilder.parse(new File(gameState.getBaseDirectory(), "pages/" + pageName + ".xml"));
+			targetPageDocument = documentBuilder.parse(new File(gameState.getPagesDirectory(), pageName + ".xml"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		if (targetPageDocument != null) {
-			gameState.setPageState(new PageState(this.closureLoader, this.battleEffectsLoader, targetPageDocument, gameState));
+			gameState.setPageState(new PageState(pageName, this.closureLoader, this.battleEffectsLoader, targetPageDocument, gameState));
 
 			for (Closure closure : gameState.getPageState().getImmediateCommands()) {
 				closure.execute(gameState);

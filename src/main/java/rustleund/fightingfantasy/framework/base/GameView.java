@@ -34,6 +34,8 @@ public class GameView extends JPanel implements ActionListener {
 	private GameController controller = null;
 	private JLabel messageLabel = null;
 
+	private ImageView imageLabel;
+
 	private JEditorPane htmlEditorPane;
 	private JScrollPane htmlEditorScrollPane;
 
@@ -63,6 +65,15 @@ public class GameView extends JPanel implements ActionListener {
 		messagePanel.add(messageLabel);
 
 		add(messagePanel, BorderLayout.NORTH);
+
+		imageLabel = new ImageView(280, 480);
+		imageLabel.setPreferredSize(new Dimension(280, 480));
+
+		JPanel imagePanel = new JPanel();
+		imagePanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Image"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+		imagePanel.add(imageLabel);
+
+		add(imagePanel, BorderLayout.WEST);
 
 		htmlEditorPane = new JEditorPane("text/html", "");
 		htmlEditorPane.setEditable(false);
@@ -184,6 +195,8 @@ public class GameView extends JPanel implements ActionListener {
 			gameState.setPageLoaded(true);
 		}
 
+		imageLabel.update(gameState);
+
 		PlayerState playerState = gameState.getPlayerState();
 
 		inventoryList.setModel(new DefaultComboBoxModel<Item>(playerState.getItems().values().toArray(new Item[0])));
@@ -199,5 +212,4 @@ public class GameView extends JPanel implements ActionListener {
 
 		repaint();
 	}
-
 }
