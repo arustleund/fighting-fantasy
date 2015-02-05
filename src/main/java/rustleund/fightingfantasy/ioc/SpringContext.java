@@ -82,11 +82,8 @@ public class SpringContext {
 
 	@Bean
 	public Function<Element, Closure> initPlayerStateClosureFunction() {
-		return new Function<Element, Closure>() {
-			@Override
-			public Closure apply(Element input) {
-				return new InitPlayerStateClosure(itemUtil());
-			}
+		return (Element input) -> {
+			return new InitPlayerStateClosure(itemUtil());
 		};
 	}
 
