@@ -3,7 +3,6 @@
  */
 package rustleund.fightingfantasy.framework.closures.impl;
 
-import org.apache.commons.lang.BooleanUtils;
 import org.w3c.dom.Element;
 
 import rustleund.fightingfantasy.framework.base.GameState;
@@ -21,7 +20,7 @@ public class SetFlagClosure extends AbstractClosure {
 		this.flagId = Integer.parseInt(element.getAttribute("id"));
 
 		if (element.hasAttribute("value")) {
-			this.flagValue = BooleanUtils.toBoolean(element.getAttribute("value"));
+			this.flagValue = Boolean.valueOf(element.getAttribute("value"));
 		}
 	}
 

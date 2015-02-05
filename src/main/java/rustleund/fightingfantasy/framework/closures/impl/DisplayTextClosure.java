@@ -3,7 +3,6 @@
  */
 package rustleund.fightingfantasy.framework.closures.impl;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.w3c.dom.Element;
 
 import rustleund.fightingfantasy.framework.base.GameState;
@@ -29,10 +28,4 @@ public class DisplayTextClosure extends AbstractClosure {
 		gameState.getPageState().addToPagetext(text);
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
-
 }
