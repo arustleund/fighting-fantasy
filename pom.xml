@@ -2,16 +2,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.rustleund</groupId>
 	<artifactId>fighting-fantasy</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-					<executable>${JAVA_HOME6}/bin/javac</executable>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -67,4 +65,5 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<version>1.0</version>
 </project>
