@@ -37,7 +37,7 @@ public class GameView extends JPanel implements ActionListener {
 	private JEditorPane htmlEditorPane;
 	private JScrollPane htmlEditorScrollPane;
 
-	private JList inventoryList = null;
+	private JList<Item> inventoryList = null;
 	private JLabel skill = null;
 	private JLabel stamina = null;
 	private JLabel luck = null;
@@ -83,8 +83,8 @@ public class GameView extends JPanel implements ActionListener {
 
 		add(descriptionPanel, BorderLayout.CENTER);
 
-		DefaultComboBoxModel inventoryComboBox = new DefaultComboBoxModel();
-		inventoryList = new JList(inventoryComboBox);
+		DefaultComboBoxModel<Item> inventoryComboBox = new DefaultComboBoxModel<>();
+		inventoryList = new JList<>(inventoryComboBox);
 		JScrollPane inventoryScrollPane = new JScrollPane(inventoryList);
 		inventoryScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		inventoryScrollPane.setPreferredSize(new Dimension(200, 300));
@@ -166,7 +166,7 @@ public class GameView extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if ("use item".equals(event.getActionCommand())) {
-			Item selectedItem = (Item) inventoryList.getSelectedValue();
+			Item selectedItem = inventoryList.getSelectedValue();
 			if (selectedItem != null) {
 				controller.useItem(selectedItem);
 			}
@@ -186,7 +186,7 @@ public class GameView extends JPanel implements ActionListener {
 
 		PlayerState playerState = gameState.getPlayerState();
 
-		inventoryList.setModel(new DefaultComboBoxModel(playerState.getItems().values().toArray()));
+		inventoryList.setModel(new DefaultComboBoxModel<Item>(playerState.getItems().values().toArray(new Item[0])));
 
 		skill.setText(playerState.getSkill().toString());
 		stamina.setText(playerState.getStamina().toString());
