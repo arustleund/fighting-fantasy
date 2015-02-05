@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- <page> is the main element of the schema. No attributes. -->
 <page>
-	<!-- <pagenumber> is for reference only. No attributes. Content is the page number. -->
-	<pagenumber>106</pagenumber>
-	
 	<!-- 
 	<pagetext> is required. This is the text that will display when the user first goes to the page.
 	No attributes. HTML content. Must start with a <html> tag.

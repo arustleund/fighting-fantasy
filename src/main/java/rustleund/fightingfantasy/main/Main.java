@@ -4,12 +4,23 @@
 package rustleund.fightingfantasy.main;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.filechooser.FileFilter;
+
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -27,6 +38,7 @@ import rustleund.fightingfantasy.ioc.SpringContext;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicates;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
@@ -43,18 +55,38 @@ public class Main {
 		JFrame frame = new JFrame("Fighting Fantasy");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JFileChooser chooser = new JFileChooser(System.getProperty("user.dir") + "/src/main/resources");
-		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.showOpenDialog(frame);
+		JFileChooser chooser = new JFileChooser(System.getProperty("user.home"));
+		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		chooser.setFileFilter(new FileFilter() {
 
-		File baseDirectory = chooser.getSelectedFile();
-		while (!baseDirectoryIsValid(baseDirectory)) {
-			chooser.showOpenDialog(frame);
-			baseDirectory = chooser.getSelectedFile();
+			@Override
+			public String getDescription() {
+				return "ZIP Files";
+			}
+
+			@Override
+			public boolean accept(File f) {
+				return f.getName().endsWith("zip");
+			}
+		});
+		int openResult = chooser.showOpenDialog(frame);
+		if (openResult == JFileChooser.CANCEL_OPTION) {
+			System.exit(0);
+		}
+
+		Path gameDirectory = getGameDirectory();
+
+		File zipFile = chooser.getSelectedFile();
+		while (!gameDirectoryIsValid(gameDirectory, zipFile)) {
+			openResult = chooser.showOpenDialog(frame);
+			if (openResult == JFileChooser.CANCEL_OPTION) {
+				System.exit(0);
+			}
+			zipFile = chooser.getSelectedFile();
 		}
 
 		// Create and set up the content pane.
-		JComponent newContentPane = initializeGame(baseDirectory);
+		JComponent newContentPane = initializeGame(gameDirectory.toFile());
 		newContentPane.setOpaque(true); // content panes must be opaque
 		frame.setContentPane(newContentPane);
 
@@ -63,19 +95,63 @@ public class Main {
 		frame.setVisible(true);
 	}
 
-	private static boolean baseDirectoryIsValid(File baseDirectory) {
-		if (baseDirectory.isDirectory()) {
-			List<File> files = Lists.newArrayList(baseDirectory.listFiles());
-			Function<File, String> function = new Function<File, String>() {
-				@Override
-				public String apply(File input) {
-					return input.getName();
-				}
-			};
-			return Iterables.any(files, Predicates.compose(Predicates.equalTo("config"), function)) &&
-					Iterables.any(files, Predicates.compose(Predicates.equalTo("pages"), function));
+	private static Path getGameDirectory() {
+		try {
+			Path result = Files.createTempDirectory("com.rustleund.fightingfantasy");
+			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+				Main.clearGameDirectory(result, true);
+			}));
+			return result;
+		} catch (IOException e) {
+			throw Throwables.propagate(e);
 		}
-		return false;
+	}
+
+	private static boolean gameDirectoryIsValid(Path gameDirectory, File zipFile) {
+		clearGameDirectory(gameDirectory, false);
+		unzipToGameDirectory(gameDirectory, zipFile);
+		List<File> files = Lists.newArrayList(gameDirectory.toFile().listFiles());
+		Function<File, String> function = (File input) -> {
+			return input.getName();
+		};
+		return Iterables.any(files, Predicates.compose(Predicates.equalTo("config"), function)) &&
+				Iterables.any(files, Predicates.compose(Predicates.equalTo("pages"), function));
+	}
+
+	private static void unzipToGameDirectory(Path gamesDirectory, File zipFile) {
+		try {
+			ZipFile zipFile2 = new ZipFile(zipFile);
+			zipFile2.extractAll(gamesDirectory.toFile().getAbsolutePath());
+		} catch (ZipException e) {
+			Throwables.propagate(e);
+		}
+	}
+
+	public static void clearGameDirectory(final Path gameDirectory, final boolean deleteGameToo) {
+		FileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
+			@Override
+			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+				Files.delete(file);
+				return FileVisitResult.CONTINUE;
+			}
+
+			@Override
+			public FileVisitResult postVisitDirectory(Path dir, IOException e) throws IOException {
+				if (e == null) {
+					if (deleteGameToo || !gameDirectory.equals(dir)) {
+						Files.delete(dir);
+					}
+					return FileVisitResult.CONTINUE;
+				}
+				// directory iteration failed
+				throw e;
+			}
+		};
+		try {
+			Files.walkFileTree(gameDirectory, visitor);
+		} catch (IOException e1) {
+			throw Throwables.propagate(e1);
+		}
 	}
 
 	public static void main(String[] args) {
