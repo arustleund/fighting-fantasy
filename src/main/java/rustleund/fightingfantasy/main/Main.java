@@ -56,17 +56,17 @@ public class Main {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JFileChooser chooser = new JFileChooser(System.getProperty("user.home"));
-		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		chooser.setFileFilter(new FileFilter() {
 
 			@Override
 			public String getDescription() {
-				return "ZIP Files";
+				return "Game Files or Directories";
 			}
 
 			@Override
 			public boolean accept(File f) {
-				return f.getName().endsWith("zip");
+				return f.isDirectory() || f.getName().endsWith(".zip");
 			}
 		});
 		int openResult = chooser.showOpenDialog(frame);
@@ -74,15 +74,19 @@ public class Main {
 			System.exit(0);
 		}
 
-		Path gameDirectory = getGameDirectory();
+		File gameFile = chooser.getSelectedFile();
 
-		File zipFile = chooser.getSelectedFile();
-		while (!gameDirectoryIsValid(gameDirectory, zipFile)) {
+		Path gameDirectory = getGameDirectory(gameFile);
+
+		while (!gameDirectoryIsValid(gameDirectory, gameFile)) {
 			openResult = chooser.showOpenDialog(frame);
 			if (openResult == JFileChooser.CANCEL_OPTION) {
 				System.exit(0);
 			}
-			zipFile = chooser.getSelectedFile();
+			gameFile = chooser.getSelectedFile();
+			if (gameFile.isDirectory()) {
+				gameDirectory = gameFile.toPath();
+			}
 		}
 
 		// Create and set up the content pane.
@@ -95,7 +99,10 @@ public class Main {
 		frame.setVisible(true);
 	}
 
-	private static Path getGameDirectory() {
+	private static Path getGameDirectory(File gameFile) {
+		if (gameFile.isDirectory() && gameFile.exists()) {
+			return gameFile.toPath();
+		}
 		try {
 			Path result = Files.createTempDirectory("com.rustleund.fightingfantasy");
 			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -107,9 +114,11 @@ public class Main {
 		}
 	}
 
-	private static boolean gameDirectoryIsValid(Path gameDirectory, File zipFile) {
-		clearGameDirectory(gameDirectory, false);
-		unzipToGameDirectory(gameDirectory, zipFile);
+	private static boolean gameDirectoryIsValid(Path gameDirectory, File gameFile) {
+		if (gameFile.isFile()) {
+			clearGameDirectory(gameDirectory, false);
+			unzipToGameDirectory(gameDirectory, gameFile);
+		}
 		List<File> files = Lists.newArrayList(gameDirectory.toFile().listFiles());
 		Function<File, String> function = (File input) -> {
 			return input.getName();
