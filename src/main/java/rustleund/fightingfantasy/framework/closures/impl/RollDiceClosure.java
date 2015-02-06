@@ -28,7 +28,7 @@ public class RollDiceClosure extends AbstractClosure {
 			this.number = Integer.parseInt(element.getAttribute("number"));
 		}
 
-		this.rollMappings = new HashMap<Integer, Closure>();
+		this.rollMappings = new HashMap<>();
 		NodeList doActionsElements = element.getElementsByTagName("doActions");
 		for (int i = 0; i < doActionsElements.getLength(); i++) {
 			Element doActionsElement = (Element) doActionsElements.item(i);

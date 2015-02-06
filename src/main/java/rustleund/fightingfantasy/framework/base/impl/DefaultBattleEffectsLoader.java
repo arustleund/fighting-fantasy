@@ -26,7 +26,7 @@ public class DefaultBattleEffectsLoader implements BattleEffectsLoader {
 		List<BattleEffects> result = null;
 		NodeList allEffectGroups = baseTagElement.getChildNodes();
 		if (allEffectGroups.getLength() > 0) {
-			result = new ArrayList<BattleEffects>();
+			result = new ArrayList<>();
 			for (int i = 0; i < allEffectGroups.getLength(); i++) {
 				Node effectGroup = allEffectGroups.item(i);
 				if (effectGroup instanceof Element) {

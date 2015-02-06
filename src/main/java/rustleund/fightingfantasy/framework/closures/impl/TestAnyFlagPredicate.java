@@ -22,7 +22,7 @@ public class TestAnyFlagPredicate implements Predicate<GameState> {
 	 * @param An {@link Element} that represents an {@code<anyFlag />} element. Must contain an <code>ids</code> attribute with comma-separated integers representing flag ids.
 	 */
 	public TestAnyFlagPredicate(Element element) {
-		this.flagIds = new ArrayList<Integer>();
+		this.flagIds = new ArrayList<>();
 		StringTokenizer tokenizer = new StringTokenizer(element.getAttribute("ids"), ",");
 		while (tokenizer.hasMoreTokens()) {
 			this.flagIds.add(Integer.valueOf(tokenizer.nextToken()));

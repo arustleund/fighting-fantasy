@@ -49,7 +49,7 @@ public class SpringContext {
 
 	@Bean
 	public ClosureLoader closureLoader() {
-		Map<String, Function<Element, Closure>> mappings = new HashMap<String, Function<Element, Closure>>();
+		Map<String, Function<Element, Closure>> mappings = new HashMap<>();
 
 		mappings.put("addBattleEffectsForNextBattle", addBattleEffectsForNextBattleClosureFunction());
 		mappings.put("addBattleEffectsToCurrentBattle", addBattleEffectsToCurrentBattleClosureFunction());
@@ -89,11 +89,8 @@ public class SpringContext {
 
 	@Bean
 	public Function<Element, Closure> addItemClosureFunction() {
-		return new Function<Element, Closure>() {
-			@Override
-			public Closure apply(Element input) {
-				return new AddItemClosure(input, itemUtil());
-			}
+		return (Element input) -> {
+			return new AddItemClosure(input, itemUtil());
 		};
 	}
 

@@ -60,13 +60,13 @@ public class BattleState {
 
 		loadEnemies((Element) battleTag.getElementsByTagName("enemies").item(0));
 
-		this.allBattleEffects = new ArrayList<BattleEffects>();
+		this.allBattleEffects = new ArrayList<>();
 		NodeList effectsNodeList = battleTag.getElementsByTagName("effects");
 		if (effectsNodeList.getLength() > 0) {
 			loadEffects((Element) effectsNodeList.item(0), pageState.getGameState().getPlayerState());
 		}
 
-		this.additionalMessages = new HashMap<BattleMessagePosition, String>();
+		this.additionalMessages = new HashMap<>();
 	}
 
 	public void addAdditionalMessage(BattleMessagePosition position, String message) {
@@ -141,7 +141,7 @@ public class BattleState {
 	}
 
 	public void doStartBattle() {
-		for (BattleEffects battleEffects : new ArrayList<BattleEffects>(this.allBattleEffects)) {
+		for (BattleEffects battleEffects : new ArrayList<>(this.allBattleEffects)) {
 			if (battleEffects.getStartBattle() != null) {
 				battleEffects.getStartBattle().execute(this.pageState.getGameState());
 			}
@@ -149,7 +149,7 @@ public class BattleState {
 	}
 
 	public void doPlayerFlee() {
-		for (BattleEffects battleEffects : new ArrayList<BattleEffects>(this.allBattleEffects)) {
+		for (BattleEffects battleEffects : new ArrayList<>(this.allBattleEffects)) {
 			if (battleEffects.getPlayerFlee() != null) {
 				battleEffects.getPlayerFlee().execute(this.pageState.getGameState());
 			}
@@ -157,7 +157,7 @@ public class BattleState {
 	}
 
 	public void doStartRound() {
-		for (BattleEffects battleEffects : new ArrayList<BattleEffects>(this.allBattleEffects)) {
+		for (BattleEffects battleEffects : new ArrayList<>(this.allBattleEffects)) {
 			if (battleEffects.getStartRound() != null) {
 				battleEffects.getStartRound().execute(this.pageState.getGameState());
 			}
@@ -165,7 +165,7 @@ public class BattleState {
 	}
 
 	public void doEndRound() {
-		for (BattleEffects battleEffects : new ArrayList<BattleEffects>(this.allBattleEffects)) {
+		for (BattleEffects battleEffects : new ArrayList<>(this.allBattleEffects)) {
 			if (battleEffects.getEndRound() != null) {
 				battleEffects.getEndRound().execute(this.pageState.getGameState());
 			}
@@ -173,7 +173,7 @@ public class BattleState {
 	}
 
 	public void doPlayerHit() {
-		for (BattleEffects battleEffects : new ArrayList<BattleEffects>(this.allBattleEffects)) {
+		for (BattleEffects battleEffects : new ArrayList<>(this.allBattleEffects)) {
 			if (battleEffects.getPlayerHit() != null) {
 				battleEffects.getPlayerHit().execute(this.pageState.getGameState());
 			}
@@ -181,7 +181,7 @@ public class BattleState {
 	}
 
 	public void doEndBattle() {
-		for (BattleEffects battleEffects : new ArrayList<BattleEffects>(this.allBattleEffects)) {
+		for (BattleEffects battleEffects : new ArrayList<>(this.allBattleEffects)) {
 			if (battleEffects.getEndBattle() != null) {
 				battleEffects.getEndBattle().execute(this.pageState.getGameState());
 			}
@@ -197,7 +197,7 @@ public class BattleState {
 			message.append("<br>");
 		}
 
-		SortedMap<Integer, List<AbstractEntityState>> attackStrengths = new TreeMap<Integer, List<AbstractEntityState>>();
+		SortedMap<Integer, List<AbstractEntityState>> attackStrengths = new TreeMap<>();
 
 		PlayerState playerState = getPlayerState();
 
@@ -205,7 +205,7 @@ public class BattleState {
 
 		message.append("Your attack strength: " + playerAttackStrength + "<br>");
 
-		List<AbstractEntityState> statesForStrength = new ArrayList<AbstractEntityState>();
+		List<AbstractEntityState> statesForStrength = new ArrayList<>();
 		statesForStrength.add(playerState);
 		attackStrengths.put(playerAttackStrength, statesForStrength);
 
@@ -301,7 +301,7 @@ public class BattleState {
 			if (attackStrengths.containsKey(thisEnemysAttackStrength)) {
 				attackStrengths.get(thisEnemysAttackStrength).add(thisEnemy);
 			} else {
-				List<AbstractEntityState> newStatesForStrength = new ArrayList<AbstractEntityState>();
+				List<AbstractEntityState> newStatesForStrength = new ArrayList<>();
 				newStatesForStrength.add(thisEnemy);
 				attackStrengths.put(thisEnemysAttackStrength, newStatesForStrength);
 			}

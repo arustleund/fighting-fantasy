@@ -15,7 +15,7 @@ public class ClearBattleMessageClosure extends AbstractClosure {
 
 	public ClearBattleMessageClosure(Element e) {
 		if (e.hasAttribute("positionsToClear")) {
-			this.positionsToClear = new ArrayList<BattleMessagePosition>();
+			this.positionsToClear = new ArrayList<>();
 			StringTokenizer tok = new StringTokenizer(e.getAttribute("positionsToClear"), ",");
 			while (tok.hasMoreTokens()) {
 				this.positionsToClear.add(BattleMessagePosition.valueOf(tok.nextToken()));

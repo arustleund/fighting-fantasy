@@ -38,7 +38,7 @@ public class DefaultClosureLoader implements ClosureLoader {
 
 	@Override
 	public Closure loadClosureFromChildren(Element element) {
-		List<Closure> closures = new ArrayList<Closure>();
+		List<Closure> closures = new ArrayList<>();
 		NodeList childNodes = element.getChildNodes();
 		for (int i = 0; i < childNodes.getLength(); i++) {
 			Node childNode = childNodes.item(i);

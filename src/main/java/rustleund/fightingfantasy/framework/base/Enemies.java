@@ -15,12 +15,12 @@ public class Enemies implements Iterable<EnemyState> {
 	private List<EnemyState> enemies;
 
 	public Enemies() {
-		enemies = new ArrayList<EnemyState>();
+		enemies = new ArrayList<>();
 	}
 
 	public void addEnemy(EnemyState enemy) {
 		if (enemies == null) {
-			enemies = new ArrayList<EnemyState>();
+			enemies = new ArrayList<>();
 		}
 		enemies.add(enemy);
 	}

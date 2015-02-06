@@ -12,7 +12,7 @@ public class ChainedClosure implements Closure {
 	private List<Closure> closures;
 
 	public ChainedClosure() {
-		this.closures = new ArrayList<Closure>();
+		this.closures = new ArrayList<>();
 	}
 
 	public ChainedClosure(List<Closure> closures) {
@@ -20,7 +20,7 @@ public class ChainedClosure implements Closure {
 	}
 
 	public ChainedClosure(Closure... closures) {
-		this.closures = new ArrayList<Closure>(Arrays.asList(closures));
+		this.closures = new ArrayList<>(Arrays.asList(closures));
 	}
 
 	public void addClosure(Closure closure) {

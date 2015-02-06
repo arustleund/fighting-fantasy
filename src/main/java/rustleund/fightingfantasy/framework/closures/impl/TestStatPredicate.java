@@ -16,7 +16,7 @@ import com.google.common.base.Predicate;
 
 public class TestStatPredicate implements Predicate<GameState> {
 
-	private static final Map<String, List<Boolean>> VALUES_MAPPINGS = new HashMap<String, List<Boolean>>();
+	private static final Map<String, List<Boolean>> VALUES_MAPPINGS = new HashMap<>();
 
 	static {
 		VALUES_MAPPINGS.put("lessThan", Arrays.asList(new Boolean[] { Boolean.TRUE, Boolean.FALSE, Boolean.FALSE }));

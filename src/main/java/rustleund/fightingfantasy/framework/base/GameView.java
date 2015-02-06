@@ -199,7 +199,7 @@ public class GameView extends JPanel implements ActionListener {
 
 		PlayerState playerState = gameState.getPlayerState();
 
-		inventoryList.setModel(new DefaultComboBoxModel<Item>(playerState.getItems().values().toArray(new Item[0])));
+		inventoryList.setModel(new DefaultComboBoxModel<>(playerState.getItems().values().toArray(new Item[0])));
 
 		skill.setText(playerState.getSkill().toString());
 		stamina.setText(playerState.getStamina().toString());

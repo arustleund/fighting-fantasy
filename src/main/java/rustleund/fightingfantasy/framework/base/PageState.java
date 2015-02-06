@@ -65,7 +65,7 @@ public class PageState {
 	}
 
 	private void loadKeepMinimum(Document document) {
-		keepMinimums = new HashMap<String, Integer>();
+		keepMinimums = new HashMap<>();
 		NodeList keepMinimumTags = document.getElementsByTagName("keepminimum");
 		for (int i = 0; i < keepMinimumTags.getLength(); i++) {
 			Element thisKeepMinimumTag = (Element) keepMinimumTags.item(i);
@@ -74,7 +74,7 @@ public class PageState {
 	}
 
 	private void loadTestLucks(Document document) {
-		testLucks = new HashMap<Integer, Element>();
+		testLucks = new HashMap<>();
 		NodeList testLuckTags = document.getElementsByTagName("testluck");
 		for (int i = 0; i < testLuckTags.getLength(); i++) {
 			Element thisTestLuckTag = (Element) testLuckTags.item(i);
@@ -83,7 +83,7 @@ public class PageState {
 	}
 
 	private void loadImmediate(Document document) {
-		immediateCommands = new ArrayList<Closure>();
+		immediateCommands = new ArrayList<>();
 		NodeList immediateTags = document.getElementsByTagName("immediate");
 		if (immediateTags.getLength() > 0) {
 			NodeList immediateCommandTags = immediateTags.item(0).getChildNodes();
@@ -97,7 +97,7 @@ public class PageState {
 	}
 
 	private void loadTexts(Document document) {
-		texts = new HashMap<Integer, String>();
+		texts = new HashMap<>();
 		NodeList textTags = document.getElementsByTagName("text");
 		for (int i = 0; i < textTags.getLength(); i++) {
 			Element thisTextTag = (Element) textTags.item(i);
@@ -106,13 +106,13 @@ public class PageState {
 	}
 
 	private void loadMultis(Document document) {
-		this.multiCommands = new HashMap<Integer, Closure>();
+		this.multiCommands = new HashMap<>();
 		NodeList multiTags = document.getElementsByTagName("multicommand");
 		for (int i = 0; i < multiTags.getLength(); i++) {
 			Element thisMultiTag = (Element) multiTags.item(i);
 			Integer thisMultiId = Integer.valueOf(thisMultiTag.getAttribute("id"));
 			NodeList thisMultiTagsCommandTags = thisMultiTag.getChildNodes();
-			List<Closure> subclosures = new ArrayList<Closure>();
+			List<Closure> subclosures = new ArrayList<>();
 			for (int j = 0; j < thisMultiTagsCommandTags.getLength(); j++) {
 				Node thisMultiTagsCommandTag = thisMultiTagsCommandTags.item(j);
 				if (thisMultiTagsCommandTag instanceof Element) {
@@ -124,7 +124,7 @@ public class PageState {
 	}
 
 	private void loadBattles(Document document) {
-		battles = new HashMap<Integer, BattleState>();
+		battles = new HashMap<>();
 		NodeList battleTags = document.getElementsByTagName("battle");
 		for (int i = 0; i < battleTags.getLength(); i++) {
 			Element thisBattleTag = (Element) battleTags.item(i);

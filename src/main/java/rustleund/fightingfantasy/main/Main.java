@@ -22,7 +22,7 @@ import javax.swing.filechooser.FileFilter;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
@@ -167,14 +167,17 @@ public class Main {
 	}
 
 	private static GameView initializeGame(File baseDirectory) {
-		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringContext.class);
+		@SuppressWarnings("resource")
+		ConfigurableApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringContext.class);
+		applicationContext.registerShutdownHook();
 		SpringContext springContext = applicationContext.getBean(SpringContext.class);
 
 		ClosureLoader closureLoader = springContext.closureLoader();
 		BattleEffectsLoader battleEffectsLoader = springContext.battleEffectsLoader();
 		ItemUtil itemUtil = springContext.itemUtil();
 
-		itemUtil.init(new File(baseDirectory, "config/items.xml"));
+		File configDirectory = new File(baseDirectory, "config");
+		itemUtil.init(new File(configDirectory, "items.xml"));
 
 		GameController gameController = new GameController(closureLoader, battleEffectsLoader, itemUtil);
 		GameState gameState = new GameState();

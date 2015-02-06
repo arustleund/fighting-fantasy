@@ -52,8 +52,8 @@ public class PlayerState extends AbstractEntityState {
 		this.gold = new Scale(0, gold, null, false);
 		this.time = new Scale(0, time, null, true);
 
-		this.items = new HashMap<Integer, Item>();
-		this.flags = new HashMap<Integer, Boolean>();
+		this.items = new HashMap<>();
+		this.flags = new HashMap<>();
 
 		for (Item item : items) {
 			addItem(item);
@@ -113,7 +113,7 @@ public class PlayerState extends AbstractEntityState {
 
 	public void addNextBattleBattleEffect(BattleEffects battleEffects) {
 		if (this.nextBattleBattleEffects == null) {
-			this.nextBattleBattleEffects = new ArrayList<BattleEffects>();
+			this.nextBattleBattleEffects = new ArrayList<>();
 		}
 		this.nextBattleBattleEffects.add(battleEffects);
 	}

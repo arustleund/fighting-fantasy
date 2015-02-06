@@ -44,7 +44,7 @@ public class ImageView extends JComponent {
 	}
 
 	public void update(GameState gameState) {
-		File imageLocation = new File(gameState.getImagesDirectory(), gameState.getPageState().getPageName() + ".jpg");
+		File imageLocation = new File(gameState.getImagesDirectory(), gameState.getPageState().getPageName() + ".png");
 		if (imageLocation.exists()) {
 			try {
 				image = ImageIO.read(imageLocation);

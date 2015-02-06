@@ -28,7 +28,7 @@ public class GameController implements HyperlinkListener {
 	private GameState gameState;
 
 	public GameController(ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader, ItemUtil itemUtil) {
-		this.gameViews = new ArrayList<GameView>();
+		this.gameViews = new ArrayList<>();
 		this.closureLoader = closureLoader;
 		this.battleEffectsLoader = battleEffectsLoader;
 		this.itemUtil = itemUtil;
