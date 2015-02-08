@@ -134,7 +134,12 @@ public class GameController implements HyperlinkListener {
 	}
 
 	private void loadPageIntoGameState(int pageNumber) {
-		new LinkClosure(pageNumber, closureLoader, battleEffectsLoader).execute(gameState);
+		goToPage("" + pageNumber);
+	}
+
+	public void goToPage(String pageId) {
+		new LinkClosure(pageId, closureLoader, battleEffectsLoader).execute(gameState);
+		updateViews();
 	}
 
 	public GameState getGameState() {
@@ -145,4 +150,7 @@ public class GameController implements HyperlinkListener {
 		gameState = state;
 	}
 
+	public ItemUtil getItemUtil() {
+		return this.itemUtil;
+	}
 }

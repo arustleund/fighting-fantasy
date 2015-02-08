@@ -16,6 +16,7 @@ import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.PageState;
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
+import rustleund.fightingfantasy.gamesave.SavedGame;
 
 /**
  * @author rustlea
@@ -43,6 +44,9 @@ public class LinkClosure extends AbstractClosure {
 
 	@Override
 	public boolean execute(GameState gameState) {
+		// first save our state until this point
+		gameState.addGameProgress(new SavedGame(pageName, gameState.getPlayerState().deepCopy()));
+
 		Document targetPageDocument = null;
 		try {
 			DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();

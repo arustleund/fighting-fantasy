@@ -18,6 +18,10 @@ public class Item {
 	private Closure useItem;
 	private boolean canUseInBattle;
 
+	private Item() {
+		// for deep copy
+	}
+
 	public Item(int id, String name, int defaultPrice) {
 		this.id = id;
 		this.name = name;
@@ -72,6 +76,10 @@ public class Item {
 		return count;
 	}
 
+	public void setCount(int count) {
+		this.count = count;
+	}
+
 	/**
 	 * Executes the commands that were configured on this {@link Item}. If no command was configured, this method does nothing.
 	 * 
@@ -102,5 +110,17 @@ public class Item {
 
 	public void setCanUseInBattle(boolean canUseInBattle) {
 		this.canUseInBattle = canUseInBattle;
+	}
+
+	public Item deepCopy() {
+		Item result = new Item();
+		result.canUseInBattle = canUseInBattle;
+		result.count = count;
+		result.defaultPrice = defaultPrice;
+		result.id = id;
+		result.limit = limit;
+		result.name = name;
+		result.useItem = useItem;
+		return result;
 	}
 }

@@ -4,6 +4,11 @@
 package rustleund.fightingfantasy.framework.base;
 
 import java.io.File;
+import java.util.LinkedList;
+
+import rustleund.fightingfantasy.gamesave.SavedGame;
+
+import com.google.common.collect.Lists;
 
 /**
  * @author rustlea
@@ -17,6 +22,25 @@ public class GameState {
 	private String message;
 	private boolean isBattleInProgress;
 	private boolean pageLoaded;
+	private LinkedList<SavedGame> gameProgress = Lists.newLinkedList();
+
+	public void addGameProgress(SavedGame savedGame) {
+		this.gameProgress.add(savedGame);
+	}
+
+	public SavedGame popGameProgress() {
+		if (this.gameProgress.isEmpty()) {
+			return null;
+		}
+		return this.gameProgress.removeLast();
+	}
+
+	public SavedGame getLatestGameProgress() {
+		if (this.gameProgress.isEmpty()) {
+			return null;
+		}
+		return this.gameProgress.getLast();
+	}
 
 	public File getBaseDirectory() {
 		return this.baseDirectory;

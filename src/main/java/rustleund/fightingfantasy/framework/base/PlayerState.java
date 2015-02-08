@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import rustleund.fightingfantasy.framework.util.DiceRoller;
+
+import com.google.common.collect.Maps;
 
 /**
  * @author rustlea
@@ -26,6 +29,10 @@ public class PlayerState extends AbstractEntityState {
 	private List<BattleEffects> nextBattleBattleEffects;
 	private int poisonDamage;
 	private boolean poisonImmunity = false;
+
+	private PlayerState() {
+		// for deep copy
+	}
 
 	public PlayerState(String name, List<Item> items) {
 		int initialSkill = DiceRoller.rollOneDie() + 6;
@@ -198,4 +205,31 @@ public class PlayerState extends AbstractEntityState {
 		this.poisonImmunity = poisonImmunity;
 	}
 
+	public PlayerState deepCopy() {
+		PlayerState result = new PlayerState();
+		result.attackStrengthModifier = attackStrengthModifier;
+		result.flags = new HashMap<>(flags);
+		result.gold = gold.deepCopy();
+		result.honor = honor.deepCopy();
+		result.items = deepCopyItems();
+		result.luck = luck.deepCopy();
+		result.name = name;
+		result.nemesis = nemesis.deepCopy();
+		result.nextBattleBattleEffects = nextBattleBattleEffects == null ? null : new ArrayList<>(nextBattleBattleEffects);
+		result.poisonDamage = poisonDamage;
+		result.poisonImmunity = poisonImmunity;
+		result.provisions = provisions.deepCopy();
+		result.skill = skill.deepCopy();
+		result.stamina = stamina.deepCopy();
+		result.time = time.deepCopy();
+		return result;
+	}
+
+	private Map<Integer, Item> deepCopyItems() {
+		Map<Integer, Item> result = Maps.newHashMapWithExpectedSize(items.size());
+		for (Entry<Integer, Item> entry : items.entrySet()) {
+			result.put(entry.getKey(), entry.getValue().deepCopy());
+		}
+		return result;
+	}
 }

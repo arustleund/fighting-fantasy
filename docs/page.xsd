@@ -137,7 +137,7 @@
 	<complexType name="testFlag">
 		<complexContent>
 			<extension base="page:testContent">
-				<attribute name="id" type="int"></attribute>
+				<attribute name="id" type="int" use="required"></attribute>
 
 			</extension>
 		</complexContent>

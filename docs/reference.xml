@@ -235,6 +235,11 @@
 	-->
 	<link page="208" />
 	
+	<!-- <mustEatMeal> forces the player to consume the given number of provisions (specified by the amount attribute).
+	If the player does not have enough provisions, 2 stamina is lost for each meal that is missing. This may kill the player.
+	Attributes:
+		amount: Not Required. Integer. The amount of provisions that must be consumed. Defaults to 1.
+	 -->
 	<mustEatMeal amount="2" />
 	
 	<removeItem id="11" />

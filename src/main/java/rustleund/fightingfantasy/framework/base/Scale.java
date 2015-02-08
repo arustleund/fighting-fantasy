@@ -17,6 +17,10 @@ public class Scale {
 
 	private boolean doOperationOnFail = false;
 
+	private Scale() {
+		// deep copy
+	}
+
 	public Scale(Integer lowerBound, Integer currentValue, Integer upperBound, boolean doOperationOnFail) {
 		if (lowerBound == null && upperBound == null) {
 			this.range = Range.all();
@@ -125,4 +129,12 @@ public class Scale {
 		return result.toString();
 	}
 
+	public Scale deepCopy() {
+		Scale result = new Scale();
+		result.currentValue = currentValue;
+		result.doOperationOnFail = doOperationOnFail;
+		result.previousValue = previousValue;
+		result.range = range;
+		return result;
+	}
 }

@@ -3,6 +3,8 @@
  */
 package rustleund.fightingfantasy.main;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -17,6 +19,10 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
 import net.lingala.zip4j.core.ZipFile;
@@ -34,6 +40,9 @@ import rustleund.fightingfantasy.framework.base.ItemUtil;
 import rustleund.fightingfantasy.framework.base.PlayerState;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
+import rustleund.fightingfantasy.gamesave.BackAction;
+import rustleund.fightingfantasy.gamesave.LoadAction;
+import rustleund.fightingfantasy.gamesave.SaveAction;
 import rustleund.fightingfantasy.ioc.SpringContext;
 
 import com.google.common.base.Function;
@@ -90,7 +99,7 @@ public class Main {
 		}
 
 		// Create and set up the content pane.
-		JComponent newContentPane = initializeGame(gameDirectory.toFile());
+		JComponent newContentPane = initializeGame(gameDirectory.toFile(), frame);
 		newContentPane.setOpaque(true); // content panes must be opaque
 		frame.setContentPane(newContentPane);
 
@@ -175,7 +184,7 @@ public class Main {
 
 	}
 
-	private static GameView initializeGame(File baseDirectory) {
+	private static GameView initializeGame(File baseDirectory, JFrame frame) {
 		@SuppressWarnings("resource")
 		ConfigurableApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringContext.class);
 		applicationContext.registerShutdownHook();
@@ -204,6 +213,8 @@ public class Main {
 
 		gameController.addView(gameView);
 
+		frame.setJMenuBar(buildMenuBar(gameState, gameController));
+
 		new LinkClosure("doStats", closureLoader, battleEffectsLoader).execute(gameState);
 
 		gameView.update(gameState);
@@ -211,4 +222,35 @@ public class Main {
 		return gameView;
 	}
 
+	private static JMenuBar buildMenuBar(GameState gameState, GameController gameController) {
+		JMenuBar result = new JMenuBar();
+		buildFileMenu(gameState, gameController, result);
+		buildNavigateMenu(result, gameController);
+		return result;
+	}
+
+	private static void buildFileMenu(GameState gameState, GameController gameController, JMenuBar result) {
+		JMenu menu = new JMenu("File");
+
+		JMenuItem loadMenuItem = new JMenuItem(new LoadAction(gameController));
+		loadMenuItem.setMnemonic(KeyEvent.VK_O);
+		loadMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.META_MASK));
+		menu.add(loadMenuItem);
+
+		JMenuItem saveMenuItem = new JMenuItem(new SaveAction(gameState));
+		saveMenuItem.setMnemonic(KeyEvent.VK_S);
+		saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.META_MASK));
+		menu.add(saveMenuItem);
+
+		result.add(menu);
+	}
+
+	private static void buildNavigateMenu(JMenuBar menuBar, GameController gameController) {
+		JMenu menu = new JMenu("Navigate");
+
+		JMenuItem backMenuItem = new JMenuItem(new BackAction(gameController));
+		menu.add(backMenuItem);
+
+		menuBar.add(menu);
+	}
 }
