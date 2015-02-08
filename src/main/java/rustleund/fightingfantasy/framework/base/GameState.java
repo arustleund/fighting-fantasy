@@ -35,6 +35,9 @@ public class GameState {
 		return this.gameProgress.removeLast();
 	}
 
+	/**
+	 * @return The most recently saved {@link SavedGame}, or <code>null</code> if nothing has been saved so far
+	 */
 	public SavedGame getLatestGameProgress() {
 		if (this.gameProgress.isEmpty()) {
 			return null;

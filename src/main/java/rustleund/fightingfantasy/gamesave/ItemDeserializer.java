@@ -15,6 +15,10 @@ public class ItemDeserializer implements JsonDeserializer<Item> {
 
 	private GameController gameController;
 
+	public ItemDeserializer(GameController gameController) {
+		this.gameController = gameController;
+	}
+
 	@Override
 	public Item deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 		JsonObject asJsonObject = json.getAsJsonObject();
