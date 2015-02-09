@@ -311,5 +311,14 @@
 			<!-- put any number of commands here -->
 		</unsuccessful>
 	</testStat>
+	
+	<testEnemyStat stat="stamina" atLeast="14" enemyId="0">
+		<successful>
+			<!-- put any number of commands here -->
+		</successful>
+		<unsuccessful>
+			<!-- put any number of commands here -->
+		</unsuccessful>
+	</testEnemyStat>
 
 </page>

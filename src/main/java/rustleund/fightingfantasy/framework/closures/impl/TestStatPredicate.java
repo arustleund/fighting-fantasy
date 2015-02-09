@@ -8,8 +8,8 @@ import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.w3c.dom.Element;
 
+import rustleund.fightingfantasy.framework.base.AbstractEntityState;
 import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.base.PlayerState;
 import rustleund.fightingfantasy.framework.base.Scale;
 
 import com.google.common.base.Predicate;
@@ -49,9 +49,9 @@ public class TestStatPredicate implements Predicate<GameState> {
 	@Override
 	public boolean apply(GameState gameState) {
 		try {
-			PlayerState playerState = gameState.getPlayerState();
+			AbstractEntityState entityStateToTest = getEntityStateToTest(gameState);
 
-			Scale statScale = (Scale) PropertyUtils.getProperty(playerState, this.stat);
+			Scale statScale = (Scale) PropertyUtils.getProperty(entityStateToTest, this.stat);
 			Integer statValue;
 			if (this.useInitialValue) {
 				statValue = statScale.getUpperBound();
@@ -75,4 +75,7 @@ public class TestStatPredicate implements Predicate<GameState> {
 		return false;
 	}
 
+	protected AbstractEntityState getEntityStateToTest(GameState gameState) {
+		return gameState.getPlayerState();
+	}
 }

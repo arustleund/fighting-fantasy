@@ -82,6 +82,7 @@
 			<element name="testLuckCommand" type="page:testLuckCommand" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testSkill" type="page:testSkill" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testStat" type="page:testStat" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testEnemyStat" type="page:testEnemyStat" minOccurs="0" maxOccurs="unbounded"></element>
 		</choice>
 	</complexType>
 
@@ -280,6 +281,14 @@
     			<attribute name="equal" type="int" use="optional"></attribute>
     			<attribute name="notEqual" type="int" use="optional"></attribute>
     			<attribute name="useInitialValue" type="boolean" use="optional"></attribute>
+    		</extension>
+    	</complexContent>
+    </complexType>
+    
+    <complexType name="testEnemyStat">
+    	<complexContent>
+    		<extension base="page:testStat">
+    			<attribute name="enemyId" type="int" use="required"></attribute>
     		</extension>
     	</complexContent>
     </complexType>

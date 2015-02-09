@@ -36,6 +36,7 @@ import rustleund.fightingfantasy.framework.closures.impl.SetFlagClosure;
 import rustleund.fightingfantasy.framework.closures.impl.SetPoisonImmunity;
 import rustleund.fightingfantasy.framework.closures.impl.TestAnyFlagPredicate;
 import rustleund.fightingfantasy.framework.closures.impl.TestClosure;
+import rustleund.fightingfantasy.framework.closures.impl.TestEnemyStatPredicate;
 import rustleund.fightingfantasy.framework.closures.impl.TestFlagPredicate;
 import rustleund.fightingfantasy.framework.closures.impl.TestItemPredicate;
 import rustleund.fightingfantasy.framework.closures.impl.TestLuckClosure;
@@ -76,6 +77,7 @@ public class SpringContext {
 		mappings.put("testLuckCommand", new ElementConstructorClosureFunction(TestLuckClosure.class));
 		mappings.put("testSkill", testSkillClosureFunction());
 		mappings.put("testStat", testStatClosureFunction());
+		mappings.put("testEnemyStat", testEnemyStatClosureFunction());
 
 		return new DefaultClosureLoader(mappings);
 	}
@@ -144,6 +146,16 @@ public class SpringContext {
 			@Override
 			public Closure apply(Element input) {
 				return new TestClosure(new TestStatPredicate(input), closureLoader(), input);
+			}
+		};
+	}
+
+	@Bean
+	public Function<Element, Closure> testEnemyStatClosureFunction() {
+		return new Function<Element, Closure>() {
+			@Override
+			public Closure apply(Element input) {
+				return new TestClosure(new TestEnemyStatPredicate(input), closureLoader(), input);
 			}
 		};
 	}
