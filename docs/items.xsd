@@ -28,7 +28,7 @@
 				<attribute name="name" type="string" use="required"></attribute>
 
 
-				<attribute name="price">
+				<attribute name="price" use="required">
 					<simpleType>
 						<restriction base="int">
 							<minInclusive value="0"></minInclusive>
