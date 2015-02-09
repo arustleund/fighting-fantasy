@@ -86,7 +86,9 @@ public class BattleState {
 		NodeList enemyTags = enemiesTag.getElementsByTagName("enemy");
 		for (int i = 0; i < enemyTags.getLength(); i++) {
 			Element enemyTag = (Element) enemyTags.item(i);
-			enemies.addEnemy(new EnemyState(enemyTag, closureLoader));
+			if (enemyTag.getParentNode().equals(enemiesTag)) {
+				enemies.addEnemy(new EnemyState(enemyTag, closureLoader));
+			}
 		}
 	}
 

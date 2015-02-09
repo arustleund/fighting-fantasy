@@ -38,7 +38,9 @@ public class AddEnemiesClosure extends AbstractClosure {
 		NodeList enemyTags = element.getElementsByTagName("enemy");
 		for (int i = 0; i < enemyTags.getLength(); i++) {
 			Element enemyTag = (Element) enemyTags.item(i);
-			enemiesToAdd.add(new EnemyState(enemyTag, closureLoader));
+			if (enemyTag.getParentNode().equals(element)) {
+				enemiesToAdd.add(new EnemyState(enemyTag, closureLoader));
+			}
 		}
 	}
 
