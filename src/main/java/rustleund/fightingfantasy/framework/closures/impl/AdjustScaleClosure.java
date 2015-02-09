@@ -7,13 +7,18 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.w3c.dom.Element;
 
 import rustleund.fightingfantasy.framework.base.AbstractEntityState;
+import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.Scale;
+import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 
 /**
  * @author rustlea
  */
 public class AdjustScaleClosure extends AbstractClosure {
+
+	private ClosureLoader closureLoader;
+	private BattleEffectsLoader battleEffectsLoader;
 
 	private String scaleName = null;
 	private String stringAmount;
@@ -23,7 +28,10 @@ public class AdjustScaleClosure extends AbstractClosure {
 	private String round;
 	private boolean adjustInitialValue;
 
-	public AdjustScaleClosure(Element element) {
+	public AdjustScaleClosure(Element element, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
+		this.closureLoader = closureLoader;
+		this.battleEffectsLoader = battleEffectsLoader;
+
 		this.scaleName = element.getAttribute("type");
 		this.stringAmount = element.getAttribute("amount");
 		this.promptOnFail = attributeValue(element, "promptOnFail");
@@ -86,6 +94,11 @@ public class AdjustScaleClosure extends AbstractClosure {
 		} else {
 			scale.adjustCurrentValueNoException(amountToAdjust);
 		}
+
+		if (gameState.getPlayerState().isDead()) {
+			new LinkClosure("0", closureLoader, battleEffectsLoader).execute(gameState);
+		}
+
 		return true;
 
 	}

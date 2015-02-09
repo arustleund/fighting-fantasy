@@ -56,9 +56,9 @@ public class SpringContext {
 		mappings.put("addBattleMessage", new ElementConstructorClosureFunction(AddBattleMessageClosure.class));
 		mappings.put("addEnemies", new ElementConstructorClosureFunction(AddEnemiesClosure.class));
 		mappings.put("addItem", addItemClosureFunction());
-		mappings.put("adjustEnemyScale", new ElementConstructorClosureFunction(AdjustEnemyScaleClosure.class));
+		mappings.put("adjustEnemyScale", adjustEnemyScaleClosureFunction());
 		mappings.put("adjustPlayerAttackStrength", new ElementConstructorClosureFunction(AdjustPlayerAttackStrength.class));
-		mappings.put("adjustScale", new ElementConstructorClosureFunction(AdjustScaleClosure.class));
+		mappings.put("adjustScale", adjustScaleClosureFunction());
 		mappings.put("clearBattleMessage", new ElementConstructorClosureFunction(ClearBattleMessageClosure.class));
 		mappings.put("clearPoisonDamage", new ElementConstructorClosureFunction(ClearPoisonDamageClosure.class));
 		mappings.put("displayText", new ElementConstructorClosureFunction(DisplayTextClosure.class));
@@ -78,6 +78,20 @@ public class SpringContext {
 		mappings.put("testStat", testStatClosureFunction());
 
 		return new DefaultClosureLoader(mappings);
+	}
+
+	@Bean
+	public Function<Element, Closure> adjustEnemyScaleClosureFunction() {
+		return (Element input) -> {
+			return new AdjustEnemyScaleClosure(input, closureLoader(), battleEffectsLoader());
+		};
+	}
+
+	@Bean
+	public Function<Element, Closure> adjustScaleClosureFunction() {
+		return (Element input) -> {
+			return new AdjustScaleClosure(input, closureLoader(), battleEffectsLoader());
+		};
 	}
 
 	@Bean

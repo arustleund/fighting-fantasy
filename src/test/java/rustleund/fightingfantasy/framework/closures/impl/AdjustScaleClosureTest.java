@@ -12,15 +12,19 @@ import org.easymock.EasyMockSupport;
 import org.junit.Test;
 import org.w3c.dom.Element;
 
+import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.Item;
 import rustleund.fightingfantasy.framework.base.PlayerState;
+import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 
 public class AdjustScaleClosureTest extends EasyMockSupport {
 
 	@Test
 	public void testExecute() {
 		Element element = createMock(Element.class);
+		ClosureLoader closureLoader = createMock(ClosureLoader.class);
+		BattleEffectsLoader battleEffectsLoader = createMock(BattleEffectsLoader.class);
 
 		//
 
@@ -34,7 +38,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 
 		replayAll();
 
-		AdjustScaleClosure testee = new AdjustScaleClosure(element);
+		AdjustScaleClosure testee = new AdjustScaleClosure(element, closureLoader, battleEffectsLoader);
 
 		GameState gameState = new GameState();
 		PlayerState playerState = newPlayer();
@@ -61,7 +65,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 
 		replayAll();
 
-		testee = new AdjustScaleClosure(element);
+		testee = new AdjustScaleClosure(element, closureLoader, battleEffectsLoader);
 
 		playerState = newPlayer();
 		gameState.setPlayerState(playerState);
@@ -87,7 +91,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 
 		replayAll();
 
-		testee = new AdjustScaleClosure(element);
+		testee = new AdjustScaleClosure(element, closureLoader, battleEffectsLoader);
 
 		playerState = newPlayer();
 		gameState.setPlayerState(playerState);
@@ -114,7 +118,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 
 		replayAll();
 
-		testee = new AdjustScaleClosure(element);
+		testee = new AdjustScaleClosure(element, closureLoader, battleEffectsLoader);
 
 		playerState = newPlayer();
 		gameState.setPlayerState(playerState);
@@ -141,7 +145,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 
 		replayAll();
 
-		testee = new AdjustScaleClosure(element);
+		testee = new AdjustScaleClosure(element, closureLoader, battleEffectsLoader);
 
 		playerState = newPlayer();
 		gameState.setPlayerState(playerState);
@@ -171,7 +175,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 
 		replayAll();
 
-		testee = new AdjustScaleClosure(element);
+		testee = new AdjustScaleClosure(element, closureLoader, battleEffectsLoader);
 
 		playerState = newPlayer();
 		gameState.setPlayerState(playerState);
@@ -202,7 +206,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 
 		replayAll();
 
-		testee = new AdjustScaleClosure(element);
+		testee = new AdjustScaleClosure(element, closureLoader, battleEffectsLoader);
 
 		playerState = newPlayer();
 		gameState.setPlayerState(playerState);
@@ -234,7 +238,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 
 		replayAll();
 
-		testee = new AdjustScaleClosure(element);
+		testee = new AdjustScaleClosure(element, closureLoader, battleEffectsLoader);
 
 		playerState = newPlayer();
 		gameState.setPlayerState(playerState);
@@ -267,7 +271,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 
 		replayAll();
 
-		testee = new AdjustScaleClosure(element);
+		testee = new AdjustScaleClosure(element, closureLoader, battleEffectsLoader);
 
 		playerState = newPlayer();
 		gameState.setPlayerState(playerState);
@@ -299,7 +303,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 
 		replayAll();
 
-		testee = new AdjustScaleClosure(element);
+		testee = new AdjustScaleClosure(element, closureLoader, battleEffectsLoader);
 
 		playerState = newPlayer();
 		gameState.setPlayerState(playerState);
@@ -331,7 +335,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 
 		replayAll();
 
-		testee = new AdjustScaleClosure(element);
+		testee = new AdjustScaleClosure(element, closureLoader, battleEffectsLoader);
 
 		playerState = newPlayer();
 		gameState.setPlayerState(playerState);
@@ -363,7 +367,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 
 		replayAll();
 
-		testee = new AdjustScaleClosure(element);
+		testee = new AdjustScaleClosure(element, closureLoader, battleEffectsLoader);
 
 		playerState = newPlayer();
 		gameState.setPlayerState(playerState);
@@ -394,7 +398,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 
 		replayAll();
 
-		testee = new AdjustScaleClosure(element);
+		testee = new AdjustScaleClosure(element, closureLoader, battleEffectsLoader);
 
 		playerState = newPlayer();
 		gameState.setPlayerState(playerState);
@@ -425,7 +429,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 
 		replayAll();
 
-		testee = new AdjustScaleClosure(element);
+		testee = new AdjustScaleClosure(element, closureLoader, battleEffectsLoader);
 
 		playerState = newPlayer();
 		gameState.setPlayerState(playerState);
@@ -456,7 +460,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 
 		replayAll();
 
-		testee = new AdjustScaleClosure(element);
+		testee = new AdjustScaleClosure(element, closureLoader, battleEffectsLoader);
 
 		playerState = newPlayer();
 		gameState.setPlayerState(playerState);
@@ -492,7 +496,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 
 		replayAll();
 
-		testee = new AdjustScaleClosure(element);
+		testee = new AdjustScaleClosure(element, closureLoader, battleEffectsLoader);
 
 		playerState = newPlayer();
 		gameState.setPlayerState(playerState);
