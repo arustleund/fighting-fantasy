@@ -255,6 +255,12 @@
 		</doActions>
 	</rollDice>
 
+	<!-- <setFlag> sets a flag value for the given id to true by default. This tag can also be used to set a flag to false
+	if necessary.
+	Attributes:
+		id: Required. Integer. The unique identifier of the flag whose value is being set
+		value: Not Required. Boolean. The value to set the flag to. Defaults to true.
+	 -->
 	<setFlag id="0" />
 
 	<setPoisonImmunity immune="false" />

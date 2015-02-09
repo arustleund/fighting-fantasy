@@ -44,8 +44,10 @@ public class LinkClosure extends AbstractClosure {
 
 	@Override
 	public boolean execute(GameState gameState) {
-		// first save our state until this point
-		gameState.addGameProgress(new SavedGame(pageName, gameState.getPlayerState().deepCopy()));
+		// first save our state until this point, unless it's the special "DEAD" state
+		if (!"0".equals(pageName)) {
+			gameState.addGameProgress(new SavedGame(pageName, gameState.getPlayerState().deepCopy()));
+		}
 
 		Document targetPageDocument = null;
 		try {
