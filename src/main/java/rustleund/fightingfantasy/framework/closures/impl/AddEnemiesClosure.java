@@ -13,6 +13,7 @@ import rustleund.fightingfantasy.framework.base.BattleState;
 import rustleund.fightingfantasy.framework.base.Enemies;
 import rustleund.fightingfantasy.framework.base.EnemyState;
 import rustleund.fightingfantasy.framework.base.GameState;
+import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 
 /**
  * @author rustlea
@@ -23,7 +24,7 @@ public class AddEnemiesClosure extends AbstractClosure {
 	private int battleId;
 	private int waitTime;
 
-	public AddEnemiesClosure(Element element) {
+	public AddEnemiesClosure(Element element, ClosureLoader closureLoader) {
 		this.enemiesToAdd = new ArrayList<>();
 
 		Element battleElement = (Element) element.getParentNode();
@@ -37,7 +38,7 @@ public class AddEnemiesClosure extends AbstractClosure {
 		NodeList enemyTags = element.getElementsByTagName("enemy");
 		for (int i = 0; i < enemyTags.getLength(); i++) {
 			Element enemyTag = (Element) enemyTags.item(i);
-			enemiesToAdd.add(new EnemyState(enemyTag));
+			enemiesToAdd.add(new EnemyState(enemyTag, closureLoader));
 		}
 	}
 

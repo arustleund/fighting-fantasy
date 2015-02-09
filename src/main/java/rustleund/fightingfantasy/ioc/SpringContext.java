@@ -55,7 +55,7 @@ public class SpringContext {
 		mappings.put("addBattleEffectsForNextBattle", addBattleEffectsForNextBattleClosureFunction());
 		mappings.put("addBattleEffectsToCurrentBattle", addBattleEffectsToCurrentBattleClosureFunction());
 		mappings.put("addBattleMessage", new ElementConstructorClosureFunction(AddBattleMessageClosure.class));
-		mappings.put("addEnemies", new ElementConstructorClosureFunction(AddEnemiesClosure.class));
+		mappings.put("addEnemies", addEnemiesClosureFunction());
 		mappings.put("addItem", addItemClosureFunction());
 		mappings.put("adjustEnemyScale", adjustEnemyScaleClosureFunction());
 		mappings.put("adjustPlayerAttackStrength", new ElementConstructorClosureFunction(AdjustPlayerAttackStrength.class));
@@ -80,6 +80,13 @@ public class SpringContext {
 		mappings.put("testEnemyStat", testEnemyStatClosureFunction());
 
 		return new DefaultClosureLoader(mappings);
+	}
+
+	@Bean
+	public Function<Element, Closure> addEnemiesClosureFunction() {
+		return (Element input) -> {
+			return new AddEnemiesClosure(input, closureLoader());
+		};
 	}
 
 	@Bean

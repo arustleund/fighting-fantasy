@@ -86,7 +86,7 @@ public class BattleState {
 		NodeList enemyTags = enemiesTag.getElementsByTagName("enemy");
 		for (int i = 0; i < enemyTags.getLength(); i++) {
 			Element enemyTag = (Element) enemyTags.item(i);
-			enemies.addEnemy(new EnemyState(enemyTag));
+			enemies.addEnemy(new EnemyState(enemyTag, closureLoader));
 		}
 	}
 
@@ -227,6 +227,9 @@ public class BattleState {
 				message.append("You hit the " + firstEnemyToAttack.getName() + "!");
 				if (firstEnemyToAttack.isDead()) {
 					message.append(" You have killed the " + firstEnemyToAttack.getName() + "!");
+					if (firstEnemyToAttack.getEnemyKilled() != null) {
+						firstEnemyToAttack.getEnemyKilled().execute(pageState.getGameState());
+					}
 				}
 				message.append("<br>");
 			} else {

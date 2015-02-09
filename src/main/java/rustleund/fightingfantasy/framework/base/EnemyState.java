@@ -4,15 +4,24 @@
 package rustleund.fightingfantasy.framework.base;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import rustleund.fightingfantasy.framework.closures.Closure;
+import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 
 /**
  * @author rustlea
  */
 public class EnemyState extends AbstractEntityState {
 
-	private boolean poisonedWeapon = false;
+	private ClosureLoader closureLoader;
 
-	public EnemyState(Element enemyTag) {
+	private boolean poisonedWeapon = false;
+	private Closure enemyKilled;
+
+	public EnemyState(Element enemyTag, ClosureLoader closureLoader) {
+		this.closureLoader = closureLoader;
+
 		this.name = enemyTag.getAttribute("name");
 
 		Integer skillInteger = Integer.valueOf(enemyTag.getAttribute("skill"));
@@ -24,10 +33,18 @@ public class EnemyState extends AbstractEntityState {
 		if (enemyTag.hasAttribute("poisonedWeapon")) {
 			this.poisonedWeapon = Boolean.valueOf(enemyTag.getAttribute("poisonedWeapon"));
 		}
+
+		NodeList onKilledElements = enemyTag.getElementsByTagName("onKilled");
+		if (onKilledElements.getLength() > 0) {
+			this.enemyKilled = this.closureLoader.loadClosureFromChildren((Element) onKilledElements.item(0));
+		}
 	}
 
 	public boolean isPoisonedWeapon() {
 		return this.poisonedWeapon;
 	}
 
+	public Closure getEnemyKilled() {
+		return this.enemyKilled;
+	}
 }
