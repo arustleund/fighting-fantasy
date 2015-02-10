@@ -1,5 +1,6 @@
 package rustleund.fightingfantasy.framework.closures.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -51,13 +52,7 @@ public class TestStatPredicate implements Predicate<GameState> {
 		try {
 			AbstractEntityState entityStateToTest = getEntityStateToTest(gameState);
 
-			Scale statScale = (Scale) PropertyUtils.getProperty(entityStateToTest, this.stat);
-			Integer statValue;
-			if (this.useInitialValue) {
-				statValue = statScale.getUpperBound();
-			} else {
-				statValue = statScale.getCurrentValue();
-			}
+			Integer statValue = getStatValue(entityStateToTest, gameState);
 
 			boolean valueIsAcceptable = false;
 			int compareResult = statValue.compareTo(this.valueToCompare);
@@ -73,6 +68,25 @@ public class TestStatPredicate implements Predicate<GameState> {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	private Integer getStatValue(AbstractEntityState entityStateToTest, GameState gameState) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		if ("attackStrength".equals(this.stat)) {
+			return getAttackStrength(gameState);
+		}
+		return getNonAttackStrengthStatValue(entityStateToTest);
+	}
+
+	private Integer getNonAttackStrengthStatValue(AbstractEntityState entityStateToTest) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		Scale statScale = (Scale) PropertyUtils.getProperty(entityStateToTest, this.stat);
+		if (this.useInitialValue) {
+			return statScale.getUpperBound();
+		}
+		return statScale.getCurrentValue();
+	}
+
+	protected int getAttackStrength(GameState gameState) {
+		return gameState.getBattleState().getCurrentAttackStrengths().getPlayerAttackStrength();
 	}
 
 	protected AbstractEntityState getEntityStateToTest(GameState gameState) {

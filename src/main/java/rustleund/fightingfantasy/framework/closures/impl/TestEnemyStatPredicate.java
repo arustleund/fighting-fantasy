@@ -18,4 +18,9 @@ public class TestEnemyStatPredicate extends TestStatPredicate {
 	protected AbstractEntityState getEntityStateToTest(GameState gameState) {
 		return gameState.getBattleState().getEnemies().getEnemies().get(enemyId);
 	}
+
+	@Override
+	protected int getAttackStrength(GameState gameState) {
+		return gameState.getBattleState().getCurrentAttackStrengths().getEnemyAttackStrength(enemyId);
+	}
 }

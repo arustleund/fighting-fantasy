@@ -7,15 +7,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
-import rustleund.fightingfantasy.framework.util.DiceRoller;
 
 /**
  * @author rustlea
@@ -37,6 +34,7 @@ public class BattleState {
 	private PageState pageState;
 	private List<BattleEffects> allBattleEffects;
 	private String currentBattleMessage;
+	private AttackStrengths currentAttackStrengths;
 
 	private Map<BattleMessagePosition, String> additionalMessages;
 
@@ -109,10 +107,6 @@ public class BattleState {
 				this.allBattleEffects.add(playerBattleEffects);
 			}
 		}
-	}
-
-	private int getAttackStrengthFor(AbstractEntityState aState) {
-		return aState.getAttackStrength() + DiceRoller.rollDice(2);
 	}
 
 	public boolean battleIsOver() {
@@ -199,58 +193,37 @@ public class BattleState {
 			message.append("<br>");
 		}
 
-		SortedMap<Integer, List<AbstractEntityState>> attackStrengths = new TreeMap<>();
-
 		PlayerState playerState = getPlayerState();
 
-		Integer playerAttackStrength = getAttackStrengthFor(playerState);
+		this.currentAttackStrengths = AttackStrengths.init(playerState, enemies, fightEnemiesTogether);
 
-		message.append("Your attack strength: " + playerAttackStrength + "<br>");
+		message.append("Your attack strength: " + this.currentAttackStrengths.getPlayerAttackStrength() + "<br>");
 
-		List<AbstractEntityState> statesForStrength = new ArrayList<>();
-		statesForStrength.add(playerState);
-		attackStrengths.put(playerAttackStrength, statesForStrength);
-
-		if (fightEnemiesTogether) {
-			for (EnemyState thisEnemy : enemies) {
-				doAttackStrengthForEnemy(message, attackStrengths, thisEnemy);
+		for (int i = 0; i < enemies.getEnemies().size(); i++) {
+			EnemyState enemy = enemies.getEnemies().get(i);
+			if (enemy.isDead()) {
+				message.append(enemy.getName() + " is dead.<br>");
+			} else {
+				message.append(enemy.getName() + "'s attack strength: " + this.currentAttackStrengths.getEnemyAttackStrength(i) + "<br>");
 			}
-		} else {
-			doAttackStrengthForEnemy(message, attackStrengths, enemies.getFirstNonDeadEnemy());
 		}
 
-		List<AbstractEntityState> highestAttackStrengthStates = attackStrengths.get(attackStrengths.lastKey());
-		if (highestAttackStrengthStates.size() == 1) {
-			AbstractEntityState highestState = highestAttackStrengthStates.get(0);
-			if (highestState instanceof PlayerState) {
-				EnemyState firstEnemyToAttack = enemies.getFirstNonDeadEnemy();
-				firstEnemyToAttack.getStamina().adjustCurrentValueNoException(-2);
+		if (this.currentAttackStrengths.playerWon()) {
+			EnemyState firstEnemyToAttack = enemies.getFirstNonDeadEnemy();
+			firstEnemyToAttack.getStamina().adjustCurrentValueNoException(-2);
 
-				message.append("You hit the " + firstEnemyToAttack.getName() + "!");
-				if (firstEnemyToAttack.isDead()) {
-					message.append(" You have killed the " + firstEnemyToAttack.getName() + "!");
-					if (firstEnemyToAttack.getEnemyKilled() != null) {
-						firstEnemyToAttack.getEnemyKilled().execute(pageState.getGameState());
-					}
+			message.append("You hit the " + firstEnemyToAttack.getName() + "!");
+			if (firstEnemyToAttack.isDead()) {
+				message.append(" You have killed the " + firstEnemyToAttack.getName() + "!");
+				if (firstEnemyToAttack.getEnemyKilled() != null) {
+					firstEnemyToAttack.getEnemyKilled().execute(pageState.getGameState());
 				}
-				message.append("<br>");
-			} else {
-				hitPlayer(playerState, ((EnemyState) highestState).isPoisonedWeapon(), message);
 			}
+			message.append("<br>");
+		} else if (this.currentAttackStrengths.playerHit()) {
+			hitPlayer(playerState, this.currentAttackStrengths.winningEnemyHasPoisonedWeapon(), message);
 		} else {
-			// More than one person has the highest attack strength
-			boolean foundPlayer = false;
-			boolean foundPoisonedWeaponEnemy = false;
-			for (AbstractEntityState state : highestAttackStrengthStates) {
-				if (state instanceof PlayerState) {
-					foundPlayer = true;
-				} else {
-					foundPoisonedWeaponEnemy |= ((EnemyState) state).isPoisonedWeapon();
-				}
-			}
-			if (!foundPlayer) {
-				hitPlayer(playerState, foundPoisonedWeaponEnemy, message);
-			}
+			message.append("Attack strengths are equal, no one is hit!<br>");
 		}
 
 		message.append("Your stamina after this round: " + playerState.getStamina().getCurrentValue() + "<br>");
@@ -292,24 +265,6 @@ public class BattleState {
 			playerState.getStamina().adjustCurrentValueNoException(-2);
 			message.append("You were hit!<br>");
 			doPlayerHit();
-		}
-	}
-
-	private void doAttackStrengthForEnemy(StringBuffer message, SortedMap<Integer, List<AbstractEntityState>> attackStrengths, EnemyState thisEnemy) {
-		if (thisEnemy.isDead()) {
-			message.append(thisEnemy.getName() + " is dead.<br>");
-		} else {
-			Integer thisEnemysAttackStrength = getAttackStrengthFor(thisEnemy);
-
-			message.append(thisEnemy.getName() + "'s attack strength: " + thisEnemysAttackStrength + "<br>");
-
-			if (attackStrengths.containsKey(thisEnemysAttackStrength)) {
-				attackStrengths.get(thisEnemysAttackStrength).add(thisEnemy);
-			} else {
-				List<AbstractEntityState> newStatesForStrength = new ArrayList<>();
-				newStatesForStrength.add(thisEnemy);
-				attackStrengths.put(thisEnemysAttackStrength, newStatesForStrength);
-			}
 		}
 	}
 
@@ -369,4 +324,7 @@ public class BattleState {
 		this.allBattleEffects = allBattleEffects;
 	}
 
+	public AttackStrengths getCurrentAttackStrengths() {
+		return this.currentAttackStrengths;
+	}
 }
