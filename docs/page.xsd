@@ -122,6 +122,20 @@
 			<enumeration value="nemesis"></enumeration>
 		</restriction>
 	</simpleType>
+	
+	<simpleType name="testStatValues">
+		<restriction base="string">
+			<enumeration value="attackStrength"></enumeration>
+			<enumeration value="skill"></enumeration>
+			<enumeration value="stamina"></enumeration>
+			<enumeration value="time"></enumeration>
+			<enumeration value="gold"></enumeration>
+			<enumeration value="luck"></enumeration>
+			<enumeration value="provisions"></enumeration>
+			<enumeration value="honor"></enumeration>
+			<enumeration value="nemesis"></enumeration>
+		</restriction>
+	</simpleType>
 
 	<complexType name="setFlag">
 		<annotation>
@@ -276,7 +290,7 @@
     <complexType name="testStat">
     	<complexContent>
     		<extension base="page:testContent">
-    			<attribute name="stat" type="page:scales" use="required"></attribute>
+    			<attribute name="stat" type="page:testStatValues" use="required"></attribute>
     			<attribute name="lessThan" type="int" use="optional"></attribute>
     			<attribute name="greaterThan" type="int" use="optional"></attribute>
     			<attribute name="atLeast" type="int" use="optional"></attribute>
