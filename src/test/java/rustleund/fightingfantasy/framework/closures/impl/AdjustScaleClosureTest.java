@@ -35,6 +35,8 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
 		expect(element.getAttribute("round")).andStubReturn(null);
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
+		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
+		expect(element.hasAttribute("negate")).andStubReturn(false);
 
 		replayAll();
 
@@ -62,6 +64,8 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
 		expect(element.getAttribute("round")).andStubReturn(null);
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
+		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
+		expect(element.hasAttribute("negate")).andStubReturn(false);
 
 		replayAll();
 
@@ -88,6 +92,8 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
 		expect(element.getAttribute("round")).andStubReturn(null);
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
+		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
+		expect(element.hasAttribute("negate")).andStubReturn(false);
 
 		replayAll();
 
@@ -115,6 +121,8 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
 		expect(element.getAttribute("round")).andStubReturn(null);
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
+		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
+		expect(element.hasAttribute("negate")).andStubReturn(false);
 
 		replayAll();
 
@@ -142,6 +150,8 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
 		expect(element.getAttribute("round")).andStubReturn(null);
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
+		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
+		expect(element.hasAttribute("negate")).andStubReturn(false);
 
 		replayAll();
 
@@ -172,6 +182,8 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
 		expect(element.getAttribute("round")).andStubReturn(null);
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
+		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
+		expect(element.hasAttribute("negate")).andStubReturn(false);
 
 		replayAll();
 
@@ -203,6 +215,8 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
 		expect(element.getAttribute("round")).andStubReturn(null);
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
+		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
+		expect(element.hasAttribute("negate")).andStubReturn(false);
 
 		replayAll();
 
@@ -235,6 +249,8 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
 		expect(element.getAttribute("round")).andStubReturn(null);
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
+		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
+		expect(element.hasAttribute("negate")).andStubReturn(false);
 
 		replayAll();
 
@@ -268,6 +284,8 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.getAttribute("round")).andStubReturn(null);
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(true);
 		expect(element.getAttribute("adjustInitialValue")).andStubReturn("true");
+		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
+		expect(element.hasAttribute("negate")).andStubReturn(false);
 
 		replayAll();
 
@@ -300,6 +318,8 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.getAttribute("round")).andStubReturn(null);
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(true);
 		expect(element.getAttribute("adjustInitialValue")).andStubReturn("true");
+		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
+		expect(element.hasAttribute("negate")).andStubReturn(false);
 
 		replayAll();
 
@@ -332,6 +352,8 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.getAttribute("round")).andStubReturn(null);
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(true);
 		expect(element.getAttribute("adjustInitialValue")).andStubReturn("true");
+		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
+		expect(element.hasAttribute("negate")).andStubReturn(false);
 
 		replayAll();
 
@@ -364,6 +386,8 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.getAttribute("useAmountAsPercent")).andStubReturn("true");
 		expect(element.getAttribute("round")).andStubReturn(null);
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
+		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
+		expect(element.hasAttribute("negate")).andStubReturn(false);
 
 		replayAll();
 
@@ -395,6 +419,8 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.getAttribute("useAmountAsPercent")).andStubReturn("true");
 		expect(element.getAttribute("round")).andStubReturn("up");
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
+		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
+		expect(element.hasAttribute("negate")).andStubReturn(false);
 
 		replayAll();
 
@@ -426,6 +452,8 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.getAttribute("useAmountAsPercent")).andStubReturn("true");
 		expect(element.getAttribute("round")).andStubReturn("down");
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
+		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
+		expect(element.hasAttribute("negate")).andStubReturn(false);
 
 		replayAll();
 
@@ -457,6 +485,8 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.getAttribute("useAmountAsPercent")).andStubReturn("true");
 		expect(element.getAttribute("round")).andStubReturn("down");
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
+		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
+		expect(element.hasAttribute("negate")).andStubReturn(false);
 
 		replayAll();
 
@@ -493,6 +523,8 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.getAttribute("useAmountAsPercent")).andStubReturn("true");
 		expect(element.getAttribute("round")).andStubReturn("down");
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
+		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
+		expect(element.hasAttribute("negate")).andStubReturn(false);
 
 		replayAll();
 

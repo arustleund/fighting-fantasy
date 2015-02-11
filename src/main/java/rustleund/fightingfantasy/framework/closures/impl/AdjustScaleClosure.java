@@ -11,6 +11,7 @@ import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.Scale;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
+import rustleund.fightingfantasy.framework.util.DiceRoller;
 
 /**
  * @author rustlea
@@ -27,6 +28,8 @@ public class AdjustScaleClosure extends AbstractClosure {
 	private boolean useAmountAsPercent;
 	private String round;
 	private boolean adjustInitialValue;
+	private Integer rollDiceAmount;
+	private boolean negate;
 
 	public AdjustScaleClosure(Element element, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
 		this.closureLoader = closureLoader;
@@ -39,6 +42,10 @@ public class AdjustScaleClosure extends AbstractClosure {
 		this.useAmountAsPercent = attributeValue(element, "useAmountAsPercent");
 		this.round = element.getAttribute("round");
 		this.adjustInitialValue = attributeValue(element, "adjustInitialValue");
+		if (element.hasAttribute("rollDiceAmount")) {
+			this.rollDiceAmount = Integer.parseInt(element.getAttribute("rollDiceAmount"));
+		}
+		this.negate = attributeValue(element, "negate");
 	}
 
 	@Override
@@ -77,7 +84,13 @@ public class AdjustScaleClosure extends AbstractClosure {
 				} else {
 					amountToAdjust -= scale.getCurrentValue();
 				}
+			} else if (this.rollDiceAmount != null) {
+				amountToAdjust += DiceRoller.rollDice(this.rollDiceAmount);
 			}
+		}
+
+		if (this.negate) {
+			amountToAdjust *= -1;
 		}
 
 		if (promptOnFail) {
@@ -106,5 +119,4 @@ public class AdjustScaleClosure extends AbstractClosure {
 	protected AbstractEntityState entity(GameState gameState) {
 		return gameState.getPlayerState();
 	}
-
 }

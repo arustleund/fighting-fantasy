@@ -108,6 +108,8 @@
 			</simpleType>
 		</attribute>
 		<attribute name="adjustInitialValue" type="boolean" use="optional"></attribute>
+		<attribute name="rollDiceAmount" type="int" use="optional" />
+		<attribute name="negate" type="boolean" use="optional" default="false" />
 	</complexType>
 
 	<simpleType name="scales">
