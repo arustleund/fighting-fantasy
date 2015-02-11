@@ -35,6 +35,7 @@ public class BattleState {
 	private List<BattleEffects> allBattleEffects;
 	private String currentBattleMessage;
 	private AttackStrengths currentAttackStrengths;
+	private int playerHitCount;
 
 	private Map<BattleMessagePosition, String> additionalMessages;
 
@@ -253,6 +254,7 @@ public class BattleState {
 	}
 
 	private void hitPlayer(PlayerState playerState, boolean foundPoisonedWeaponEnemy, StringBuffer message) {
+		this.playerHitCount++;
 		if (foundPoisonedWeaponEnemy) {
 			if (playerState.isPoisonImmunity()) {
 				message.append("You were hit by a poisoned weapon, but you took no damage because you are immune to poison!<br>");
@@ -326,5 +328,9 @@ public class BattleState {
 
 	public AttackStrengths getCurrentAttackStrengths() {
 		return this.currentAttackStrengths;
+	}
+
+	public int getPlayerHitCount() {
+		return this.playerHitCount;
 	}
 }

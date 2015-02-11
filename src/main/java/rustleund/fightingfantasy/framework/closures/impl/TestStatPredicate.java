@@ -74,6 +74,9 @@ public class TestStatPredicate implements Predicate<GameState> {
 		if ("attackStrength".equals(this.stat)) {
 			return getAttackStrength(gameState);
 		}
+		if ("hitCount".equals(this.stat)) {
+			return getHitCount(gameState);
+		}
 		return getNonAttackStrengthStatValue(entityStateToTest);
 	}
 
@@ -87,6 +90,10 @@ public class TestStatPredicate implements Predicate<GameState> {
 
 	protected int getAttackStrength(GameState gameState) {
 		return gameState.getBattleState().getCurrentAttackStrengths().getPlayerAttackStrength();
+	}
+
+	protected int getHitCount(GameState gameState) {
+		return gameState.getBattleState().getPlayerHitCount();
 	}
 
 	protected AbstractEntityState getEntityStateToTest(GameState gameState) {
