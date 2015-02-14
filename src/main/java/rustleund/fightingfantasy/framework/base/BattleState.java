@@ -157,10 +157,10 @@ public class BattleState {
 	}
 
 	public void doEndRound() {
-		doBattleStage(this.allBattleEffects, BattleEffects::getEndRound);
 		List<BattleEffects> nextRoundCopy = new ArrayList<>(battleEffectsForNextRound);
 		this.battleEffectsForNextRound.clear();
 		doBattleStage(nextRoundCopy, BattleEffects::getEndRound);
+		doBattleStage(this.allBattleEffects, BattleEffects::getEndRound);
 	}
 
 	public void doPlayerHit() {
@@ -196,8 +196,8 @@ public class BattleState {
 			if (enemy.isDead()) {
 				message.append(enemy.getName() + " is dead.<br>");
 			} else {
-				int enemyAttackStrength = this.currentAttackStrengths.getEnemyAttackStrength(i);
-				if (enemyAttackStrength < 0) {
+				AttackStrength enemyAttackStrength = this.currentAttackStrengths.getEnemyAttackStrength(i);
+				if (enemyAttackStrength == null) {
 					message.append(enemy.getName() + " is waiting to fight.<br>");
 				} else {
 					message.append(enemy.getName() + "'s attack strength: " + enemyAttackStrength + "<br>");

@@ -21,6 +21,6 @@ public class TestEnemyStatPredicate extends TestStatPredicate {
 
 	@Override
 	protected int getAttackStrength(GameState gameState) {
-		return gameState.getBattleState().getCurrentAttackStrengths().getEnemyAttackStrength(enemyId);
+		return gameState.getBattleState().getCurrentAttackStrengths().getEnemyAttackStrength(enemyId).getTotal();
 	}
 }

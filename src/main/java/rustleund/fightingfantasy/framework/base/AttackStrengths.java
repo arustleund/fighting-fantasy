@@ -15,17 +15,17 @@ import com.google.common.collect.Multimap;
  */
 public class AttackStrengths {
 
-	private Multimap<Integer, AbstractEntityState> attackStrengthMap;
-	private List<Integer> attackStrengths;
-	private int highestAttackStrength;
+	private Multimap<AttackStrength, AbstractEntityState> attackStrengthMap;
+	private List<AttackStrength> attackStrengths;
+	private AttackStrength highestAttackStrength;
 
-	private AttackStrengths(Multimap<Integer, AbstractEntityState> attackStrengthMap, List<Integer> attackStrengths, int highestAttackStrength) {
+	private AttackStrengths(Multimap<AttackStrength, AbstractEntityState> attackStrengthMap, List<AttackStrength> attackStrengths, AttackStrength highestAttackStrength) {
 		this.attackStrengthMap = attackStrengthMap;
 		this.attackStrengths = attackStrengths;
 		this.highestAttackStrength = highestAttackStrength;
 	}
 
-	public int getPlayerAttackStrength() {
+	public AttackStrength getPlayerAttackStrength() {
 		return this.attackStrengths.get(0);
 	}
 
@@ -37,7 +37,7 @@ public class AttackStrengths {
 		return winners.size() == 1 && winners.iterator().next() instanceof PlayerState;
 	}
 
-	public int getEnemyAttackStrength(int enemyId) {
+	public AttackStrength getEnemyAttackStrength(int enemyId) {
 		return this.attackStrengths.get(enemyId + 1);
 	}
 
@@ -46,7 +46,7 @@ public class AttackStrengths {
 	 */
 	public boolean playerHit() {
 		Collection<AbstractEntityState> winners = this.attackStrengthMap.get(this.highestAttackStrength);
-		return Iterables.all(winners, (AbstractEntityState winner) -> {
+		return Iterables.all(winners, winner -> {
 			return winner instanceof EnemyState;
 		});
 	}
@@ -57,7 +57,7 @@ public class AttackStrengths {
 	public boolean winningEnemyHasPoisonedWeapon() {
 		if (playerHit()) {
 			Collection<AbstractEntityState> winners = this.attackStrengthMap.get(this.highestAttackStrength);
-			return Iterables.any(winners, (AbstractEntityState winner) -> {
+			return Iterables.any(winners, winner -> {
 				return winner instanceof EnemyState && ((EnemyState) winner).isPoisonedWeapon();
 			});
 		}
@@ -65,31 +65,34 @@ public class AttackStrengths {
 	}
 
 	public static AttackStrengths init(PlayerState playerState, Enemies enemies, boolean fightEnemiesTogether) {
-		List<Integer> attackStrengths = new ArrayList<>(enemies.getEnemies().size() + 1);
-		Multimap<Integer, AbstractEntityState> attackStrengthMap = ArrayListMultimap.create();
-		int highestAttackStrength = getAttackStrengthFor(playerState);
+		List<AttackStrength> attackStrengths = new ArrayList<>(enemies.getEnemies().size() + 1);
+		Multimap<AttackStrength, AbstractEntityState> attackStrengthMap = ArrayListMultimap.create();
+		AttackStrength highestAttackStrength = getAttackStrengthFor(playerState);
 		attackStrengths.add(highestAttackStrength);
 		attackStrengthMap.put(highestAttackStrength, playerState);
 		boolean addedAttackStrengthForEnemy = false;
 		for (EnemyState enemy : enemies) {
 			if (enemy.isDead()) {
-				attackStrengths.add(-1);
+				attackStrengths.add(null);
 			} else if (fightEnemiesTogether || !addedAttackStrengthForEnemy) {
-				int attackStrengthForEnemy = getAttackStrengthFor(enemy);
-				if (attackStrengthForEnemy > highestAttackStrength) {
+				AttackStrength attackStrengthForEnemy = getAttackStrengthFor(enemy);
+				if (attackStrengthForEnemy.compareTo(highestAttackStrength) > 0) {
 					highestAttackStrength = attackStrengthForEnemy;
 				}
 				attackStrengths.add(attackStrengthForEnemy);
 				attackStrengthMap.put(attackStrengthForEnemy, enemy);
 				addedAttackStrengthForEnemy = true;
 			} else {
-				attackStrengths.add(-1);
+				attackStrengths.add(null);
 			}
 		}
 		return new AttackStrengths(attackStrengthMap, attackStrengths, highestAttackStrength);
 	}
 
-	private static int getAttackStrengthFor(AbstractEntityState aState) {
-		return aState.getAttackStrength() + DiceRoller.rollDice(2);
+	private static AttackStrength getAttackStrengthFor(AbstractEntityState aState) {
+		int dieRoll = DiceRoller.rollDice(2);
+		int skill = aState.getSkill().getCurrentValue();
+		int modifier = aState.getAttackStrengthModifier();
+		return new AttackStrength(dieRoll, skill, modifier);
 	}
 }

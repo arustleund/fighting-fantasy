@@ -89,7 +89,7 @@ public class TestStatPredicate implements Predicate<GameState> {
 	}
 
 	protected int getAttackStrength(GameState gameState) {
-		return gameState.getBattleState().getCurrentAttackStrengths().getPlayerAttackStrength();
+		return gameState.getBattleState().getCurrentAttackStrengths().getPlayerAttackStrength().getTotal();
 	}
 
 	protected int getHitCount(GameState gameState) {
