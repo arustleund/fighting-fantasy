@@ -55,6 +55,7 @@
 		<choice minOccurs="0" maxOccurs="unbounded">
 			<element name="addBattleEffectsForNextBattle" type="page:addBattleEffects" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="addBattleEffectsToCurrentBattle" type="page:addBattleEffects" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="addEffectsToNextBattleRound" type="page:commands" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="addBattleMessage" type="page:addBattleMessage" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="addEnemies" type="page:addEnemies" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="addItem" type="page:addItem" minOccurs="0" maxOccurs="unbounded"></element>

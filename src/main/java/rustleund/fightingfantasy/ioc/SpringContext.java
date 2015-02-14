@@ -16,6 +16,7 @@ import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.AddBattleEffectsForNextBattleClosure;
 import rustleund.fightingfantasy.framework.closures.impl.AddBattleEffectsToCurrentBattleClosure;
 import rustleund.fightingfantasy.framework.closures.impl.AddBattleMessageClosure;
+import rustleund.fightingfantasy.framework.closures.impl.AddEffectsToNextBattleRoundClosure;
 import rustleund.fightingfantasy.framework.closures.impl.AddEnemiesClosure;
 import rustleund.fightingfantasy.framework.closures.impl.AddItemClosure;
 import rustleund.fightingfantasy.framework.closures.impl.AdjustEnemyScaleClosure;
@@ -54,6 +55,7 @@ public class SpringContext {
 
 		mappings.put("addBattleEffectsForNextBattle", addBattleEffectsForNextBattleClosureFunction());
 		mappings.put("addBattleEffectsToCurrentBattle", addBattleEffectsToCurrentBattleClosureFunction());
+		mappings.put("addEffectsToNextBattleRound", addEffectsToNextBattleRoundClosureFunction());
 		mappings.put("addBattleMessage", new ElementConstructorClosureFunction(AddBattleMessageClosure.class));
 		mappings.put("addEnemies", addEnemiesClosureFunction());
 		mappings.put("addItem", addItemClosureFunction());
@@ -224,6 +226,13 @@ public class SpringContext {
 			public Closure apply(Element input) {
 				return new AddBattleEffectsToCurrentBattleClosure(input, battleEffectsLoader());
 			}
+		};
+	}
+
+	@Bean
+	public Function<Element, Closure> addEffectsToNextBattleRoundClosureFunction() {
+		return element -> {
+			return new AddEffectsToNextBattleRoundClosure(element, closureLoader());
 		};
 	}
 

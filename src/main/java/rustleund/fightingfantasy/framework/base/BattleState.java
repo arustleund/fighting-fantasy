@@ -4,6 +4,7 @@
 package rustleund.fightingfantasy.framework.base;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
 
@@ -38,6 +40,7 @@ public class BattleState {
 	private int playerHitCount;
 
 	private Map<BattleMessagePosition, String> additionalMessages;
+	private Collection<Closure> effectsForNextRound = new ArrayList<>();
 
 	public enum BattleMessagePosition {
 		BEGINNING, END
@@ -159,6 +162,7 @@ public class BattleState {
 				battleEffects.getStartRound().execute(this.pageState.getGameState());
 			}
 		}
+		this.effectsForNextRound.forEach(e -> e.execute(this.pageState.getGameState()));
 	}
 
 	public void doEndRound() {
@@ -167,6 +171,7 @@ public class BattleState {
 				battleEffects.getEndRound().execute(this.pageState.getGameState());
 			}
 		}
+		this.effectsForNextRound.clear();
 	}
 
 	public void doPlayerHit() {
@@ -205,7 +210,12 @@ public class BattleState {
 			if (enemy.isDead()) {
 				message.append(enemy.getName() + " is dead.<br>");
 			} else {
-				message.append(enemy.getName() + "'s attack strength: " + this.currentAttackStrengths.getEnemyAttackStrength(i) + "<br>");
+				int enemyAttackStrength = this.currentAttackStrengths.getEnemyAttackStrength(i);
+				if (enemyAttackStrength < 0) {
+					message.append(enemy.getName() + " is waiting to fight.<br>");
+				} else {
+					message.append(enemy.getName() + "'s attack strength: " + enemyAttackStrength + "<br>");
+				}
 			}
 		}
 
@@ -332,5 +342,9 @@ public class BattleState {
 
 	public int getPlayerHitCount() {
 		return this.playerHitCount;
+	}
+
+	public void addEffectsForNextRound(Collection<? extends Closure> effectsForNextRound) {
+		this.effectsForNextRound.addAll(effectsForNextRound);
 	}
 }
