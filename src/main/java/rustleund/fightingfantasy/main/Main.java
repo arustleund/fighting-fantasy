@@ -56,7 +56,7 @@ import com.google.common.collect.Lists;
  */
 public class Main {
 
-	private static void createAndShowGUI() {
+	private static void createAndShowGUI(Path gameDirectory) {
 		// Make sure we have nice window decorations.
 		JFrame.setDefaultLookAndFeelDecorated(true);
 
@@ -64,37 +64,39 @@ public class Main {
 		JFrame frame = new JFrame("Fighting Fantasy");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JFileChooser chooser = new JFileChooser(System.getProperty("user.home"));
-		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		chooser.setFileFilter(new FileFilter() {
+		if (gameDirectory == null) {
+			JFileChooser chooser = new JFileChooser(System.getProperty("user.home"));
+			chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+			chooser.setFileFilter(new FileFilter() {
 
-			@Override
-			public String getDescription() {
-				return "Game Files or Directories";
-			}
+				@Override
+				public String getDescription() {
+					return "Game Files or Directories";
+				}
 
-			@Override
-			public boolean accept(File f) {
-				return f.isDirectory() || f.getName().endsWith(".zip");
-			}
-		});
-		int openResult = chooser.showOpenDialog(frame);
-		if (openResult == JFileChooser.CANCEL_OPTION) {
-			System.exit(0);
-		}
-
-		File gameFile = chooser.getSelectedFile();
-
-		Path gameDirectory = getGameDirectory(gameFile);
-
-		while (!gameDirectoryIsValid(gameDirectory, gameFile)) {
-			openResult = chooser.showOpenDialog(frame);
+				@Override
+				public boolean accept(File f) {
+					return f.isDirectory() || f.getName().endsWith(".zip");
+				}
+			});
+			int openResult = chooser.showOpenDialog(frame);
 			if (openResult == JFileChooser.CANCEL_OPTION) {
 				System.exit(0);
 			}
-			gameFile = chooser.getSelectedFile();
-			if (gameFile.isDirectory()) {
-				gameDirectory = gameFile.toPath();
+
+			File gameFile = chooser.getSelectedFile();
+
+			gameDirectory = getGameDirectory(gameFile);
+
+			while (!gameDirectoryIsValid(gameDirectory, gameFile)) {
+				openResult = chooser.showOpenDialog(frame);
+				if (openResult == JFileChooser.CANCEL_OPTION) {
+					System.exit(0);
+				}
+				gameFile = chooser.getSelectedFile();
+				if (gameFile.isDirectory()) {
+					gameDirectory = gameFile.toPath();
+				}
 			}
 		}
 
@@ -175,13 +177,10 @@ public class Main {
 	public static void main(String[] args) {
 		// Schedule a job for the event-dispatching thread:
 		// creating and showing this application's GUI.
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				createAndShowGUI();
-			}
+		Path gameDirectory = args.length > 0 ? new File(args[0]).toPath() : null;
+		javax.swing.SwingUtilities.invokeLater(() -> {
+			createAndShowGUI(gameDirectory);
 		});
-
 	}
 
 	private static GameView initializeGame(File baseDirectory, JFrame frame) {
