@@ -8,6 +8,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -40,7 +43,7 @@ public class BattleState {
 	private int playerHitCount;
 
 	private Map<BattleMessagePosition, String> additionalMessages;
-	private Collection<Closure> effectsForNextRound = new ArrayList<>();
+	private Collection<BattleEffects> battleEffectsForNextRound = new ArrayList<>();
 
 	public enum BattleMessagePosition {
 		BEGINNING, END
@@ -141,53 +144,36 @@ public class BattleState {
 	}
 
 	public void doStartBattle() {
-		for (BattleEffects battleEffects : new ArrayList<>(this.allBattleEffects)) {
-			if (battleEffects.getStartBattle() != null) {
-				battleEffects.getStartBattle().execute(this.pageState.getGameState());
-			}
-		}
+		doBattleStage(this.allBattleEffects, BattleEffects::getStartBattle);
 	}
 
 	public void doPlayerFlee() {
-		for (BattleEffects battleEffects : new ArrayList<>(this.allBattleEffects)) {
-			if (battleEffects.getPlayerFlee() != null) {
-				battleEffects.getPlayerFlee().execute(this.pageState.getGameState());
-			}
-		}
+		doBattleStage(this.allBattleEffects, BattleEffects::getPlayerFlee);
 	}
 
 	public void doStartRound() {
-		for (BattleEffects battleEffects : new ArrayList<>(this.allBattleEffects)) {
-			if (battleEffects.getStartRound() != null) {
-				battleEffects.getStartRound().execute(this.pageState.getGameState());
-			}
-		}
-		this.effectsForNextRound.forEach(e -> e.execute(this.pageState.getGameState()));
+		doBattleStage(this.allBattleEffects, BattleEffects::getStartRound);
+		doBattleStage(this.battleEffectsForNextRound, BattleEffects::getStartRound);
 	}
 
 	public void doEndRound() {
-		for (BattleEffects battleEffects : new ArrayList<>(this.allBattleEffects)) {
-			if (battleEffects.getEndRound() != null) {
-				battleEffects.getEndRound().execute(this.pageState.getGameState());
-			}
-		}
-		this.effectsForNextRound.clear();
+		doBattleStage(this.allBattleEffects, BattleEffects::getEndRound);
+		List<BattleEffects> nextRoundCopy = new ArrayList<>(battleEffectsForNextRound);
+		this.battleEffectsForNextRound.clear();
+		doBattleStage(nextRoundCopy, BattleEffects::getEndRound);
 	}
 
 	public void doPlayerHit() {
-		for (BattleEffects battleEffects : new ArrayList<>(this.allBattleEffects)) {
-			if (battleEffects.getPlayerHit() != null) {
-				battleEffects.getPlayerHit().execute(this.pageState.getGameState());
-			}
-		}
+		doBattleStage(this.allBattleEffects, BattleEffects::getPlayerHit);
 	}
 
 	public void doEndBattle() {
-		for (BattleEffects battleEffects : new ArrayList<>(this.allBattleEffects)) {
-			if (battleEffects.getEndBattle() != null) {
-				battleEffects.getEndBattle().execute(this.pageState.getGameState());
-			}
-		}
+		doBattleStage(this.allBattleEffects, BattleEffects::getEndBattle);
+	}
+
+	private void doBattleStage(Collection<BattleEffects> battleEffects, Function<BattleEffects, Closure> closureFunction) {
+		Stream<Closure> mapped = new ArrayList<>(battleEffects).stream().map(closureFunction);
+		mapped.filter(Objects::nonNull).forEach(c -> c.execute(this.pageState.getGameState()));
 	}
 
 	private void doDamage() {
@@ -344,7 +330,7 @@ public class BattleState {
 		return this.playerHitCount;
 	}
 
-	public void addEffectsForNextRound(Collection<? extends Closure> effectsForNextRound) {
-		this.effectsForNextRound.addAll(effectsForNextRound);
+	public void addBattleEffectsForNextRound(Collection<? extends BattleEffects> effectsForNextRound) {
+		this.battleEffectsForNextRound.addAll(effectsForNextRound);
 	}
 }
