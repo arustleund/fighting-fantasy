@@ -130,6 +130,7 @@
 		<restriction base="string">
 			<enumeration value="attackStrength"></enumeration>
 			<enumeration value="hitCount"></enumeration>
+			<enumeration value="battleRound"></enumeration>
 			<enumeration value="skill"></enumeration>
 			<enumeration value="stamina"></enumeration>
 			<enumeration value="time"></enumeration>

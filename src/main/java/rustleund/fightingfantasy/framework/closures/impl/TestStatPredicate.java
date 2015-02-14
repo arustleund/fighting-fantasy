@@ -77,6 +77,9 @@ public class TestStatPredicate implements Predicate<GameState> {
 		if ("hitCount".equals(this.stat)) {
 			return getHitCount(gameState);
 		}
+		if ("battleRound".equals(this.stat)) {
+			return gameState.getBattleState().getBattleRound();
+		}
 		return getNonAttackStrengthStatValue(entityStateToTest);
 	}
 

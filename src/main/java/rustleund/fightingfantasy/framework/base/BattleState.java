@@ -41,6 +41,7 @@ public class BattleState {
 	private String currentBattleMessage;
 	private AttackStrengths currentAttackStrengths;
 	private int playerHitCount;
+	private int battleRound = 1;
 
 	private Map<BattleMessagePosition, String> additionalMessages;
 	private Collection<BattleEffects> battleEffectsForNextRound = new ArrayList<>();
@@ -161,6 +162,7 @@ public class BattleState {
 		this.battleEffectsForNextRound.clear();
 		doBattleStage(nextRoundCopy, BattleEffects::getEndRound);
 		doBattleStage(this.allBattleEffects, BattleEffects::getEndRound);
+		this.battleRound++;
 	}
 
 	public void doPlayerHit() {
@@ -332,5 +334,9 @@ public class BattleState {
 
 	public void addBattleEffectsForNextRound(Collection<? extends BattleEffects> effectsForNextRound) {
 		this.battleEffectsForNextRound.addAll(effectsForNextRound);
+	}
+
+	public int getBattleRound() {
+		return this.battleRound;
 	}
 }
