@@ -318,8 +318,12 @@
     </complexType>
     
     <complexType name="testEnemyTypes">
-    	<attribute name="equalAny" type="string" use="optional"></attribute>
-    	<attribute name="enemyId" type="string" use="required"></attribute>
+    	<complexContent>
+    		<extension base="page:testContent">
+    			<attribute name="equalAny" type="string" use="optional"></attribute>
+    			<attribute name="enemyId" type="string" use="required"></attribute>
+    		</extension>
+    	</complexContent>
     </complexType>
 
     <complexType name="link">
