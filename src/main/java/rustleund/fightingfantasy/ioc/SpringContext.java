@@ -243,7 +243,7 @@ public class SpringContext {
 
 	@Bean
 	public ItemUtil itemUtil() {
-		return new DefaultItemUtil(closureLoader());
+		return new DefaultItemUtil(closureLoader(), battleEffectsLoader());
 	}
 
 }

@@ -10,6 +10,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.Item;
 import rustleund.fightingfantasy.framework.base.ItemUtil;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
@@ -17,11 +18,13 @@ import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 public class DefaultItemUtil implements ItemUtil {
 
 	private ClosureLoader closureLoader;
+	private BattleEffectsLoader battleEffectsLoader;
 
 	private Map<Integer, Item> items;
 
-	public DefaultItemUtil(ClosureLoader closureLoader) {
+	public DefaultItemUtil(ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
 		this.closureLoader = closureLoader;
+		this.battleEffectsLoader = battleEffectsLoader;
 	}
 
 	@Override
@@ -47,9 +50,8 @@ public class DefaultItemUtil implements ItemUtil {
 		if (itemElement.hasAttribute("limit")) {
 			item.setLimit(Integer.valueOf(itemElement.getAttribute("limit")));
 		}
-		if (itemElement.hasChildNodes()) {
-			item.setUseItem(this.closureLoader.loadClosureFromChildren(itemElement));
-		}
+		loadOnUse(itemElement, item);
+		loadBattleEffects(itemElement, item);
 		if (itemElement.hasAttribute("canUseInBattle")) {
 			item.setCanUseInBattle(Boolean.valueOf(itemElement.getAttribute("canUseInBattle")));
 		} else {
@@ -58,9 +60,20 @@ public class DefaultItemUtil implements ItemUtil {
 		items.put(item.getId(), item);
 	}
 
+	private void loadOnUse(Element itemElement, Item item) {
+		NodeList onUseElements = itemElement.getElementsByTagName("onUse");
+		if (onUseElements.getLength() == 1) {
+			item.setUseItem(this.closureLoader.loadClosureFromChildren((Element) onUseElements.item(0)));
+		}
+	}
+
+	private void loadBattleEffects(Element itemElement, Item item) {
+		// TODO Auto-generated method stub
+
+	}
+
 	@Override
 	public Item getItem(int itemId) {
 		return this.items.get(itemId);
 	}
-
 }
