@@ -84,6 +84,7 @@
 			<element name="testSkill" type="page:testSkill" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testStat" type="page:testStat" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testEnemyStat" type="page:testEnemyStat" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testEnemyTypes" type="page:testEnemyTypes" minOccurs="0" maxOccurs="unbounded"></element>
 		</choice>
 	</complexType>
 
@@ -224,6 +225,7 @@
 				<documentation>true if the enemy has a poisoned weapon.</documentation>
 			</annotation>
 		</attribute>
+		<attribute name="types" type="string" use="optional" />
 	</complexType>
 
     <complexType name="battleEffects">
@@ -313,6 +315,11 @@
     			<attribute name="enemyId" type="int" use="required"></attribute>
     		</extension>
     	</complexContent>
+    </complexType>
+    
+    <complexType name="testEnemyTypes">
+    	<attribute name="equalAny" type="string" use="optional"></attribute>
+    	<attribute name="enemyId" type="string" use="required"></attribute>
     </complexType>
 
     <complexType name="link">
