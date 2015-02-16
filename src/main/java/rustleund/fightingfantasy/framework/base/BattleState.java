@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
@@ -64,12 +64,13 @@ public class BattleState {
 
 		this.canFlee = battleTag.hasAttribute("canFlee") && battleTag.getAttribute("canFlee").equalsIgnoreCase("true");
 
-		loadEnemies((Element) battleTag.getElementsByTagName("enemies").item(0));
+		loadEnemies(XMLUtil.getChildElementByName(battleTag, "enemies"));
 
 		this.allBattleEffects = new ArrayList<>();
-		NodeList effectsNodeList = battleTag.getElementsByTagName("effects");
-		if (effectsNodeList.getLength() > 0) {
-			loadEffects((Element) effectsNodeList.item(0), pageState.getGameState().getPlayerState());
+
+		Element effectsTag = XMLUtil.getChildElementByName(battleTag, "effects");
+		if (effectsTag != null) {
+			loadEffects(effectsTag, pageState.getGameState().getPlayerState());
 		}
 
 		this.additionalMessages = new HashMap<>();
@@ -89,13 +90,7 @@ public class BattleState {
 
 	private void loadEnemies(Element enemiesTag) {
 		this.enemies = new Enemies();
-		NodeList enemyTags = enemiesTag.getElementsByTagName("enemy");
-		for (int i = 0; i < enemyTags.getLength(); i++) {
-			Element enemyTag = (Element) enemyTags.item(i);
-			if (enemyTag.getParentNode().equals(enemiesTag)) {
-				enemies.addEnemy(new EnemyState(enemyTag, closureLoader));
-			}
-		}
+		XMLUtil.getChildElementsByName(enemiesTag, "enemy").forEach(e -> enemies.addEnemy(new EnemyState(e, closureLoader)));
 	}
 
 	private void loadEffects(Element effectsTag, PlayerState playerState) {
@@ -146,15 +141,18 @@ public class BattleState {
 
 	public void doStartBattle() {
 		doBattleStage(this.allBattleEffects, BattleEffects::getStartBattle);
+		doBattleStage(itemBattleEffects(), BattleEffects::getStartBattle);
 	}
 
 	public void doPlayerFlee() {
 		doBattleStage(this.allBattleEffects, BattleEffects::getPlayerFlee);
+		doBattleStage(itemBattleEffects(), BattleEffects::getPlayerFlee);
 	}
 
 	public void doStartRound() {
 		doBattleStage(this.allBattleEffects, BattleEffects::getStartRound);
 		doBattleStage(this.battleEffectsForNextRound, BattleEffects::getStartRound);
+		doBattleStage(itemBattleEffects(), BattleEffects::getStartRound);
 	}
 
 	public void doEndRound() {
@@ -162,15 +160,24 @@ public class BattleState {
 		this.battleEffectsForNextRound.clear();
 		doBattleStage(nextRoundCopy, BattleEffects::getEndRound);
 		doBattleStage(this.allBattleEffects, BattleEffects::getEndRound);
+		doBattleStage(itemBattleEffects(), BattleEffects::getEndRound);
 		this.battleRound++;
 	}
 
 	public void doPlayerHit() {
 		doBattleStage(this.allBattleEffects, BattleEffects::getPlayerHit);
+		doBattleStage(itemBattleEffects(), BattleEffects::getPlayerHit);
 	}
 
 	public void doEndBattle() {
 		doBattleStage(this.allBattleEffects, BattleEffects::getEndBattle);
+		doBattleStage(itemBattleEffects(), BattleEffects::getEndBattle);
+	}
+
+	private Collection<BattleEffects> itemBattleEffects() {
+		Collection<Item> items = pageState.getGameState().getPlayerState().getItems().values();
+		Stream<BattleEffects> itemBattleEffects = items.stream().map(Item::getBattleEffects);
+		return itemBattleEffects.filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
 	private void doBattleStage(Collection<BattleEffects> battleEffects, Function<BattleEffects, Closure> closureFunction) {

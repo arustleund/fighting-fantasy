@@ -17,6 +17,7 @@ public class Item {
 	private int count;
 	private Closure useItem;
 	private boolean canUseInBattle;
+	private BattleEffects battleEffects;
 
 	private Item() {
 		// for deep copy
@@ -112,6 +113,14 @@ public class Item {
 		this.canUseInBattle = canUseInBattle;
 	}
 
+	public BattleEffects getBattleEffects() {
+		return this.battleEffects;
+	}
+
+	public void setBattleEffects(BattleEffects battleEffects) {
+		this.battleEffects = battleEffects;
+	}
+
 	public Item deepCopy() {
 		Item result = new Item();
 		result.canUseInBattle = canUseInBattle;
@@ -121,6 +130,7 @@ public class Item {
 		result.limit = limit;
 		result.name = name;
 		result.useItem = useItem;
+		result.battleEffects = battleEffects;
 		return result;
 	}
 }

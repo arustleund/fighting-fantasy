@@ -58,35 +58,29 @@ public class PageState {
 	}
 
 	private void loadPagetext(Document document) {
-		NodeList pagetextTags = document.getElementsByTagName("pagetext");
-		Node pagetextTag = pagetextTags.item(0);
-		Node htmlNode = ((Element) pagetextTag).getElementsByTagName("html").item(0);
-		pagetext = writeTag(htmlNode);
+		Element pageTextElement = XMLUtil.getChildElementByName(document.getDocumentElement(), "pagetext");
+		pagetext = writeTag(XMLUtil.getChildElementByName(pageTextElement, "html"));
 	}
 
 	private void loadKeepMinimum(Document document) {
 		keepMinimums = new HashMap<>();
-		NodeList keepMinimumTags = document.getElementsByTagName("keepminimum");
-		for (int i = 0; i < keepMinimumTags.getLength(); i++) {
-			Element thisKeepMinimumTag = (Element) keepMinimumTags.item(i);
-			keepMinimums.put(thisKeepMinimumTag.getAttribute("scale"), Integer.valueOf(thisKeepMinimumTag.getAttribute("value")));
-		}
+		XMLUtil.getChildElementsByName(document.getDocumentElement(), "keepminimum").forEach(e -> {
+			keepMinimums.put(e.getAttribute("scale"), Integer.valueOf(e.getAttribute("value")));
+		});
 	}
 
 	private void loadTestLucks(Document document) {
 		testLucks = new HashMap<>();
-		NodeList testLuckTags = document.getElementsByTagName("testluck");
-		for (int i = 0; i < testLuckTags.getLength(); i++) {
-			Element thisTestLuckTag = (Element) testLuckTags.item(i);
-			testLucks.put(Integer.valueOf(thisTestLuckTag.getAttribute("id")), thisTestLuckTag);
-		}
+		XMLUtil.getChildElementsByName(document.getDocumentElement(), "testluck").forEach(e -> {
+			testLucks.put(Integer.valueOf(e.getAttribute("id")), e);
+		});
 	}
 
 	private void loadImmediate(Document document) {
 		immediateCommands = new ArrayList<>();
-		NodeList immediateTags = document.getElementsByTagName("immediate");
-		if (immediateTags.getLength() > 0) {
-			NodeList immediateCommandTags = immediateTags.item(0).getChildNodes();
+		Element immediateTag = XMLUtil.getChildElementByName(document.getDocumentElement(), "immediate");
+		if (immediateTag != null) {
+			NodeList immediateCommandTags = immediateTag.getChildNodes();
 			for (int i = 0; i < immediateCommandTags.getLength(); i++) {
 				Node thisImmediateCommandTag = immediateCommandTags.item(i);
 				if (thisImmediateCommandTag instanceof Element) {
@@ -98,18 +92,14 @@ public class PageState {
 
 	private void loadTexts(Document document) {
 		texts = new HashMap<>();
-		NodeList textTags = document.getElementsByTagName("text");
-		for (int i = 0; i < textTags.getLength(); i++) {
-			Element thisTextTag = (Element) textTags.item(i);
-			texts.put(Integer.valueOf(thisTextTag.getAttribute("id")), writeTag(thisTextTag));
-		}
+		XMLUtil.getChildElementsByName(document.getDocumentElement(), "text").forEach(e -> {
+			texts.put(Integer.valueOf(e.getAttribute("id")), writeTag(e));
+		});
 	}
 
 	private void loadMultis(Document document) {
 		this.multiCommands = new HashMap<>();
-		NodeList multiTags = document.getElementsByTagName("multicommand");
-		for (int i = 0; i < multiTags.getLength(); i++) {
-			Element thisMultiTag = (Element) multiTags.item(i);
+		XMLUtil.getChildElementsByName(document.getDocumentElement(), "multicommand").forEach(thisMultiTag -> {
 			Integer thisMultiId = Integer.valueOf(thisMultiTag.getAttribute("id"));
 			NodeList thisMultiTagsCommandTags = thisMultiTag.getChildNodes();
 			List<Closure> subclosures = new ArrayList<>();
@@ -120,17 +110,14 @@ public class PageState {
 				}
 			}
 			this.multiCommands.put(thisMultiId, new ChainedClosure(subclosures));
-		}
+		});
 	}
 
 	private void loadBattles(Document document) {
 		battles = new HashMap<>();
-		NodeList battleTags = document.getElementsByTagName("battle");
-		for (int i = 0; i < battleTags.getLength(); i++) {
-			Element thisBattleTag = (Element) battleTags.item(i);
-			Integer thisBattleId = Integer.valueOf(thisBattleTag.getAttribute("id"));
-			battles.put(thisBattleId, new BattleState(thisBattleTag, this, this.closureLoader, this.battleEffectsLoader));
-		}
+		XMLUtil.getChildElementsByName(document.getDocumentElement(), "battle").forEach(e -> {
+			battles.put(Integer.valueOf(e.getAttribute("id")), new BattleState(e, this, this.closureLoader, this.battleEffectsLoader));
+		});
 	}
 
 	public BattleState getBattle(int battleId) {
@@ -150,10 +137,8 @@ public class PageState {
 	}
 
 	private String getLuckTextHelper(int testluckId, String successType) {
-		NodeList testLuckTagSuccessType = testLucks.get(Integer.valueOf(testluckId)).getElementsByTagName(successType);
-		Node successNodeTextNode = ((Element) testLuckTagSuccessType.item(0)).getElementsByTagName("p").item(0);
-		String result = writeTag(successNodeTextNode);
-		return result;
+		Element successTypeTag = XMLUtil.getChildElementByName(testLucks.get(testluckId), successType);
+		return writeTag(XMLUtil.getChildElementByName(successTypeTag, "p"));
 	}
 
 	public boolean hasKeepMinimumForScale(String scaleType) {

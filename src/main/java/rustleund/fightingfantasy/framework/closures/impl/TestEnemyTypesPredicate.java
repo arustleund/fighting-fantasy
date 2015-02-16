@@ -15,7 +15,7 @@ import com.google.common.base.Predicate;
 public class TestEnemyTypesPredicate implements Predicate<GameState> {
 
 	private Collection<String> equalAny = new ArrayList<>();
-	private boolean alwaysCheckFirst;
+	private boolean alwaysCheckAny;
 	private int enemyId;
 
 	public TestEnemyTypesPredicate(Element element) {
@@ -23,8 +23,8 @@ public class TestEnemyTypesPredicate implements Predicate<GameState> {
 			this.equalAny.addAll(Arrays.asList(element.getAttribute("equalAny").split(",")));
 		}
 		String configuredId = element.getAttribute("enemyId");
-		if ("first".equals(configuredId)) {
-			this.alwaysCheckFirst = true;
+		if ("any".equals(configuredId)) {
+			this.alwaysCheckAny = true;
 		} else {
 			this.enemyId = Integer.valueOf(configuredId);
 		}
@@ -33,7 +33,12 @@ public class TestEnemyTypesPredicate implements Predicate<GameState> {
 	@Override
 	public boolean apply(GameState input) {
 		Enemies enemies = input.getBattleState().getEnemies();
-		EnemyState enemyStateToCheck = alwaysCheckFirst ? enemies.getFirstNonDeadEnemy() : enemies.getEnemies().get(enemyId);
-		return equalAny.stream().anyMatch(enemyStateToCheck::isOfType);
+		java.util.function.Predicate<? super EnemyState> enemyPredicate = e -> {
+			return equalAny.stream().anyMatch(e::isOfType);
+		};
+		if (this.alwaysCheckAny) {
+			return enemies.getEnemies().stream().anyMatch(enemyPredicate);
+		}
+		return enemyPredicate.test(enemies.getEnemies().get(this.enemyId));
 	}
 }

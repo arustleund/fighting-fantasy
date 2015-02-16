@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
@@ -43,9 +42,9 @@ public class EnemyState extends AbstractEntityState {
 			this.types.addAll(Arrays.asList(enemyTag.getAttribute("types").split(",")));
 		}
 
-		NodeList onKilledElements = enemyTag.getElementsByTagName("onKilled");
-		if (onKilledElements.getLength() > 0) {
-			this.enemyKilled = this.closureLoader.loadClosureFromChildren((Element) onKilledElements.item(0));
+		Element onKilledElement = XMLUtil.getChildElementByName(enemyTag, "onKilled");
+		if (onKilledElement != null) {
+			this.enemyKilled = this.closureLoader.loadClosureFromChildren(onKilledElement);
 		}
 	}
 

@@ -48,7 +48,7 @@ public class DefaultBattleEffectsLoader implements BattleEffectsLoader {
 				Element effectTag = (Element) effectChild;
 				Closure effectsFromTag = this.closureLoader.loadClosureFromChildren(effectTag);
 				try {
-					PropertyUtils.setProperty(battleEffects, effectTag.getNodeName(), effectsFromTag);
+					PropertyUtils.setProperty(battleEffects, effectTag.getLocalName(), effectsFromTag);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

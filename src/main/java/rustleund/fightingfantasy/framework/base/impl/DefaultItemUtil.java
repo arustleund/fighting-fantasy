@@ -8,11 +8,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
+import rustleund.fightingfantasy.framework.base.BattleEffects;
 import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.Item;
 import rustleund.fightingfantasy.framework.base.ItemUtil;
+import rustleund.fightingfantasy.framework.base.XMLUtil;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 
 public class DefaultItemUtil implements ItemUtil {
@@ -32,11 +33,10 @@ public class DefaultItemUtil implements ItemUtil {
 		this.items = new HashMap<>();
 
 		try {
-			Document itemDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(itemConfiguration);
-			NodeList itemTags = itemDocument.getElementsByTagName("item");
-			for (int i = 0; i < itemTags.getLength(); i++) {
-				loadItemTag((Element) itemTags.item(i));
-			}
+			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			documentBuilderFactory.setNamespaceAware(true);
+			Document itemDocument = documentBuilderFactory.newDocumentBuilder().parse(itemConfiguration);
+			XMLUtil.getChildElementsByName(itemDocument.getDocumentElement(), "item").forEach(this::loadItemTag);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -61,15 +61,19 @@ public class DefaultItemUtil implements ItemUtil {
 	}
 
 	private void loadOnUse(Element itemElement, Item item) {
-		NodeList onUseElements = itemElement.getElementsByTagName("onUse");
-		if (onUseElements.getLength() == 1) {
-			item.setUseItem(this.closureLoader.loadClosureFromChildren((Element) onUseElements.item(0)));
+		Element onUseElement = XMLUtil.getChildElementByName(itemElement, "onUse");
+		if (onUseElement != null) {
+			item.setUseItem(this.closureLoader.loadClosureFromChildren(onUseElement));
 		}
 	}
 
 	private void loadBattleEffects(Element itemElement, Item item) {
-		// TODO Auto-generated method stub
-
+		Element battleEffectsElement = XMLUtil.getChildElementByName(itemElement, "battleEffects");
+		if (battleEffectsElement != null) {
+			BattleEffects battleEffects = new BattleEffects();
+			this.battleEffectsLoader.loadBattleEffectsFromTag(battleEffects, battleEffectsElement);
+			item.setBattleEffects(battleEffects);
+		}
 	}
 
 	@Override

@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import rustleund.fightingfantasy.framework.base.GameState;
+import rustleund.fightingfantasy.framework.base.XMLUtil;
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.util.DiceRoller;
@@ -29,18 +29,17 @@ public class RollDiceClosure extends AbstractClosure {
 		}
 
 		this.rollMappings = new HashMap<>();
-		NodeList doActionsElements = element.getElementsByTagName("doActions");
-		for (int i = 0; i < doActionsElements.getLength(); i++) {
-			Element doActionsElement = (Element) doActionsElements.item(i);
 
-			Closure actionsForElement = closureLoader.loadClosureFromChildren(doActionsElement);
+		XMLUtil.getChildElementsByName(element, "doActions").forEach(e -> loadDoActionsElement(closureLoader, e));
+	}
 
-			String rolls = doActionsElement.getAttribute("rolls");
-			StringTokenizer rollTokenizer = new StringTokenizer(rolls, ",");
-			while (rollTokenizer.hasMoreTokens()) {
-				Integer roll = Integer.valueOf(rollTokenizer.nextToken());
-				rollMappings.put(roll, actionsForElement);
-			}
+	private void loadDoActionsElement(ClosureLoader closureLoader, Element doActionsElement) {
+		Closure actionsForElement = closureLoader.loadClosureFromChildren(doActionsElement);
+		String rolls = doActionsElement.getAttribute("rolls");
+		StringTokenizer rollTokenizer = new StringTokenizer(rolls, ",");
+		while (rollTokenizer.hasMoreTokens()) {
+			Integer roll = Integer.valueOf(rollTokenizer.nextToken());
+			rollMappings.put(roll, actionsForElement);
 		}
 	}
 

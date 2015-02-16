@@ -11,6 +11,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import rustleund.fightingfantasy.framework.base.XMLUtil;
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 
@@ -29,7 +30,7 @@ public class DefaultClosureLoader implements ClosureLoader {
 
 	@Override
 	public Closure loadClosureFromElement(Element element) {
-		String commandTagType = element.getNodeName();
+		String commandTagType = element.getLocalName();
 		if (this.mappings.containsKey(commandTagType)) {
 			return this.mappings.get(commandTagType).apply(element);
 		}
@@ -51,14 +52,10 @@ public class DefaultClosureLoader implements ClosureLoader {
 
 	@Override
 	public Closure loadClosureFromChild(Element element, String childName) {
-		NodeList possibles = element.getElementsByTagName(childName);
-		for (int i = 0; i < possibles.getLength(); i++) {
-			Element possible = (Element) possibles.item(i);
-			if (possible.getParentNode().isSameNode(element)) {
-				return loadClosureFromChildren(possible);
-			}
+		Element childElementByName = XMLUtil.getChildElementByName(element, childName);
+		if (childElementByName == null) {
+			return new ChainedClosure();
 		}
-		return new ChainedClosure();
+		return loadClosureFromChildren(childElementByName);
 	}
-
 }

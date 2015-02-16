@@ -51,7 +51,9 @@ public class LinkClosure extends AbstractClosure {
 
 		Document targetPageDocument = null;
 		try {
-			DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			documentBuilderFactory.setNamespaceAware(true);
+			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			targetPageDocument = documentBuilder.parse(new File(gameState.getPagesDirectory(), pageName + ".xml"));
 		} catch (Exception e) {
 			e.printStackTrace();
