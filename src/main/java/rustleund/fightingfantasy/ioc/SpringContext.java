@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.w3c.dom.Element;
 
 import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
+import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.ItemUtil;
 import rustleund.fightingfantasy.framework.base.impl.DefaultBattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.impl.DefaultItemUtil;
@@ -30,6 +31,7 @@ import rustleund.fightingfantasy.framework.closures.impl.ElementConstructorClosu
 import rustleund.fightingfantasy.framework.closures.impl.InitPlayerStateClosure;
 import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
 import rustleund.fightingfantasy.framework.closures.impl.MustEatMealClosure;
+import rustleund.fightingfantasy.framework.closures.impl.PlayerAttackStrengthDifferenceFromEnemyFunction;
 import rustleund.fightingfantasy.framework.closures.impl.RemoveItemClosure;
 import rustleund.fightingfantasy.framework.closures.impl.RestoreScaleClosure;
 import rustleund.fightingfantasy.framework.closures.impl.RollDiceClosure;
@@ -42,10 +44,12 @@ import rustleund.fightingfantasy.framework.closures.impl.TestEnemyTypesPredicate
 import rustleund.fightingfantasy.framework.closures.impl.TestFlagPredicate;
 import rustleund.fightingfantasy.framework.closures.impl.TestItemPredicate;
 import rustleund.fightingfantasy.framework.closures.impl.TestLuckClosure;
+import rustleund.fightingfantasy.framework.closures.impl.TestNumberPredicate;
 import rustleund.fightingfantasy.framework.closures.impl.TestSkillPredicate;
 import rustleund.fightingfantasy.framework.closures.impl.TestStatPredicate;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 
 @Configuration
 public class SpringContext {
@@ -82,8 +86,17 @@ public class SpringContext {
 		mappings.put("testStat", testStatClosureFunction());
 		mappings.put("testEnemyStat", testEnemyStatClosureFunction());
 		mappings.put("testEnemyTypes", testEnemyTypesClosureFunction());
+		mappings.put("testPlayerAttackStrengthDifferenceFromEnemy", testPlayerAttackStrengthDifferenceFromEnemyFunction());
 
 		return new DefaultClosureLoader(mappings);
+	}
+
+	@Bean
+	public Function<Element, Closure> testPlayerAttackStrengthDifferenceFromEnemyFunction() {
+		return element -> {
+			Predicate<GameState> predicate = new TestNumberPredicate(element, new PlayerAttackStrengthDifferenceFromEnemyFunction());
+			return new TestClosure(predicate, closureLoader(), element);
+		};
 	}
 
 	@Bean

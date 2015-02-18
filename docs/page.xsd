@@ -85,6 +85,7 @@
 			<element name="testStat" type="page:testStat" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testEnemyStat" type="page:testEnemyStat" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testEnemyTypes" type="page:testEnemyTypes" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testPlayerAttackStrengthDifferenceFromEnemy" type="page:testNumber" minOccurs="0" maxOccurs="unbounded"></element>
 		</choice>
 	</complexType>
 
@@ -160,6 +161,19 @@
 			<extension base="page:testContent">
 				<attribute name="id" type="int" use="required"></attribute>
 
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<complexType name="testNumber">
+		<complexContent>
+			<extension base="page:testContent">
+				<attribute name="lessThan" type="int" use="optional"></attribute>
+    			<attribute name="greaterThan" type="int" use="optional"></attribute>
+    			<attribute name="atLeast" type="int" use="optional"></attribute>
+    			<attribute name="atMost" type="int" use="optional"></attribute>
+    			<attribute name="equal" type="int" use="optional"></attribute>
+    			<attribute name="notEqual" type="int" use="optional"></attribute>
 			</extension>
 		</complexContent>
 	</complexType>
@@ -296,14 +310,8 @@
 
     <complexType name="testStat">
     	<complexContent>
-    		<extension base="page:testContent">
+    		<extension base="page:testNumber">
     			<attribute name="stat" type="page:testStatValues" use="required"></attribute>
-    			<attribute name="lessThan" type="int" use="optional"></attribute>
-    			<attribute name="greaterThan" type="int" use="optional"></attribute>
-    			<attribute name="atLeast" type="int" use="optional"></attribute>
-    			<attribute name="atMost" type="int" use="optional"></attribute>
-    			<attribute name="equal" type="int" use="optional"></attribute>
-    			<attribute name="notEqual" type="int" use="optional"></attribute>
     			<attribute name="useInitialValue" type="boolean" use="optional"></attribute>
     		</extension>
     	</complexContent>
