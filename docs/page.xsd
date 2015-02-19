@@ -60,7 +60,8 @@
 			<element name="addEnemies" type="page:addEnemies" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="addItem" type="page:addItem" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="adjustEnemyScale" type="page:adjustEnemyScale" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="adjustPlayerAttackStrength" type="page:adjustPlayerAttackStrength" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="adjustPlayerAttackStrength" type="page:adjustByAmount" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="adjustPlayerDamageModifier" type="page:adjustByAmount" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="adjustScale" type="page:adjustScale" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="clearBattleMessage" type="page:clearBattleMessage" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="clearPoisonDamage" minOccurs="0" maxOccurs="unbounded">
@@ -402,10 +403,9 @@
     	<attribute name="positionsToClear" type="string" use="optional"></attribute>
     </complexType>
 
-    <complexType name="adjustPlayerAttackStrength">
+    <complexType name="adjustByAmount">
     	<attribute name="amount" type="int" use="required"></attribute>
     </complexType>
-
 
     <complexType name="addBattleEffects">
     	<sequence>

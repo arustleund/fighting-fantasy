@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.ItemUtil;
+import rustleund.fightingfantasy.framework.base.PlayerState;
 import rustleund.fightingfantasy.framework.base.impl.DefaultBattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.impl.DefaultItemUtil;
 import rustleund.fightingfantasy.framework.closures.Closure;
@@ -20,8 +21,8 @@ import rustleund.fightingfantasy.framework.closures.impl.AddBattleEffectsToNextB
 import rustleund.fightingfantasy.framework.closures.impl.AddBattleMessageClosure;
 import rustleund.fightingfantasy.framework.closures.impl.AddEnemiesClosure;
 import rustleund.fightingfantasy.framework.closures.impl.AddItemClosure;
+import rustleund.fightingfantasy.framework.closures.impl.AdjustByAmountClosure;
 import rustleund.fightingfantasy.framework.closures.impl.AdjustEnemyScaleClosure;
-import rustleund.fightingfantasy.framework.closures.impl.AdjustPlayerAttackStrength;
 import rustleund.fightingfantasy.framework.closures.impl.AdjustScaleClosure;
 import rustleund.fightingfantasy.framework.closures.impl.ClearBattleMessageClosure;
 import rustleund.fightingfantasy.framework.closures.impl.ClearPoisonDamageClosure;
@@ -65,7 +66,8 @@ public class SpringContext {
 		mappings.put("addEnemies", addEnemiesClosureFunction());
 		mappings.put("addItem", addItemClosureFunction());
 		mappings.put("adjustEnemyScale", adjustEnemyScaleClosureFunction());
-		mappings.put("adjustPlayerAttackStrength", new ElementConstructorClosureFunction(AdjustPlayerAttackStrength.class));
+		mappings.put("adjustPlayerAttackStrength", adjustPlayerAttackStrengthClosureFunction());
+		mappings.put("adjustPlayerDamageModifier", adjustPlayerDamageModifierClosureFunction());
 		mappings.put("adjustScale", adjustScaleClosureFunction());
 		mappings.put("clearBattleMessage", new ElementConstructorClosureFunction(ClearBattleMessageClosure.class));
 		mappings.put("clearPoisonDamage", new ElementConstructorClosureFunction(ClearPoisonDamageClosure.class));
@@ -89,6 +91,27 @@ public class SpringContext {
 		mappings.put("testPlayerAttackStrengthDifferenceFromEnemy", testPlayerAttackStrengthDifferenceFromEnemyFunction());
 
 		return new DefaultClosureLoader(mappings);
+	}
+
+	@Bean
+	public Function<Element, Closure> adjustPlayerAttackStrengthClosureFunction() {
+		return element -> {
+			return new AdjustByAmountClosure(element, playerStateFromGameState().andThen(PlayerState::getAttackStrengthModifier),
+					(gameState, newValue) -> gameState.getPlayerState().setAttackStrengthModifier(newValue));
+		};
+	}
+
+	@Bean
+	public Function<Element, Closure> adjustPlayerDamageModifierClosureFunction() {
+		return element -> {
+			return new AdjustByAmountClosure(element, playerStateFromGameState().andThen(PlayerState::getDamageModifier),
+					(gameState, newValue) -> gameState.getPlayerState().setDamageModifier(newValue));
+		};
+	}
+
+	@Bean
+	public java.util.function.Function<GameState, PlayerState> playerStateFromGameState() {
+		return GameState::getPlayerState;
 	}
 
 	@Bean

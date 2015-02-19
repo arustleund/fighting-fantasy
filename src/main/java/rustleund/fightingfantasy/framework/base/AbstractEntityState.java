@@ -12,6 +12,7 @@ public abstract class AbstractEntityState {
 	protected Scale skill;
 	protected Scale stamina;
 	protected int attackStrengthModifier = 0;
+	protected int damageModifier = 0;
 
 	public AbstractEntityState() {
 		// Does nothing
@@ -89,6 +90,14 @@ public abstract class AbstractEntityState {
 	 */
 	public void setAttackStrengthModifier(int i) {
 		attackStrengthModifier = i;
+	}
+
+	public int getDamageModifier() {
+		return this.damageModifier;
+	}
+
+	public void setDamageModifier(int damageModifier) {
+		this.damageModifier = damageModifier;
 	}
 
 	@Override

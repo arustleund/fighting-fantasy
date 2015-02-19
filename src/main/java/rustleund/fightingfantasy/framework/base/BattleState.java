@@ -216,7 +216,7 @@ public class BattleState {
 
 		if (this.currentAttackStrengths.playerWon()) {
 			EnemyState firstEnemyToAttack = enemies.getFirstNonDeadEnemy();
-			firstEnemyToAttack.getStamina().adjustCurrentValueNoException(-2);
+			firstEnemyToAttack.getStamina().adjustCurrentValueNoException(-2 - playerState.getDamageModifier());
 
 			message.append("You hit the " + firstEnemyToAttack.getName() + "!");
 			if (firstEnemyToAttack.isDead()) {
