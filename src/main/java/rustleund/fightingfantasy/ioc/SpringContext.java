@@ -31,6 +31,7 @@ import rustleund.fightingfantasy.framework.closures.impl.DisplayTextClosure;
 import rustleund.fightingfantasy.framework.closures.impl.ElementConstructorClosureFunction;
 import rustleund.fightingfantasy.framework.closures.impl.InitPlayerStateClosure;
 import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
+import rustleund.fightingfantasy.framework.closures.impl.LinkIfFlagFalseClosure;
 import rustleund.fightingfantasy.framework.closures.impl.MustEatMealClosure;
 import rustleund.fightingfantasy.framework.closures.impl.PlayerAttackStrengthDifferenceFromEnemyFunction;
 import rustleund.fightingfantasy.framework.closures.impl.RemoveItemClosure;
@@ -70,8 +71,9 @@ public class SpringContext {
 		mappings.put("adjustPlayerDamageModifier", adjustPlayerDamageModifierClosureFunction());
 		mappings.put("adjustScale", adjustScaleClosureFunction());
 		mappings.put("clearBattleMessage", new ElementConstructorClosureFunction(ClearBattleMessageClosure.class));
-		mappings.put("clearPoisonDamage", new ElementConstructorClosureFunction(ClearPoisonDamageClosure.class));
+		mappings.put("clearPoisonDamage", element -> new ClearPoisonDamageClosure(element));
 		mappings.put("displayText", new ElementConstructorClosureFunction(DisplayTextClosure.class));
+		mappings.put("flaggedLink", element -> new LinkIfFlagFalseClosure(element, closureLoader(), battleEffectsLoader()));
 		mappings.put("initPlayer", initPlayerStateClosureFunction());
 		mappings.put("link", linkClosureFunction());
 		mappings.put("mustEatMeal", mustEatMealClosureFunction());
