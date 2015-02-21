@@ -68,6 +68,7 @@
 				<complexType></complexType>
 			</element>
 			<element name="displayText" type="page:displayText" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="flaggedLink" type="page:flaggedLink" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="initPlayer" minOccurs="0" maxOccurs="unbounded">
 				<complexType></complexType>
 			</element>
@@ -349,6 +350,11 @@
 
     <complexType name="removeItem">
     	<attribute name="id" type="int" use="required"></attribute>
+    </complexType>
+    
+    <complexType name="flaggedLink">
+    	<attribute name="id" type="int" use="required"></attribute>
+    	<attribute name="page" type="string" use="required"></attribute>
     </complexType>
 
     <complexType name="mustEatMeal">
