@@ -67,6 +67,7 @@
 				<complexType></complexType>
 			</element>
 			<element name="displayText" type="page:displayText" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="doBattle" type="page:doBattle" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="flaggedLink" type="page:flaggedLink" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="initPlayer" minOccurs="0" maxOccurs="unbounded">
 				<complexType></complexType>
@@ -84,6 +85,7 @@
 			<element name="testLuck" type="page:testContent" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testSkill" type="page:testSkill" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testStat" type="page:testStat" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testEnemySkill" type="page:testEnemySkill" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testEnemyStat" type="page:testEnemyStat" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testEnemyTypes" type="page:testEnemyTypes" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testPlayerAttackStrengthDifferenceFromEnemy" type="page:testNumber" minOccurs="0" maxOccurs="unbounded"></element>
@@ -312,6 +314,14 @@
     	</complexContent>
     </complexType>
     
+    <complexType name="testEnemySkill">
+    	<complexContent>
+    		<extension base="page:testSkill">
+    			<attribute name="enemyId" type="int" use="required"></attribute>
+    		</extension>
+    	</complexContent>
+    </complexType>
+    
     <complexType name="testEnemyTypes">
     	<complexContent>
     		<extension base="page:testContent">
@@ -419,5 +429,9 @@
 
     <complexType name="setPoisonImmunity">
     	<attribute name="immune" type="boolean" use="required"></attribute>
+    </complexType>
+    
+    <complexType name="doBattle">
+    	<attribute name="id" type="int" use="required"></attribute>
     </complexType>
 </schema>

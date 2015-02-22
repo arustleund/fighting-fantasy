@@ -12,6 +12,7 @@ import javax.swing.event.HyperlinkListener;
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.AddItemClosure;
+import rustleund.fightingfantasy.framework.closures.impl.DoBattleClosure;
 import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
 
 /**
@@ -91,24 +92,7 @@ public class GameController implements HyperlinkListener {
 	}
 
 	private void doBattle(int battleId) {
-		PageState pageState = this.gameState.getPageState();
-		BattleState battleState = pageState.getBattle(battleId);
-
-		this.gameState.setBattleInProgress(true);
-		this.gameState.setBattleState(battleState);
-
-		if (!battleState.battleIsOver()) {
-			battleState.incrementGameState();
-			if (battleState.getCurrentBattleMessage() != null) {
-				pageState.replacePagetext(BattleState.START_STRING, BattleState.END_STRING, battleState.getCurrentBattleMessage());
-			}
-			if (battleState.getEnemies().areDead()) {
-				this.gameState.getPlayerState().setNextBattleBattleEffects(null);
-				this.gameState.setBattleInProgress(false);
-				this.gameState.setBattleState(null);
-				battleState.doEndBattle();
-			}
-		}
+		new DoBattleClosure(battleId).execute(gameState);
 	}
 
 	private void doFlee(int battleId) {

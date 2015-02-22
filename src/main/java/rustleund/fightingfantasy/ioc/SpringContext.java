@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.w3c.dom.Element;
 
+import rustleund.fightingfantasy.framework.base.AbstractEntityState;
 import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.ItemUtil;
@@ -28,6 +29,7 @@ import rustleund.fightingfantasy.framework.closures.impl.ClearBattleMessageClosu
 import rustleund.fightingfantasy.framework.closures.impl.ClearPoisonDamageClosure;
 import rustleund.fightingfantasy.framework.closures.impl.DefaultClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.DisplayTextClosure;
+import rustleund.fightingfantasy.framework.closures.impl.DoBattleClosure;
 import rustleund.fightingfantasy.framework.closures.impl.ElementConstructorClosureFunction;
 import rustleund.fightingfantasy.framework.closures.impl.InitPlayerStateClosure;
 import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
@@ -73,6 +75,7 @@ public class SpringContext {
 		mappings.put("clearBattleMessage", new ElementConstructorClosureFunction(ClearBattleMessageClosure.class));
 		mappings.put("clearPoisonDamage", element -> new ClearPoisonDamageClosure(element));
 		mappings.put("displayText", new ElementConstructorClosureFunction(DisplayTextClosure.class));
+		mappings.put("doBattle", element -> new DoBattleClosure(element));
 		mappings.put("flaggedLink", element -> new LinkIfFlagFalseClosure(element, closureLoader(), battleEffectsLoader()));
 		mappings.put("initPlayer", initPlayerStateClosureFunction());
 		mappings.put("link", linkClosureFunction());
@@ -90,6 +93,7 @@ public class SpringContext {
 		mappings.put("testStat", testStatClosureFunction());
 		mappings.put("testEnemyStat", testEnemyStatClosureFunction());
 		mappings.put("testEnemyTypes", testEnemyTypesClosureFunction());
+		mappings.put("testEnemySkill", testEnemySkillClosureFunction());
 		mappings.put("testPlayerAttackStrengthDifferenceFromEnemy", testPlayerAttackStrengthDifferenceFromEnemyFunction());
 
 		return new DefaultClosureLoader(mappings);
@@ -191,7 +195,7 @@ public class SpringContext {
 		return new Function<Element, Closure>() {
 			@Override
 			public Closure apply(Element input) {
-				return new TestClosure(new TestSkillPredicate(input), closureLoader(), input);
+				return new TestClosure(new TestSkillPredicate(input, GameState::getPlayerState), closureLoader(), input);
 			}
 		};
 	}
@@ -214,6 +218,15 @@ public class SpringContext {
 				return new TestClosure(new TestEnemyStatPredicate(input), closureLoader(), input);
 			}
 		};
+	}
+
+	@Bean
+	public Function<Element, Closure> testEnemySkillClosureFunction() {
+		return element -> new TestClosure(new TestSkillPredicate(element, gameStateToEnemy(element)), closureLoader(), element);
+	}
+
+	private java.util.function.Function<? super GameState, ? extends AbstractEntityState> gameStateToEnemy(Element element) {
+		return gameState -> gameState.getBattleState().getEnemies().getEnemies().get(Integer.valueOf(element.getAttribute("enemyId")));
 	}
 
 	@Bean
