@@ -20,7 +20,6 @@
 			<element name="multicommand" type="page:multicommand" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="battle" type="page:battle" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="text" type="page:text" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="testluck" type="page:testluck" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="keepminimum" type="page:keepminimum" minOccurs="0" maxOccurs="unbounded"></element>
 		</sequence>
 	</complexType>
@@ -82,7 +81,7 @@
 			<element name="testAnyFlag" type="page:testAnyFlag" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testFlag" type="page:testFlag" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testItem" type="page:testItem" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="testLuckCommand" type="page:testLuckCommand" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testLuck" type="page:testContent" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testSkill" type="page:testSkill" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testStat" type="page:testStat" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testEnemyStat" type="page:testEnemyStat" minOccurs="0" maxOccurs="unbounded"></element>
@@ -259,20 +258,6 @@
     	<attribute name="type" type="page:scales" use="required"></attribute>
     </complexType>
 
-    <complexType name="testluck">
-    	<sequence>
-    		<element name="successful" type="page:testluckContent" minOccurs="1" maxOccurs="1"></element>
-    		<element name="unsuccessful" type="page:testluckContent" minOccurs="1" maxOccurs="1"></element>
-    	</sequence>
-    	<attribute name="id" type="int" use="required"></attribute>
-    </complexType>
-
-    <complexType name="testluckContent">
-    	<sequence>
-    		<element name="p" type="page:pagetextHtmlContent"></element>
-    	</sequence>
-    </complexType>
-
     <complexType name="multicommand">
     	<complexContent>
     		<extension base="page:commands">
@@ -430,10 +415,6 @@
     			</restriction>
     		</simpleType>
     	</attribute>
-    </complexType>
-
-    <complexType name="testLuckCommand">
-    	<attribute name="id" type="int" use="required"></attribute>
     </complexType>
 
     <complexType name="setPoisonImmunity">
