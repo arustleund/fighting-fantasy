@@ -13,7 +13,6 @@ import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.AddItemClosure;
 import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
-import rustleund.fightingfantasy.framework.closures.impl.TestLuckClosure;
 
 /**
  * @author rustlea
@@ -55,8 +54,6 @@ public class GameController implements HyperlinkListener {
 				loadPageIntoGameState(port);
 			} else if (command.equals("buyItem")) {
 				addItemToInventory(port);
-			} else if (command.equals("testluck")) {
-				testLuck(port);
 			} else if (command.equals("domulti")) {
 				doMultiCommand(port);
 			} else if (command.equals("dobattle")) {
@@ -123,10 +120,6 @@ public class GameController implements HyperlinkListener {
 	private void doMultiCommand(int multiCommandId) {
 		Closure multiCommand = this.gameState.getPageState().getMultiCommands(multiCommandId);
 		multiCommand.execute(this.gameState);
-	}
-
-	private void testLuck(int testluckId) {
-		new TestLuckClosure(testluckId).execute(gameState);
 	}
 
 	public void addItemToInventory(int itemId) {

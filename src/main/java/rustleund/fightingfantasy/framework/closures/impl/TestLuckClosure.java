@@ -6,8 +6,9 @@ package rustleund.fightingfantasy.framework.closures.impl;
 import org.w3c.dom.Element;
 
 import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.base.PageState;
 import rustleund.fightingfantasy.framework.base.PlayerState;
+import rustleund.fightingfantasy.framework.closures.Closure;
+import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.util.DiceRoller;
 
 /**
@@ -15,32 +16,21 @@ import rustleund.fightingfantasy.framework.util.DiceRoller;
  */
 public class TestLuckClosure extends AbstractClosure {
 
-	private int testLuckId = -1;
+	private Closure trueClosure;
+	private Closure falseClosure;
 
-	public TestLuckClosure(Element element) {
-		this.testLuckId = Integer.parseInt(element.getAttribute("id"));
-	}
-
-	public TestLuckClosure(int testLuckId) {
-		this.testLuckId = testLuckId;
+	public TestLuckClosure(Element element, ClosureLoader closureLoader) {
+		this.trueClosure = closureLoader.loadClosureFromChild(element, "successful");
+		this.falseClosure = closureLoader.loadClosureFromChild(element, "unsuccessful");
 	}
 
 	@Override
 	public boolean execute(GameState gameState) {
 		PlayerState playerState = gameState.getPlayerState();
-		PageState pageState = gameState.getPageState();
 
-		String luckText = null;
-		if (DiceRoller.rollDice(2) <= playerState.getLuck().getCurrentValue()) {
-			luckText = pageState.getSuccessfulLuckText(testLuckId);
-		} else {
-			luckText = pageState.getUnsuccessfulLuckText(testLuckId);
-		}
-
-		pageState.addToPagetext(luckText);
+		boolean lucky = DiceRoller.rollDice(2) <= playerState.getLuck().getCurrentValue();
 		playerState.getLuck().adjustCurrentValueNoException(-1);
 
-		return true;
+		return lucky ? this.trueClosure.execute(gameState) : this.falseClosure.execute(gameState);
 	}
-
 }

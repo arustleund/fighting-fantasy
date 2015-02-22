@@ -85,7 +85,7 @@ public class SpringContext {
 		mappings.put("testAnyFlag", testAnyFlagClosureFunction());
 		mappings.put("testFlag", testFlagClosureFunction());
 		mappings.put("testItem", testItemClosureFunction());
-		mappings.put("testLuckCommand", new ElementConstructorClosureFunction(TestLuckClosure.class));
+		mappings.put("testLuck", element -> new TestLuckClosure(element, closureLoader()));
 		mappings.put("testSkill", testSkillClosureFunction());
 		mappings.put("testStat", testStatClosureFunction());
 		mappings.put("testEnemyStat", testEnemyStatClosureFunction());
