@@ -70,7 +70,7 @@ public class BattleState {
 
 		Element effectsTag = XMLUtil.getChildElementByName(battleTag, "effects");
 		if (effectsTag != null) {
-			loadEffects(effectsTag, pageState.getGameState().getPlayerState());
+			loadEffects(effectsTag);
 		}
 
 		this.additionalMessages = new HashMap<>();
@@ -93,9 +93,8 @@ public class BattleState {
 		XMLUtil.getChildElementsByName(enemiesTag, "enemy").forEach(e -> enemies.addEnemy(new EnemyState(e, closureLoader)));
 	}
 
-	private void loadEffects(Element effectsTag, PlayerState playerState) {
+	private void loadEffects(Element effectsTag) {
 		loadEffectsFromTag(effectsTag);
-		loadEffectsFromPlayerState(playerState);
 	}
 
 	private void loadEffectsFromTag(Element effectsTag) {
@@ -106,9 +105,7 @@ public class BattleState {
 
 	private void loadEffectsFromPlayerState(PlayerState playerState) {
 		if (playerState.getNextBattleBattleEffects() != null) {
-			for (BattleEffects playerBattleEffects : playerState.getNextBattleBattleEffects()) {
-				this.allBattleEffects.add(playerBattleEffects);
-			}
+			this.allBattleEffects.addAll(playerState.getNextBattleBattleEffects());
 		}
 	}
 
@@ -122,6 +119,7 @@ public class BattleState {
 
 	public void incrementGameState() {
 		if (!battleStarted) {
+			loadEffectsFromPlayerState(pageState.getGameState().getPlayerState());
 			doStartBattle();
 			battleStarted = true;
 			this.pageState.getGameState().getPlayerState().setPoisonDamage(0);
