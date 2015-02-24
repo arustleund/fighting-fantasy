@@ -29,7 +29,6 @@ public class AddItemClosureTest extends EasyMockSupport {
 		gameState.setPageState(pageState);
 
 		//
-		
 
 		int defaultPrice = 4;
 		Item testItem = new Item(1, "Test Item", defaultPrice);
