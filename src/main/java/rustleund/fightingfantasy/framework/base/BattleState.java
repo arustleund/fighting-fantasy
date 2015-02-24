@@ -212,23 +212,25 @@ public class BattleState {
 			}
 		}
 
-		if (this.currentAttackStrengths.playerWon()) {
-			EnemyState firstEnemyToAttack = enemies.getFirstNonDeadEnemy();
-			int damage = -2 - playerState.getDamageModifier();
-			firstEnemyToAttack.getStamina().adjustCurrentValueNoException(damage);
+		if (!battleIsOver()) {
+			if (this.currentAttackStrengths.playerWon()) {
+				EnemyState firstEnemyToAttack = enemies.getFirstNonDeadEnemy();
+				int damage = -2 - playerState.getDamageModifier();
+				firstEnemyToAttack.getStamina().adjustCurrentValueNoException(damage);
 
-			message.append("You hit the " + firstEnemyToAttack.getName() + " for " + (damage * -1) + " damage!");
-			if (firstEnemyToAttack.isDead()) {
-				message.append(" You have killed the " + firstEnemyToAttack.getName() + "!");
-				if (firstEnemyToAttack.getEnemyKilled() != null) {
-					firstEnemyToAttack.getEnemyKilled().execute(pageState.getGameState());
+				message.append("You hit the " + firstEnemyToAttack.getName() + " for " + (damage * -1) + " damage!");
+				if (firstEnemyToAttack.isDead()) {
+					message.append(" You have killed the " + firstEnemyToAttack.getName() + "!");
+					if (firstEnemyToAttack.getEnemyKilled() != null) {
+						firstEnemyToAttack.getEnemyKilled().execute(pageState.getGameState());
+					}
 				}
+				message.append("<br>");
+			} else if (this.currentAttackStrengths.playerHit()) {
+				hitPlayer(playerState, this.currentAttackStrengths.winningEnemyHasPoisonedWeapon(), message);
+			} else {
+				message.append("Attack strengths are equal, no one is hit!<br>");
 			}
-			message.append("<br>");
-		} else if (this.currentAttackStrengths.playerHit()) {
-			hitPlayer(playerState, this.currentAttackStrengths.winningEnemyHasPoisonedWeapon(), message);
-		} else {
-			message.append("Attack strengths are equal, no one is hit!<br>");
 		}
 
 		message.append("Your stamina after this round: " + playerState.getStamina().getCurrentValue() + "<br>");
