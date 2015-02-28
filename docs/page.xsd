@@ -59,6 +59,7 @@
 			<element name="addEnemies" type="page:addEnemies" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="addItem" type="page:addItem" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="adjustEnemyScale" type="page:adjustEnemyScale" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="adjustFirstNonDeadEnemyAttackStrength" type="page:adjustByAmount" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="adjustPlayerAttackStrength" type="page:adjustByAmount" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="adjustPlayerDamageModifier" type="page:adjustByAmount" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="adjustScale" type="page:adjustScale" minOccurs="0" maxOccurs="unbounded"></element>

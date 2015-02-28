@@ -9,6 +9,7 @@ import org.w3c.dom.Element;
 
 import rustleund.fightingfantasy.framework.base.AbstractEntityState;
 import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
+import rustleund.fightingfantasy.framework.base.EnemyState;
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.ItemUtil;
 import rustleund.fightingfantasy.framework.base.PlayerState;
@@ -69,6 +70,7 @@ public class SpringContext {
 		mappings.put("addEnemies", addEnemiesClosureFunction());
 		mappings.put("addItem", addItemClosureFunction());
 		mappings.put("adjustEnemyScale", adjustEnemyScaleClosureFunction());
+		mappings.put("adjustFirstNonDeadEnemyAttackStrength", adjustFirstNonDeadEnemyAttackStrengthClosureFunction());
 		mappings.put("adjustPlayerAttackStrength", adjustPlayerAttackStrengthClosureFunction());
 		mappings.put("adjustPlayerDamageModifier", adjustPlayerDamageModifierClosureFunction());
 		mappings.put("adjustScale", adjustScaleClosureFunction());
@@ -109,6 +111,14 @@ public class SpringContext {
 	}
 
 	@Bean
+	public Function<Element, Closure> adjustFirstNonDeadEnemyAttackStrengthClosureFunction() {
+		return element -> {
+			return new AdjustByAmountClosure(element, firstNonDeadEnemyStateFromGameState().andThen(EnemyState::getAttackStrengthModifier),
+					(gameState, newValue) -> gameState.getBattleState().getEnemies().getFirstNonDeadEnemy().setAttackStrengthModifier(newValue));
+		};
+	}
+
+	@Bean
 	public Function<Element, Closure> adjustPlayerDamageModifierClosureFunction() {
 		return element -> {
 			return new AdjustByAmountClosure(element, playerStateFromGameState().andThen(PlayerState::getDamageModifier),
@@ -119,6 +129,11 @@ public class SpringContext {
 	@Bean
 	public java.util.function.Function<GameState, PlayerState> playerStateFromGameState() {
 		return GameState::getPlayerState;
+	}
+
+	@Bean
+	public java.util.function.Function<GameState, EnemyState> firstNonDeadEnemyStateFromGameState() {
+		return gameState -> gameState.getBattleState().getEnemies().getFirstNonDeadEnemy();
 	}
 
 	@Bean
