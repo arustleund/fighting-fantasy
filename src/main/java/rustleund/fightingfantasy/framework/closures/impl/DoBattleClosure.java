@@ -33,10 +33,10 @@ public class DoBattleClosure implements Closure {
 				pageState.replacePagetext(BattleState.START_STRING, BattleState.END_STRING, battleState.getCurrentBattleMessage());
 			}
 			if (battleState.getEnemies().areDead()) {
+				battleState.doEndBattle();
 				gameState.getPlayerState().setNextBattleBattleEffects(null);
 				gameState.setBattleInProgress(false);
 				gameState.setBattleState(null);
-				battleState.doEndBattle();
 			}
 			return true;
 		}
