@@ -194,7 +194,7 @@
 	</complexType>
 	
 	<complexType name="displayEnemies">
-		<attribute name="id" type="int" use="required"></attribute>
+		<attribute name="battleId" type="int" use="required"></attribute>
 	</complexType>
 
 	<complexType name="battle">
