@@ -28,9 +28,9 @@ import rustleund.fightingfantasy.framework.closures.impl.AdjustScaleClosure;
 import rustleund.fightingfantasy.framework.closures.impl.ClearBattleMessageClosure;
 import rustleund.fightingfantasy.framework.closures.impl.ClearPoisonDamageClosure;
 import rustleund.fightingfantasy.framework.closures.impl.DefaultClosureLoader;
+import rustleund.fightingfantasy.framework.closures.impl.DisplayEnemiesClosure;
 import rustleund.fightingfantasy.framework.closures.impl.DisplayTextClosure;
 import rustleund.fightingfantasy.framework.closures.impl.DoBattleClosure;
-import rustleund.fightingfantasy.framework.closures.impl.ElementConstructorClosureFunction;
 import rustleund.fightingfantasy.framework.closures.impl.InitPlayerStateClosure;
 import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
 import rustleund.fightingfantasy.framework.closures.impl.LinkIfFlagFalseClosure;
@@ -65,26 +65,27 @@ public class SpringContext {
 		mappings.put("addBattleEffectsForNextBattle", addBattleEffectsForNextBattleClosureFunction());
 		mappings.put("addBattleEffectsToCurrentBattle", addBattleEffectsToCurrentBattleClosureFunction());
 		mappings.put("addBattleEffectsToNextBattleRound", addBattleEffectsToNextBattleRoundClosureFunction());
-		mappings.put("addBattleMessage", new ElementConstructorClosureFunction(AddBattleMessageClosure.class));
+		mappings.put("addBattleMessage", AddBattleMessageClosure::new);
 		mappings.put("addEnemies", addEnemiesClosureFunction());
 		mappings.put("addItem", addItemClosureFunction());
 		mappings.put("adjustEnemyScale", adjustEnemyScaleClosureFunction());
 		mappings.put("adjustPlayerAttackStrength", adjustPlayerAttackStrengthClosureFunction());
 		mappings.put("adjustPlayerDamageModifier", adjustPlayerDamageModifierClosureFunction());
 		mappings.put("adjustScale", adjustScaleClosureFunction());
-		mappings.put("clearBattleMessage", new ElementConstructorClosureFunction(ClearBattleMessageClosure.class));
-		mappings.put("clearPoisonDamage", element -> new ClearPoisonDamageClosure(element));
-		mappings.put("displayText", new ElementConstructorClosureFunction(DisplayTextClosure.class));
-		mappings.put("doBattle", element -> new DoBattleClosure(element));
+		mappings.put("clearBattleMessage", ClearBattleMessageClosure::new);
+		mappings.put("clearPoisonDamage", ClearPoisonDamageClosure::new);
+		mappings.put("displayText", DisplayTextClosure::new);
+		mappings.put("displayEnemies", DisplayEnemiesClosure::new);
+		mappings.put("doBattle", DoBattleClosure::new);
 		mappings.put("flaggedLink", element -> new LinkIfFlagFalseClosure(element, closureLoader(), battleEffectsLoader()));
 		mappings.put("initPlayer", initPlayerStateClosureFunction());
 		mappings.put("link", linkClosureFunction());
 		mappings.put("mustEatMeal", mustEatMealClosureFunction());
-		mappings.put("removeItem", new ElementConstructorClosureFunction(RemoveItemClosure.class));
-		mappings.put("restoreScale", new ElementConstructorClosureFunction(RestoreScaleClosure.class));
+		mappings.put("removeItem", RemoveItemClosure::new);
+		mappings.put("restoreScale", RestoreScaleClosure::new);
 		mappings.put("rollDice", rollDiceClosureFunction());
-		mappings.put("setFlag", new ElementConstructorClosureFunction(SetFlagClosure.class));
-		mappings.put("setPoisonImmunity", new ElementConstructorClosureFunction(SetPoisonImmunity.class));
+		mappings.put("setFlag", SetFlagClosure::new);
+		mappings.put("setPoisonImmunity", SetPoisonImmunity::new);
 		mappings.put("testAnyFlag", testAnyFlagClosureFunction());
 		mappings.put("testFlag", testFlagClosureFunction());
 		mappings.put("testItem", testItemClosureFunction());
@@ -165,9 +166,7 @@ public class SpringContext {
 
 	@Bean
 	public Function<Element, Closure> addItemClosureFunction() {
-		return (Element input) -> {
-			return new AddItemClosure(input, itemUtil());
-		};
+		return input -> new AddItemClosure(input, itemUtil());
 	}
 
 	@Bean
