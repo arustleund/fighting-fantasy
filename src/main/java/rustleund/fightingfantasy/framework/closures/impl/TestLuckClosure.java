@@ -18,17 +18,22 @@ public class TestLuckClosure extends AbstractClosure {
 
 	private Closure trueClosure;
 	private Closure falseClosure;
+	private int diceRollAdjustment;
 
 	public TestLuckClosure(Element element, ClosureLoader closureLoader) {
 		this.trueClosure = closureLoader.loadClosureFromChild(element, "successful");
 		this.falseClosure = closureLoader.loadClosureFromChild(element, "unsuccessful");
+		if (element.hasAttribute("diceRollAdjustment")) {
+			this.diceRollAdjustment = Integer.parseInt(element.getAttribute("diceRollAdjustment"));
+		}
 	}
 
 	@Override
 	public boolean execute(GameState gameState) {
 		PlayerState playerState = gameState.getPlayerState();
 
-		boolean lucky = DiceRoller.rollDice(2) <= playerState.getLuck().getCurrentValue();
+		int rollWithAdjustment = DiceRoller.rollDice(2) + diceRollAdjustment;
+		boolean lucky = rollWithAdjustment <= playerState.getLuck().getCurrentValue();
 		playerState.getLuck().adjustCurrentValueNoException(-1);
 
 		return lucky ? this.trueClosure.execute(gameState) : this.falseClosure.execute(gameState);
