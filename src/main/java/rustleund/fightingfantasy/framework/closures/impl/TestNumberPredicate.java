@@ -1,5 +1,6 @@
 package rustleund.fightingfantasy.framework.closures.impl;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 import org.w3c.dom.Element;
@@ -11,7 +12,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
 public class TestNumberPredicate implements Predicate<GameState> {
-	
+
 	private static final ImmutableMap<String, Boolean[]> VALUES_MAPPINGS;
 	static {
 		Builder<String, Boolean[]> builder = ImmutableMap.builder();
@@ -29,9 +30,15 @@ public class TestNumberPredicate implements Predicate<GameState> {
 	private Function<? super GameState, ? extends Integer> gameStateToNumberFunction;
 
 	public TestNumberPredicate(Element element, Function<? super GameState, ? extends Integer> gameStateToNumberFunction) {
-		String operator = VALUES_MAPPINGS.keySet().stream().filter(element::hasAttribute).findFirst().get();
-		this.acceptableValues = VALUES_MAPPINGS.get(operator);
-		this.valueToCompare = Integer.valueOf(element.getAttribute(operator));
+		Optional<String> firstOperator = VALUES_MAPPINGS.keySet().stream().filter(element::hasAttribute).findFirst();
+		if (firstOperator.isPresent()) {
+			String operator = firstOperator.get();
+			this.acceptableValues = VALUES_MAPPINGS.get(operator);
+			this.valueToCompare = Integer.valueOf(element.getAttribute(operator));
+		} else {
+			this.acceptableValues = VALUES_MAPPINGS.get("atLeast");
+			this.valueToCompare = 1;
+		}
 		this.gameStateToNumberFunction = gameStateToNumberFunction;
 	}
 

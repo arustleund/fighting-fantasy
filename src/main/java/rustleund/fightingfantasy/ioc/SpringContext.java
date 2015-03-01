@@ -196,12 +196,7 @@ public class SpringContext {
 
 	@Bean
 	public Function<Element, Closure> testItemClosureFunction() {
-		return new Function<Element, Closure>() {
-			@Override
-			public Closure apply(Element input) {
-				return new TestClosure(new TestItemPredicate(input), closureLoader(), input);
-			}
-		};
+		return element -> new TestClosure(new TestItemPredicate(element), closureLoader(), element);
 	}
 
 	@Bean

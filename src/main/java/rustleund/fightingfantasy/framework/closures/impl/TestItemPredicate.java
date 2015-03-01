@@ -8,18 +8,18 @@ import com.google.common.base.Predicate;
 
 public class TestItemPredicate implements Predicate<GameState> {
 
-	private int itemId;
+	private Predicate<GameState> delegate;
 
 	/**
 	 * @param A {@code <testItem />} {@link Element} with an <code>id</code> attribute containing an item id
 	 */
 	public TestItemPredicate(Element element) {
-		this.itemId = Integer.parseInt(element.getAttribute("id"));
+		int itemId = Integer.parseInt(element.getAttribute("id"));
+		this.delegate = new TestNumberPredicate(element, gameState -> gameState.getPlayerState().itemCount(itemId));
 	}
 
 	@Override
 	public boolean apply(GameState input) {
-		return input.getPlayerState().itemCount(itemId) > 0;
+		return this.delegate.apply(input);
 	}
-
 }

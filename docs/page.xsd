@@ -297,7 +297,7 @@
 
     <complexType name="testItem">
     	<complexContent>
-    		<extension base="page:testContent">
+    		<extension base="page:testNumber">
     			<attribute name="id" type="int" use="required"></attribute>
     		</extension>
     	</complexContent>
