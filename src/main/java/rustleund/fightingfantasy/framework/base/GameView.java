@@ -66,7 +66,7 @@ public class GameView extends JPanel implements ActionListener {
 
 		add(messagePanel, BorderLayout.NORTH);
 
-		imageLabel = new ImageView(280, 480);
+		imageLabel = new ImageView(280, 480); // image 560 x 960 for retina
 		imageLabel.setPreferredSize(new Dimension(280, 480));
 
 		JPanel imagePanel = new JPanel();
