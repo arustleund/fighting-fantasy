@@ -51,21 +51,35 @@ public class GameController implements HyperlinkListener {
 
 			String command = e.getURL().getHost();
 			int port = e.getURL().getPort();
-			if (command.equals("link")) {
-				loadPageIntoGameState(port);
-			} else if (command.equals("buyItem")) {
-				addItemToInventory(port);
-			} else if (command.equals("domulti")) {
-				doMultiCommand(port);
-			} else if (command.equals("dobattle")) {
-				doBattle(port);
-			} else if (command.equals("doflee")) {
-				doFlee(port);
+			switch (command) {
+				case "link":
+					loadPageIntoGameState(port);
+					break;
+				case "buyItem":
+					addItemToInventory(port);
+					break;
+				case "domulti":
+					doMultiCommand(port);
+					break;
+				case "dobattle":
+					doBattle(port);
+					break;
+				case "doflee":
+					doFlee(port);
+					break;
+				case "testluckbattle":
+					doTestLuckInBattle(port == 0);
+					break;
+				default:
 			}
 
 			updateViews();
 			this.gameState.clearMessage();
 		}
+	}
+
+	private void doTestLuckInBattle(boolean enemyHit) {
+		gameState.getBattleState().doTestLuck(enemyHit, null);
 	}
 
 	public void useItem(Item item) {

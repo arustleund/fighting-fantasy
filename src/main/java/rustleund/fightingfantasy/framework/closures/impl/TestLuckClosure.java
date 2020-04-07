@@ -9,7 +9,6 @@ import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.PlayerState;
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
-import rustleund.fightingfantasy.framework.util.DiceRoller;
 
 /**
  * @author rustlea
@@ -32,9 +31,7 @@ public class TestLuckClosure extends AbstractClosure {
 	public boolean execute(GameState gameState) {
 		PlayerState playerState = gameState.getPlayerState();
 
-		int rollWithAdjustment = DiceRoller.rollDice(2) + diceRollAdjustment;
-		boolean lucky = rollWithAdjustment <= playerState.getLuck().getCurrentValue();
-		playerState.getLuck().adjustCurrentValueNoException(-1);
+		boolean lucky = playerState.testLuck(diceRollAdjustment);
 
 		return lucky ? this.trueClosure.execute(gameState) : this.falseClosure.execute(gameState);
 	}

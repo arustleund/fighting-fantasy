@@ -12,7 +12,7 @@ public class DoBattleClosure implements Closure {
 	private int id;
 
 	public DoBattleClosure(Element element) {
-		this.id = Integer.valueOf(element.getAttribute("id"));
+		this.id = Integer.parseInt(element.getAttribute("id"));
 	}
 
 	public DoBattleClosure(int id) {
@@ -27,17 +27,9 @@ public class DoBattleClosure implements Closure {
 		gameState.setBattleInProgress(true);
 		gameState.setBattleState(battleState);
 
-		if (!battleState.battleIsOver()) {
+		if (battleState.battleIsNotOver()) {
 			battleState.incrementGameState();
-			if (battleState.getCurrentBattleMessage() != null) {
-				pageState.replacePagetext(BattleState.START_STRING, BattleState.END_STRING, battleState.getCurrentBattleMessage());
-			}
-			if (battleState.getEnemies().areDead()) {
-				battleState.doEndBattle();
-				gameState.getPlayerState().setNextBattleBattleEffects(null);
-				gameState.setBattleInProgress(false);
-				gameState.setBattleState(null);
-			}
+			battleState.doAfterPossibleStaminaChange();
 			return true;
 		}
 		return false;

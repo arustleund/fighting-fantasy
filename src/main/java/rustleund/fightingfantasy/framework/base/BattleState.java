@@ -5,7 +5,7 @@ package rustleund.fightingfantasy.framework.base;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -17,7 +17,6 @@ import org.w3c.dom.Element;
 
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
-import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
 
 /**
  * @author rustlea
@@ -33,7 +32,7 @@ public class BattleState {
 	private Integer id;
 	private Enemies enemies;
 	private boolean battleStarted = false;
-	private boolean canFlee = false;
+	private boolean canFlee;
 	private boolean flee = false;
 	private boolean fightEnemiesTogether = true;
 	private PageState pageState;
@@ -42,6 +41,7 @@ public class BattleState {
 	private AttackStrengths currentAttackStrengths;
 	private int playerHitCount;
 	private int battleRound = 1;
+	private boolean testedLuckThisRound = false;
 
 	private Map<BattleMessagePosition, String> additionalMessages;
 	private Collection<BattleEffects> battleEffectsForNextRound = new ArrayList<>();
@@ -73,7 +73,7 @@ public class BattleState {
 			loadEffects(effectsTag);
 		}
 
-		this.additionalMessages = new HashMap<>();
+		this.additionalMessages = new EnumMap<>(BattleMessagePosition.class);
 	}
 
 	public void addAdditionalMessage(BattleMessagePosition position, String message) {
@@ -109,8 +109,8 @@ public class BattleState {
 		}
 	}
 
-	public boolean battleIsOver() {
-		return getPlayerState().isDead() || enemies.areDead() || flee;
+	public boolean battleIsNotOver() {
+		return !getPlayerState().isDead() && !enemies.areDead() && !flee;
 	}
 
 	public PlayerState getPlayerState() {
@@ -132,7 +132,7 @@ public class BattleState {
 			doEndRound();
 
 			if (getPlayerState().isDead()) {
-				new LinkClosure(0, this.closureLoader, this.battleEffectsLoader).execute(this.pageState.getGameState());
+				appendAtEndOfBattleMessage("You have died, and your adventure ends here.");
 			}
 		}
 	}
@@ -148,6 +148,7 @@ public class BattleState {
 	}
 
 	public void doStartRound() {
+		testedLuckThisRound = false;
 		doBattleStage(this.allBattleEffects, BattleEffects::getStartRound);
 		doBattleStage(this.battleEffectsForNextRound, BattleEffects::getStartRound);
 		doBattleStage(itemBattleEffects(), BattleEffects::getStartRound);
@@ -172,6 +173,54 @@ public class BattleState {
 		doBattleStage(itemBattleEffects(), BattleEffects::getEndBattle);
 	}
 
+	public void doAfterPossibleStaminaChange() {
+		if (getCurrentBattleMessage() != null) {
+			pageState.replacePagetext(BattleState.START_STRING, BattleState.END_STRING, getCurrentBattleMessage());
+		}
+		if (getEnemies().areDead() || getPlayerState().isDead()) {
+			getPageState().getGameState().endBattle();
+		}
+	}
+
+	public void doTestLuck(boolean enemyHit, StringBuilder existingMessageBuilder) {
+		if (!testedLuckThisRound) {
+			boolean lucky = getPlayerState().testLuck(0);
+			testedLuckThisRound = true;
+			StringBuilder message = existingMessageBuilder == null ? new StringBuilder() : existingMessageBuilder;
+			message.append("You were ");
+			message.append(lucky ? "lucky" : "unlucky");
+			message.append("! ");
+			if (enemyHit) {
+				EnemyState firstNonDeadEnemy = enemies.getFirstNonDeadEnemy();
+				message.append(firstNonDeadEnemy.getName());
+				if (lucky) {
+					message.append(" will take 2 additional points of damage!<br>");
+					firstNonDeadEnemy.getStamina().adjustCurrentValueNoException(-2);
+				} else {
+					message.append(" will take 1 less point of damage!<br>");
+					firstNonDeadEnemy.getStamina().adjustCurrentValueNoException(1);
+				}
+				appendEnemyStamina(message, firstNonDeadEnemy);
+			} else {
+				if (lucky) {
+					message.append("You will take 1 less point of damage!<br>");
+					getPlayerState().getStamina().adjustCurrentValueNoException(1);
+				} else {
+					message.append("You will take 1 more point of damage!<br>");
+					getPlayerState().getStamina().adjustCurrentValueNoException(-1);
+				}
+				addPlayerStamina(message, getPlayerState());
+				if (getPlayerState().isDead()) {
+					message.append("You have died, and your adventure ends here.");
+				}
+			}
+			if (existingMessageBuilder == null) {
+				appendAtEndOfBattleMessage(message.toString());
+				doAfterPossibleStaminaChange();
+			}
+		}
+	}
+
 	private Collection<BattleEffects> itemBattleEffects() {
 		Collection<Item> items = pageState.getGameState().getPlayerState().getItems().values();
 		Stream<BattleEffects> itemBattleEffects = items.stream().map(Item::getBattleEffects);
@@ -184,7 +233,7 @@ public class BattleState {
 	}
 
 	private void doDamage() {
-		StringBuffer message = new StringBuffer(START_STRING);
+		StringBuilder message = new StringBuilder(START_STRING);
 		message.append("<p>");
 
 		if (this.additionalMessages.containsKey(BattleMessagePosition.BEGINNING)) {
@@ -212,7 +261,7 @@ public class BattleState {
 			}
 		}
 
-		if (!battleIsOver()) {
+		if (battleIsNotOver()) {
 			if (this.currentAttackStrengths.playerWon()) {
 				EnemyState firstEnemyToAttack = enemies.getFirstNonDeadEnemy();
 				int damage = -2 - playerState.getDamageModifier();
@@ -224,6 +273,9 @@ public class BattleState {
 					if (firstEnemyToAttack.getEnemyKilled() != null) {
 						firstEnemyToAttack.getEnemyKilled().execute(pageState.getGameState());
 					}
+				} else if (!playerState.getLuck().isEmpty()) {
+					message.append("<br>");
+					message.append("<a href=\"http://testluckbattle:0\"><i>Test Your Luck</i></a> to try to do add an additional 2 points of damage");
 				}
 				message.append("<br>");
 			} else if (this.currentAttackStrengths.playerHit()) {
@@ -233,14 +285,9 @@ public class BattleState {
 			}
 		}
 
-		message.append("Your stamina after this round: " + playerState.getStamina().getCurrentValue() + "<br>");
+		addPlayerStamina(message, playerState);
 		for (EnemyState enemy : enemies) {
-			if (enemy.isDead()) {
-				message.append(enemy.getName() + " is dead.");
-			} else {
-				message.append(enemy.getName() + "'s stamina after this round: " + enemy.getStamina().getCurrentValue());
-			}
-			message.append("<br>");
+			appendEnemyStamina(message, enemy);
 		}
 
 		if (this.additionalMessages.containsKey(BattleMessagePosition.END)) {
@@ -259,7 +306,29 @@ public class BattleState {
 		setCurrentBattleMessage(message.toString());
 	}
 
-	private void hitPlayer(PlayerState playerState, boolean foundPoisonedWeaponEnemy, StringBuffer message) {
+	private void appendAtEndOfBattleMessage(String message) {
+		StringBuilder newBattleMessage = new StringBuilder(getCurrentBattleMessage());
+		newBattleMessage.setLength(newBattleMessage.length() - END_STRING.length());
+		newBattleMessage.append("<br>");
+		newBattleMessage.append(message);
+		newBattleMessage.append(END_STRING);
+		setCurrentBattleMessage(newBattleMessage.toString());
+	}
+
+	private void addPlayerStamina(StringBuilder message, PlayerState playerState) {
+		message.append("Your stamina after this round: " + playerState.getStamina().getCurrentValue() + "<br>");
+	}
+
+	private void appendEnemyStamina(StringBuilder message, EnemyState enemy) {
+		if (enemy.isDead()) {
+			message.append(enemy.getName() + " is dead.");
+		} else {
+			message.append(enemy.getName() + "'s stamina after this round: " + enemy.getStamina().getCurrentValue());
+		}
+		message.append("<br>");
+	}
+
+	private void hitPlayer(PlayerState playerState, boolean foundPoisonedWeaponEnemy, StringBuilder message) {
 		this.playerHitCount++;
 		if (foundPoisonedWeaponEnemy) {
 			if (playerState.isPoisonImmunity()) {
@@ -273,6 +342,14 @@ public class BattleState {
 			playerState.getStamina().adjustCurrentValueNoException(-2);
 			message.append("You were hit!<br>");
 			doPlayerHit();
+		}
+		if (!playerState.getLuck().isEmpty()) {
+			if (playerState.isDead()) {
+				message.append("Your Stamina was reduced to 0, Testing Your Luck to save your life...<br>");
+				doTestLuck(false, message);
+			} else {
+				message.append("<a href=\"http://testluckbattle:1\"><i>Test Your Luck</i></a> to try to reduce 1 points of damage<br>");
+			}
 		}
 	}
 

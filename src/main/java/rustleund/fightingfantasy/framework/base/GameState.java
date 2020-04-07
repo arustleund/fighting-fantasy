@@ -71,6 +71,15 @@ public class GameState {
 		message = "-";
 	}
 
+	public void endBattle() {
+		if (!playerState.isDead()) {
+			battleState.doEndBattle();
+			getPlayerState().setNextBattleBattleEffects(null);
+			setBattleInProgress(false);
+			setBattleState(null);
+		}
+	}
+
 	public PlayerState getPlayerState() {
 		return playerState;
 	}

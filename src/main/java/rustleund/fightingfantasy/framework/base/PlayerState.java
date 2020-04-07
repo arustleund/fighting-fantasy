@@ -125,6 +125,13 @@ public class PlayerState extends AbstractEntityState {
 		this.nextBattleBattleEffects.add(battleEffects);
 	}
 
+	public boolean testLuck(int diceRollAdjustment) {
+		int rollWithAdjustment = DiceRoller.rollDice(2) + diceRollAdjustment;
+		boolean lucky = rollWithAdjustment <= getLuck().getCurrentValue();
+		getLuck().adjustCurrentValueNoException(-1);
+		return lucky;
+	}
+
 	public int getPoisonDamage() {
 		return this.poisonDamage;
 	}

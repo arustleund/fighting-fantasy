@@ -15,8 +15,9 @@
 			<!-- Buys the item with the ID specified by the port. -->
 			<a href="http://buyItem:21">Buy Item 21</a>
 			
-			<!-- Performs the <testLuck> with the ID specified by the port. -->
-			<a href="http://testluck:0">Test Luck 0</a>
+			<!-- Tests Luck in battle, 0 for if an enemy was just hit, 1 for player -->
+			<a href="http://testluckbattle:0">Test Luck In Battle, try to damage enemy more</a>
+			<a href="http://testluckbattle:1">Test Luck In Battle, try to reduce player damage</a>
 			
 			<!-- Performs the <multicommand> with the ID specified by the port. -->
 			<a href="http://domulti:0">Perform multicommand 0</a>
