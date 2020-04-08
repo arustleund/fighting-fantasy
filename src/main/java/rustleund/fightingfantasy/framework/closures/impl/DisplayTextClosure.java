@@ -15,7 +15,7 @@ public class DisplayTextClosure extends AbstractClosure {
 	private int textId;
 
 	public DisplayTextClosure(Element element) {
-		this.textId = Integer.valueOf(element.getAttribute("id"));
+		this.textId = Integer.parseInt(element.getAttribute("id"));
 	}
 
 	public DisplayTextClosure(int textId) {

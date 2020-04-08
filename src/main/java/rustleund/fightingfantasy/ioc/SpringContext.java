@@ -94,6 +94,7 @@ public class SpringContext {
 		mappings.put("testLuck", element -> new TestLuckClosure(element, closureLoader()));
 		mappings.put("testSkill", testSkillClosureFunction());
 		mappings.put("testStat", testStatClosureFunction());
+		mappings.put("testStatText", testStatTextClosureFunction());
 		mappings.put("testEnemyStat", testEnemyStatClosureFunction());
 		mappings.put("testEnemyTypes", testEnemyTypesClosureFunction());
 		mappings.put("testEnemySkill", testEnemySkillClosureFunction());
@@ -216,6 +217,16 @@ public class SpringContext {
 			public Closure apply(Element input) {
 				return new TestClosure(new TestStatPredicate(input), closureLoader(), input);
 			}
+		};
+	}
+
+	@Bean
+	public Function<Element, Closure> testStatTextClosureFunction() {
+		return e -> {
+			TestStatPredicate pred = new TestStatPredicate(e);
+			DisplayTextClosure success = new DisplayTextClosure(Integer.parseInt(e.getAttribute("success")));
+			DisplayTextClosure failure = new DisplayTextClosure(Integer.parseInt(e.getAttribute("failure")));
+			return gameState -> pred.apply(gameState) ? success.execute(gameState) : failure.execute(gameState);
 		};
 	}
 

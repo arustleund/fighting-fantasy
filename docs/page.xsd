@@ -87,6 +87,7 @@
 			<element name="testLuck" type="page:testContentWithAdjustment" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testSkill" type="page:testContentWithAdjustment" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testStat" type="page:testStat" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testStatText" type="page:testStatText" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testEnemySkill" type="page:testEnemySkill" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testEnemyStat" type="page:testEnemyStat" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testEnemyTypes" type="page:testEnemyTypes" minOccurs="0" maxOccurs="unbounded"></element>
@@ -311,6 +312,15 @@
     		</extension>
     	</complexContent>
     </complexType>
+
+	<complexType name="testStatText">
+		<complexContent>
+			<extension base="page:testStat">
+				<attribute name="success" type="int" use="required"></attribute>
+				<attribute name="failure" type="int" use="required"></attribute>
+			</extension>
+		</complexContent>
+	</complexType>
     
     <complexType name="testEnemyStat">
     	<complexContent>
