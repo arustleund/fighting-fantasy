@@ -171,15 +171,22 @@
 		</complexContent>
 	</complexType>
 	
+	<complexType name="testNumberAttributes">
+		<attribute name="lessThan" type="int" use="optional"></attribute>
+		<attribute name="greaterThan" type="int" use="optional"></attribute>
+		<attribute name="atLeast" type="int" use="optional"></attribute>
+		<attribute name="atMost" type="int" use="optional"></attribute>
+		<attribute name="equal" type="int" use="optional"></attribute>
+		<attribute name="notEqual" type="int" use="optional"></attribute>
+	</complexType>
+
 	<complexType name="testNumber">
 		<complexContent>
-			<extension base="page:testContent">
-				<attribute name="lessThan" type="int" use="optional"></attribute>
-    			<attribute name="greaterThan" type="int" use="optional"></attribute>
-    			<attribute name="atLeast" type="int" use="optional"></attribute>
-    			<attribute name="atMost" type="int" use="optional"></attribute>
-    			<attribute name="equal" type="int" use="optional"></attribute>
-    			<attribute name="notEqual" type="int" use="optional"></attribute>
+			<extension base="page:testNumberAttributes">
+				<sequence minOccurs="1" maxOccurs="1">
+					<element name="successful" type="page:commands" minOccurs="1" maxOccurs="1"></element>
+					<element name="unsuccessful" type="page:commands" minOccurs="1" maxOccurs="1"></element>
+				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
@@ -315,7 +322,9 @@
 
 	<complexType name="testStatText">
 		<complexContent>
-			<extension base="page:testStat">
+			<extension base="page:testNumberAttributes">
+				<attribute name="stat" type="page:testStatValues" use="required"></attribute>
+				<attribute name="useInitialValue" type="boolean" use="optional"></attribute>
 				<attribute name="success" type="int" use="required"></attribute>
 				<attribute name="failure" type="int" use="required"></attribute>
 			</extension>
