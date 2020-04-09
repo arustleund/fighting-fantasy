@@ -17,6 +17,10 @@ public class TestFlagPredicate implements Predicate<GameState> {
 		this.flagId = Integer.parseInt(element.getAttribute("id"));
 	}
 
+	public int getFlagId() {
+		return flagId;
+	}
+
 	@Override
 	public boolean apply(GameState input) {
 		return input.getPlayerState().getFlagValue(flagId);

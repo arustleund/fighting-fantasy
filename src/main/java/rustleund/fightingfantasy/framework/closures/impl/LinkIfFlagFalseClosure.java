@@ -11,14 +11,23 @@ public class LinkIfFlagFalseClosure implements Closure {
 
 	private TestFlagPredicate testFlagPredicate;
 	private LinkClosure linkClosure;
+	private boolean setFlagToTrue;
 
 	public LinkIfFlagFalseClosure(Element element, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
 		this.testFlagPredicate = new TestFlagPredicate(element);
+		this.setFlagToTrue = Boolean.parseBoolean(element.getAttribute("setFlagToTrue"));
 		this.linkClosure = new LinkClosure(element, closureLoader, battleEffectsLoader);
 	}
 
 	@Override
 	public boolean execute(GameState gameState) {
-		return this.testFlagPredicate.apply(gameState) ? true : this.linkClosure.execute(gameState);
+		boolean flagTrue = this.testFlagPredicate.apply(gameState);
+		if (!flagTrue) {
+			if (setFlagToTrue) {
+				gameState.getPlayerState().setFlag(testFlagPredicate.getFlagId(), true);
+			}
+			return this.linkClosure.execute(gameState);
+		}
+		return true;
 	}
 }

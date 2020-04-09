@@ -374,8 +374,9 @@
     </complexType>
     
     <complexType name="flaggedLink">
-    	<attribute name="id" type="int" use="required"></attribute>
-    	<attribute name="page" type="string" use="required"></attribute>
+		<attribute name="id" type="int" use="required"/>
+		<attribute name="page" type="string" use="required"/>
+		<attribute name="setFlagToTrue" type="boolean" />
     </complexType>
 
     <complexType name="mustEatMeal">
