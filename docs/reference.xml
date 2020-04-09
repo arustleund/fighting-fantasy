@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!-- <page> is the main element of the schema. No attributes. -->
-<page>
+<!-- <page> is the main element of the schema.
+Attributes:
+	label: Optional. A label for the page that helps in debugging or reporting. Not used in the game.
+-->
+<page label="Intro">
 	<!-- 
 	<pagetext> is required. This is the text that will display when the user first goes to the page.
 	No attributes. HTML content. Must start with a <html> tag.
@@ -312,6 +315,9 @@
 			<!-- put any number of commands here -->
 		</unsuccessful>
 	</testStat>
+
+	<!-- Syntactic sugar for a <testStat> combined with a <displayText> for success and failure, put text IDs in the success and failure attributes -->
+	<testStatText stat="stamina" atLeast="20" success="0" failure="1" />
 	
 	<testEnemyStat stat="stamina" atLeast="14" enemyId="0">
 		<successful>

@@ -5,7 +5,7 @@
 	elementFormDefault="qualified" 
 	xmlns:page="http://www.rustleund.com/fighting-fantasy/page">
 
-	<element name="page" type="page:page"></element>
+	<element name="page" type="page:page"/>
 
 	<complexType name="page">
         <annotation>
@@ -16,12 +16,13 @@
 				<annotation>
 					<documentation>This contains the main text that will be displayed to the user when the page loads.</documentation>
 				</annotation></element>
-			<element name="immediate" type="page:commands" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="multicommand" type="page:multicommand" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="battle" type="page:battle" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="text" type="page:text" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="keepminimum" type="page:keepminimum" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="immediate" type="page:commands" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="multicommand" type="page:multicommand" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="battle" type="page:battle" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="text" type="page:text" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="keepminimum" type="page:keepminimum" minOccurs="0" maxOccurs="unbounded"/>
 		</sequence>
+		<attribute name="label" type="string" />
 	</complexType>
 
 	<complexType name="pagetextHtmlContent" mixed="true">

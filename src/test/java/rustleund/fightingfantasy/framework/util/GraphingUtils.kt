@@ -40,6 +40,8 @@ fun main() {
         }
     }
 
+    graph.vertexSet().filter { graph.outDegreeOf(it) == 0 }.forEach { println("End: $it") }
+
     val exporter: DOTExporter<String, DefaultEdge> = DOTExporter()
     exporter.setVertexAttributeProvider { v: Any ->
         val map = mutableMapOf<String, Attribute>()
