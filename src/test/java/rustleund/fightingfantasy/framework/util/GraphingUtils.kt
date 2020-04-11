@@ -8,16 +8,23 @@ import org.jgrapht.nio.dot.DOTExporter
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.streams.asSequence
 
 fun main() {
     val pages = pages().map { it.pageNumber() }.use { it.asSequence().toSet() }
     val graph = DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge::class.java)
+    val labels = mutableMapOf<String, String>()
     pages.forEach { graph.addVertex(it) }
+    val documentBuilderFactory = DocumentBuilderFactory.newInstance()
+    documentBuilderFactory.isNamespaceAware = true
+    val documentBuilder = documentBuilderFactory.newDocumentBuilder()
     pages().use { stream ->
         stream.forEach { pageFile ->
             val pageNumber = pageFile.pageNumber()
             val fileContents = String(Files.readAllBytes(pageFile))
+            val document = documentBuilder.parse(pageFile.toFile())
+            document.documentElement.getAttribute("label")?.let { labels[pageNumber] = it }
             Regex("(http://link:)|(<link )|(<flaggedLink)").findAll(fileContents).forEach { match ->
                 val linkToPage = if (match.value == "http://link:") {
                     val startIndex = match.range.start + 12
@@ -40,12 +47,13 @@ fun main() {
         }
     }
 
+    println(labels)
     graph.vertexSet().filter { graph.outDegreeOf(it) == 0 }.forEach { println("End: $it") }
 
     val exporter: DOTExporter<String, DefaultEdge> = DOTExporter()
     exporter.setVertexAttributeProvider { v: Any ->
         val map = mutableMapOf<String, Attribute>()
-        map["label"] = DefaultAttribute.createAttribute(v.toString())
+        map["label"] = DefaultAttribute.createAttribute("$v: ${labels[v]}")
         map
     }
     Files.newBufferedWriter(Paths.get("/Users/rustlea/Desktop/nightdragon.gv")).use { writer ->

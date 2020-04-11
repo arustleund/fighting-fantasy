@@ -84,6 +84,7 @@
 			<element name="setPoisonImmunity" type="page:setPoisonImmunity" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testAnyFlag" type="page:testAnyFlag" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testFlag" type="page:testFlag" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testFlagText" type="page:testFlagText" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="testItem" type="page:testItem" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testLuck" type="page:testContentWithAdjustment" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testSkill" type="page:testContentWithAdjustment" minOccurs="0" maxOccurs="unbounded"></element>
@@ -170,6 +171,12 @@
 
 			</extension>
 		</complexContent>
+	</complexType>
+
+	<complexType name="testFlagText">
+		<attribute name="id" type="int" use="required"/>
+		<attribute name="success" type="int" use="required"/>
+		<attribute name="failure" type="int" use="required"/>
 	</complexType>
 	
 	<complexType name="testNumberAttributes">

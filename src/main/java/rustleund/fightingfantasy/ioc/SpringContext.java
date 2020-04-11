@@ -37,6 +37,7 @@ import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
 import rustleund.fightingfantasy.framework.closures.impl.LinkIfFlagFalseClosure;
 import rustleund.fightingfantasy.framework.closures.impl.MustEatMealClosure;
 import rustleund.fightingfantasy.framework.closures.impl.PlayerAttackStrengthDifferenceFromEnemyFunction;
+import rustleund.fightingfantasy.framework.closures.impl.PredicateTextClosure;
 import rustleund.fightingfantasy.framework.closures.impl.RemoveItemClosure;
 import rustleund.fightingfantasy.framework.closures.impl.RestoreScaleClosure;
 import rustleund.fightingfantasy.framework.closures.impl.RollDiceClosure;
@@ -90,6 +91,7 @@ public class SpringContext {
 		mappings.put("setPoisonImmunity", SetPoisonImmunity::new);
 		mappings.put("testAnyFlag", testAnyFlagClosureFunction());
 		mappings.put("testFlag", testFlagClosureFunction());
+		mappings.put("testFlagText", testFlagTextClosureFunction());
 		mappings.put("testItem", testItemClosureFunction());
 		mappings.put("testLuck", element -> new TestLuckClosure(element, closureLoader()));
 		mappings.put("testSkill", testSkillClosureFunction());
@@ -222,12 +224,7 @@ public class SpringContext {
 
 	@Bean
 	public Function<Element, Closure> testStatTextClosureFunction() {
-		return e -> {
-			TestStatPredicate pred = new TestStatPredicate(e);
-			DisplayTextClosure success = new DisplayTextClosure(Integer.parseInt(e.getAttribute("success")));
-			DisplayTextClosure failure = new DisplayTextClosure(Integer.parseInt(e.getAttribute("failure")));
-			return gameState -> pred.apply(gameState) ? success.execute(gameState) : failure.execute(gameState);
-		};
+		return e -> new PredicateTextClosure(e, new TestStatPredicate(e));
 	}
 
 	@Bean
@@ -257,6 +254,11 @@ public class SpringContext {
 				return new TestClosure(new TestFlagPredicate(input), closureLoader(), input);
 			}
 		};
+	}
+
+	@Bean
+	public Function<Element, Closure> testFlagTextClosureFunction() {
+		return e -> new PredicateTextClosure(e, new TestFlagPredicate(e));
 	}
 
 	@Bean
