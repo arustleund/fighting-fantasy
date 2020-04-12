@@ -291,8 +291,8 @@ public class BattleState {
 		}
 
 		if (this.additionalMessages.containsKey(BattleMessagePosition.END)) {
-			message.append("<br>");
 			message.append(this.additionalMessages.get(BattleMessagePosition.END));
+			message.append("<br>");
 		}
 
 		message.append("<a href=\"http://dobattle:" + this.id.toString() + "\">CONTINUE</a>");
