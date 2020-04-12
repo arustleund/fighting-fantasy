@@ -42,6 +42,20 @@ public class AttackStrengths {
 	}
 
 	/**
+	 * @return <code>true</code> if Player has the highest attack strength among all participants (including ties), <code>false</code> otherwise
+	 */
+	public boolean playerHasHighestAttackStrength() {
+		return this.highestAttackStrength.getTotal() == getPlayerAttackStrength().getTotal();
+	}
+
+	/**
+	 * @return <code>true</code> if the Enemy with the given ID has the highest attack strength among all participants (including ties), <code>false</code> otherwise
+	 */
+	public boolean enemyHasHighestAttackStrength(int enemyId) {
+		return this.highestAttackStrength.getTotal() == this.getEnemyAttackStrength(enemyId).getTotal();
+	}
+
+	/**
 	 * @return <code>true</code> if at least one enemy has a higher attack strength than the player
 	 */
 	public boolean playerHit() {

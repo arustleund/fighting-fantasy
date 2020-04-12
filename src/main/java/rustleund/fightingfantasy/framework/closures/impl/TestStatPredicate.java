@@ -20,12 +20,12 @@ public class TestStatPredicate implements Predicate<GameState> {
 	private static final Map<String, List<Boolean>> VALUES_MAPPINGS = new HashMap<>();
 
 	static {
-		VALUES_MAPPINGS.put("lessThan", Arrays.asList(new Boolean[] { Boolean.TRUE, Boolean.FALSE, Boolean.FALSE }));
-		VALUES_MAPPINGS.put("greaterThan", Arrays.asList(new Boolean[] { Boolean.FALSE, Boolean.FALSE, Boolean.TRUE }));
-		VALUES_MAPPINGS.put("atLeast", Arrays.asList(new Boolean[] { Boolean.FALSE, Boolean.TRUE, Boolean.TRUE }));
-		VALUES_MAPPINGS.put("atMost", Arrays.asList(new Boolean[] { Boolean.TRUE, Boolean.TRUE, Boolean.FALSE }));
-		VALUES_MAPPINGS.put("equal", Arrays.asList(new Boolean[] { Boolean.FALSE, Boolean.TRUE, Boolean.FALSE }));
-		VALUES_MAPPINGS.put("notEqual", Arrays.asList(new Boolean[] { Boolean.TRUE, Boolean.FALSE, Boolean.TRUE }));
+		VALUES_MAPPINGS.put("lessThan", Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.FALSE));
+		VALUES_MAPPINGS.put("greaterThan", Arrays.asList(Boolean.FALSE, Boolean.FALSE, Boolean.TRUE));
+		VALUES_MAPPINGS.put("atLeast", Arrays.asList(Boolean.FALSE, Boolean.TRUE, Boolean.TRUE));
+		VALUES_MAPPINGS.put("atMost", Arrays.asList(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE));
+		VALUES_MAPPINGS.put("equal", Arrays.asList(Boolean.FALSE, Boolean.TRUE, Boolean.FALSE));
+		VALUES_MAPPINGS.put("notEqual", Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE));
 	}
 
 	private List<Boolean> acceptableValues;
@@ -54,10 +54,9 @@ public class TestStatPredicate implements Predicate<GameState> {
 
 			Integer statValue = getStatValue(entityStateToTest, gameState);
 
-			boolean valueIsAcceptable = false;
 			int compareResult = statValue.compareTo(this.valueToCompare);
 
-			valueIsAcceptable |= acceptableValues.get(0) && (compareResult < 0);
+			boolean valueIsAcceptable = acceptableValues.get(0) && (compareResult < 0);
 			valueIsAcceptable |= acceptableValues.get(1) && (compareResult == 0);
 			valueIsAcceptable |= acceptableValues.get(2) && (compareResult > 0);
 

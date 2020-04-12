@@ -85,6 +85,7 @@
 			<element name="testAnyFlag" type="page:testAnyFlag" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testFlag" type="page:testFlag" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testFlagText" type="page:testFlagText" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="testHighestAttackStrength" type="page:testHighestAttackStrength" minOccurs="0" maxOccurs="unbounded" />
 			<element name="testItem" type="page:testItem" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testLuck" type="page:testContentWithAdjustment" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testSkill" type="page:testContentWithAdjustment" minOccurs="0" maxOccurs="unbounded"></element>
@@ -363,6 +364,15 @@
     		</extension>
     	</complexContent>
     </complexType>
+
+	<complexType name="testHighestAttackStrength">
+		<complexContent>
+			<extension base="page:testContent">
+				<attribute name="player" type="boolean" default="false" />
+				<attribute name="enemyId" type="int" />
+			</extension>
+		</complexContent>
+	</complexType>
 
     <complexType name="link">
     	<attribute name="page" type="string" use="required"></attribute>

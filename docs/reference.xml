@@ -290,6 +290,9 @@ Attributes:
 	<!-- Display a different <text> block based on whether a flag is set or not -->
 	<testFlagText id="12" success="0" failure="1" />
 
+	<testHighestAttackStrength player="true" />
+	<testHighestAttackStrength enemyId="0" />
+
 	<testItem id="17">
 		<successful>
 			<!-- put any number of commands here -->

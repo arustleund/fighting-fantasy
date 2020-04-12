@@ -44,6 +44,7 @@ import rustleund.fightingfantasy.framework.closures.impl.RollDiceClosure;
 import rustleund.fightingfantasy.framework.closures.impl.SetFlagClosure;
 import rustleund.fightingfantasy.framework.closures.impl.SetPoisonImmunity;
 import rustleund.fightingfantasy.framework.closures.impl.TestAnyFlagPredicate;
+import rustleund.fightingfantasy.framework.closures.impl.TestAttackStrengthHighestPredicate;
 import rustleund.fightingfantasy.framework.closures.impl.TestClosure;
 import rustleund.fightingfantasy.framework.closures.impl.TestEnemyStatPredicate;
 import rustleund.fightingfantasy.framework.closures.impl.TestEnemyTypesPredicate;
@@ -90,6 +91,7 @@ public class SpringContext {
 		mappings.put("setFlag", SetFlagClosure::new);
 		mappings.put("setPoisonImmunity", SetPoisonImmunity::new);
 		mappings.put("testAnyFlag", testAnyFlagClosureFunction());
+		mappings.put("testHighestAttackStrength", testHighestAttackStrengthClosureFunction());
 		mappings.put("testFlag", testFlagClosureFunction());
 		mappings.put("testFlagText", testFlagTextClosureFunction());
 		mappings.put("testItem", testItemClosureFunction());
@@ -145,6 +147,11 @@ public class SpringContext {
 			Predicate<GameState> predicate = new TestNumberPredicate(element, new PlayerAttackStrengthDifferenceFromEnemyFunction());
 			return new TestClosure(predicate, closureLoader(), element);
 		};
+	}
+
+	@Bean
+	public Function<Element, Closure> testHighestAttackStrengthClosureFunction() {
+		return e -> new TestClosure(new TestAttackStrengthHighestPredicate(e), closureLoader(), e);
 	}
 
 	@Bean
