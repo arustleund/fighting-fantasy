@@ -279,7 +279,7 @@ public class BattleState {
 				}
 				message.append("<br>");
 			} else if (this.currentAttackStrengths.playerHit()) {
-				hitPlayer(playerState, this.currentAttackStrengths.winningEnemyHasPoisonedWeapon(), message);
+				hitPlayer(playerState, this.currentAttackStrengths.winningEnemyHasPoisonedWeapon(battleRound), message);
 			} else {
 				message.append("Attack strengths are equal, no one is hit!<br>");
 			}

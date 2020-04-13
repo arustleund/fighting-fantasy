@@ -66,14 +66,13 @@ public class AttackStrengths {
 	}
 
 	/**
+	 * @param currentRound The current battle round (1-indexed)
 	 * @return <code>true</code> if the player was hit, and it was by at least one enemy with a poisoned weapon
 	 */
-	public boolean winningEnemyHasPoisonedWeapon() {
+	public boolean winningEnemyHasPoisonedWeapon(int currentRound) {
 		if (playerHit()) {
 			Collection<AbstractEntityState> winners = this.attackStrengthMap.get(this.highestAttackStrength);
-			return Iterables.any(winners, winner -> {
-				return winner instanceof EnemyState && ((EnemyState) winner).isPoisonedWeapon();
-			});
+			return winners.stream().anyMatch(winner -> winner instanceof EnemyState && ((EnemyState) winner).getPoisonedWeaponRounds() >= currentRound);
 		}
 		return false;
 	}

@@ -51,10 +51,10 @@ Attributes:
 				name: Required. The name that will be displayed for this enemy during the battle.
 				skill: Required. The enemy's skill level.
 				stamina: Required. The enemy's stamina level.
-				poisonedWeapon: Not Required. Default: false. Set to "true" if the enemy has a poisoned weapon.
+				poisonedWeaponRounds: Not Required. Default: 0. The number of rounds the enemy's weapon is poisoned.
 			 -->
 			<enemy name="GREEN STALKER" skill="10" stamina="10" />
-			<enemy name="GREEN STALKER W POISON" skill="12" stamina="8" poisonedWeapon="true" />
+			<enemy name="GREEN STALKER W POISON" skill="12" stamina="8" poisonedWeaponRounds="2" />
 		</enemies>
 		<!-- <effects> defines any effects that should be executed at certain times in the battle. Not required. -->
 		<effects>
@@ -268,6 +268,8 @@ Attributes:
 	<setFlag id="0" />
 
 	<setPoisonImmunity immune="false" />
+
+	<takePoisonDamage amount="2" />
 	
 	<testAnyFlag ids="8,9">
 		<successful>

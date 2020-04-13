@@ -43,6 +43,7 @@ import rustleund.fightingfantasy.framework.closures.impl.RestoreScaleClosure;
 import rustleund.fightingfantasy.framework.closures.impl.RollDiceClosure;
 import rustleund.fightingfantasy.framework.closures.impl.SetFlagClosure;
 import rustleund.fightingfantasy.framework.closures.impl.SetPoisonImmunity;
+import rustleund.fightingfantasy.framework.closures.impl.TakePoisonDamageClosure;
 import rustleund.fightingfantasy.framework.closures.impl.TestAnyFlagPredicate;
 import rustleund.fightingfantasy.framework.closures.impl.TestAttackStrengthHighestPredicate;
 import rustleund.fightingfantasy.framework.closures.impl.TestClosure;
@@ -90,6 +91,7 @@ public class SpringContext {
 		mappings.put("rollDice", rollDiceClosureFunction());
 		mappings.put("setFlag", SetFlagClosure::new);
 		mappings.put("setPoisonImmunity", SetPoisonImmunity::new);
+		mappings.put("takePoisonDamage", TakePoisonDamageClosure::new);
 		mappings.put("testAnyFlag", testAnyFlagClosureFunction());
 		mappings.put("testHighestAttackStrength", testHighestAttackStrengthClosureFunction());
 		mappings.put("testFlag", testFlagClosureFunction());

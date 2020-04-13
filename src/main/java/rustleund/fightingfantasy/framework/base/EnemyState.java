@@ -19,7 +19,7 @@ public class EnemyState extends AbstractEntityState {
 
 	private ClosureLoader closureLoader;
 
-	private boolean poisonedWeapon = false;
+	private int poisonedWeaponRounds = 0;
 	private Set<String> types = new HashSet<>();
 	private Closure enemyKilled;
 
@@ -34,8 +34,8 @@ public class EnemyState extends AbstractEntityState {
 		Integer staminaInteger = Integer.valueOf(enemyTag.getAttribute("stamina"));
 		this.stamina = new Scale(0, staminaInteger, staminaInteger, true);
 
-		if (enemyTag.hasAttribute("poisonedWeapon")) {
-			this.poisonedWeapon = Boolean.valueOf(enemyTag.getAttribute("poisonedWeapon"));
+		if (enemyTag.hasAttribute("poisonedWeaponRounds")) {
+			this.poisonedWeaponRounds = Integer.parseInt(enemyTag.getAttribute("poisonedWeaponRounds"));
 		}
 
 		if (enemyTag.hasAttribute("types")) {
@@ -48,8 +48,8 @@ public class EnemyState extends AbstractEntityState {
 		}
 	}
 
-	public boolean isPoisonedWeapon() {
-		return this.poisonedWeapon;
+	public int getPoisonedWeaponRounds() {
+		return poisonedWeaponRounds;
 	}
 
 	public Closure getEnemyKilled() {

@@ -82,6 +82,7 @@
 			<element name="rollDice" type="page:rollDice" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="setFlag" type="page:setFlag" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="setPoisonImmunity" type="page:setPoisonImmunity" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="takePoisonDamage" type="page:takePoisonDamage" minOccurs="0" maxOccurs="unbounded" />
 			<element name="testAnyFlag" type="page:testAnyFlag" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testFlag" type="page:testFlag" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="testFlagText" type="page:testFlagText" minOccurs="0" maxOccurs="unbounded"/>
@@ -260,9 +261,9 @@
 				</restriction>
 			</simpleType>
 		</attribute>
-		<attribute name="poisonedWeapon" type="boolean" use="optional">
+		<attribute name="poisonedWeaponRounds" type="int" use="optional">
 			<annotation>
-				<documentation>true if the enemy has a poisoned weapon.</documentation>
+				<documentation>The number of rounds the enemy's weapon is poisoned for</documentation>
 			</annotation>
 		</attribute>
 		<attribute name="types" type="string" use="optional" />
@@ -478,4 +479,8 @@
     <complexType name="doBattle">
     	<attribute name="id" type="int" use="required"></attribute>
     </complexType>
+
+	<complexType name="takePoisonDamage">
+		<attribute name="amount" type="int" use="required" />
+	</complexType>
 </schema>
