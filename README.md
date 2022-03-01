@@ -2,11 +2,11 @@
 A framework and UI for playing games in the Fighting Fantasy book format.
 
 # Game
-To play, the game expects a zip file or a folder containing game files. The folder
+To play, the game expects a zip file or a directory containing game files. The folder
 should contain the following structure:
 
 ```
-.
+game
 ├── config
 │   ├── flags.xml
 │   └── items.xml
