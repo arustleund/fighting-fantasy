@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -21,35 +22,37 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
 /**
  * @author rustlea
  */
-public class GameView extends JPanel implements ActionListener {
+public class SwingGameView extends JPanel implements ActionListener, GameView, HyperlinkListener {
 
+	@Serial
 	private static final long serialVersionUID = -8223557610157876489L;
 
-	private GameController controller = null;
-	private JLabel messageLabel = null;
+	private final GameController controller;
+	private final JLabel messageLabel;
 
-	private ImageView imageLabel;
+	private final ImageView imageLabel;
 
-	private JEditorPane htmlEditorPane;
-	private JScrollPane htmlEditorScrollPane;
+	private final JEditorPane htmlEditorPane;
 
-	private JList<Item> inventoryList = null;
-	private JLabel skill = null;
-	private JLabel stamina = null;
-	private JLabel luck = null;
-	private JLabel provisions = null;
-	private JLabel honor = null;
-	private JLabel nemesis = null;
-	private JLabel gold = null;
-	private JLabel time = null;
+	private final JList<Item> inventoryList;
+	private final JLabel skill;
+	private final JLabel stamina;
+	private final JLabel luck;
+	private final JLabel provisions;
+	private final JLabel honor;
+	private final JLabel nemesis;
+	private final JLabel gold;
+	private final JLabel time;
 
-	public GameView(GameController controller) {
+	public SwingGameView(GameController controller) {
 
 		this.controller = controller;
 
@@ -81,16 +84,16 @@ public class GameView extends JPanel implements ActionListener {
 		htmlDocument.setBase(getBaseUrl());
 		StyleSheet styleSheet = htmlDocument.getStyleSheet();
 		styleSheet.addRule("body { font-family: \"Arial\",arial,sans-serif; margin: 5px; }");
-		htmlEditorPane.addHyperlinkListener(controller);
+		htmlEditorPane.addHyperlinkListener(this);
 
-		this.htmlEditorScrollPane = new JScrollPane(htmlEditorPane);
-		this.htmlEditorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		this.htmlEditorScrollPane.setPreferredSize(new Dimension(640, 480));
-		this.htmlEditorScrollPane.setMinimumSize(new Dimension(10, 10));
+		JScrollPane htmlEditorScrollPane = new JScrollPane(htmlEditorPane);
+		htmlEditorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		htmlEditorScrollPane.setPreferredSize(new Dimension(640, 480));
+		htmlEditorScrollPane.setMinimumSize(new Dimension(10, 10));
 
 		JPanel descriptionPanel = new JPanel();
 		descriptionPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Description"), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-		descriptionPanel.add(this.htmlEditorScrollPane);
+		descriptionPanel.add(htmlEditorScrollPane);
 
 		add(descriptionPanel, BorderLayout.CENTER);
 
@@ -186,6 +189,23 @@ public class GameView extends JPanel implements ActionListener {
 		}
 	}
 
+	@Override
+	public void hyperlinkUpdate(HyperlinkEvent e) {
+		if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+			String command = e.getURL().getHost();
+			int port = e.getURL().getPort();
+			switch (command) {
+				case "link" -> controller.goToPage("" + port);
+				case "buyItem" -> controller.addItemToInventory(port);
+				case "domulti" -> controller.doMultiCommand(port);
+				case "dobattle" -> controller.doBattle(port);
+				case "doflee" -> controller.doFlee(port);
+				case "testluckbattle" -> controller.doTestLuckInBattle(port == 0);
+			}
+		}
+	}
+
+	@Override
 	public void update(GameState gameState) {
 		this.messageLabel.setText(gameState.getMessage());
 

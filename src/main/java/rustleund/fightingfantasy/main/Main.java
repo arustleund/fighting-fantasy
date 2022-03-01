@@ -3,7 +3,7 @@
  */
 package rustleund.fightingfantasy.main;
 
-import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,6 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -34,8 +33,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.GameController;
 import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.base.GameView;
-import rustleund.fightingfantasy.framework.base.Item;
+import rustleund.fightingfantasy.framework.base.SwingGameView;
 import rustleund.fightingfantasy.framework.base.ItemUtil;
 import rustleund.fightingfantasy.framework.base.PlayerState;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
@@ -44,12 +42,6 @@ import rustleund.fightingfantasy.gamesave.BackAction;
 import rustleund.fightingfantasy.gamesave.LoadAction;
 import rustleund.fightingfantasy.gamesave.SaveAction;
 import rustleund.fightingfantasy.ioc.SpringContext;
-
-import com.google.common.base.Function;
-import com.google.common.base.Predicates;
-import com.google.common.base.Throwables;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
 /**
  * @author rustlea
@@ -116,12 +108,10 @@ public class Main {
 		}
 		try {
 			Path result = Files.createTempDirectory("com.rustleund.fightingfantasy");
-			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-				Main.clearGameDirectory(result, true);
-			}));
+			Runtime.getRuntime().addShutdownHook(new Thread(() -> Main.clearGameDirectory(result, true)));
 			return result;
 		} catch (IOException e) {
-			throw Throwables.propagate(e);
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -130,12 +120,7 @@ public class Main {
 			clearGameDirectory(gameDirectory, false);
 			unzipToGameDirectory(gameDirectory, gameFile);
 		}
-		List<File> files = Lists.newArrayList(gameDirectory.toFile().listFiles());
-		Function<File, String> function = (File input) -> {
-			return input.getName();
-		};
-		return Iterables.any(files, Predicates.compose(Predicates.equalTo("config"), function)) &&
-				Iterables.any(files, Predicates.compose(Predicates.equalTo("pages"), function));
+		return Files.exists(gameDirectory.resolve("config")) && Files.exists(gameDirectory.resolve("pages"));
 	}
 
 	private static void unzipToGameDirectory(Path gamesDirectory, File zipFile) {
@@ -148,7 +133,7 @@ public class Main {
 	}
 
 	public static void clearGameDirectory(final Path gameDirectory, final boolean deleteGameToo) {
-		FileVisitor<Path> visitor = new SimpleFileVisitor<Path>() {
+		FileVisitor<Path> visitor = new SimpleFileVisitor<>() {
 			@Override
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 				Files.delete(file);
@@ -170,7 +155,7 @@ public class Main {
 		try {
 			Files.walkFileTree(gameDirectory, visitor);
 		} catch (IOException e1) {
-			throw Throwables.propagate(e1);
+			throw new RuntimeException(e1);
 		}
 	}
 
@@ -178,12 +163,10 @@ public class Main {
 		// Schedule a job for the event-dispatching thread:
 		// creating and showing this application's GUI.
 		Path gameDirectory = args.length > 0 ? new File(args[0]).toPath() : null;
-		javax.swing.SwingUtilities.invokeLater(() -> {
-			createAndShowGUI(gameDirectory);
-		});
+		javax.swing.SwingUtilities.invokeLater(() -> createAndShowGUI(gameDirectory));
 	}
 
-	private static GameView initializeGame(File baseDirectory, JFrame frame) {
+	private static SwingGameView initializeGame(File baseDirectory, JFrame frame) {
 		@SuppressWarnings("resource")
 		ConfigurableApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringContext.class);
 		applicationContext.registerShutdownHook();
@@ -201,14 +184,14 @@ public class Main {
 
 		gameState.setBaseDirectory(baseDirectory);
 
-		PlayerState playerState = new PlayerState("YOU", new ArrayList<Item>());
+		PlayerState playerState = new PlayerState("YOU", new ArrayList<>());
 		gameState.setPlayerState(playerState);
 
 		gameState.setMessage("-");
 
 		gameController.setGameState(gameState);
 
-		final GameView gameView = new GameView(gameController);
+		final SwingGameView gameView = new SwingGameView(gameController);
 
 		gameController.addView(gameView);
 
@@ -233,12 +216,12 @@ public class Main {
 
 		JMenuItem loadMenuItem = new JMenuItem(new LoadAction(gameController));
 		loadMenuItem.setMnemonic(KeyEvent.VK_O);
-		loadMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.META_MASK));
+		loadMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.META_DOWN_MASK));
 		menu.add(loadMenuItem);
 
 		JMenuItem saveMenuItem = new JMenuItem(new SaveAction(gameState));
 		saveMenuItem.setMnemonic(KeyEvent.VK_S);
-		saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.META_MASK));
+		saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.META_DOWN_MASK));
 		menu.add(saveMenuItem);
 
 		result.add(menu);

@@ -6,9 +6,6 @@ package rustleund.fightingfantasy.framework.base;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.AddItemClosure;
@@ -18,13 +15,13 @@ import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
 /**
  * @author rustlea
  */
-public class GameController implements HyperlinkListener {
+public class GameController {
 
-	private ClosureLoader closureLoader;
-	private BattleEffectsLoader battleEffectsLoader;
-	private ItemUtil itemUtil;
+	private final ClosureLoader closureLoader;
+	private final BattleEffectsLoader battleEffectsLoader;
+	private final ItemUtil itemUtil;
 
-	private List<GameView> gameViews;
+	private final List<GameView> gameViews;
 	private GameState gameState;
 
 	public GameController(ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader, ItemUtil itemUtil) {
@@ -39,98 +36,64 @@ public class GameController implements HyperlinkListener {
 	}
 
 	public void updateViews() {
-		for (GameView view : this.gameViews) {
-			view.update(this.gameState);
-		}
+		this.gameViews.forEach(view -> view.update(this.gameState));
 	}
 
-	@Override
-	public void hyperlinkUpdate(HyperlinkEvent e) {
-		if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-			this.gameState.clearMessage();
-
-			String command = e.getURL().getHost();
-			int port = e.getURL().getPort();
-			switch (command) {
-				case "link":
-					loadPageIntoGameState(port);
-					break;
-				case "buyItem":
-					addItemToInventory(port);
-					break;
-				case "domulti":
-					doMultiCommand(port);
-					break;
-				case "dobattle":
-					doBattle(port);
-					break;
-				case "doflee":
-					doFlee(port);
-					break;
-				case "testluckbattle":
-					doTestLuckInBattle(port == 0);
-					break;
-				default:
-			}
-
-			updateViews();
-			this.gameState.clearMessage();
-		}
+	private void doGameStateUpdatingAction(GameAction action) {
+		gameState.clearMessage();
+		action.doAction();
+		updateViews();
+		gameState.clearMessage();
 	}
 
-	private void doTestLuckInBattle(boolean enemyHit) {
-		gameState.getBattleState().doTestLuck(enemyHit, null);
+	public void doTestLuckInBattle(boolean enemyHit) {
+		doGameStateUpdatingAction(() -> gameState.getBattleState().doTestLuck(enemyHit, null));
 	}
 
 	public void useItem(Item item) {
-		gameState.clearMessage();
-		item.useItem(gameState);
-
-		updateViews();
-		gameState.clearMessage();
+		doGameStateUpdatingAction(() -> item.useItem(gameState));
 	}
 
 	public void eatMeal() {
 		if (gameState.isBattleInProgress()) {
-			gameState.setMessage("You cannot eat a meal during battle");
+			doGameStateUpdatingAction(() -> gameState.setMessage("You cannot eat a meal during battle"));
 		} else {
-			PlayerState playerState = gameState.getPlayerState();
-			Scale provisions = playerState.getProvisions();
-			if (provisions.getCurrentValue() > 0) {
-				provisions.adjustCurrentValueNoException(-1);
-				playerState.getStamina().adjustCurrentValueNoException(4);
-			}
+			doGameStateUpdatingAction(() -> {
+				PlayerState playerState = gameState.getPlayerState();
+				Scale provisions = playerState.getProvisions();
+				if (provisions.getCurrentValue() > 0) {
+					provisions.adjustCurrentValueNoException(-1);
+					playerState.getStamina().adjustCurrentValueNoException(4);
+				}
+			});
 		}
-		updateViews();
-		gameState.clearMessage();
 	}
 
-	private void doBattle(int battleId) {
-		new DoBattleClosure(battleId).execute(gameState);
+	public void doBattle(int battleId) {
+		doGameStateUpdatingAction(() -> new DoBattleClosure(battleId).execute(gameState));
 	}
 
-	private void doFlee(int battleId) {
-		PageState pageState = gameState.getPageState();
-		BattleState battleState = pageState.getBattle(battleId);
-		battleState.doPlayerFlee();
+	public void doFlee(int battleId) {
+		doGameStateUpdatingAction(() -> {
+			PageState pageState = gameState.getPageState();
+			BattleState battleState = pageState.getBattle(battleId);
+			battleState.doPlayerFlee();
+		});
 	}
 
-	private void doMultiCommand(int multiCommandId) {
-		Closure multiCommand = this.gameState.getPageState().getMultiCommands(multiCommandId);
-		multiCommand.execute(this.gameState);
+	public void doMultiCommand(int multiCommandId) {
+        doGameStateUpdatingAction(() -> {
+            Closure multiCommand = this.gameState.getPageState().getMultiCommands(multiCommandId);
+            multiCommand.execute(this.gameState);
+        });
 	}
 
 	public void addItemToInventory(int itemId) {
-		new AddItemClosure(itemId, itemUtil).execute(gameState);
-	}
-
-	private void loadPageIntoGameState(int pageNumber) {
-		goToPage("" + pageNumber);
+        doGameStateUpdatingAction(() -> new AddItemClosure(itemId, itemUtil).execute(gameState));
 	}
 
 	public void goToPage(String pageId) {
-		new LinkClosure(pageId, closureLoader, battleEffectsLoader).execute(gameState);
-		updateViews();
+        doGameStateUpdatingAction(() -> new LinkClosure(pageId, closureLoader, battleEffectsLoader).execute(gameState));
 	}
 
 	public GameState getGameState() {
