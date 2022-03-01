@@ -25,7 +25,7 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
-import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
 import org.springframework.context.ConfigurableApplicationContext;
@@ -143,7 +143,7 @@ public class Main {
 			ZipFile zipFile2 = new ZipFile(zipFile);
 			zipFile2.extractAll(gamesDirectory.toFile().getAbsolutePath());
 		} catch (ZipException e) {
-			Throwables.propagate(e);
+			throw new RuntimeException(e);
 		}
 	}
 

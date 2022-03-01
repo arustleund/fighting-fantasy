@@ -1,3 +1,5 @@
+@file:Suppress("HttpUrlsUsage")
+
 package rustleund.fightingfantasy.framework.util
 
 import org.jgrapht.graph.DefaultDirectedGraph
@@ -24,20 +26,24 @@ fun main() {
             val pageNumber = pageFile.pageNumber()
             val fileContents = String(Files.readAllBytes(pageFile))
             val document = documentBuilder.parse(pageFile.toFile())
-            document.documentElement.getAttribute("label")?.let { labels[pageNumber] = it }
+            document.documentElement.getAttribute("label").let { labels[pageNumber] = it }
             Regex("(http://link:)|(<link )|(<flaggedLink)").findAll(fileContents).forEach { match ->
-                val linkToPage = if (match.value == "http://link:") {
-                    val startIndex = match.range.start + 12
-                    val endIndex = fileContents.indexOf("\"", match.range.start + 1)
-                    fileContents.substring(startIndex, endIndex)
-                } else if (match.value == "<flaggedLink") {
-                    val firstQuote = fileContents.indexOf("page=\"", match.range.first) + 5
-                    val secondQuote = fileContents.indexOf("\"", firstQuote + 1)
-                    fileContents.substring(firstQuote + 1, secondQuote)
-                } else {
-                    val firstQuote = fileContents.indexOf("\"", match.range.first)
-                    val secondQuote = fileContents.indexOf("\"", firstQuote + 1)
-                    fileContents.substring(firstQuote + 1, secondQuote)
+                val linkToPage = when (match.value) {
+                    "http://link:" -> {
+                        val startIndex = match.range.first + 12
+                        val endIndex = fileContents.indexOf("\"", match.range.first + 1)
+                        fileContents.substring(startIndex, endIndex)
+                    }
+                    "<flaggedLink" -> {
+                        val firstQuote = fileContents.indexOf("page=\"", match.range.first) + 5
+                        val secondQuote = fileContents.indexOf("\"", firstQuote + 1)
+                        fileContents.substring(firstQuote + 1, secondQuote)
+                    }
+                    else -> {
+                        val firstQuote = fileContents.indexOf("\"", match.range.first)
+                        val secondQuote = fileContents.indexOf("\"", firstQuote + 1)
+                        fileContents.substring(firstQuote + 1, secondQuote)
+                    }
                 }
                 linkToPage.toIntOrNull()?.let {
                     if (!graph.containsVertex(linkToPage)) graph.addVertex(linkToPage)
