@@ -41,6 +41,5 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 
 application {
     mainClass.set("rustleund.fightingfantasy.main.Main")
-    applicationDefaultJvmArgs = listOf("--add-opens java.base/java.lang=ALL-UNNAMED")
 }
 
