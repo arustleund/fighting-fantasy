@@ -1,32 +1,23 @@
 /*
  * Created on Oct 14, 2005
  */
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import org.w3c.dom.Element;
-
-import rustleund.fightingfantasy.framework.base.GameState;
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.base.GameState
+import rustleund.fightingfantasy.framework.base.booleanAttribute
+import rustleund.fightingfantasy.framework.closures.Closure
 
 /**
  * @author rustlea
  */
-public class SetFlagClosure extends AbstractClosure {
+class SetFlagClosure(element: Element) : Closure {
 
-	private int flagId = -1;
+    private val flagId = element.getAttribute("id").toInt()
+    private val flagValue = element.booleanAttribute("value", true)
 
-	private boolean flagValue = true;
-
-	public SetFlagClosure(Element element) {
-		this.flagId = Integer.parseInt(element.getAttribute("id"));
-
-		if (element.hasAttribute("value")) {
-			this.flagValue = Boolean.valueOf(element.getAttribute("value"));
-		}
-	}
-
-	@Override
-	public boolean execute(GameState gameState) {
-		gameState.getPlayerState().setFlag(flagId, flagValue);
-		return true;
-	}
+    override fun execute(gameState: GameState): Boolean {
+        gameState.playerState.setFlag(flagId, flagValue)
+        return true
+    }
 }

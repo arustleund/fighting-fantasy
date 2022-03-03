@@ -3,7 +3,7 @@
  */
 package rustleund.fightingfantasy.framework.base;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.LinkedList;
 
 import rustleund.fightingfantasy.gamesave.SavedGame;
@@ -15,14 +15,14 @@ import com.google.common.collect.Lists;
  */
 public class GameState {
 
-	private File baseDirectory;
+	private Path baseDirectory;
 	private PlayerState playerState;
 	private PageState pageState;
 	private BattleState battleState;
 	private String message;
 	private boolean isBattleInProgress;
 	private boolean pageLoaded;
-	private LinkedList<SavedGame> gameProgress = Lists.newLinkedList();
+	private final LinkedList<SavedGame> gameProgress = Lists.newLinkedList();
 
 	public void addGameProgress(SavedGame savedGame) {
 		this.gameProgress.add(savedGame);
@@ -45,25 +45,21 @@ public class GameState {
 		return this.gameProgress.getLast();
 	}
 
-	public File getBaseDirectory() {
-		return this.baseDirectory;
+	/**
+	 * @return The {@link Path} representing the directory that images are stored in
+	 */
+	public Path getImagesDirectory() {
+		return this.baseDirectory.resolve("images");
 	}
 
 	/**
-	 * @return The {@link File} representing the directory that images are stored in
+	 * @return The {@link Path} representing the directory that pages are stored in
 	 */
-	public File getImagesDirectory() {
-		return new File(this.baseDirectory, "images");
+	public Path getPagesDirectory() {
+		return this.baseDirectory.resolve("pages");
 	}
 
-	/**
-	 * @return The {@link File} representing the directory that pages are stored in
-	 */
-	public File getPagesDirectory() {
-		return new File(this.baseDirectory, "pages");
-	}
-
-	public void setBaseDirectory(File baseDirectory) {
+	public void setBaseDirectory(Path baseDirectory) {
 		this.baseDirectory = baseDirectory;
 	}
 

@@ -8,20 +8,17 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
-import rustleund.fightingfantasy.framework.base.BattleState;
-import rustleund.fightingfantasy.framework.base.Enemies;
-import rustleund.fightingfantasy.framework.base.EnemyState;
-import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.base.XMLUtil;
+import rustleund.fightingfantasy.framework.base.*;
+import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 
 /**
  * @author rustlea
  */
-public class AddEnemiesClosure extends AbstractClosure {
+public class AddEnemiesClosure implements Closure {
 
-	private List<EnemyState> enemiesToAdd;
-	private int battleId;
+	private final List<EnemyState> enemiesToAdd;
+	private final int battleId;
 	private int waitTime;
 
 	public AddEnemiesClosure(Element element, ClosureLoader closureLoader) {
@@ -35,7 +32,8 @@ public class AddEnemiesClosure extends AbstractClosure {
 		this.battleId = Integer.parseInt(battleElement.getAttribute("id"));
 		this.waitTime = Integer.parseInt(element.getAttribute("wait"));
 
-		XMLUtil.getChildElementsByName(element, "enemy").forEach(enemyTag -> enemiesToAdd.add(new EnemyState(enemyTag, closureLoader)));
+		XMLUtilKt.getChildElementsByName(element, "enemy").iterator()
+				.forEachRemaining(enemyTag -> enemiesToAdd.add(new EnemyState(enemyTag, closureLoader)));
 	}
 
 	@Override

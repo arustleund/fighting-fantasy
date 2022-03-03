@@ -6,13 +6,14 @@ package rustleund.fightingfantasy.framework.closures.impl;
 import org.w3c.dom.Element;
 
 import rustleund.fightingfantasy.framework.base.GameState;
+import rustleund.fightingfantasy.framework.closures.Closure;
 
 /**
  * @author rustlea
  */
-public class DisplayTextClosure extends AbstractClosure {
+public class DisplayTextClosure implements Closure {
 
-	private int textId;
+	private final int textId;
 
 	public DisplayTextClosure(Element element) {
 		this.textId = Integer.parseInt(element.getAttribute("id"));

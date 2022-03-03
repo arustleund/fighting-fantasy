@@ -1,61 +1,32 @@
 /*
  * Created on Oct 7, 2005
  */
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import rustleund.fightingfantasy.framework.base.XMLUtil;
-import rustleund.fightingfantasy.framework.closures.Closure;
-import rustleund.fightingfantasy.framework.closures.ClosureLoader;
-
-import com.google.common.base.Function;
+import com.google.common.base.Function
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.base.asElementSequence
+import rustleund.fightingfantasy.framework.base.getChildElementByName
+import rustleund.fightingfantasy.framework.closures.ClosureLoader
+import java.lang.IllegalArgumentException
+import rustleund.fightingfantasy.framework.closures.Closure
 
 /**
  * @author rustlea
  */
-public class DefaultClosureLoader implements ClosureLoader {
+class DefaultClosureLoader(private val mappings: Map<String, Function<Element, Closure>>) : ClosureLoader {
 
-	private Map<String, Function<Element, Closure>> mappings;
+    override fun loadClosureFromElement(element: Element): Closure {
+        val commandTagType = element.localName
+        return mappings[commandTagType]?.apply(element)
+            ?: throw IllegalArgumentException("No closure mapping found for $commandTagType")
+    }
 
-	public DefaultClosureLoader(Map<String, Function<Element, Closure>> mappings) {
-		this.mappings = mappings;
-	}
+    override fun loadClosureFromChildren(element: Element): Closure {
+        val closures = element.childNodes.asElementSequence().map { loadClosureFromElement(it) }.toList()
+        return ChainedClosure(closures)
+    }
 
-	@Override
-	public Closure loadClosureFromElement(Element element) {
-		String commandTagType = element.getLocalName();
-		if (this.mappings.containsKey(commandTagType)) {
-			return this.mappings.get(commandTagType).apply(element);
-		}
-		return null;
-	}
-
-	@Override
-	public Closure loadClosureFromChildren(Element element) {
-		List<Closure> closures = new ArrayList<>();
-		NodeList childNodes = element.getChildNodes();
-		for (int i = 0; i < childNodes.getLength(); i++) {
-			Node childNode = childNodes.item(i);
-			if (childNode instanceof Element) {
-				closures.add(loadClosureFromElement((Element) childNode));
-			}
-		}
-		return new ChainedClosure(closures);
-	}
-
-	@Override
-	public Closure loadClosureFromChild(Element element, String childName) {
-		Element childElementByName = XMLUtil.getChildElementByName(element, childName);
-		if (childElementByName == null) {
-			return new ChainedClosure();
-		}
-		return loadClosureFromChildren(childElementByName);
-	}
+    override fun loadClosureFromChild(element: Element, childName: String): Closure =
+        getChildElementByName(element, childName)?.let { loadClosureFromChildren(it) } ?: ChainedClosure()
 }

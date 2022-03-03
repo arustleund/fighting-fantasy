@@ -26,25 +26,25 @@ public class BattleState {
 	public static final String START_STRING = "<!-- START BATTLE -->";
 	public static final String END_STRING = "<!-- END BATTLE -->";
 
-	private BattleEffectsLoader battleEffectsLoader;
-	private ClosureLoader closureLoader;
+	private final BattleEffectsLoader battleEffectsLoader;
+	private final ClosureLoader closureLoader;
 
 	private Integer id;
 	private Enemies enemies;
 	private boolean battleStarted = false;
-	private boolean canFlee;
-	private boolean flee = false;
+	private final boolean canFlee;
+	private final boolean flee = false;
 	private boolean fightEnemiesTogether = true;
-	private PageState pageState;
-	private List<BattleEffects> allBattleEffects;
+	private final PageState pageState;
+	private final List<BattleEffects> allBattleEffects;
 	private String currentBattleMessage;
 	private AttackStrengths currentAttackStrengths;
 	private int playerHitCount;
 	private int battleRound = 1;
 	private boolean testedLuckThisRound = false;
 
-	private Map<BattleMessagePosition, String> additionalMessages;
-	private Collection<BattleEffects> battleEffectsForNextRound = new ArrayList<>();
+	private final Map<BattleMessagePosition, String> additionalMessages;
+	private final Collection<BattleEffects> battleEffectsForNextRound = new ArrayList<>();
 
 	public enum BattleMessagePosition {
 		BEGINNING, END
@@ -64,11 +64,11 @@ public class BattleState {
 
 		this.canFlee = battleTag.hasAttribute("canFlee") && battleTag.getAttribute("canFlee").equalsIgnoreCase("true");
 
-		loadEnemies(XMLUtil.getChildElementByName(battleTag, "enemies"));
+		loadEnemies(XMLUtilKt.getChildElementByName(battleTag, "enemies"));
 
 		this.allBattleEffects = new ArrayList<>();
 
-		Element effectsTag = XMLUtil.getChildElementByName(battleTag, "effects");
+		Element effectsTag = XMLUtilKt.getChildElementByName(battleTag, "effects");
 		if (effectsTag != null) {
 			loadEffects(effectsTag);
 		}
@@ -90,7 +90,8 @@ public class BattleState {
 
 	private void loadEnemies(Element enemiesTag) {
 		this.enemies = new Enemies();
-		XMLUtil.getChildElementsByName(enemiesTag, "enemy").forEach(e -> enemies.addEnemy(new EnemyState(e, closureLoader)));
+		XMLUtilKt.getChildElementsByName(enemiesTag, "enemy").iterator()
+				.forEachRemaining(e -> enemies.addEnemy(new EnemyState(e, closureLoader)));
 	}
 
 	private void loadEffects(Element effectsTag) {
@@ -245,18 +246,18 @@ public class BattleState {
 
 		this.currentAttackStrengths = AttackStrengths.init(playerState, enemies, fightEnemiesTogether);
 
-		message.append("Your attack strength: " + this.currentAttackStrengths.getPlayerAttackStrength() + "<br>");
+		message.append("Your attack strength: ").append(this.currentAttackStrengths.getPlayerAttackStrength()).append("<br>");
 
 		for (int i = 0; i < enemies.getEnemies().size(); i++) {
 			EnemyState enemy = enemies.getEnemies().get(i);
 			if (enemy.isDead()) {
-				message.append(enemy.getName() + " is dead.<br>");
+				message.append(enemy.getName()).append(" is dead.<br>");
 			} else {
 				AttackStrength enemyAttackStrength = this.currentAttackStrengths.getEnemyAttackStrength(i);
 				if (enemyAttackStrength == null) {
-					message.append(enemy.getName() + " is waiting to fight.<br>");
+					message.append(enemy.getName()).append(" is waiting to fight.<br>");
 				} else {
-					message.append(enemy.getName() + "'s attack strength: " + enemyAttackStrength + "<br>");
+					message.append(enemy.getName()).append("'s attack strength: ").append(enemyAttackStrength).append("<br>");
 				}
 			}
 		}
@@ -267,9 +268,9 @@ public class BattleState {
 				int damage = -2 - playerState.getDamageModifier();
 				firstEnemyToAttack.getStamina().adjustCurrentValueNoException(damage);
 
-				message.append("You hit the " + firstEnemyToAttack.getName() + " for " + (damage * -1) + " damage!");
+				message.append("You hit the ").append(firstEnemyToAttack.getName()).append(" for ").append(damage * -1).append(" damage!");
 				if (firstEnemyToAttack.isDead()) {
-					message.append(" You have killed the " + firstEnemyToAttack.getName() + "!");
+					message.append(" You have killed the ").append(firstEnemyToAttack.getName()).append("!");
 					if (firstEnemyToAttack.getEnemyKilled() != null) {
 						firstEnemyToAttack.getEnemyKilled().execute(pageState.getGameState());
 					}
@@ -295,9 +296,9 @@ public class BattleState {
 			message.append("<br>");
 		}
 
-		message.append("<a href=\"http://dobattle:" + this.id.toString() + "\">CONTINUE</a>");
+		message.append("<a href=\"http://dobattle:").append(this.id.toString()).append("\">CONTINUE</a>");
 		if (canFlee) {
-			message.append("&nbsp;<a href=\"http://doflee:" + this.id.toString() + "\">FLEE</a>");
+			message.append("&nbsp;<a href=\"http://doflee:").append(this.id).append("\">FLEE</a>");
 		}
 
 		message.append("</p>");
@@ -316,14 +317,14 @@ public class BattleState {
 	}
 
 	private void addPlayerStamina(StringBuilder message, PlayerState playerState) {
-		message.append("Your stamina after this round: " + playerState.getStamina().getCurrentValue() + "<br>");
+		message.append("Your stamina after this round: ").append(playerState.getStamina().getCurrentValue()).append("<br>");
 	}
 
 	private void appendEnemyStamina(StringBuilder message, EnemyState enemy) {
 		if (enemy.isDead()) {
-			message.append(enemy.getName() + " is dead.");
+			message.append(enemy.getName()).append(" is dead.");
 		} else {
-			message.append(enemy.getName() + "'s stamina after this round: " + enemy.getStamina().getCurrentValue());
+			message.append(enemy.getName()).append("'s stamina after this round: ").append(enemy.getStamina().getCurrentValue());
 		}
 		message.append("<br>");
 	}
@@ -353,14 +354,6 @@ public class BattleState {
 		}
 	}
 
-	public void setEnemies(Enemies enemies) {
-		this.enemies = enemies;
-	}
-
-	public void setFlee(boolean flee) {
-		this.flee = flee;
-	}
-
 	public String getCurrentBattleMessage() {
 		return currentBattleMessage;
 	}
@@ -377,18 +370,6 @@ public class BattleState {
 		return pageState;
 	}
 
-	public void setPageState(PageState pageState) {
-		this.pageState = pageState;
-	}
-
-	public boolean isCanFlee() {
-		return canFlee;
-	}
-
-	public void setCanFlee(boolean canFlee) {
-		this.canFlee = canFlee;
-	}
-
 	public Integer getId() {
 		return id;
 	}
@@ -397,16 +378,8 @@ public class BattleState {
 		this.id = id;
 	}
 
-	public boolean isFightEnemiesTogether() {
-		return fightEnemiesTogether;
-	}
-
 	public List<BattleEffects> getAllBattleEffects() {
 		return this.allBattleEffects;
-	}
-
-	public void setAllBattleEffects(List<BattleEffects> allBattleEffects) {
-		this.allBattleEffects = allBattleEffects;
 	}
 
 	public AttackStrengths getCurrentAttackStrengths() {

@@ -4,21 +4,23 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serial;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
-import com.google.common.base.Throwables;
-
 public class ImageView extends JComponent {
 
+	@Serial
 	private static final long serialVersionUID = 6915472531410686968L;
 
 	private BufferedImage image;
-	private int width;
-	private int height;
+	private final int width;
+	private final int height;
 
 	public ImageView(int width, int height) {
 		this.width = width;
@@ -44,12 +46,12 @@ public class ImageView extends JComponent {
 	}
 
 	public void update(GameState gameState) {
-		File imageLocation = new File(gameState.getImagesDirectory(), gameState.getPageState().getPageName() + ".png");
-		if (imageLocation.exists()) {
-			try {
-				image = ImageIO.read(imageLocation);
+		Path imageLocation = gameState.getImagesDirectory().resolve(gameState.getPageState().getPageName() + ".png");
+		if (Files.exists(imageLocation)) {
+			try (InputStream is = Files.newInputStream(imageLocation)) {
+				image = ImageIO.read(is);
 			} catch (IOException e) {
-				Throwables.propagate(e);
+				throw new RuntimeException(e);
 			}
 		} else {
 			image = null;

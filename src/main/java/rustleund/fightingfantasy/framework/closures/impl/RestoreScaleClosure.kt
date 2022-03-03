@@ -1,39 +1,23 @@
 /*
  * Created on Oct 15, 2005
  */
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.w3c.dom.Element;
-
-import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.base.Scale;
+import org.apache.commons.beanutils.PropertyUtils
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.base.GameState
+import rustleund.fightingfantasy.framework.base.Scale
+import rustleund.fightingfantasy.framework.closures.Closure
 
 /**
  * @author rustlea
  */
-public class RestoreScaleClosure extends AbstractClosure {
+class RestoreScaleClosure(element: Element) : Closure {
 
-	private String scaleName = null;
+    private val scaleName = element.getAttribute("type")
 
-	public RestoreScaleClosure(Element element) {
-		this.scaleName = element.getAttribute("type");
-	}
-
-	@Override
-	public boolean execute(GameState gameState) {
-
-		Scale scale = null;
-
-		try {
-			scale = (Scale) PropertyUtils.getProperty(gameState.getPlayerState(), scaleName);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		scale.restorePreviousValue();
-
-		return true;
-	}
-
+    override fun execute(gameState: GameState): Boolean {
+        (PropertyUtils.getProperty(gameState.playerState, scaleName) as Scale).restorePreviousValue()
+        return true
+    }
 }

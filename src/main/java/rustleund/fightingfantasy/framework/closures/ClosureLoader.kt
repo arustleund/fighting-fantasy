@@ -1,13 +1,12 @@
-package rustleund.fightingfantasy.framework.closures;
+package rustleund.fightingfantasy.framework.closures
 
-import org.w3c.dom.Element;
+import org.w3c.dom.Element
 
-public interface ClosureLoader {
+interface ClosureLoader {
 
-	Closure loadClosureFromElement(Element element);
+    fun loadClosureFromElement(element: Element): Closure
 
-	Closure loadClosureFromChildren(Element element);
+    fun loadClosureFromChildren(element: Element): Closure
 
-	Closure loadClosureFromChild(Element element, String childName);
-
+    fun loadClosureFromChild(element: Element, childName: String): Closure
 }

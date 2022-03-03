@@ -1,11 +1,10 @@
-package rustleund.fightingfantasy.framework.base;
+package rustleund.fightingfantasy.framework.base
 
-import java.io.File;
+import java.nio.file.Path
 
-public interface ItemUtil {
+interface ItemUtil {
 
-	void init(File itemConfiguration);
+    fun init(itemConfiguration: Path)
 
-	Item getItem(int itemId);
-
+    fun getItem(itemId: Int): Item
 }

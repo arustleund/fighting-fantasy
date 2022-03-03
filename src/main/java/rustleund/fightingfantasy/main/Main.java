@@ -76,7 +76,7 @@ public class Main {
 				System.exit(0);
 			}
 
-			File gameFile = chooser.getSelectedFile();
+			Path gameFile = chooser.getSelectedFile().toPath();
 
 			gameDirectory = getGameDirectory(gameFile);
 
@@ -85,15 +85,15 @@ public class Main {
 				if (openResult == JFileChooser.CANCEL_OPTION) {
 					System.exit(0);
 				}
-				gameFile = chooser.getSelectedFile();
-				if (gameFile.isDirectory()) {
-					gameDirectory = gameFile.toPath();
+				gameFile = chooser.getSelectedFile().toPath();
+				if (Files.isDirectory(gameFile)) {
+					gameDirectory = gameFile;
 				}
 			}
 		}
 
 		// Create and set up the content pane.
-		JComponent newContentPane = initializeGame(gameDirectory.toFile(), frame);
+		JComponent newContentPane = initializeGame(gameDirectory, frame);
 		newContentPane.setOpaque(true); // content panes must be opaque
 		frame.setContentPane(newContentPane);
 
@@ -102,9 +102,9 @@ public class Main {
 		frame.setVisible(true);
 	}
 
-	private static Path getGameDirectory(File gameFile) {
-		if (gameFile.isDirectory() && gameFile.exists()) {
-			return gameFile.toPath();
+	private static Path getGameDirectory(Path gameFile) {
+		if (Files.isDirectory(gameFile) && Files.exists(gameFile)) {
+			return gameFile;
 		}
 		try {
 			Path result = Files.createTempDirectory("com.rustleund.fightingfantasy");
@@ -115,17 +115,17 @@ public class Main {
 		}
 	}
 
-	private static boolean gameDirectoryIsValid(Path gameDirectory, File gameFile) {
-		if (gameFile.isFile()) {
+	private static boolean gameDirectoryIsValid(Path gameDirectory, Path gameFile) {
+		if (Files.isRegularFile(gameFile)) {
 			clearGameDirectory(gameDirectory, false);
 			unzipToGameDirectory(gameDirectory, gameFile);
 		}
 		return Files.exists(gameDirectory.resolve("config")) && Files.exists(gameDirectory.resolve("pages"));
 	}
 
-	private static void unzipToGameDirectory(Path gamesDirectory, File zipFile) {
+	private static void unzipToGameDirectory(Path gamesDirectory, Path zipFile) {
 		try {
-			ZipFile zipFile2 = new ZipFile(zipFile);
+			ZipFile zipFile2 = new ZipFile(zipFile.toFile());
 			zipFile2.extractAll(gamesDirectory.toFile().getAbsolutePath());
 		} catch (ZipException e) {
 			throw new RuntimeException(e);
@@ -166,7 +166,7 @@ public class Main {
 		javax.swing.SwingUtilities.invokeLater(() -> createAndShowGUI(gameDirectory));
 	}
 
-	private static SwingGameView initializeGame(File baseDirectory, JFrame frame) {
+	private static SwingGameView initializeGame(Path baseDirectory, JFrame frame) {
 		@SuppressWarnings("resource")
 		ConfigurableApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringContext.class);
 		applicationContext.registerShutdownHook();
@@ -176,8 +176,8 @@ public class Main {
 		BattleEffectsLoader battleEffectsLoader = springContext.battleEffectsLoader();
 		ItemUtil itemUtil = springContext.itemUtil();
 
-		File configDirectory = new File(baseDirectory, "config");
-		itemUtil.init(new File(configDirectory, "items.xml"));
+		Path configDirectory = baseDirectory.resolve("config");
+		itemUtil.init(configDirectory.resolve("items.xml"));
 
 		GameController gameController = new GameController(closureLoader, battleEffectsLoader, itemUtil);
 		GameState gameState = new GameState();

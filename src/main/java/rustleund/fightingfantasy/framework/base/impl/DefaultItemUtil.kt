@@ -1,83 +1,62 @@
-package rustleund.fightingfantasy.framework.base.impl;
+package rustleund.fightingfantasy.framework.base.impl
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.base.*
+import rustleund.fightingfantasy.framework.closures.ClosureLoader
+import java.nio.file.Files
+import java.nio.file.Path
+import javax.xml.parsers.DocumentBuilderFactory
 
-import javax.xml.parsers.DocumentBuilderFactory;
+class DefaultItemUtil(
+    private val closureLoader: ClosureLoader,
+    private val battleEffectsLoader: BattleEffectsLoader
+) : ItemUtil {
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+    private lateinit var items: Map<Int, Item>
 
-import rustleund.fightingfantasy.framework.base.BattleEffects;
-import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
-import rustleund.fightingfantasy.framework.base.Item;
-import rustleund.fightingfantasy.framework.base.ItemUtil;
-import rustleund.fightingfantasy.framework.base.XMLUtil;
-import rustleund.fightingfantasy.framework.closures.ClosureLoader;
+    override fun init(itemConfiguration: Path) {
+        items = Files.newInputStream(itemConfiguration).use { itemIs ->
+            val documentBuilderFactory = DocumentBuilderFactory.newInstance()
+            documentBuilderFactory.isNamespaceAware = true
+            val itemDocument = documentBuilderFactory.newDocumentBuilder().parse(itemIs)
+            getChildElementsByName(itemDocument.documentElement, "item")
+                .map { loadItemTag(it) }
+                .associateBy { it.id }
+        }
+    }
 
-public class DefaultItemUtil implements ItemUtil {
+    private fun loadItemTag(itemElement: Element): Item {
+        val id = itemElement.getAttribute("id").toInt()
+        val itemName = itemElement.getAttribute("name")
+        val defaultPrice = itemElement.getAttribute("price").toInt()
+        val item = Item(id, itemName, defaultPrice)
+        if (itemElement.hasAttribute("limit")) {
+            item.limit = itemElement.getAttribute("limit").toInt()
+        }
+        loadOnUse(itemElement, item)
+        loadBattleEffects(itemElement, item)
+        if (itemElement.hasAttribute("canUseInBattle")) {
+            item.isCanUseInBattle = itemElement.getAttribute("canUseInBattle").toBoolean()
+        } else {
+            item.isCanUseInBattle = true
+        }
+        return item
+    }
 
-	private ClosureLoader closureLoader;
-	private BattleEffectsLoader battleEffectsLoader;
+    private fun loadOnUse(itemElement: Element, item: Item) {
+        getChildElementByName(itemElement, "onUse")?.let {
+            item.useItem = closureLoader.loadClosureFromChildren(it)
+        }
+    }
 
-	private Map<Integer, Item> items;
+    private fun loadBattleEffects(itemElement: Element, item: Item) {
+        getChildElementByName(itemElement, "battleEffects")?.let { battleEffectsElement ->
+            val battleEffects = BattleEffects()
+            battleEffectsLoader.loadBattleEffectsFromTag(battleEffects, battleEffectsElement)
+            item.battleEffects = battleEffects
+        }
+    }
 
-	public DefaultItemUtil(ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
-		this.closureLoader = closureLoader;
-		this.battleEffectsLoader = battleEffectsLoader;
-	}
-
-	@Override
-	public void init(File itemConfiguration) {
-		this.items = new HashMap<>();
-
-		try {
-			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-			documentBuilderFactory.setNamespaceAware(true);
-			Document itemDocument = documentBuilderFactory.newDocumentBuilder().parse(itemConfiguration);
-			XMLUtil.getChildElementsByName(itemDocument.getDocumentElement(), "item").forEach(this::loadItemTag);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void loadItemTag(Element itemElement) {
-		Integer id = Integer.valueOf(itemElement.getAttribute("id"));
-		String itemName = itemElement.getAttribute("name");
-		Integer defaultPrice = Integer.valueOf(itemElement.getAttribute("price"));
-		Item item = new Item(id, itemName, defaultPrice);
-		if (itemElement.hasAttribute("limit")) {
-			item.setLimit(Integer.valueOf(itemElement.getAttribute("limit")));
-		}
-		loadOnUse(itemElement, item);
-		loadBattleEffects(itemElement, item);
-		if (itemElement.hasAttribute("canUseInBattle")) {
-			item.setCanUseInBattle(Boolean.valueOf(itemElement.getAttribute("canUseInBattle")));
-		} else {
-			item.setCanUseInBattle(true);
-		}
-		items.put(item.getId(), item);
-	}
-
-	private void loadOnUse(Element itemElement, Item item) {
-		Element onUseElement = XMLUtil.getChildElementByName(itemElement, "onUse");
-		if (onUseElement != null) {
-			item.setUseItem(this.closureLoader.loadClosureFromChildren(onUseElement));
-		}
-	}
-
-	private void loadBattleEffects(Element itemElement, Item item) {
-		Element battleEffectsElement = XMLUtil.getChildElementByName(itemElement, "battleEffects");
-		if (battleEffectsElement != null) {
-			BattleEffects battleEffects = new BattleEffects();
-			this.battleEffectsLoader.loadBattleEffectsFromTag(battleEffects, battleEffectsElement);
-			item.setBattleEffects(battleEffects);
-		}
-	}
-
-	@Override
-	public Item getItem(int itemId) {
-		return this.items.get(itemId);
-	}
+    override fun getItem(itemId: Int): Item =
+        requireNotNull(items[itemId]) { "Item ID $itemId not found" }
 }

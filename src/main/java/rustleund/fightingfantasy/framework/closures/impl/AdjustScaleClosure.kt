@@ -1,122 +1,104 @@
 /*
  * Created on Jun 27, 2004
  */
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.w3c.dom.Element;
-
-import rustleund.fightingfantasy.framework.base.AbstractEntityState;
-import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
-import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.base.Scale;
-import rustleund.fightingfantasy.framework.closures.ClosureLoader;
-import rustleund.fightingfantasy.framework.util.DiceRoller;
+import org.apache.commons.beanutils.PropertyUtils
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.base.*
+import rustleund.fightingfantasy.framework.closures.Closure
+import rustleund.fightingfantasy.framework.closures.ClosureLoader
+import rustleund.fightingfantasy.framework.util.DiceRoller
+import java.lang.IndexOutOfBoundsException
+import kotlin.math.ceil
+import kotlin.math.floor
 
 /**
  * @author rustlea
  */
-public class AdjustScaleClosure extends AbstractClosure {
+open class AdjustScaleClosure(
+    element: Element,
+    private val closureLoader: ClosureLoader,
+    private val battleEffectsLoader: BattleEffectsLoader
+) : Closure {
 
-	private ClosureLoader closureLoader;
-	private BattleEffectsLoader battleEffectsLoader;
+    private var scaleName: String? = null
+    private val stringAmount: String
+    private val promptOnFail: Boolean
+    private val useAmountAsValue: Boolean
+    private val useAmountAsPercent: Boolean
+    private val round: String
+    private val adjustInitialValue: Boolean
+    private val rollDiceAmount: Int?
+    private val negate: Boolean
 
-	private String scaleName = null;
-	private String stringAmount;
-	private boolean promptOnFail;
-	private boolean useAmountAsValue;
-	private boolean useAmountAsPercent;
-	private String round;
-	private boolean adjustInitialValue;
-	private Integer rollDiceAmount;
-	private boolean negate;
+    init {
+        scaleName = element.getAttribute("type")
+        stringAmount = element.getAttribute("amount")
+        promptOnFail = element.booleanAttribute("promptOnFail")
+        useAmountAsValue = element.booleanAttribute("useAmountAsValue")
+        useAmountAsPercent = element.booleanAttribute("useAmountAsPercent")
+        round = element.getAttribute("round")
+        adjustInitialValue = element.booleanAttribute("adjustInitialValue")
+        rollDiceAmount = element.optionalIntAttribute("rollDiceAmount")
+        negate = element.booleanAttribute("negate")
+    }
 
-	public AdjustScaleClosure(Element element, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
-		this.closureLoader = closureLoader;
-		this.battleEffectsLoader = battleEffectsLoader;
+    override fun execute(gameState: GameState): Boolean {
+        val scale = runCatching { PropertyUtils.getProperty(entity(gameState), scaleName) as Scale }
+            .onFailure { it.printStackTrace() }
+            .getOrNull() ?: return false
 
-		this.scaleName = element.getAttribute("type");
-		this.stringAmount = element.getAttribute("amount");
-		this.promptOnFail = attributeValue(element, "promptOnFail");
-		this.useAmountAsValue = attributeValue(element, "useAmountAsValue");
-		this.useAmountAsPercent = attributeValue(element, "useAmountAsPercent");
-		this.round = element.getAttribute("round");
-		this.adjustInitialValue = attributeValue(element, "adjustInitialValue");
-		if (element.hasAttribute("rollDiceAmount")) {
-			this.rollDiceAmount = Integer.parseInt(element.getAttribute("rollDiceAmount"));
-		}
-		this.negate = attributeValue(element, "negate");
-	}
+        var amountToAdjust: Int
+        if (useAmountAsPercent) {
+            requireNotNull(scale.upperBound) { "Scale must have an upper bound" }
+            val percentAdjustment = stringAmount.toDouble()
+            val percentResult = scale.upperBound.toInt() * percentAdjustment
+            amountToAdjust = if ("up".equals(round, ignoreCase = true)) {
+                ceil(percentResult).toInt()
+            } else if ("down".equals(round, ignoreCase = true)) {
+                floor(percentResult).toInt()
+            } else {
+                percentResult.toInt()
+            }
+        } else {
+            amountToAdjust = stringAmount.toInt()
+            if (useAmountAsValue) {
+                if (adjustInitialValue) {
+                    if (scale.upperBound != null) {
+                        amountToAdjust -= scale.upperBound.toInt()
+                    }
+                } else {
+                    amountToAdjust -= scale.currentValue
+                }
+            } else if (rollDiceAmount != null) {
+                amountToAdjust += DiceRoller.rollDice(rollDiceAmount)
+            }
+        }
+        if (negate) {
+            amountToAdjust *= -1
+        }
+        if (promptOnFail) {
+            return try {
+                scale.adjustCurrentValue(amountToAdjust)
+                true
+            } catch (e1: IndexOutOfBoundsException) {
+                gameState.message = "You cannot perform this action"
+                false
+            }
+        }
+        if (adjustInitialValue) {
+            scale.adjustUpperBound(amountToAdjust)
+        } else {
+            scale.adjustCurrentValueNoException(amountToAdjust)
+        }
+        if (gameState.playerState.isDead) {
+            LinkClosure("0", closureLoader, battleEffectsLoader).execute(gameState)
+        }
+        return true
+    }
 
-	@Override
-	public boolean execute(GameState gameState) {
-		Scale scale = null;
-
-		try {
-			scale = (Scale) PropertyUtils.getProperty(entity(gameState), scaleName);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-
-		int amountToAdjust;
-
-		if (useAmountAsPercent) {
-			if (scale.getUpperBound() == null) {
-				throw new IllegalArgumentException("Scale must have an upper bound");
-			}
-			double percentAdjustment = Double.parseDouble(this.stringAmount);
-			double percentResult = scale.getUpperBound().intValue() * percentAdjustment;
-			if ("up".equalsIgnoreCase(this.round)) {
-				amountToAdjust = (int) Math.ceil(percentResult);
-			} else if ("down".equalsIgnoreCase(this.round)) {
-				amountToAdjust = (int) Math.floor(percentResult);
-			} else {
-				amountToAdjust = (int) percentResult;
-			}
-		} else {
-			amountToAdjust = Integer.parseInt(this.stringAmount);
-			if (this.useAmountAsValue) {
-				if (this.adjustInitialValue) {
-					if (scale.getUpperBound() != null) {
-						amountToAdjust -= scale.getUpperBound().intValue();
-					}
-				} else {
-					amountToAdjust -= scale.getCurrentValue();
-				}
-			} else if (this.rollDiceAmount != null) {
-				amountToAdjust += DiceRoller.rollDice(this.rollDiceAmount);
-			}
-		}
-
-		if (this.negate) {
-			amountToAdjust *= -1;
-		}
-
-		if (promptOnFail) {
-			try {
-				scale.adjustCurrentValue(amountToAdjust);
-				return true;
-			} catch (IndexOutOfBoundsException e1) {
-				gameState.setMessage("You cannot perform this action");
-				return false;
-			}
-		}
-		if (this.adjustInitialValue) {
-			scale.adjustUpperBound(amountToAdjust);
-		} else {
-			scale.adjustCurrentValueNoException(amountToAdjust);
-		}
-
-		if (gameState.getPlayerState().isDead()) {
-			new LinkClosure("0", closureLoader, battleEffectsLoader).execute(gameState);
-		}
-
-		return true;
-
-	}
-
-	protected AbstractEntityState entity(GameState gameState) {
-		return gameState.getPlayerState();
-	}
+    protected open fun entity(gameState: GameState): AbstractEntityState? {
+        return gameState.playerState
+    }
 }

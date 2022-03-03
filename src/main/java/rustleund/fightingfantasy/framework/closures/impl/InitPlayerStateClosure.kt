@@ -1,29 +1,28 @@
 /*
  * Created on Oct 25, 2005
  */
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.base.ItemUtil;
-import rustleund.fightingfantasy.framework.base.PlayerState;
-
-import com.google.common.collect.Lists;
+import rustleund.fightingfantasy.framework.base.ItemUtil
+import rustleund.fightingfantasy.framework.base.GameState
+import rustleund.fightingfantasy.framework.base.PlayerState
+import rustleund.fightingfantasy.framework.closures.Closure
 
 /**
  * @author rustlea
  */
-public class InitPlayerStateClosure extends AbstractClosure {
+class InitPlayerStateClosure(private val itemUtil: ItemUtil) : Closure {
 
-	private ItemUtil itemUtl;
-
-	public InitPlayerStateClosure(ItemUtil itemUtil) {
-		this.itemUtl = itemUtil;
-	}
-
-	@Override
-	public boolean execute(GameState gameState) {
-		gameState.setPlayerState(new PlayerState(gameState.getPlayerState().getName(), Lists.newArrayList(itemUtl.getItem(0), itemUtl.getItem(1), itemUtl.getItem(2), itemUtl.getItem(3))));
-		return true;
-	}
-
+    override fun execute(gameState: GameState): Boolean {
+        gameState.playerState = PlayerState(
+            gameState.playerState.name,
+            listOf(
+                itemUtil.getItem(0),
+                itemUtil.getItem(1),
+                itemUtil.getItem(2),
+                itemUtil.getItem(3)
+            )
+        )
+        return true
+    }
 }

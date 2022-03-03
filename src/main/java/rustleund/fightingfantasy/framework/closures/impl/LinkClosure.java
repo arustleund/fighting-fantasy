@@ -3,7 +3,9 @@
  */
 package rustleund.fightingfantasy.framework.closures.impl;
 
-import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,19 +23,15 @@ import rustleund.fightingfantasy.gamesave.SavedGame;
 /**
  * @author rustlea
  */
-public class LinkClosure extends AbstractClosure {
+public class LinkClosure implements Closure {
 
-	private ClosureLoader closureLoader;
-	private BattleEffectsLoader battleEffectsLoader;
+	private final ClosureLoader closureLoader;
+	private final BattleEffectsLoader battleEffectsLoader;
 
-	private String pageName;
+	private final String pageName;
 
 	public LinkClosure(Element element, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
 		this(element.getAttribute("page"), closureLoader, battleEffectsLoader);
-	}
-
-	public LinkClosure(int pageNumber, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
-		this(pageNumber + "", closureLoader, battleEffectsLoader);
 	}
 
 	public LinkClosure(String pageName, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
@@ -50,11 +48,12 @@ public class LinkClosure extends AbstractClosure {
 		}
 
 		Document targetPageDocument = null;
-		try {
+		Path pageLocation = gameState.getPagesDirectory().resolve(pageName + ".xml");
+		try (InputStream pageIs = Files.newInputStream(pageLocation)) {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			documentBuilderFactory.setNamespaceAware(true);
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			targetPageDocument = documentBuilder.parse(new File(gameState.getPagesDirectory(), pageName + ".xml"));
+			targetPageDocument = documentBuilder.parse(pageIs);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

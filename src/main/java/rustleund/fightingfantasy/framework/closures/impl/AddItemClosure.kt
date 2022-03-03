@@ -1,80 +1,59 @@
 /*
  * Created on Jul 12, 2004
  */
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import org.w3c.dom.Element;
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.base.*
+import rustleund.fightingfantasy.framework.closures.Closure
 
-import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.base.Item;
-import rustleund.fightingfantasy.framework.base.ItemUtil;
-import rustleund.fightingfantasy.framework.base.PageState;
-import rustleund.fightingfantasy.framework.base.PlayerState;
+class AddItemClosure
+@JvmOverloads constructor(
+    private val itemId: Int,
+    itemUtil: ItemUtil,
+    private val quantity: Int = 1,
+    private val priceOverride: Int? = null,
+    private val pageLimit: Int? = null
+) : Closure {
 
-/**
- * @author rustlea
- */
-public class AddItemClosure extends AbstractClosure {
+    private var pageBuys = 0
+    private val item = itemUtil.getItem(itemId)
+    private val totalPrice = (priceOverride ?: item.defaultPrice) * quantity
 
-	private ItemUtil itemUtil;
+    constructor(addItemElement: Element, itemUtil: ItemUtil) : this(
+        itemId = addItemElement.optionalIntAttribute("id") ?: throw IllegalArgumentException("Missing id"),
+        itemUtil = itemUtil,
+        quantity = addItemElement.intAttribute("quantity", 1),
+        priceOverride = addItemElement.optionalIntAttribute("price"),
+        pageLimit = addItemElement.optionalIntAttribute("pageLimit")
+    )
 
-	private int itemId;
-	private int price = -1;
-	private int quantity = 1;
-	private int pageLimit = -1;
-	private int pageBuys = 0;
-
-	public AddItemClosure(Element addItemElement, ItemUtil itemUtil) {
-		this.itemUtil = itemUtil;
-
-		this.itemId = Integer.valueOf(addItemElement.getAttribute("id"));
-		if (addItemElement.hasAttribute("price")) {
-			this.price = Integer.valueOf(addItemElement.getAttribute("price"));
-		}
-		if (addItemElement.hasAttribute("quantity")) {
-			this.quantity = Integer.valueOf(addItemElement.getAttribute("quantity"));
-		}
-		if (addItemElement.hasAttribute("pageLimit")) {
-			this.pageLimit = Integer.valueOf(addItemElement.getAttribute("pageLimit"));
-		}
-	}
-
-	public AddItemClosure(int itemId, ItemUtil itemUtil) {
-		this.itemId = itemId;
-		this.itemUtil = itemUtil;
-	}
-
-	@Override
-	public boolean execute(GameState gameState) {
-		PlayerState playerState = gameState.getPlayerState();
-		PageState pageState = gameState.getPageState();
-		Item item = this.itemUtil.getItem(itemId);
-		if (item.hasLimit() && playerState.itemCount(itemId) + this.quantity > item.getLimit()) {
-			gameState.setMessage("Buying the " + item.getName() + " would put you above the maximum amount allowed (" + item.getLimit() + ")");
-			return false;
-		}
-		if (this.pageLimit >= 0 && this.pageBuys + this.quantity > this.pageLimit) {
-			gameState.setMessage("This location cannot sell any more of the " + item.getName());
-			return false;
-		}
-		if (pageState.hasKeepMinimumForScale("gold") && ((playerState.getGold().getCurrentValue() - getPrice(item.getDefaultPrice())) < pageState.getKeepMinimumForScale("gold"))) {
-			gameState.setMessage("Buying the " + item.getName() + " would put you below the minimum of " + pageState.getKeepMinimumForScale("gold") + " Gold Pieces");
-			return false;
-		}
-		if (playerState.getGold().getCurrentValue() < getPrice(item.getDefaultPrice())) {
-			gameState.setMessage("You do not have sufficient Gold to buy the " + item.getName());
-			return false;
-		}
-		playerState.getGold().adjustCurrentValue(getPrice(item.getDefaultPrice()) * -1);
-		for (int i = 0; i < this.quantity; i++) {
-			playerState.addItem(item);
-			this.pageBuys++;
-		}
-		return true;
-	}
-
-	private int getPrice(int standardPrice) {
-		return (this.price == -1 ? standardPrice : this.price) * this.quantity;
-	}
-
+    override fun execute(gameState: GameState): Boolean {
+        val playerState = gameState.playerState
+        val pageState = gameState.pageState
+        if (item.hasLimit() && playerState.itemCount(itemId) + quantity > item.limit) {
+            gameState.message = "Buying the ${item.name} would put you above the maximum amount allowed (${item.limit})"
+            return false
+        }
+        if (pageLimit != null && pageBuys + quantity > pageLimit) {
+            gameState.message = "This location cannot sell any more of the ${item.name}"
+            return false
+        }
+        if (pageState.hasKeepMinimumForScale("gold") && playerState.gold.currentValue - totalPrice < pageState.getKeepMinimumForScale(
+                "gold"
+            )
+        ) {
+            gameState.message =
+                "Buying the ${item.name} would put you below the minimum of ${pageState.getKeepMinimumForScale("gold")} Gold Pieces"
+            return false
+        }
+        if (playerState.gold.currentValue < totalPrice) {
+            gameState.message = "You do not have sufficient Gold to buy the ${item.name}"
+            return false
+        }
+        playerState.gold.adjustCurrentValue(totalPrice * -1)
+        repeat(quantity) { playerState.addItem(item) }
+        pageBuys += quantity
+        return true
+    }
 }

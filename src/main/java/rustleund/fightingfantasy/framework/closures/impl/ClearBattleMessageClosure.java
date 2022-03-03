@@ -8,8 +8,9 @@ import org.w3c.dom.Element;
 
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.BattleState.BattleMessagePosition;
+import rustleund.fightingfantasy.framework.closures.Closure;
 
-public class ClearBattleMessageClosure extends AbstractClosure {
+public class ClearBattleMessageClosure implements Closure {
 
 	private Collection<BattleMessagePosition> positionsToClear;
 

@@ -1,21 +1,16 @@
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import org.w3c.dom.Element;
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.base.GameState
+import rustleund.fightingfantasy.framework.base.booleanAttribute
+import rustleund.fightingfantasy.framework.closures.Closure
 
-import rustleund.fightingfantasy.framework.base.GameState;
+class SetPoisonImmunity(element: Element) : Closure {
 
-public class SetPoisonImmunity extends AbstractClosure {
+    private val immune: Boolean = element.booleanAttribute("immune", true)
 
-	private boolean immune;
-
-	public SetPoisonImmunity(Element element) {
-		this.immune = attributeValue(element, "immune", true);
-	}
-
-	@Override
-	public boolean execute(GameState gameState) {
-		gameState.getPlayerState().setPoisonImmunity(this.immune);
-		return true;
-	}
-
+    override fun execute(gameState: GameState): Boolean {
+        gameState.playerState.isPoisonImmunity = immune
+        return true
+    }
 }

@@ -17,14 +17,11 @@ import rustleund.fightingfantasy.framework.closures.ClosureLoader;
  */
 public class EnemyState extends AbstractEntityState {
 
-	private ClosureLoader closureLoader;
-
 	private int poisonedWeaponRounds = 0;
-	private Set<String> types = new HashSet<>();
+	private final Set<String> types = new HashSet<>();
 	private Closure enemyKilled;
 
 	public EnemyState(Element enemyTag, ClosureLoader closureLoader) {
-		this.closureLoader = closureLoader;
 
 		this.name = enemyTag.getAttribute("name");
 
@@ -42,9 +39,9 @@ public class EnemyState extends AbstractEntityState {
 			this.types.addAll(Arrays.asList(enemyTag.getAttribute("types").split(",")));
 		}
 
-		Element onKilledElement = XMLUtil.getChildElementByName(enemyTag, "onKilled");
+		Element onKilledElement = XMLUtilKt.getChildElementByName(enemyTag, "onKilled");
 		if (onKilledElement != null) {
-			this.enemyKilled = this.closureLoader.loadClosureFromChildren(onKilledElement);
+			this.enemyKilled = closureLoader.loadClosureFromChildren(onKilledElement);
 		}
 	}
 

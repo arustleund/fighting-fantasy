@@ -28,192 +28,177 @@ import rustleund.fightingfantasy.framework.closures.impl.ChainedClosure;
  */
 public class PageState {
 
-	private ClosureLoader closureLoader;
-	private BattleEffectsLoader battleEffectsLoader;
+    private final ClosureLoader closureLoader;
+    private final BattleEffectsLoader battleEffectsLoader;
 
-	private String pageName;
-	private GameState gameState = null;
-	private String pagetext = null;
-	private Map<String, Integer> keepMinimums = null;
-	private Map<Integer, Element> testLucks = null;
-	private List<Closure> immediateCommands = null;
-	private Map<Integer, Closure> multiCommands = null;
-	private Map<Integer, String> texts = null;
-	private Map<Integer, BattleState> battles = null;
+    private final String pageName;
+    private GameState gameState;
+    private String pagetext = null;
+    private Map<String, Integer> keepMinimums = null;
+    private Map<Integer, Element> testLucks = null;
+    private List<Closure> immediateCommands = null;
+    private Map<Integer, Closure> multiCommands = null;
+    private Map<Integer, String> texts = null;
+    private Map<Integer, BattleState> battles = null;
 
-	public PageState(String pageName, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader, Document document, GameState gameState) {
-		this.closureLoader = closureLoader;
-		this.battleEffectsLoader = battleEffectsLoader;
+    public PageState(String pageName, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader, Document document, GameState gameState) {
+        this.closureLoader = closureLoader;
+        this.battleEffectsLoader = battleEffectsLoader;
 
-		this.pageName = pageName;
-		this.gameState = gameState;
+        this.pageName = pageName;
+        this.gameState = gameState;
 
-		loadPagetext(document);
-		loadImmediate(document);
-		loadMultis(document);
-		loadBattles(document);
-		loadTexts(document);
-		loadTestLucks(document);
-		loadKeepMinimum(document);
-	}
+        loadPagetext(document);
+        loadImmediate(document);
+        loadMultis(document);
+        loadBattles(document);
+        loadTexts(document);
+        loadTestLucks(document);
+        loadKeepMinimum(document);
+    }
 
-	private void loadPagetext(Document document) {
-		Element pageTextElement = XMLUtil.getChildElementByName(document.getDocumentElement(), "pagetext");
-		pagetext = writeTag(XMLUtil.getChildElementByName(pageTextElement, "html"));
-	}
+    private void loadPagetext(Document document) {
+        Element pageTextElement = XMLUtilKt.getChildElementByName(document.getDocumentElement(), "pagetext");
+        if (pageTextElement == null) throw new IllegalArgumentException("Missing pagetext element");
+        pagetext = writeTag(XMLUtilKt.getChildElementByName(pageTextElement, "html"));
+    }
 
-	private void loadKeepMinimum(Document document) {
-		keepMinimums = new HashMap<>();
-		XMLUtil.getChildElementsByName(document.getDocumentElement(), "keepminimum").forEach(e -> {
-			keepMinimums.put(e.getAttribute("scale"), Integer.valueOf(e.getAttribute("value")));
-		});
-	}
+    private void loadKeepMinimum(Document document) {
+        keepMinimums = new HashMap<>();
+        XMLUtilKt.getChildElementsByName(document.getDocumentElement(), "keepminimum").iterator()
+                .forEachRemaining(e -> keepMinimums.put(e.getAttribute("scale"), Integer.valueOf(e.getAttribute("value"))));
+    }
 
-	private void loadTestLucks(Document document) {
-		testLucks = new HashMap<>();
-		XMLUtil.getChildElementsByName(document.getDocumentElement(), "testluck").forEach(e -> {
-			testLucks.put(Integer.valueOf(e.getAttribute("id")), e);
-		});
-	}
+    private void loadTestLucks(Document document) {
+        testLucks = new HashMap<>();
+        XMLUtilKt.getChildElementsByName(document.getDocumentElement(), "testluck").iterator()
+                .forEachRemaining(e -> testLucks.put(Integer.valueOf(e.getAttribute("id")), e));
+    }
 
-	private void loadImmediate(Document document) {
-		immediateCommands = new ArrayList<>();
-		Element immediateTag = XMLUtil.getChildElementByName(document.getDocumentElement(), "immediate");
-		if (immediateTag != null) {
-			NodeList immediateCommandTags = immediateTag.getChildNodes();
-			for (int i = 0; i < immediateCommandTags.getLength(); i++) {
-				Node thisImmediateCommandTag = immediateCommandTags.item(i);
-				if (thisImmediateCommandTag instanceof Element) {
-					immediateCommands.add(this.closureLoader.loadClosureFromElement((Element) thisImmediateCommandTag));
-				}
-			}
-		}
-	}
+    private void loadImmediate(Document document) {
+        immediateCommands = new ArrayList<>();
+        Element immediateTag = XMLUtilKt.getChildElementByName(document.getDocumentElement(), "immediate");
+        if (immediateTag != null) {
+            NodeList immediateCommandTags = immediateTag.getChildNodes();
+            for (int i = 0; i < immediateCommandTags.getLength(); i++) {
+                Node thisImmediateCommandTag = immediateCommandTags.item(i);
+                if (thisImmediateCommandTag instanceof Element) {
+                    immediateCommands.add(this.closureLoader.loadClosureFromElement((Element) thisImmediateCommandTag));
+                }
+            }
+        }
+    }
 
-	private void loadTexts(Document document) {
-		texts = new HashMap<>();
-		XMLUtil.getChildElementsByName(document.getDocumentElement(), "text").forEach(e -> {
-			texts.put(Integer.valueOf(e.getAttribute("id")), writeTag(e));
-		});
-	}
+    private void loadTexts(Document document) {
+        texts = new HashMap<>();
+        XMLUtilKt.getChildElementsByName(document.getDocumentElement(), "text").iterator()
+                .forEachRemaining(e -> texts.put(Integer.valueOf(e.getAttribute("id")), writeTag(e)));
+    }
 
-	private void loadMultis(Document document) {
-		this.multiCommands = new HashMap<>();
-		XMLUtil.getChildElementsByName(document.getDocumentElement(), "multicommand").forEach(thisMultiTag -> {
-			Integer thisMultiId = Integer.valueOf(thisMultiTag.getAttribute("id"));
-			NodeList thisMultiTagsCommandTags = thisMultiTag.getChildNodes();
-			List<Closure> subclosures = new ArrayList<>();
-			for (int j = 0; j < thisMultiTagsCommandTags.getLength(); j++) {
-				Node thisMultiTagsCommandTag = thisMultiTagsCommandTags.item(j);
-				if (thisMultiTagsCommandTag instanceof Element) {
-					subclosures.add(this.closureLoader.loadClosureFromElement((Element) thisMultiTagsCommandTag));
-				}
-			}
-			this.multiCommands.put(thisMultiId, new ChainedClosure(subclosures));
-		});
-	}
+    private void loadMultis(Document document) {
+        this.multiCommands = new HashMap<>();
+        XMLUtilKt.getChildElementsByName(document.getDocumentElement(), "multicommand").iterator()
+                .forEachRemaining(thisMultiTag -> {
+                    Integer thisMultiId = Integer.valueOf(thisMultiTag.getAttribute("id"));
+                    NodeList thisMultiTagsCommandTags = thisMultiTag.getChildNodes();
+                    List<Closure> subclosures = new ArrayList<>();
+                    for (int j = 0; j < thisMultiTagsCommandTags.getLength(); j++) {
+                        Node thisMultiTagsCommandTag = thisMultiTagsCommandTags.item(j);
+                        if (thisMultiTagsCommandTag instanceof Element) {
+                            subclosures.add(this.closureLoader.loadClosureFromElement((Element) thisMultiTagsCommandTag));
+                        }
+                    }
+                    this.multiCommands.put(thisMultiId, new ChainedClosure(subclosures));
+                });
+    }
 
-	private void loadBattles(Document document) {
-		battles = new HashMap<>();
-		XMLUtil.getChildElementsByName(document.getDocumentElement(), "battle").forEach(e -> {
-			battles.put(Integer.valueOf(e.getAttribute("id")), new BattleState(e, this, this.closureLoader, this.battleEffectsLoader));
-		});
-	}
+    private void loadBattles(Document document) {
+        battles = new HashMap<>();
+        XMLUtilKt.getChildElementsByName(document.getDocumentElement(), "battle").iterator()
+                .forEachRemaining(e -> battles.put(Integer.valueOf(e.getAttribute("id")), new BattleState(e, this, this.closureLoader, this.battleEffectsLoader)));
+    }
 
-	public BattleState getBattle(int battleId) {
-		return battles.get(battleId);
-	}
+    public BattleState getBattle(int battleId) {
+        return battles.get(battleId);
+    }
 
-	public Closure getMultiCommands(int multiCommandId) {
-		return this.multiCommands.get(multiCommandId);
-	}
+    public Closure getMultiCommands(int multiCommandId) {
+        return this.multiCommands.get(multiCommandId);
+    }
 
-	public String getSuccessfulLuckText(int testluckId) {
-		return getLuckTextHelper(testluckId, "successful");
-	}
+    public boolean hasKeepMinimumForScale(String scaleType) {
+        return keepMinimums.containsKey(scaleType);
+    }
 
-	public String getUnsuccessfulLuckText(int testluckId) {
-		return getLuckTextHelper(testluckId, "unsuccessful");
-	}
+    public int getKeepMinimumForScale(String scaleType) {
+        if (keepMinimums.containsKey(scaleType)) {
+            return keepMinimums.get(scaleType);
+        }
+        return -1;
+    }
 
-	private String getLuckTextHelper(int testluckId, String successType) {
-		Element successTypeTag = XMLUtil.getChildElementByName(testLucks.get(testluckId), successType);
-		return writeTag(XMLUtil.getChildElementByName(successTypeTag, "p"));
-	}
+    public String getPagetext() {
+        return pagetext;
+    }
 
-	public boolean hasKeepMinimumForScale(String scaleType) {
-		return keepMinimums.containsKey(scaleType);
-	}
+    public void setPagetext(String string) {
+        pagetext = string;
+    }
 
-	public int getKeepMinimumForScale(String scaleType) {
-		if (keepMinimums.containsKey(scaleType)) {
-			return keepMinimums.get(scaleType);
-		}
-		return -1;
-	}
+    public List<Closure> getImmediateCommands() {
+        return immediateCommands;
+    }
 
-	public String getPagetext() {
-		return pagetext;
-	}
+    public void addToPagetext(String addition) {
+        int endHtmlIndex = pagetext.indexOf("</html>");
+        setPagetext(pagetext.substring(0, endHtmlIndex) + addition + "</html>");
+    }
 
-	public void setPagetext(String string) {
-		pagetext = string;
-	}
+    public void replacePagetext(String startString, String endString, String replaceString) {
+        int startIndex = pagetext.indexOf(startString);
+        int endIndex = pagetext.indexOf(endString);
+        if (startIndex == -1 || endIndex == -1) {
+            addToPagetext(replaceString);
+        } else {
+            setPagetext(pagetext.substring(0, startIndex) + replaceString + pagetext.substring(endIndex));
+        }
+    }
 
-	public List<Closure> getImmediateCommands() {
-		return immediateCommands;
-	}
+    private String writeTag(Node tag) {
+        String result = null;
+        try {
 
-	public void addToPagetext(String addition) {
-		int endHtmlIndex = pagetext.indexOf("</html>");
-		setPagetext(pagetext.substring(0, endHtmlIndex) + addition + "</html>");
-	}
+            TransformerFactory tFactory = TransformerFactory.newInstance();
+            Transformer transformer = tFactory.newTransformer();
+            transformer.setOutputProperty("omit-xml-declaration", "yes");
 
-	public void replacePagetext(String startString, String endString, String replaceString) {
-		int startIndex = pagetext.indexOf(startString);
-		int endIndex = pagetext.indexOf(endString);
-		if (startIndex == -1 || endIndex == -1) {
-			addToPagetext(replaceString);
-		} else {
-			setPagetext(pagetext.substring(0, startIndex) + replaceString + pagetext.substring(endIndex));
-		}
-	}
+            DOMSource source = new DOMSource(tag);
 
-	private String writeTag(Node tag) {
-		String result = null;
-		try {
+            StringWriter writer = new StringWriter();
+            StreamResult streamResult = new StreamResult(writer);
 
-			TransformerFactory tFactory = TransformerFactory.newInstance();
-			Transformer transformer = tFactory.newTransformer();
-			transformer.setOutputProperty("omit-xml-declaration", "yes");
+            transformer.transform(source, streamResult);
 
-			DOMSource source = new DOMSource(tag);
+            result = writer.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
-			StringWriter writer = new StringWriter();
-			StreamResult streamResult = new StreamResult(writer);
+    public GameState getGameState() {
+        return gameState;
+    }
 
-			transformer.transform(source, streamResult);
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
 
-			result = writer.toString();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
+    public Map<Integer, String> getTexts() {
+        return texts;
+    }
 
-	public GameState getGameState() {
-		return gameState;
-	}
-
-	public void setGameState(GameState gameState) {
-		this.gameState = gameState;
-	}
-
-	public Map<Integer, String> getTexts() {
-		return texts;
-	}
-
-	public String getPageName() {
-		return this.pageName;
-	}
+    public String getPageName() {
+        return this.pageName;
+    }
 }

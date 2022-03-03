@@ -1,27 +1,21 @@
 /*
  * Created on Oct 9, 2005
  */
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import org.w3c.dom.Element;
-
-import rustleund.fightingfantasy.framework.base.GameState;
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.base.GameState
+import rustleund.fightingfantasy.framework.closures.Closure
 
 /**
  * @author rustlea
  */
-public class RemoveItemClosure extends AbstractClosure {
+class RemoveItemClosure(element: Element) : Closure {
 
-	private int itemId = 0;
+    private val itemId = element.getAttribute("id").toInt()
 
-	public RemoveItemClosure(Element element) {
-		this.itemId = Integer.parseInt(element.getAttribute("id"));
-	}
-
-	@Override
-	public boolean execute(GameState gameState) {
-		gameState.getPlayerState().removeOneOfItem(itemId);
-		return true;
-	}
-
+    override fun execute(gameState: GameState): Boolean {
+        gameState.playerState.removeOneOfItem(itemId)
+        return true
+    }
 }

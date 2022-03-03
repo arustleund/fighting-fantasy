@@ -8,17 +8,18 @@ import org.w3c.dom.Element;
 import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.PlayerState;
+import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 
 /**
  * @author rustlea
  */
-public class MustEatMealClosure extends AbstractClosure {
+public class MustEatMealClosure implements Closure {
 
 	private int number = 1;
 
-	private ClosureLoader closureLoader;
-	private BattleEffectsLoader battleEffectsLoader;
+	private final ClosureLoader closureLoader;
+	private final BattleEffectsLoader battleEffectsLoader;
 
 	public MustEatMealClosure(Element element, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
 		this.closureLoader = closureLoader;

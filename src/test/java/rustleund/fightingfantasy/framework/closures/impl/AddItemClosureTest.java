@@ -29,8 +29,6 @@ public class AddItemClosureTest extends EasyMockSupport {
 		gameState.setPageState(pageState);
 
 		//
-		
-		
 
 		int defaultPrice = 4;
 		Item testItem = new Item(1, "Test Item", defaultPrice);
@@ -38,6 +36,7 @@ public class AddItemClosureTest extends EasyMockSupport {
 
 		Scale gold = new Scale(0, startGoldValue, null, false);
 
+		expect(addItemElement.hasAttribute("id")).andStubReturn(true);
 		expect(addItemElement.getAttribute("id")).andStubReturn("1");
 		expect(addItemElement.hasAttribute("price")).andStubReturn(false);
 		expect(addItemElement.hasAttribute("quantity")).andStubReturn(false);
