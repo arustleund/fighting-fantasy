@@ -1,25 +1,12 @@
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import org.w3c.dom.Element;
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.base.GameState
+import java.util.function.Predicate
 
-import rustleund.fightingfantasy.framework.base.GameState;
-
-import java.util.function.Predicate;
-
-public class TestItemPredicate implements Predicate<GameState> {
-
-	private final Predicate<GameState> delegate;
-
-	/**
-	 * @param element A {@code <testItem />} {@link Element} with an <code>id</code> attribute containing an item id
-	 */
-	public TestItemPredicate(Element element) {
-		int itemId = Integer.parseInt(element.getAttribute("id"));
-		this.delegate = new TestNumberPredicate(element, gameState -> gameState.getPlayerState().itemCount(itemId));
-	}
-
-	@Override
-	public boolean test(GameState input) {
-		return this.delegate.test(input);
-	}
-}
+/**
+ * @param element A `<testItem />` [Element] with an `id` attribute containing an item id
+ */
+class TestItemPredicate(element: Element) : Predicate<GameState> by TestNumberPredicate(element, {
+    it.playerState.itemCount(element.getAttribute("id").toInt())
+})

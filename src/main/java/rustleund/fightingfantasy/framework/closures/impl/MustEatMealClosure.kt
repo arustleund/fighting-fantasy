@@ -1,52 +1,40 @@
 /*
  * Created on Oct 27, 2005
  */
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import org.w3c.dom.Element;
-
-import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
-import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.base.PlayerState;
-import rustleund.fightingfantasy.framework.closures.Closure;
-import rustleund.fightingfantasy.framework.closures.ClosureLoader;
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.closures.ClosureLoader
+import rustleund.fightingfantasy.framework.base.BattleEffectsLoader
+import rustleund.fightingfantasy.framework.base.GameState
+import rustleund.fightingfantasy.framework.base.intAttribute
+import rustleund.fightingfantasy.framework.closures.Closure
 
 /**
  * @author rustlea
  */
-public class MustEatMealClosure implements Closure {
+class MustEatMealClosure(
+    element: Element,
+    private val closureLoader: ClosureLoader,
+    private val battleEffectsLoader: BattleEffectsLoader
+) : Closure {
 
-	private int number = 1;
+    private val number = element.intAttribute("amount", 1)
 
-	private final ClosureLoader closureLoader;
-	private final BattleEffectsLoader battleEffectsLoader;
-
-	public MustEatMealClosure(Element element, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
-		this.closureLoader = closureLoader;
-		this.battleEffectsLoader = battleEffectsLoader;
-		if (element.hasAttribute("amount")) {
-			this.number = Integer.parseInt(element.getAttribute("amount"));
-		}
-	}
-
-	@Override
-	public boolean execute(GameState gameState) {
-		PlayerState playerState = gameState.getPlayerState();
-
-		for (int i = 0; i < this.number; i++) {
-			if (playerState.getProvisions().getCurrentValue() > 0) {
-				playerState.getProvisions().adjustCurrentValueNoException(-1);
-			} else {
-				gameState.setMessage("You lost 2 Stamina because you were out of provisions");
-				playerState.getStamina().adjustCurrentValueNoException(-2);
-				if (playerState.isDead()) {
-					new LinkClosure("0", closureLoader, battleEffectsLoader).execute(gameState);
-					return false;
-				}
-			}
-		}
-
-		return true;
-	}
-
+    override fun execute(gameState: GameState): Boolean {
+        val playerState = gameState.playerState
+        for (i in 0 until number) {
+            if (playerState.provisions.currentValue > 0) {
+                playerState.provisions.adjustCurrentValueNoException(-1)
+            } else {
+                gameState.message = "You lost 2 Stamina because you were out of provisions"
+                playerState.stamina.adjustCurrentValueNoException(-2)
+                if (playerState.isDead) {
+                    LinkClosure("0", closureLoader, battleEffectsLoader).execute(gameState)
+                    return false
+                }
+            }
+        }
+        return true
+    }
 }

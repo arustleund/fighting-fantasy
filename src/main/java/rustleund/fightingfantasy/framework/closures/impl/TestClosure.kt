@@ -1,36 +1,25 @@
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import org.w3c.dom.Element;
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.base.GameState
+import rustleund.fightingfantasy.framework.closures.Closure
+import rustleund.fightingfantasy.framework.closures.ClosureLoader
+import java.util.function.Predicate
 
-import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.closures.Closure;
-import rustleund.fightingfantasy.framework.closures.ClosureLoader;
+/**
+ * @param predicate The [Predicate] to use to determine which [Closure] to execute
+ * @param closureLoader The [ClosureLoader] to use for loading the true and false [Closure]s
+ * @param element The [Element] that represents the main test [Element], should have one each of `<successful />` and `<unsuccessful />` child elements
+ */
+class TestClosure(
+    private val predicate: Predicate<in GameState>,
+    closureLoader: ClosureLoader,
+    element: Element
+) : Closure {
 
-import java.util.function.Predicate;
+    private val trueClosure = closureLoader.loadClosureFromChild(element, "successful")
+    private val falseClosure = closureLoader.loadClosureFromChild(element, "unsuccessful")
 
-public class TestClosure implements Closure {
-
-	private final Predicate<? super GameState> predicate;
-	private final Closure trueClosure;
-	private final Closure falseClosure;
-
-	/**
-	 * @param predicate The {@link Predicate} to use to determine which {@link Closure} to executre
-	 * @param closureLoader The {@link ClosureLoader} to use for loading the true and false {@link Closure}s
-	 * @param element The {@link Element} that represents the main test {@link Element}, should have one each of {@code <successful />} and {@code <unsuccessful />} child elements
-	 */
-	public TestClosure(Predicate<? super GameState> predicate, ClosureLoader closureLoader, Element element) {
-		this.predicate = predicate;
-		this.trueClosure = closureLoader.loadClosureFromChild(element, "successful");
-		this.falseClosure = closureLoader.loadClosureFromChild(element, "unsuccessful");
-	}
-
-	@Override
-	public boolean execute(GameState gameState) {
-		if (this.predicate.test(gameState)) {
-			return this.trueClosure.execute(gameState);
-		}
-		return this.falseClosure.execute(gameState);
-	}
-
+    override fun execute(gameState: GameState): Boolean =
+        (if (predicate.test(gameState)) trueClosure else falseClosure).execute(gameState)
 }

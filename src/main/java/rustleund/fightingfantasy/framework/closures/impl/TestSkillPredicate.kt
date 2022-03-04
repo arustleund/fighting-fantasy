@@ -1,30 +1,22 @@
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import java.util.function.Function;
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.util.DiceRoller.rollDice
+import rustleund.fightingfantasy.framework.base.GameState
+import rustleund.fightingfantasy.framework.base.AbstractEntityState
+import rustleund.fightingfantasy.framework.base.intAttribute
+import java.util.function.Function
+import java.util.function.Predicate
 
-import org.w3c.dom.Element;
+class TestSkillPredicate(
+    element: Element,
+    private val gameStateToEntity: Function<in GameState, out AbstractEntityState>
+) : Predicate<GameState> {
 
-import rustleund.fightingfantasy.framework.base.AbstractEntityState;
-import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.util.DiceRoller;
+    private val diceRollAdjustment = element.intAttribute("diceRollAdjustment", 0)
 
-import com.google.common.base.Predicate;
-
-public class TestSkillPredicate implements Predicate<GameState> {
-
-	private int diceRollAdjustment;
-	private Function<? super GameState, ? extends AbstractEntityState> gameStateToEntity;
-
-	public TestSkillPredicate(Element element, Function<? super GameState, ? extends AbstractEntityState> gameStateToEntity) {
-		if (element.hasAttribute("diceRollAdjustment")) {
-			this.diceRollAdjustment = Integer.parseInt(element.getAttribute("diceRollAdjustment"));
-		}
-		this.gameStateToEntity = gameStateToEntity;
-	}
-
-	@Override
-	public boolean apply(GameState gameState) {
-		AbstractEntityState entity = this.gameStateToEntity.apply(gameState);
-		return (DiceRoller.rollDice(2) + diceRollAdjustment) <= entity.getSkill().getCurrentValue();
-	}
+    override fun test(gameState: GameState): Boolean {
+        val entity = gameStateToEntity.apply(gameState)
+        return rollDice(2) + diceRollAdjustment <= entity.skill.currentValue
+    }
 }
