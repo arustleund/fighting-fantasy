@@ -9,7 +9,7 @@ import rustleund.fightingfantasy.framework.base.booleanAttribute
 import java.util.function.Predicate
 
 
-open class TestStatPredicate @JvmOverloads constructor(
+class TestStatPredicate @JvmOverloads constructor(
     element: Element,
     private val entityStateRetriever: (GameState) -> AbstractEntityState = GameState::getPlayerState,
     private val attackStrengthRetriever: (GameState) -> Int =
@@ -39,6 +39,6 @@ open class TestStatPredicate @JvmOverloads constructor(
 
     private fun getNonAttackStrengthStatValue(entityStateToTest: AbstractEntityState): Int {
         val statScale = PropertyUtils.getProperty(entityStateToTest, stat) as Scale
-        return if (useInitialValue) statScale.upperBound else statScale.currentValue
+        return if (useInitialValue) statScale.upperBound!! else statScale.currentValue
     }
 }

@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import org.easymock.EasyMockSupport;
 import org.junit.Test;
@@ -14,7 +15,6 @@ import org.w3c.dom.Element;
 
 import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.base.Item;
 import rustleund.fightingfantasy.framework.base.PlayerState;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 
@@ -33,7 +33,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("promptOnFail")).andStubReturn(false);
 		expect(element.hasAttribute("useAmountAsValue")).andStubReturn(false);
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
-		expect(element.getAttribute("round")).andStubReturn(null);
+		expect(element.getAttribute("round")).andStubReturn("");
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
 		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
 		expect(element.hasAttribute("negate")).andStubReturn(false);
@@ -62,7 +62,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("promptOnFail")).andStubReturn(false);
 		expect(element.hasAttribute("useAmountAsValue")).andStubReturn(false);
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
-		expect(element.getAttribute("round")).andStubReturn(null);
+		expect(element.getAttribute("round")).andStubReturn("");
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
 		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
 		expect(element.hasAttribute("negate")).andStubReturn(false);
@@ -90,7 +90,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("promptOnFail")).andStubReturn(false);
 		expect(element.hasAttribute("useAmountAsValue")).andStubReturn(false);
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
-		expect(element.getAttribute("round")).andStubReturn(null);
+		expect(element.getAttribute("round")).andStubReturn("");
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
 		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
 		expect(element.hasAttribute("negate")).andStubReturn(false);
@@ -119,7 +119,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.getAttribute("promptOnFail")).andStubReturn("false");
 		expect(element.hasAttribute("useAmountAsValue")).andStubReturn(false);
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
-		expect(element.getAttribute("round")).andStubReturn(null);
+		expect(element.getAttribute("round")).andStubReturn("");
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
 		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
 		expect(element.hasAttribute("negate")).andStubReturn(false);
@@ -148,7 +148,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.getAttribute("promptOnFail")).andStubReturn("true");
 		expect(element.hasAttribute("useAmountAsValue")).andStubReturn(false);
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
-		expect(element.getAttribute("round")).andStubReturn(null);
+		expect(element.getAttribute("round")).andStubReturn("");
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
 		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
 		expect(element.hasAttribute("negate")).andStubReturn(false);
@@ -180,7 +180,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.getAttribute("promptOnFail")).andStubReturn("true");
 		expect(element.hasAttribute("useAmountAsValue")).andStubReturn(false);
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
-		expect(element.getAttribute("round")).andStubReturn(null);
+		expect(element.getAttribute("round")).andStubReturn("");
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
 		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
 		expect(element.hasAttribute("negate")).andStubReturn(false);
@@ -213,7 +213,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("useAmountAsValue")).andStubReturn(true);
 		expect(element.getAttribute("useAmountAsValue")).andStubReturn("true");
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
-		expect(element.getAttribute("round")).andStubReturn(null);
+		expect(element.getAttribute("round")).andStubReturn("");
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
 		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
 		expect(element.hasAttribute("negate")).andStubReturn(false);
@@ -247,7 +247,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("useAmountAsValue")).andStubReturn(true);
 		expect(element.getAttribute("useAmountAsValue")).andStubReturn("true");
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
-		expect(element.getAttribute("round")).andStubReturn(null);
+		expect(element.getAttribute("round")).andStubReturn("");
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
 		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
 		expect(element.hasAttribute("negate")).andStubReturn(false);
@@ -281,7 +281,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("useAmountAsValue")).andStubReturn(true);
 		expect(element.getAttribute("useAmountAsValue")).andStubReturn("true");
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
-		expect(element.getAttribute("round")).andStubReturn(null);
+		expect(element.getAttribute("round")).andStubReturn("");
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(true);
 		expect(element.getAttribute("adjustInitialValue")).andStubReturn("true");
 		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
@@ -315,7 +315,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("useAmountAsValue")).andStubReturn(true);
 		expect(element.getAttribute("useAmountAsValue")).andStubReturn("true");
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
-		expect(element.getAttribute("round")).andStubReturn(null);
+		expect(element.getAttribute("round")).andStubReturn("");
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(true);
 		expect(element.getAttribute("adjustInitialValue")).andStubReturn("true");
 		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
@@ -334,7 +334,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		assertTrue(testee.execute(gameState));
 
 		assertEquals(12, playerState.getProvisions().getCurrentValue());
-		assertEquals(13, playerState.getProvisions().getUpperBound().intValue());
+		assertEquals(13, Objects.requireNonNull(playerState.getProvisions().getUpperBound()).intValue());
 		assertEquals("-", gameState.getMessage());
 
 		gameState.clearMessage();
@@ -349,7 +349,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("promptOnFail")).andStubReturn(false);
 		expect(element.hasAttribute("useAmountAsValue")).andStubReturn(false);
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(false);
-		expect(element.getAttribute("round")).andStubReturn(null);
+		expect(element.getAttribute("round")).andStubReturn("");
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(true);
 		expect(element.getAttribute("adjustInitialValue")).andStubReturn("true");
 		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
@@ -368,7 +368,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		assertTrue(testee.execute(gameState));
 
 		assertEquals(12, playerState.getProvisions().getCurrentValue());
-		assertEquals(25, playerState.getProvisions().getUpperBound().intValue());
+		assertEquals(25, Objects.requireNonNull(playerState.getProvisions().getUpperBound()).intValue());
 		assertEquals("-", gameState.getMessage());
 
 		gameState.clearMessage();
@@ -384,7 +384,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		expect(element.hasAttribute("useAmountAsValue")).andStubReturn(false);
 		expect(element.hasAttribute("useAmountAsPercent")).andStubReturn(true);
 		expect(element.getAttribute("useAmountAsPercent")).andStubReturn("true");
-		expect(element.getAttribute("round")).andStubReturn(null);
+		expect(element.getAttribute("round")).andStubReturn("");
 		expect(element.hasAttribute("adjustInitialValue")).andStubReturn(false);
 		expect(element.hasAttribute("rollDiceAmount")).andStubReturn(false);
 		expect(element.hasAttribute("negate")).andStubReturn(false);
@@ -540,7 +540,7 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 	}
 
 	private PlayerState newPlayer() {
-		return new PlayerState("test", new ArrayList<Item>());
+		return new PlayerState("test", new ArrayList<>());
 	}
 
 }

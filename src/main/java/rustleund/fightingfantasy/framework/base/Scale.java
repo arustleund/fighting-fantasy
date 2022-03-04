@@ -5,6 +5,8 @@ package rustleund.fightingfantasy.framework.base;
 
 import com.google.common.collect.Range;
 
+import javax.annotation.Nullable;
+
 /**
  * @author rustlea
  */
@@ -93,7 +95,7 @@ public class Scale {
 	/**
 	 * Utility method that automatically swallows the Exception for you.
 	 * 
-	 * @param amount
+	 * @param amount The amount to adjust this {@link Scale} by
 	 */
 	public void adjustCurrentValueNoException(int amount) {
 		try {
@@ -107,6 +109,7 @@ public class Scale {
 		return this.currentValue;
 	}
 
+	@Nullable
 	public Integer getUpperBound() {
 		return this.range.hasUpperBound() ? this.range.upperEndpoint() : null;
 	}
@@ -121,7 +124,7 @@ public class Scale {
 
 	@Override
 	public String toString() {
-		StringBuffer result = new StringBuffer("" + this.currentValue);
+		StringBuilder result = new StringBuilder("" + this.currentValue);
 		if (this.range.hasUpperBound()) {
 			result.append("/");
 			result.append(this.range.upperEndpoint());
