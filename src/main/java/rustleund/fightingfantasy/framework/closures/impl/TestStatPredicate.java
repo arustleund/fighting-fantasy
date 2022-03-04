@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.w3c.dom.Element;
@@ -12,8 +13,6 @@ import org.w3c.dom.Element;
 import rustleund.fightingfantasy.framework.base.AbstractEntityState;
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.Scale;
-
-import com.google.common.base.Predicate;
 
 public class TestStatPredicate implements Predicate<GameState> {
 
@@ -30,8 +29,8 @@ public class TestStatPredicate implements Predicate<GameState> {
 
 	private List<Boolean> acceptableValues;
 	private Integer valueToCompare;
-	private String stat;
-	private boolean useInitialValue;
+	private final String stat;
+	private final boolean useInitialValue;
 
 	public TestStatPredicate(Element element) {
 		this.stat = element.getAttribute("stat");
@@ -48,7 +47,7 @@ public class TestStatPredicate implements Predicate<GameState> {
 	}
 
 	@Override
-	public boolean apply(GameState gameState) {
+	public boolean test(GameState gameState) {
 		try {
 			AbstractEntityState entityStateToTest = getEntityStateToTest(gameState);
 

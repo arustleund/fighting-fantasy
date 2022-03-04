@@ -1,31 +1,18 @@
-package rustleund.fightingfantasy.gamesave;
+package rustleund.fightingfantasy.gamesave
 
-import java.awt.event.ActionEvent;
+import rustleund.fightingfantasy.framework.base.GameController
+import javax.swing.AbstractAction
+import java.awt.event.ActionEvent
 
-import javax.swing.AbstractAction;
+class BackAction(private val gameController: GameController) : AbstractAction("Back") {
 
-import rustleund.fightingfantasy.framework.base.GameController;
-import rustleund.fightingfantasy.framework.base.GameState;
-
-public class BackAction extends AbstractAction {
-
-	private static final long serialVersionUID = -9111296685764704027L;
-
-	private GameController gameController;
-
-	public BackAction(GameController gameController) {
-		super("Back");
-		this.gameController = gameController;
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		GameState gameState = this.gameController.getGameState();
-		SavedGame latestGameProgress = gameState.popGameProgress();
-		latestGameProgress = gameState.popGameProgress();
-		if (latestGameProgress != null) {
-			gameState.setPlayerState(latestGameProgress.getPlayerState());
-			this.gameController.goToPage(latestGameProgress.getPageId());
-		}
-	}
+    override fun actionPerformed(e: ActionEvent) {
+        val gameState = gameController.gameState
+        gameState.popGameProgress()
+        val latestGameProgress = gameState.popGameProgress()
+        if (latestGameProgress != null) {
+            gameState.playerState = latestGameProgress.playerState
+            gameController.goToPage(latestGameProgress.pageId)
+        }
+    }
 }

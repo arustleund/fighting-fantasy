@@ -1,16 +1,18 @@
-package rustleund.fightingfantasy.framework.closures;
+package rustleund.fightingfantasy.framework.closures
 
-import rustleund.fightingfantasy.framework.base.GameState;
+import rustleund.fightingfantasy.framework.base.GameState
 
-public interface Closure {
+/**
+ * @see [execute]
+ */
+interface Closure {
 
-	/**
-	 * Execute a game task.
-	 * 
-	 * @param gameState The current {@link GameState}
-	 * 
-	 * @return <code>true</code> if the execution was successful, <code>false</code> otherwise
-	 */
-	boolean execute(GameState gameState);
-
+    /**
+     * Execute a game task.
+     *
+     * @param gameState The current [GameState]
+     *
+     * @return `true` if the execution was successful, `false` otherwise
+     */
+    fun execute(gameState: GameState): Boolean
 }
