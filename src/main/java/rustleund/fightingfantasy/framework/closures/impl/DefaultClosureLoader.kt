@@ -3,13 +3,13 @@
  */
 package rustleund.fightingfantasy.framework.closures.impl
 
-import com.google.common.base.Function
 import org.w3c.dom.Element
 import rustleund.fightingfantasy.framework.base.asElementSequence
 import rustleund.fightingfantasy.framework.base.getChildElementByName
 import rustleund.fightingfantasy.framework.closures.ClosureLoader
 import java.lang.IllegalArgumentException
 import rustleund.fightingfantasy.framework.closures.Closure
+import java.util.function.Function
 
 /**
  * @author rustlea

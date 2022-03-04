@@ -4,14 +4,14 @@ import org.w3c.dom.Element;
 
 import rustleund.fightingfantasy.framework.base.GameState;
 
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
 
 public class TestItemPredicate implements Predicate<GameState> {
 
-	private Predicate<GameState> delegate;
+	private final Predicate<GameState> delegate;
 
 	/**
-	 * @param A {@code <testItem />} {@link Element} with an <code>id</code> attribute containing an item id
+	 * @param element A {@code <testItem />} {@link Element} with an <code>id</code> attribute containing an item id
 	 */
 	public TestItemPredicate(Element element) {
 		int itemId = Integer.parseInt(element.getAttribute("id"));
@@ -19,7 +19,7 @@ public class TestItemPredicate implements Predicate<GameState> {
 	}
 
 	@Override
-	public boolean apply(GameState input) {
-		return this.delegate.apply(input);
+	public boolean test(GameState input) {
+		return this.delegate.test(input);
 	}
 }

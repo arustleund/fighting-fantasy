@@ -1,13 +1,10 @@
-package rustleund.fightingfantasy.framework.base;
+package rustleund.fightingfantasy.framework.base
 
-import java.util.List;
+import org.w3c.dom.Element
 
-import org.w3c.dom.Element;
+interface BattleEffectsLoader {
 
-public interface BattleEffectsLoader {
+    fun loadAllBattleEffectsFromTag(baseTagElement: Element): List<BattleEffects>
 
-	List<BattleEffects> loadAllBattleEffectsFromTag(Element baseTagElement);
-
-	void loadBattleEffectsFromTag(BattleEffects battleEffects, Element effectsTag);
-
+    fun loadBattleEffectsFromTag(battleEffects: BattleEffects, effectsTag: Element)
 }

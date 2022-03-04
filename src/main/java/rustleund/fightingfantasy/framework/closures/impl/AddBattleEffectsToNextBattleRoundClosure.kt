@@ -1,25 +1,16 @@
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import java.util.List;
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.base.BattleEffectsLoader
+import rustleund.fightingfantasy.framework.base.GameState
+import rustleund.fightingfantasy.framework.closures.Closure
 
-import org.w3c.dom.Element;
+class AddBattleEffectsToNextBattleRoundClosure(element: Element, battleEffectsLoader: BattleEffectsLoader) : Closure {
 
-import rustleund.fightingfantasy.framework.base.BattleEffects;
-import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
-import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.closures.Closure;
+    private val battleEffects = battleEffectsLoader.loadAllBattleEffectsFromTag(element)
 
-public class AddBattleEffectsToNextBattleRoundClosure implements Closure {
-
-	private List<BattleEffects> battleEffects;
-
-	public AddBattleEffectsToNextBattleRoundClosure(Element element, BattleEffectsLoader battleEffectsLoader) {
-		this.battleEffects = battleEffectsLoader.loadAllBattleEffectsFromTag(element);
-	}
-
-	@Override
-	public boolean execute(GameState gameState) {
-		gameState.getBattleState().addBattleEffectsForNextRound(battleEffects);
-		return true;
-	}
+    override fun execute(gameState: GameState): Boolean {
+        gameState.battleState.addBattleEffectsForNextRound(battleEffects)
+        return true
+    }
 }

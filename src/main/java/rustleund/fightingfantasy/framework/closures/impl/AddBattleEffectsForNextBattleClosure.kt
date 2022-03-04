@@ -1,32 +1,17 @@
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import java.util.List;
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.base.BattleEffectsLoader
+import rustleund.fightingfantasy.framework.base.GameState
+import rustleund.fightingfantasy.framework.closures.Closure
 
-import org.w3c.dom.Element;
+class AddBattleEffectsForNextBattleClosure(element: Element, battleEffectsLoader: BattleEffectsLoader) : Closure {
 
-import rustleund.fightingfantasy.framework.base.BattleEffects;
-import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
-import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.closures.Closure;
+    private val nextBattleBattleEffects = battleEffectsLoader.loadAllBattleEffectsFromTag(element)
 
-public class AddBattleEffectsForNextBattleClosure implements Closure {
-
-	private List<BattleEffects> nextBattleBattleEffects;
-
-	public AddBattleEffectsForNextBattleClosure(Element element, BattleEffectsLoader battleEffectsLoader) {
-		this.nextBattleBattleEffects = battleEffectsLoader.loadAllBattleEffectsFromTag(element);
-	}
-
-	@Override
-	public boolean execute(GameState gameState) {
-		if (this.nextBattleBattleEffects != null) {
-			if (gameState.getPlayerState().getNextBattleBattleEffects() == null) {
-				gameState.getPlayerState().setNextBattleBattleEffects(this.nextBattleBattleEffects);
-			} else {
-				gameState.getPlayerState().getNextBattleBattleEffects().addAll(this.nextBattleBattleEffects);
-			}
-		}
-		return true;
-	}
-
+    override fun execute(gameState: GameState): Boolean {
+        gameState.playerState.nextBattleBattleEffects =
+            gameState.playerState.nextBattleBattleEffects.orEmpty() + nextBattleBattleEffects
+        return true
+    }
 }

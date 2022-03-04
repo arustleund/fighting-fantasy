@@ -6,13 +6,13 @@ import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
 
 public class TestClosure implements Closure {
 
-	private Predicate<? super GameState> predicate;
-	private Closure trueClosure;
-	private Closure falseClosure;
+	private final Predicate<? super GameState> predicate;
+	private final Closure trueClosure;
+	private final Closure falseClosure;
 
 	/**
 	 * @param predicate The {@link Predicate} to use to determine which {@link Closure} to executre
@@ -27,7 +27,7 @@ public class TestClosure implements Closure {
 
 	@Override
 	public boolean execute(GameState gameState) {
-		if (this.predicate.apply(gameState)) {
+		if (this.predicate.test(gameState)) {
 			return this.trueClosure.execute(gameState);
 		}
 		return this.falseClosure.execute(gameState);

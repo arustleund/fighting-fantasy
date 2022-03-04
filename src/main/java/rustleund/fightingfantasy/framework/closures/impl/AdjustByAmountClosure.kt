@@ -1,31 +1,23 @@
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import java.util.function.BiConsumer;
-import java.util.function.Function;
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.base.GameState
+import rustleund.fightingfantasy.framework.base.intAttribute
+import rustleund.fightingfantasy.framework.closures.Closure
+import java.util.function.BiConsumer
+import java.util.function.Function
 
-import org.w3c.dom.Element;
+class AdjustByAmountClosure(
+    element: Element,
+    private val currentValueGetter: Function<in GameState, out Int>,
+    private val valueSetter: BiConsumer<in GameState, in Int>
+) : Closure {
 
-import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.closures.Closure;
+    private val amount = element.intAttribute("amount", 0)
 
-public class AdjustByAmountClosure implements Closure {
-
-	private int amount = 0;
-	private Function<? super GameState, ? extends Integer> currentValueGetter;
-	private BiConsumer<? super GameState, ? super Integer> valueSetter;
-
-	public AdjustByAmountClosure(Element element, Function<? super GameState, ? extends Integer> currentValueGetter, BiConsumer<? super GameState, ? super Integer> valueSetter) {
-		if (element.hasAttribute("amount")) {
-			this.amount = Integer.valueOf(element.getAttribute("amount"));
-		}
-		this.currentValueGetter = currentValueGetter;
-		this.valueSetter = valueSetter;
-	}
-
-	@Override
-	public boolean execute(GameState gameState) {
-		int currentValue = this.currentValueGetter.apply(gameState);
-		this.valueSetter.accept(gameState, currentValue + this.amount);
-		return true;
-	}
+    override fun execute(gameState: GameState): Boolean {
+        val currentValue = currentValueGetter.apply(gameState)
+        valueSetter.accept(gameState, currentValue + amount)
+        return true
+    }
 }

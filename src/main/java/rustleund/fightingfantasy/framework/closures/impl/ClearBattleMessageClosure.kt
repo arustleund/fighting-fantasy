@@ -1,39 +1,24 @@
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.StringTokenizer;
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.base.BattleState.BattleMessagePosition
+import rustleund.fightingfantasy.framework.base.GameState
+import rustleund.fightingfantasy.framework.base.optionalAttribute
+import rustleund.fightingfantasy.framework.closures.Closure
 
-import org.w3c.dom.Element;
+class ClearBattleMessageClosure(e: Element) : Closure {
 
-import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.base.BattleState.BattleMessagePosition;
-import rustleund.fightingfantasy.framework.closures.Closure;
+    private val positionsToClear = e.optionalAttribute("positionsToClear")
+        ?.splitToSequence(',')
+        ?.map { pos -> BattleMessagePosition.valueOf(pos) }
+        ?.toList()
 
-public class ClearBattleMessageClosure implements Closure {
-
-	private Collection<BattleMessagePosition> positionsToClear;
-
-	public ClearBattleMessageClosure(Element e) {
-		if (e.hasAttribute("positionsToClear")) {
-			this.positionsToClear = new ArrayList<>();
-			StringTokenizer tok = new StringTokenizer(e.getAttribute("positionsToClear"), ",");
-			while (tok.hasMoreTokens()) {
-				this.positionsToClear.add(BattleMessagePosition.valueOf(tok.nextToken()));
-			}
-		}
-	}
-
-	@Override
-	public boolean execute(GameState gameState) {
-		if (this.positionsToClear == null) {
-			gameState.getBattleState().clearAllAdditionalMessages();
-		} else {
-			for (BattleMessagePosition position : this.positionsToClear) {
-				gameState.getBattleState().clearAdditionalMessage(position);
-			}
-		}
-		return true;
-	}
-
+    override fun execute(gameState: GameState): Boolean {
+        if (positionsToClear == null) {
+            gameState.battleState.clearAllAdditionalMessages()
+        } else {
+            positionsToClear.forEach { gameState.battleState.clearAdditionalMessage(it) }
+        }
+        return true
+    }
 }

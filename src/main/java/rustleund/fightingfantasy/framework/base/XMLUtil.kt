@@ -3,8 +3,11 @@ package rustleund.fightingfantasy.framework.base
 import org.w3c.dom.Element
 import org.w3c.dom.NodeList
 
+/**
+ * @return A [Sequence] of all [Element]s with the name [childName] that are direct children of the given [parentElement]
+ */
 fun getChildElementsByName(parentElement: Element, childName: String): Sequence<Element> =
-     parentElement.getElementsByTagNameNS("*", childName)
+    parentElement.getElementsByTagNameNS("*", childName)
         .asElementSequence()
         .filter { it.parentNode.isSameNode(parentElement) }
 
@@ -15,6 +18,12 @@ fun getChildElementByName(parentElement: Element, childName: String): Element? {
         require(!childrenNodeList.hasNext()) { "There was more than one child for parent: ${parentElement.localName} with child name: $childName" }
         result
     } else null
+}
+
+fun Element.getAncestorByName(name: String): Element? {
+    val parent = this.parentNode
+    return if (parent !is Element) null else
+        if (parent.localName == name) parent else parent.getAncestorByName(name)
 }
 
 fun Element.optionalAttribute(name: String): String? =

@@ -2,6 +2,8 @@ package rustleund.fightingfantasy.ioc;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,9 +58,6 @@ import rustleund.fightingfantasy.framework.closures.impl.TestNumberPredicate;
 import rustleund.fightingfantasy.framework.closures.impl.TestSkillPredicate;
 import rustleund.fightingfantasy.framework.closures.impl.TestStatPredicate;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-
 @Configuration
 public class SpringContext {
 
@@ -78,7 +77,7 @@ public class SpringContext {
 		mappings.put("adjustPlayerDamageModifier", adjustPlayerDamageModifierClosureFunction());
 		mappings.put("adjustScale", adjustScaleClosureFunction());
 		mappings.put("clearBattleMessage", ClearBattleMessageClosure::new);
-		mappings.put("clearPoisonDamage", ClearPoisonDamageClosure::new);
+		mappings.put("clearPoisonDamage", e -> new ClearPoisonDamageClosure());
 		mappings.put("displayText", DisplayTextClosure::new);
 		mappings.put("displayEnemies", DisplayEnemiesClosure::new);
 		mappings.put("doBattle", DoBattleClosure::new);
@@ -111,26 +110,20 @@ public class SpringContext {
 
 	@Bean
 	public Function<Element, Closure> adjustPlayerAttackStrengthClosureFunction() {
-		return element -> {
-			return new AdjustByAmountClosure(element, playerStateFromGameState().andThen(PlayerState::getAttackStrengthModifier),
-					(gameState, newValue) -> gameState.getPlayerState().setAttackStrengthModifier(newValue));
-		};
+		return element -> new AdjustByAmountClosure(element, playerStateFromGameState().andThen(PlayerState::getAttackStrengthModifier),
+				(gameState, newValue) -> gameState.getPlayerState().setAttackStrengthModifier(newValue));
 	}
 
 	@Bean
 	public Function<Element, Closure> adjustFirstNonDeadEnemyAttackStrengthClosureFunction() {
-		return element -> {
-			return new AdjustByAmountClosure(element, firstNonDeadEnemyStateFromGameState().andThen(EnemyState::getAttackStrengthModifier),
-					(gameState, newValue) -> gameState.getBattleState().getEnemies().getFirstNonDeadEnemy().setAttackStrengthModifier(newValue));
-		};
+		return element -> new AdjustByAmountClosure(element, firstNonDeadEnemyStateFromGameState().andThen(EnemyState::getAttackStrengthModifier),
+				(gameState, newValue) -> gameState.getBattleState().getEnemies().getFirstNonDeadEnemy().setAttackStrengthModifier(newValue));
 	}
 
 	@Bean
 	public Function<Element, Closure> adjustPlayerDamageModifierClosureFunction() {
-		return element -> {
-			return new AdjustByAmountClosure(element, playerStateFromGameState().andThen(PlayerState::getDamageModifier),
-					(gameState, newValue) -> gameState.getPlayerState().setDamageModifier(newValue));
-		};
+		return element -> new AdjustByAmountClosure(element, playerStateFromGameState().andThen(PlayerState::getDamageModifier),
+				(gameState, newValue) -> gameState.getPlayerState().setDamageModifier(newValue));
 	}
 
 	@Bean
@@ -158,37 +151,27 @@ public class SpringContext {
 
 	@Bean
 	public Function<Element, Closure> testEnemyTypesClosureFunction() {
-		return element -> {
-			return new TestClosure(new TestEnemyTypesPredicate(element), closureLoader(), element);
-		};
+		return element -> new TestClosure(new TestEnemyTypesPredicate(element), closureLoader(), element);
 	}
 
 	@Bean
 	public Function<Element, Closure> addEnemiesClosureFunction() {
-		return (Element input) -> {
-			return new AddEnemiesClosure(input, closureLoader());
-		};
+		return input -> new AddEnemiesClosure(input, closureLoader());
 	}
 
 	@Bean
 	public Function<Element, Closure> adjustEnemyScaleClosureFunction() {
-		return (Element input) -> {
-			return new AdjustEnemyScaleClosure(input, closureLoader(), battleEffectsLoader());
-		};
+		return input -> new AdjustEnemyScaleClosure(input, closureLoader(), battleEffectsLoader());
 	}
 
 	@Bean
 	public Function<Element, Closure> adjustScaleClosureFunction() {
-		return (Element input) -> {
-			return new AdjustScaleClosure(input, closureLoader(), battleEffectsLoader());
-		};
+		return input -> new AdjustScaleClosure(input, closureLoader(), battleEffectsLoader());
 	}
 
 	@Bean
 	public Function<Element, Closure> initPlayerStateClosureFunction() {
-		return (Element input) -> {
-			return new InitPlayerStateClosure(itemUtil());
-		};
+		return input -> new InitPlayerStateClosure(itemUtil());
 	}
 
 	@Bean
@@ -198,12 +181,7 @@ public class SpringContext {
 
 	@Bean
 	public Function<Element, Closure> linkClosureFunction() {
-		return new Function<Element, Closure>() {
-			@Override
-			public Closure apply(Element input) {
-				return new LinkClosure(input, closureLoader(), battleEffectsLoader());
-			}
-		};
+		return input -> new LinkClosure(input, closureLoader(), battleEffectsLoader());
 	}
 
 	@Bean
@@ -213,22 +191,12 @@ public class SpringContext {
 
 	@Bean
 	public Function<Element, Closure> testSkillClosureFunction() {
-		return new Function<Element, Closure>() {
-			@Override
-			public Closure apply(Element input) {
-				return new TestClosure(new TestSkillPredicate(input, GameState::getPlayerState), closureLoader(), input);
-			}
-		};
+		return input -> new TestClosure(new TestSkillPredicate(input, GameState::getPlayerState), closureLoader(), input);
 	}
 
 	@Bean
 	public Function<Element, Closure> testStatClosureFunction() {
-		return new Function<Element, Closure>() {
-			@Override
-			public Closure apply(Element input) {
-				return new TestClosure(new TestStatPredicate(input), closureLoader(), input);
-			}
-		};
+		return input -> new TestClosure(new TestStatPredicate(input), closureLoader(), input);
 	}
 
 	@Bean
@@ -238,12 +206,7 @@ public class SpringContext {
 
 	@Bean
 	public Function<Element, Closure> testEnemyStatClosureFunction() {
-		return new Function<Element, Closure>() {
-			@Override
-			public Closure apply(Element input) {
-				return new TestClosure(new TestEnemyStatPredicate(input), closureLoader(), input);
-			}
-		};
+		return input -> new TestClosure(new TestEnemyStatPredicate(input), closureLoader(), input);
 	}
 
 	@Bean
@@ -252,17 +215,12 @@ public class SpringContext {
 	}
 
 	private java.util.function.Function<? super GameState, ? extends AbstractEntityState> gameStateToEnemy(Element element) {
-		return gameState -> gameState.getBattleState().getEnemies().getEnemies().get(Integer.valueOf(element.getAttribute("enemyId")));
+		return gameState -> gameState.getBattleState().getEnemies().getEnemies().get(Integer.parseInt(element.getAttribute("enemyId")));
 	}
 
 	@Bean
 	public Function<Element, Closure> testFlagClosureFunction() {
-		return new Function<Element, Closure>() {
-			@Override
-			public Closure apply(Element input) {
-				return new TestClosure(new TestFlagPredicate(input), closureLoader(), input);
-			}
-		};
+		return input -> new TestClosure(new TestFlagPredicate(input), closureLoader(), input);
 	}
 
 	@Bean
@@ -272,59 +230,32 @@ public class SpringContext {
 
 	@Bean
 	public Function<Element, Closure> testAnyFlagClosureFunction() {
-		return new Function<Element, Closure>() {
-			@Override
-			public Closure apply(Element input) {
-				return new TestClosure(new TestAnyFlagPredicate(input), closureLoader(), input);
-			}
-		};
+		return input -> new TestClosure(new TestAnyFlagPredicate(input), closureLoader(), input);
 	}
 
 	@Bean
 	public Function<Element, Closure> rollDiceClosureFunction() {
-		return new Function<Element, Closure>() {
-			@Override
-			public Closure apply(Element input) {
-				return new RollDiceClosure(input, closureLoader());
-			}
-		};
+		return input -> new RollDiceClosure(input, closureLoader());
 	}
 
 	@Bean
 	public Function<Element, Closure> mustEatMealClosureFunction() {
-		return new Function<Element, Closure>() {
-			@Override
-			public Closure apply(Element input) {
-				return new MustEatMealClosure(input, closureLoader(), battleEffectsLoader());
-			}
-		};
+		return input -> new MustEatMealClosure(input, closureLoader(), battleEffectsLoader());
 	}
 
 	@Bean
 	public Function<Element, Closure> addBattleEffectsForNextBattleClosureFunction() {
-		return new Function<Element, Closure>() {
-			@Override
-			public Closure apply(Element input) {
-				return new AddBattleEffectsForNextBattleClosure(input, battleEffectsLoader());
-			}
-		};
+		return input -> new AddBattleEffectsForNextBattleClosure(input, battleEffectsLoader());
 	}
 
 	@Bean
 	public Function<Element, Closure> addBattleEffectsToCurrentBattleClosureFunction() {
-		return new Function<Element, Closure>() {
-			@Override
-			public Closure apply(Element input) {
-				return new AddBattleEffectsToCurrentBattleClosure(input, battleEffectsLoader());
-			}
-		};
+		return input -> new AddBattleEffectsToCurrentBattleClosure(input, battleEffectsLoader());
 	}
 
 	@Bean
 	public Function<Element, Closure> addBattleEffectsToNextBattleRoundClosureFunction() {
-		return element -> {
-			return new AddBattleEffectsToNextBattleRoundClosure(element, battleEffectsLoader());
-		};
+		return element -> new AddBattleEffectsToNextBattleRoundClosure(element, battleEffectsLoader());
 	}
 
 	@Bean
