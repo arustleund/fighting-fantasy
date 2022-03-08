@@ -13,7 +13,7 @@ class TestAttackStrengthHighestPredicate(e: Element) : Predicate<GameState> {
 
     override fun test(gameState: GameState): Boolean {
         val currentAttackStrengths = gameState.battleState.currentAttackStrengths
-        return if (player) currentAttackStrengths.playerHasHighestAttackStrength()
+        return if (player) !currentAttackStrengths.playerHit
         else currentAttackStrengths.enemyHasHighestAttackStrength(enemyId)
     }
 }

@@ -10,5 +10,5 @@ class TestEnemyStatPredicate(element: Element) : Predicate<GameState> by
 TestStatPredicate(
     element,
     { it.battleState.enemies.enemies[element.enemyId()] },
-    { it.battleState.currentAttackStrengths.getEnemyAttackStrength(element.enemyId()).total }
+    { it.battleState.currentAttackStrengths.getEnemyAttackStrength(element.enemyId()) }
 )

@@ -2,18 +2,15 @@ package rustleund.fightingfantasy.framework.closures.impl
 
 import org.apache.commons.beanutils.PropertyUtils
 import org.w3c.dom.Element
-import rustleund.fightingfantasy.framework.base.GameState
-import rustleund.fightingfantasy.framework.base.AbstractEntityState
-import rustleund.fightingfantasy.framework.base.Scale
-import rustleund.fightingfantasy.framework.base.booleanAttribute
+import rustleund.fightingfantasy.framework.base.*
 import java.util.function.Predicate
 
 
 class TestStatPredicate @JvmOverloads constructor(
     element: Element,
     private val entityStateRetriever: (GameState) -> AbstractEntityState = GameState::getPlayerState,
-    private val attackStrengthRetriever: (GameState) -> Int =
-        { it.battleState.currentAttackStrengths.playerAttackStrength.total }
+    private val attackStrengthRetriever: (GameState) -> AttackStrength? =
+        { it.battleState.currentAttackStrengths.playerAttackStrength }
 ) : Predicate<GameState> {
 
     private val comparison = element.toComparison()
@@ -28,9 +25,9 @@ class TestStatPredicate @JvmOverloads constructor(
         }.onFailure { it.printStackTrace() }.getOrDefault(false)
     }
 
-    private fun getStatValue(entityStateToTest: AbstractEntityState, gameState: GameState): Int {
+    private fun getStatValue(entityStateToTest: AbstractEntityState, gameState: GameState): Int? {
         return when (stat) {
-            "attackStrength" -> attackStrengthRetriever(gameState)
+            "attackStrength" -> attackStrengthRetriever(gameState)?.total
             "hitCount" -> gameState.battleState.playerHitCount
             "battleRound" -> gameState.battleState.battleRound
             else -> getNonAttackStrengthStatValue(entityStateToTest)

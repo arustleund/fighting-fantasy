@@ -12,48 +12,52 @@ import org.w3c.dom.Element;
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 
-/**
- * @author rustlea
- */
 public class EnemyState extends AbstractEntityState {
 
-	private int poisonedWeaponRounds = 0;
-	private final Set<String> types = new HashSet<>();
-	private Closure enemyKilled;
+    private int poisonedWeaponRounds = 0;
+    private final Set<String> types = new HashSet<>();
+    private Closure enemyKilled;
 
-	public EnemyState(Element enemyTag, ClosureLoader closureLoader) {
+    public EnemyState(String name, int skill, int stamina, int poisonedWeaponRounds) {
+        this.name = name;
+        this.skill = new Scale(0, skill, skill, true);
+        this.stamina = new Scale(0, stamina, stamina, true);
+        this.poisonedWeaponRounds = poisonedWeaponRounds;
+    }
 
-		this.name = enemyTag.getAttribute("name");
+    public EnemyState(Element enemyTag, ClosureLoader closureLoader) {
 
-		Integer skillInteger = Integer.valueOf(enemyTag.getAttribute("skill"));
-		this.skill = new Scale(0, skillInteger, skillInteger, true);
+        this.name = enemyTag.getAttribute("name");
 
-		Integer staminaInteger = Integer.valueOf(enemyTag.getAttribute("stamina"));
-		this.stamina = new Scale(0, staminaInteger, staminaInteger, true);
+        Integer skillInteger = Integer.valueOf(enemyTag.getAttribute("skill"));
+        this.skill = new Scale(0, skillInteger, skillInteger, true);
 
-		if (enemyTag.hasAttribute("poisonedWeaponRounds")) {
-			this.poisonedWeaponRounds = Integer.parseInt(enemyTag.getAttribute("poisonedWeaponRounds"));
-		}
+        Integer staminaInteger = Integer.valueOf(enemyTag.getAttribute("stamina"));
+        this.stamina = new Scale(0, staminaInteger, staminaInteger, true);
 
-		if (enemyTag.hasAttribute("types")) {
-			this.types.addAll(Arrays.asList(enemyTag.getAttribute("types").split(",")));
-		}
+        if (enemyTag.hasAttribute("poisonedWeaponRounds")) {
+            this.poisonedWeaponRounds = Integer.parseInt(enemyTag.getAttribute("poisonedWeaponRounds"));
+        }
 
-		Element onKilledElement = XMLUtilKt.getChildElementByName(enemyTag, "onKilled");
-		if (onKilledElement != null) {
-			this.enemyKilled = closureLoader.loadClosureFromChildren(onKilledElement);
-		}
-	}
+        if (enemyTag.hasAttribute("types")) {
+            this.types.addAll(Arrays.asList(enemyTag.getAttribute("types").split(",")));
+        }
 
-	public int getPoisonedWeaponRounds() {
-		return poisonedWeaponRounds;
-	}
+        Element onKilledElement = XMLUtilKt.getChildElementByName(enemyTag, "onKilled");
+        if (onKilledElement != null) {
+            this.enemyKilled = closureLoader.loadClosureFromChildren(onKilledElement);
+        }
+    }
 
-	public Closure getEnemyKilled() {
-		return this.enemyKilled;
-	}
+    public int getPoisonedWeaponRounds() {
+        return poisonedWeaponRounds;
+    }
 
-	public boolean isOfType(String type) {
-		return this.types.contains(type);
-	}
+    public Closure getEnemyKilled() {
+        return this.enemyKilled;
+    }
+
+    public boolean isOfType(String type) {
+        return this.types.contains(type);
+    }
 }

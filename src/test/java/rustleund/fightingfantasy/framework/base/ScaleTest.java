@@ -1,11 +1,10 @@
 package rustleund.fightingfantasy.framework.base;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ScaleTest {
 
@@ -102,7 +101,7 @@ public class ScaleTest {
 		Scale testee = new Scale(0, 4, 20, false);
 
 		testee.adjustUpperBound(2);
-		assertEquals(22, testee.getUpperBound().intValue());
+		assertEquals(22, Objects.requireNonNull(testee.getUpperBound()).intValue());
 
 		testee.adjustUpperBound(-4);
 		assertEquals(18, testee.getUpperBound().intValue());
@@ -110,12 +109,12 @@ public class ScaleTest {
 		testee = new Scale(0, 4, null, false);
 
 		testee.adjustUpperBound(2);
-		assertEquals(2, testee.getUpperBound().intValue());
+		assertEquals(2, Objects.requireNonNull(testee.getUpperBound()).intValue());
 		assertEquals(2, testee.getCurrentValue());
 
 		testee = new Scale(0, 4, 6, false);
 		testee.adjustUpperBound(-3);
-		assertEquals(3, testee.getUpperBound().intValue());
+		assertEquals(3, Objects.requireNonNull(testee.getUpperBound()).intValue());
 		assertEquals(3, testee.getCurrentValue());
 	}
 

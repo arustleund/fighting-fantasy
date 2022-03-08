@@ -1,22 +1,18 @@
 package rustleund.fightingfantasy.framework.closures.impl;
 
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.Objects;
-
 import org.easymock.EasyMockSupport;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
-
 import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.PlayerState;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
+
+import java.util.ArrayList;
+import java.util.Objects;
+
+import static org.easymock.EasyMock.expect;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AdjustScaleClosureTest extends EasyMockSupport {
 

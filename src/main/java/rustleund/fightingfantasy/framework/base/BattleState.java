@@ -17,6 +17,9 @@ import org.w3c.dom.Element;
 
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
+import rustleund.fightingfantasy.framework.util.DiceRoller;
+
+import static rustleund.fightingfantasy.framework.base.AttackStrengthsKt.createAttackStrengths;
 
 /**
  * @author rustlea
@@ -244,7 +247,7 @@ public class BattleState {
 
 		PlayerState playerState = getPlayerState();
 
-		this.currentAttackStrengths = AttackStrengths.init(playerState, enemies, fightEnemiesTogether);
+		this.currentAttackStrengths = createAttackStrengths(playerState, enemies, fightEnemiesTogether, () -> DiceRoller.rollDice(2));
 
 		message.append("Your attack strength: ").append(this.currentAttackStrengths.getPlayerAttackStrength()).append("<br>");
 
@@ -263,7 +266,7 @@ public class BattleState {
 		}
 
 		if (battleIsNotOver()) {
-			if (this.currentAttackStrengths.playerWon()) {
+			if (this.currentAttackStrengths.getPlayerWon()) {
 				EnemyState firstEnemyToAttack = enemies.getFirstNonDeadEnemy();
 				int damage = -2 - playerState.getDamageModifier();
 				firstEnemyToAttack.getStamina().adjustCurrentValueNoException(damage);
@@ -279,10 +282,10 @@ public class BattleState {
 					message.append("<a href=\"http://testluckbattle:0\"><i>Test Your Luck</i></a> to try to do add an additional 2 points of damage");
 				}
 				message.append("<br>");
-			} else if (this.currentAttackStrengths.playerHit()) {
+			} else if (this.currentAttackStrengths.getPlayerHit()) {
 				hitPlayer(playerState, this.currentAttackStrengths.winningEnemyHasPoisonedWeapon(battleRound), message);
 			} else {
-				message.append("Attack strengths are equal, no one is hit!<br>");
+				message.append("Attack strengths are equal, no one is hit!<br><br>");
 			}
 		}
 

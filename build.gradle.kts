@@ -1,14 +1,13 @@
 plugins {
     java
     kotlin("jvm") version "1.6.10"
+    groovy
     application
 }
 
 repositories {
     mavenLocal()
-    maven {
-        url = uri("https://repo.maven.apache.org/maven2/")
-    }
+    mavenCentral()
 }
 
 dependencies {
@@ -18,10 +17,13 @@ dependencies {
     implementation("net.lingala.zip4j:zip4j:2.9.1")
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    testImplementation("org.jgrapht:jgrapht-core:1.4.0")
-    testImplementation("org.jgrapht:jgrapht-io:1.4.0")
-    testImplementation("junit:junit:4.13.1")
-    testImplementation("org.easymock:easymock:3.1")
+
+    testImplementation("org.jgrapht:jgrapht-core:1.5.1")
+    testImplementation("org.jgrapht:jgrapht-io:1.5.1")
+    testImplementation("org.easymock:easymock:4.3")
+    testImplementation("org.spockframework:spock-core:2.1-groovy-3.0")
+    testImplementation("org.codehaus.groovy:groovy-all:3.0.10")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
 
 group = "com.rustleund"
@@ -43,3 +45,8 @@ application {
     mainClass.set("rustleund.fightingfantasy.main.Main")
 }
 
+tasks {
+    test {
+        useJUnitPlatform()
+    }
+}

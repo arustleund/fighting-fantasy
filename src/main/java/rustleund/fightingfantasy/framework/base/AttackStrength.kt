@@ -1,60 +1,28 @@
-package rustleund.fightingfantasy.framework.base;
+package rustleund.fightingfantasy.framework.base
 
+/**
+ * @property total The total of the die roll, skill rating, and modifier
+ */
+data class AttackStrength(
+    private val dieRoll: Int,
+    private val skill: Int,
+    private val modifier: Int
+) : Comparable<AttackStrength> {
 
-public class AttackStrength implements Comparable<AttackStrength> {
+    val total = dieRoll + skill + modifier
 
-	private int dieRoll;
-	private int skill;
-	private int modifier;
+    override fun compareTo(other: AttackStrength): Int {
+        return total.compareTo(other.total)
+    }
 
-	public AttackStrength(int dieRoll, int skill, int modifier) {
-		this.dieRoll = dieRoll;
-		this.skill = skill;
-		this.modifier = modifier;
-	}
+    override fun equals(other: Any?) =
+        this === other || (other is AttackStrength && total == other.total)
 
-	public int getTotal() {
-		return dieRoll + skill + modifier;
-	}
+    override fun hashCode(): Int {
+        return total
+    }
 
-	public int getDieRoll() {
-		return this.dieRoll;
-	}
-
-	public int getSkill() {
-		return this.skill;
-	}
-
-	public int getModifier() {
-		return this.modifier;
-	}
-
-	@Override
-	public int compareTo(AttackStrength o) {
-		return Integer.compare(getTotal(), o.getTotal());
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return getTotal() == ((AttackStrength) obj).getTotal();
-	}
-
-	@Override
-	public int hashCode() {
-		return Integer.hashCode(getTotal());
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder result = new StringBuilder();
-		result.append(getTotal());
-		result.append(" (");
-		result.append(this.skill);
-		result.append(" skill + ");
-		result.append(this.modifier);
-		result.append(" modifier + ");
-		result.append(this.dieRoll);
-		result.append(" rolled)");
-		return result.toString();
-	}
+    override fun toString(): String {
+        return "$total ($skill skill + $modifier modifier + $dieRoll rolled)"
+    }
 }

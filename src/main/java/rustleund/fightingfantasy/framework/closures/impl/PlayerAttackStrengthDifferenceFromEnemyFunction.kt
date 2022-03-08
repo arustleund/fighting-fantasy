@@ -1,20 +1,15 @@
-package rustleund.fightingfantasy.framework.closures.impl;
+package rustleund.fightingfantasy.framework.closures.impl
 
-import java.util.function.Function;
+import rustleund.fightingfantasy.framework.base.GameState
+import java.util.function.Function
 
-import rustleund.fightingfantasy.framework.base.AttackStrength;
-import rustleund.fightingfantasy.framework.base.AttackStrengths;
-import rustleund.fightingfantasy.framework.base.BattleState;
-import rustleund.fightingfantasy.framework.base.GameState;
+class PlayerAttackStrengthDifferenceFromEnemyFunction : Function<GameState, Int> {
 
-public class PlayerAttackStrengthDifferenceFromEnemyFunction implements Function<GameState, Integer> {
-
-	@Override
-	public Integer apply(GameState t) {
-		BattleState battleState = t.getBattleState();
-		AttackStrengths currentAttackStrengths = battleState.getCurrentAttackStrengths();
-		int enemyIndex = battleState.getEnemies().getEnemies().indexOf(battleState.getEnemies().getFirstNonDeadEnemy());
-		AttackStrength enemyAttackStrength = currentAttackStrengths.getEnemyAttackStrength(enemyIndex);
-		return currentAttackStrengths.getPlayerAttackStrength().getTotal() - enemyAttackStrength.getTotal();
-	}
+    override fun apply(t: GameState): Int {
+        val battleState = t.battleState
+        val currentAttackStrengths = battleState.currentAttackStrengths
+        val enemyIndex = battleState.enemies.enemies.indexOf(battleState.enemies.firstNonDeadEnemy)
+        val enemyAttackStrength = currentAttackStrengths.getEnemyAttackStrength(enemyIndex)
+        return currentAttackStrengths.playerAttackStrength.total - (enemyAttackStrength?.total ?: 0)
+    }
 }

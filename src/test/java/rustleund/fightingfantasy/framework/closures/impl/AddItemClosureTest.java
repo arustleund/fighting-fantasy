@@ -1,19 +1,13 @@
 package rustleund.fightingfantasy.framework.closures.impl;
 
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.easymock.EasyMockSupport;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
+import rustleund.fightingfantasy.framework.base.*;
 
-import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.base.Item;
-import rustleund.fightingfantasy.framework.base.ItemUtil;
-import rustleund.fightingfantasy.framework.base.PageState;
-import rustleund.fightingfantasy.framework.base.PlayerState;
-import rustleund.fightingfantasy.framework.base.Scale;
+import static org.easymock.EasyMock.expect;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AddItemClosureTest extends EasyMockSupport {
 
