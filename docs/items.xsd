@@ -6,10 +6,10 @@
 	xmlns:items="http://www.rustleund.com/fighting-fantasy/items"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.rustleund.com/fighting-fantasy/page
-		https://github.com/arustleund/fighting-fantasy/raw/master/docs/page.xsd"
+		https://raw.githubusercontent.com/arustleund/fighting-fantasy/master/docs/page.xsd"
 	xmlns:page="http://www.rustleund.com/fighting-fantasy/page"
 >
-    <import schemaLocation="https://github.com/arustleund/fighting-fantasy/raw/master/docs/page.xsd" 
+    <import schemaLocation="https://raw.githubusercontent.com/arustleund/fighting-fantasy/master/docs/page.xsd"
     	namespace="http://www.rustleund.com/fighting-fantasy/page" />
     <element name="items" type="items:items"></element>
 

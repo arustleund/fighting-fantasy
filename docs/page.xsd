@@ -44,7 +44,7 @@
 	</complexType>
 
 
-	<complexType name="text">
+	<complexType name="text" mixed="true">
 		<sequence>
 			<any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
 		</sequence>
