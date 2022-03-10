@@ -52,9 +52,11 @@ Attributes:
 				skill: Required. The enemy's skill level.
 				stamina: Required. The enemy's stamina level.
 				poisonedWeaponRounds: Not Required. Default: 0. The number of rounds the enemy's weapon is poisoned.
+				poisonDamage: Not Required. Default: 0 if poisonedWeaponRounds is absent, 2 if poisonedWeaponRound is present.
+					The amount of extra damage that the enemy's attack does due to poison.
 			 -->
 			<enemy name="GREEN STALKER" skill="10" stamina="10" />
-			<enemy name="GREEN STALKER W POISON" skill="12" stamina="8" poisonedWeaponRounds="2" />
+			<enemy name="GREEN STALKER W POISON" skill="12" stamina="8" poisonedWeaponRounds="2" poisonDamage="3" />
 		</enemies>
 		<!-- <effects> defines any effects that should be executed at certain times in the battle. Not required. -->
 		<effects>

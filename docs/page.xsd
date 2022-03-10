@@ -266,6 +266,11 @@
 				<documentation>The number of rounds the enemy's weapon is poisoned for</documentation>
 			</annotation>
 		</attribute>
+		<attribute name="poisonDamage" type="int" use="optional">
+			<annotation>
+				<documentation>The amount of extra damage that is done by a poison attack</documentation>
+			</annotation>
+		</attribute>
 		<attribute name="types" type="string" use="optional" />
 	</complexType>
 
