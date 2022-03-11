@@ -3,6 +3,7 @@
  */
 package rustleund.fightingfantasy.framework.closures.impl
 
+import com.notkamui.keval.Keval
 import org.apache.commons.beanutils.PropertyUtils
 import org.w3c.dom.Element
 import rustleund.fightingfantasy.framework.base.*
@@ -14,7 +15,8 @@ import kotlin.math.floor
 
 class AdjustScaleClosure @JvmOverloads constructor(
     element: Element,
-    private val entityRetriever: (GameState) -> AbstractEntityState? = { it.playerState }
+    private val entityRetriever: (GameState) -> AbstractEntityState? = { it.playerState },
+    private val diceRoller: (Int) -> Int = { DiceRoller.rollDice(it) }
 ) : Closure {
 
     private val scaleName = element.getAttribute("type")
@@ -25,7 +27,30 @@ class AdjustScaleClosure @JvmOverloads constructor(
     private val round = element.getAttribute("round")
     private val adjustInitialValue = element.booleanAttribute("adjustInitialValue")
     private val rollDiceAmount = element.optionalIntAttribute("rollDiceAmount")
+    private val formula = element.optionalAttribute("formula")
     private val negate = element.booleanAttribute("negate")
+
+    private val keval = Keval {
+        includeDefault()
+
+        function {
+            name = "roll"
+            arity = 1
+            implementation = { diceRoller(it[0].toInt()).toDouble() }
+        }
+
+        function {
+            name = "floor"
+            arity = 1
+            implementation = { floor(it[0]) }
+        }
+
+        function {
+            name = "ceil"
+            arity = 1
+            implementation = { ceil(it[0]) }
+        }
+    }
 
     override fun execute(gameState: GameState): Boolean {
         val scale = runCatching { PropertyUtils.getProperty(entityRetriever(gameState), scaleName) as Scale }
@@ -63,8 +88,11 @@ class AdjustScaleClosure @JvmOverloads constructor(
             if (useAmountAsValue) {
                 amountToAdjust -= if (adjustInitialValue) scale.upperBound ?: 0 else scale.currentValue
             } else if (rollDiceAmount != null) {
-                amountToAdjust += DiceRoller.rollDice(rollDiceAmount)
+                amountToAdjust += diceRoller(rollDiceAmount)
             }
+        }
+        if (formula != null) {
+            amountToAdjust = keval.withConstant("AMT", amountToAdjust.toDouble()).eval(formula).toInt()
         }
         return if (negate) amountToAdjust * -1 else amountToAdjust
     }

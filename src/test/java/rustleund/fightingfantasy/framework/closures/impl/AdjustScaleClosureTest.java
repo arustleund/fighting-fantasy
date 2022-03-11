@@ -1,11 +1,16 @@
 package rustleund.fightingfantasy.framework.closures.impl;
 
+import kotlin.jvm.functions.Function1;
 import org.easymock.EasyMockSupport;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.PlayerState;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -13,6 +18,16 @@ import static org.easymock.EasyMock.expect;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AdjustScaleClosureTest extends EasyMockSupport {
+
+	private final static DocumentBuilder documentBuilder;
+
+	static {
+		try {
+			documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	@Test
 	public void testExecute() {
@@ -531,8 +546,53 @@ public class AdjustScaleClosureTest extends EasyMockSupport {
 		resetAll();
 	}
 
+	@Test
+	public void testFormula() {
+		String testElementString = """
+				<adjustScale type="stamina" amount="0" formula="AMT-(ceil(roll(1)/2)*2)" />
+				""";
+		Function1<Integer, Integer> diceRoller = createMock(Function1.class);
+		GameState gameState = new GameState();
+		PlayerState playerState = newPlayer();
+		int startingStamina = playerState.getStamina().getCurrentValue();
+		gameState.setPlayerState(playerState);
+
+		AdjustScaleClosure testee = new AdjustScaleClosure(loadElement(testElementString), GameState::getPlayerState, diceRoller);
+
+		expect(diceRoller.invoke(1)).andReturn(3);
+
+		replayAll();
+
+		assertTrue(testee.execute(gameState));
+		assertEquals(startingStamina - 4, playerState.getStamina().getCurrentValue());
+
+		verifyAll();
+		resetAll();
+
+		//
+
+		playerState.getStamina().adjustCurrentValue(4);
+
+		expect(diceRoller.invoke(1)).andReturn(2);
+
+		replayAll();
+
+		assertTrue(testee.execute(gameState));
+		assertEquals(startingStamina - 2, playerState.getStamina().getCurrentValue());
+
+		verifyAll();
+		resetAll();
+	}
+
 	private PlayerState newPlayer() {
 		return new PlayerState("test", new ArrayList<>());
 	}
 
+	private Element loadElement(String elementString) {
+		try {
+			return documentBuilder.parse(new ByteArrayInputStream(elementString.getBytes())).getDocumentElement();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

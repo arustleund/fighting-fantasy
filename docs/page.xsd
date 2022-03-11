@@ -122,6 +122,19 @@
 		</attribute>
 		<attribute name="adjustInitialValue" type="boolean" use="optional"></attribute>
 		<attribute name="rollDiceAmount" type="int" use="optional" />
+		<attribute name="formula" type="string" use="optional">
+			<annotation>
+				<documentation>
+					A mathematical formula to apply to the amount, after dice rolling, but before negation.
+					Numbers are treated as doubles.
+					All normal arithmetic operator and parentheses work. In addition, the functions
+					floor(x) and ceil(x) are available. Negative numbers can be created using the neg(x) function.
+					Additional dice rolls are available using the roll(n)
+					function, where n is the number of dice to roll.
+					The amount so far can be referenced using the constant AMT.
+				</documentation>
+			</annotation>
+		</attribute>
 		<attribute name="negate" type="boolean" use="optional" default="false" />
 	</complexType>
 
