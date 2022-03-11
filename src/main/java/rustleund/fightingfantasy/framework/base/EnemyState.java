@@ -15,14 +15,16 @@ import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 public class EnemyState extends AbstractEntityState {
 
     private int poisonedWeaponRounds = 0;
+    private int poisonDamage = 0;
     private final Set<String> types = new HashSet<>();
     private Closure enemyKilled;
 
-    public EnemyState(String name, int skill, int stamina, int poisonedWeaponRounds) {
+    public EnemyState(String name, int skill, int stamina, int poisonedWeaponRounds, int poisonDamage) {
         this.name = name;
         this.skill = new Scale(0, skill, skill, true);
         this.stamina = new Scale(0, stamina, stamina, true);
         this.poisonedWeaponRounds = poisonedWeaponRounds;
+        this.poisonDamage = poisonDamage;
     }
 
     public EnemyState(Element enemyTag, ClosureLoader closureLoader) {
@@ -37,6 +39,11 @@ public class EnemyState extends AbstractEntityState {
 
         if (enemyTag.hasAttribute("poisonedWeaponRounds")) {
             this.poisonedWeaponRounds = Integer.parseInt(enemyTag.getAttribute("poisonedWeaponRounds"));
+            if (enemyTag.hasAttribute("poisonDamage")) {
+                this.poisonDamage = Integer.parseInt(enemyTag.getAttribute("poisonDamage"));
+            } else {
+                this.poisonDamage = 2;
+            }
         }
 
         if (enemyTag.hasAttribute("types")) {
@@ -55,6 +62,10 @@ public class EnemyState extends AbstractEntityState {
 
     public Closure getEnemyKilled() {
         return this.enemyKilled;
+    }
+
+    public int getPoisonDamage() {
+        return poisonDamage;
     }
 
     public boolean isOfType(String type) {

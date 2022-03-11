@@ -33,6 +33,10 @@ class LinkClosure(
         if ("0" != pageName) {
             gameState.addGameProgress(SavedGame(pageName, gameState.playerState.deepCopy()))
         }
+        if (gameState.playerState.isDead) {
+            gameState.message = "Links do not work after the player has died"
+            return false
+        }
         val pageLocation = gameState.pagesDirectory.resolve("$pageName.xml")
         runCatching {
             Files.newInputStream(pageLocation).use { pageIs ->

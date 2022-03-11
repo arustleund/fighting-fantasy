@@ -19,7 +19,7 @@ enum class Operator(
 data class Comparison(val operator: Operator, val compareAgainst: Int)
 
 fun Element.toComparison(): Comparison {
-    val operator = Operator.values().firstOrNull { this.hasAttribute(it.label) } ?: Operator.LESS_THAN
+    val operator = Operator.values().firstOrNull { this.hasAttribute(it.label) } ?: Operator.AT_LEAST
     return Comparison(operator, this.optionalIntAttribute(operator.label) ?: 1)
 }
 

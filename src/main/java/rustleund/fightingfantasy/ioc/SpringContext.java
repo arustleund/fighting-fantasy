@@ -161,12 +161,12 @@ public class SpringContext {
 
 	@Bean
 	public Function<Element, Closure> adjustEnemyScaleClosureFunction() {
-		return input -> new AdjustEnemyScaleClosure(input, closureLoader(), battleEffectsLoader());
+		return AdjustEnemyScaleClosure::new;
 	}
 
 	@Bean
 	public Function<Element, Closure> adjustScaleClosureFunction() {
-		return input -> new AdjustScaleClosure(input, closureLoader(), battleEffectsLoader());
+		return input -> new AdjustScaleClosure(input, GameState::getPlayerState);
 	}
 
 	@Bean

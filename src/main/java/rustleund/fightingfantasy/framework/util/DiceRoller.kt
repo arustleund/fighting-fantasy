@@ -9,6 +9,10 @@ object DiceRoller {
     fun rollOneDie() = (Math.random() * 6.0).toInt() + 1
 
     @JvmStatic
-    fun rollDice(numberOfDie: Int) =
-        generateSequence { rollOneDie() }.take(numberOfDie).sum()
+    fun rollDice(numberOfDie: Int) = roll(numberOfDie).sum()
+
+    private fun roll(numberOfDie: Int) = generateSequence { rollOneDie() }.take(numberOfDie)
+
+    @JvmStatic
+    fun rollDiceResult(numberOfDie: Int) = roll(numberOfDie).toList()
 }

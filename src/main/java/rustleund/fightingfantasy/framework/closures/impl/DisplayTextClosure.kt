@@ -10,13 +10,19 @@ import rustleund.fightingfantasy.framework.closures.Closure
 /**
  * @author rustlea
  */
-class DisplayTextClosure(private val textId: Int) : Closure {
+class DisplayTextClosure(private val getText: GameState.() -> String) : Closure {
 
     @Suppress("unused")
     constructor(element: Element) : this(element.getAttribute("id").toInt())
 
+    constructor(textId: Int) : this({
+        pageState.texts[textId] ?: throw IllegalArgumentException("Unknown text $textId")
+    })
+
+    constructor(text: String) : this({ text })
+
     override fun execute(gameState: GameState): Boolean {
-        val text = gameState.pageState.texts[textId]
+        val text = gameState.getText()
         gameState.pageState.addToPagetext(text)
         return true
     }

@@ -4,12 +4,12 @@ package rustleund.fightingfantasy.framework.base
  * @property total The total of the die roll, skill rating, and modifier
  */
 data class AttackStrength(
-    private val dieRoll: Int,
-    private val skill: Int,
-    private val modifier: Int
+    val dieRoll: List<Int>,
+    val skill: Int,
+    val modifier: Int
 ) : Comparable<AttackStrength> {
 
-    val total = dieRoll + skill + modifier
+    val total = dieRoll.sum() + skill + modifier
 
     override fun compareTo(other: AttackStrength): Int {
         return total.compareTo(other.total)

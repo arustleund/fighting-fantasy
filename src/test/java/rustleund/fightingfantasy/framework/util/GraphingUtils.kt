@@ -54,7 +54,7 @@ fun main() {
     }
 
     println(labels)
-    graph.vertexSet().filter { graph.outDegreeOf(it) == 0 }.forEach { println("End: $it") }
+    graph.vertexSet().filter { graph.outDegreeOf(it) == 0 }.forEach { println("End: $it ${labels[it]}") }
 
     val exporter: DOTExporter<String, DefaultEdge> = DOTExporter()
     exporter.setVertexAttributeProvider { v: Any ->

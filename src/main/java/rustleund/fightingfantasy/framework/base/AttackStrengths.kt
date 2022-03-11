@@ -1,12 +1,10 @@
 package rustleund.fightingfantasy.framework.base
 
-import java.util.function.Supplier
-
 fun createAttackStrengths(
     playerState: PlayerState,
     enemies: Enemies,
     fightEnemiesTogether: Boolean,
-    diceRoller: Supplier<Int>
+    diceRoller: () -> List<Int>
 ): AttackStrengths {
     val playerAttackStrength = getAttackStrengthFor(playerState, diceRoller)
     var enemyAttackStrengthsSequence = enemies.asSequence().withIndex()
@@ -17,8 +15,8 @@ fun createAttackStrengths(
     return AttackStrengths(playerAttackStrength, enemyAttackStrengths, enemies)
 }
 
-private fun getAttackStrengthFor(aState: AbstractEntityState, diceRoller: Supplier<Int>): AttackStrength {
-    val dieRoll = diceRoller.get()
+private fun getAttackStrengthFor(aState: AbstractEntityState, diceRoller: () -> List<Int>): AttackStrength {
+    val dieRoll = diceRoller()
     val skill = aState.getSkill().currentValue
     val modifier = aState.getAttackStrengthModifier()
     return AttackStrength(dieRoll, skill, modifier)
@@ -31,7 +29,7 @@ class AttackStrengths(
 ) {
 
     private val highestEnemyAttackStrength = enemyAttackStrengths.maxOf { it.value }
-    private val highestAttackStrength = playerAttackStrength.coerceAtLeast(highestEnemyAttackStrength)
+    val highestAttackStrength = playerAttackStrength.coerceAtLeast(highestEnemyAttackStrength)
 
     val playerWon = playerAttackStrength > highestEnemyAttackStrength
     val playerHit = playerAttackStrength < highestEnemyAttackStrength
@@ -41,9 +39,13 @@ class AttackStrengths(
     fun enemyHasHighestAttackStrength(enemyId: Int) =
         getEnemyAttackStrength(enemyId)?.let { it == highestAttackStrength } ?: false
 
-    fun winningEnemyHasPoisonedWeapon(currentRound: Int) = playerHit &&
-            enemyAttackStrengths.any { (enemyId, attackStrength) ->
-                attackStrength == highestAttackStrength
-                        && enemies.enemies[enemyId].poisonedWeaponRounds >= currentRound
-            }
+    fun winningEnemyPoisonDamage(currentRound: Int): Int {
+        if (!playerHit) return 0
+        val winningEnemyWithPoison = enemies.asSequence()
+            .withIndex()
+            .filter { getEnemyAttackStrength(it.index) == highestEnemyAttackStrength }
+            .filter { it.value.poisonedWeaponRounds >= currentRound }
+            .firstOrNull()
+        return winningEnemyWithPoison?.let { enemies.enemies[it.index].poisonDamage } ?: 0
+    }
 }

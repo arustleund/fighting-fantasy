@@ -7,7 +7,6 @@ import org.apache.commons.beanutils.PropertyUtils
 import org.w3c.dom.Element
 import rustleund.fightingfantasy.framework.base.*
 import rustleund.fightingfantasy.framework.closures.Closure
-import rustleund.fightingfantasy.framework.closures.ClosureLoader
 import rustleund.fightingfantasy.framework.util.DiceRoller
 import java.lang.IndexOutOfBoundsException
 import kotlin.math.ceil
@@ -15,8 +14,6 @@ import kotlin.math.floor
 
 class AdjustScaleClosure @JvmOverloads constructor(
     element: Element,
-    private val closureLoader: ClosureLoader,
-    private val battleEffectsLoader: BattleEffectsLoader,
     private val entityRetriever: (GameState) -> AbstractEntityState? = { it.playerState }
 ) : Closure {
 
@@ -51,7 +48,8 @@ class AdjustScaleClosure @JvmOverloads constructor(
             scale.adjustCurrentValueNoException(amountToAdjust)
         }
         if (gameState.playerState.isDead) {
-            LinkClosure("0", closureLoader, battleEffectsLoader).execute(gameState)
+            DisplayTextClosure("You have died, and you adventure ends here").execute(gameState)
+            //LinkClosure("0", closureLoader, battleEffectsLoader).execute(gameState)
         }
         return true
     }
