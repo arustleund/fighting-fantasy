@@ -170,7 +170,7 @@ public class BattleState {
         doBattleStage(itemBattleEffects(), BattleEffects::getPlayerHit);
     }
 
-    public void doEndBattle() {
+    private void doEndBattle() {
         doBattleStage(this.allBattleEffects, BattleEffects::getEndBattle);
         doBattleStage(itemBattleEffects(), BattleEffects::getEndBattle);
     }
@@ -180,6 +180,7 @@ public class BattleState {
             pageState.replacePagetext(BattleState.START_STRING, BattleState.END_STRING, getCurrentBattleMessage());
         }
         if (getEnemies().areDead() || getPlayerState().isDead()) {
+            doEndBattle();
             getPageState().getGameState().endBattle();
         }
     }

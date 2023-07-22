@@ -69,7 +69,6 @@ public class GameState {
 
 	public void endBattle() {
 		if (!playerState.isDead()) {
-			battleState.doEndBattle();
 			getPlayerState().setNextBattleBattleEffects(null);
 			setBattleInProgress(false);
 			setBattleState(null);
