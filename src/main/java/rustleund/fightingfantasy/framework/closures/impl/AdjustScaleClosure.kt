@@ -73,8 +73,7 @@ class AdjustScaleClosure @JvmOverloads constructor(
             scale.adjustCurrentValueNoException(amountToAdjust)
         }
         if (gameState.playerState.isDead) {
-            DisplayTextClosure("You have died, and you adventure ends here").execute(gameState)
-            //LinkClosure("0", closureLoader, battleEffectsLoader).execute(gameState)
+            gameState.playerHasDied()
         }
         return true
     }

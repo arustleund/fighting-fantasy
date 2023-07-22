@@ -269,6 +269,14 @@ Attributes:
 	 -->
 	<setFlag id="0" />
 
+	<!--
+	This is used to override any actions that should be taken when the player dies, either by battle or otherwise.
+	Normally the game ends when the player dies.
+	-->
+	<setOnPlayerDeath>
+		<!-- put any number of commands here -->
+	</setOnPlayerDeath>
+
 	<setPoisonImmunity immune="false" />
 
 	<takePoisonDamage amount="2" />

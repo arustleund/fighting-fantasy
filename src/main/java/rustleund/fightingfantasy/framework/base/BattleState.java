@@ -134,7 +134,7 @@ public class BattleState {
             doEndRound();
 
             if (getPlayerState().isDead()) {
-                appendAtEndOfBattleMessage("You have died, and your adventure ends here.");
+                pageState.getGameState().playerHasDied();
             }
         }
     }
@@ -214,7 +214,7 @@ public class BattleState {
                 }
                 addPlayerStamina(message, getPlayerState());
                 if (getPlayerState().isDead()) {
-                    message.append("You have died, and your adventure ends here.");
+                    pageState.getGameState().playerHasDied();
                 }
             }
             if (existingMessageBuilder == null) {

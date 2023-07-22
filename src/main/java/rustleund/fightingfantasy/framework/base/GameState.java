@@ -6,6 +6,7 @@ package rustleund.fightingfantasy.framework.base;
 import java.nio.file.Path;
 import java.util.LinkedList;
 
+import rustleund.fightingfantasy.framework.closures.impl.DisplayTextClosure;
 import rustleund.fightingfantasy.gamesave.SavedGame;
 
 import com.google.common.collect.Lists;
@@ -72,6 +73,15 @@ public class GameState {
 			getPlayerState().setNextBattleBattleEffects(null);
 			setBattleInProgress(false);
 			setBattleState(null);
+		}
+	}
+
+	public void playerHasDied() {
+		if (playerState.getOnPlayerDeathClosure() == null) {
+			new DisplayTextClosure("You have died, and your adventure ends here.").execute(this);
+		} else {
+			playerState.getOnPlayerDeathClosure().execute(this);
+			playerState.setOnPlayerDeathClosure(null);
 		}
 	}
 

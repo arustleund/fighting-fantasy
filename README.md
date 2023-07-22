@@ -19,10 +19,11 @@ game
     ├── 1.xml
     ├── 10.xml
     ├── 106.xml
-    └── 107.xml
+    ├── 107.xml
+    └── intro.xml
 ```
 
-The game will start at Page 0 (`0.xml`).
+The game will start at an intro page: `pages/intro.xml`
 
 See the `docs` directory in this repository for items and page schemas. See 
 the `docs/reference.xml` file for an example page that demonstrates the different

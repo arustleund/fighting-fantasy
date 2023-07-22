@@ -81,6 +81,7 @@
 			<element name="restoreScale" type="page:restoreScale" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="rollDice" type="page:rollDice" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="setFlag" type="page:setFlag" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="setOnPlayerDeath" type="page:commands" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="setPoisonImmunity" type="page:setPoisonImmunity" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="takePoisonDamage" type="page:takePoisonDamage" minOccurs="0" maxOccurs="unbounded" />
 			<element name="testAnyFlag" type="page:testAnyFlag" minOccurs="0" maxOccurs="unbounded"></element>

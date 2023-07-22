@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.util.DiceRoller;
 
 import com.google.common.collect.Maps;
@@ -29,6 +30,8 @@ public class PlayerState extends AbstractEntityState {
 	private List<BattleEffects> nextBattleBattleEffects;
 	private int poisonDamage;
 	private boolean poisonImmunity = false;
+
+	private Closure onPlayerDeathClosure;
 
 	private PlayerState() {
 		// for deep copy
@@ -212,6 +215,14 @@ public class PlayerState extends AbstractEntityState {
 		this.poisonImmunity = poisonImmunity;
 	}
 
+	public Closure getOnPlayerDeathClosure() {
+		return onPlayerDeathClosure;
+	}
+
+	public void setOnPlayerDeathClosure(Closure onPlayerDeathClosure) {
+		this.onPlayerDeathClosure = onPlayerDeathClosure;
+	}
+
 	public PlayerState deepCopy() {
 		PlayerState result = new PlayerState();
 		result.attackStrengthModifier = attackStrengthModifier;
@@ -229,6 +240,7 @@ public class PlayerState extends AbstractEntityState {
 		result.skill = skill.deepCopy();
 		result.stamina = stamina.deepCopy();
 		result.time = time.deepCopy();
+		result.onPlayerDeathClosure = onPlayerDeathClosure;
 		return result;
 	}
 
