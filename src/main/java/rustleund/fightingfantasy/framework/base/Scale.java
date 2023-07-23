@@ -6,6 +6,8 @@ package rustleund.fightingfantasy.framework.base;
 import com.google.common.collect.Range;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author rustlea
@@ -18,6 +20,9 @@ public class Scale {
 	private Range<Integer> range;
 
 	private boolean doOperationOnFail = false;
+
+	private Map<String, Integer> savedValues = new HashMap<>();
+
 
 	private Scale() {
 		// deep copy
@@ -60,6 +65,15 @@ public class Scale {
 			}
 			throw new IndexOutOfBoundsException();
 		}
+	}
+
+	public void saveCurrentValue(String label) {
+		this.savedValues.put(label, this.currentValue);
+	}
+
+	public void restoreSavedValue(String label) {
+		this.previousValue = this.currentValue;
+		this.currentValue = this.savedValues.get(label);
 	}
 
 	public void restorePreviousValue() {
@@ -124,7 +138,7 @@ public class Scale {
 
 	@Override
 	public String toString() {
-		StringBuilder result = new StringBuilder("" + this.currentValue);
+		StringBuilder result = new StringBuilder(String.valueOf(this.currentValue));
 		if (this.range.hasUpperBound()) {
 			result.append("/");
 			result.append(this.range.upperEndpoint());
@@ -138,6 +152,7 @@ public class Scale {
 		result.doOperationOnFail = doOperationOnFail;
 		result.previousValue = previousValue;
 		result.range = range;
+		result.savedValues = new HashMap<>(savedValues);
 		return result;
 	}
 }

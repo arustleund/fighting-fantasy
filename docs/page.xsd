@@ -80,6 +80,7 @@
 			<element name="removeItem" type="page:removeItem" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="restoreScale" type="page:restoreScale" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="rollDice" type="page:rollDice" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="saveCurrentScaleValue" type="page:saveCurrentScaleValue" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="setFlag" type="page:setFlag" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="setOnPlayerDeath" type="page:commands" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="setPoisonImmunity" type="page:setPoisonImmunity" minOccurs="0" maxOccurs="unbounded"></element>
@@ -167,6 +168,14 @@
 			<enumeration value="nemesis"></enumeration>
 		</restriction>
 	</simpleType>
+
+	<complexType name="saveCurrentScaleValue">
+		<annotation>
+			<documentation>Save the current value of the current scale so that it can be restored later. See companion "restoreScale"</documentation>
+		</annotation>
+		<attribute name="type" type="page:scales" use="required"></attribute>
+		<attribute name="label" type="string" use="required"></attribute>
+	</complexType>
 
 	<complexType name="setFlag">
 		<annotation>
@@ -301,6 +310,7 @@
 
     <complexType name="restoreScale">
     	<attribute name="type" type="page:scales" use="required"></attribute>
+		<attribute name="label" type="string" use="optional" />
     </complexType>
 
     <complexType name="multicommand">

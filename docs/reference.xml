@@ -249,7 +249,12 @@ Attributes:
 	<mustEatMeal amount="2" />
 	
 	<removeItem id="11" />
-	
+
+	<!-- Save the current value of the given scale under the given label, can be restored with "restoreScale" -->
+	<saveCurrentScaleValue type="stamina" label="dreamtime" />
+
+	<!-- Can use an optional attribute, "label" that restores a saved value
+	(from "saveCurrentScaleValue"), otherwise with no label, restores the previous value -->
 	<restoreScale type="gold" />
 	
 	<rollDice number="1">

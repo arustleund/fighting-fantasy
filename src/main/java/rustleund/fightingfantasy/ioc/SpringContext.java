@@ -51,6 +51,7 @@ public class SpringContext {
 		mappings.put("removeItem", RemoveItemClosure::new);
 		mappings.put("restoreScale", RestoreScaleClosure::new);
 		mappings.put("rollDice", rollDiceClosureFunction());
+		mappings.put("saveCurrentScaleValue", SaveCurrentScaleValueClosure::new);
 		mappings.put("setFlag", SetFlagClosure::new);
 		mappings.put("setOnPlayerDeath", e -> new SetOnPlayerDeathClosure(e, closureLoader()));
 		mappings.put("setPoisonImmunity", SetPoisonImmunity::new);
