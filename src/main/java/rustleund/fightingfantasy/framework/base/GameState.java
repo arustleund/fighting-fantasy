@@ -78,7 +78,7 @@ public class GameState {
 
 	public void playerHasDied() {
 		if (playerState.getOnPlayerDeathClosure() == null) {
-			new DisplayTextClosure("You have died, and your adventure ends here.").execute(this);
+			new DisplayTextClosure("<p>You have died, and your adventure ends here.</p>").execute(this);
 		} else {
 			playerState.getOnPlayerDeathClosure().execute(this);
 			playerState.setOnPlayerDeathClosure(null);

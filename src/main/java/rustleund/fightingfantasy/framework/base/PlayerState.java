@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.jetbrains.annotations.Nullable;
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.util.DiceRoller;
 
@@ -31,7 +32,7 @@ public class PlayerState extends AbstractEntityState {
 	private int poisonDamage;
 	private boolean poisonImmunity = false;
 
-	private Closure onPlayerDeathClosure;
+	private @Nullable Closure onPlayerDeathClosure;
 
 	private PlayerState() {
 		// for deep copy
@@ -215,11 +216,11 @@ public class PlayerState extends AbstractEntityState {
 		this.poisonImmunity = poisonImmunity;
 	}
 
-	public Closure getOnPlayerDeathClosure() {
+	public @Nullable Closure getOnPlayerDeathClosure() {
 		return onPlayerDeathClosure;
 	}
 
-	public void setOnPlayerDeathClosure(Closure onPlayerDeathClosure) {
+	public void setOnPlayerDeathClosure(@Nullable Closure onPlayerDeathClosure) {
 		this.onPlayerDeathClosure = onPlayerDeathClosure;
 	}
 

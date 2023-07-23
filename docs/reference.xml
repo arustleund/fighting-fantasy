@@ -276,7 +276,7 @@ Attributes:
 
 	<!--
 	This is used to override any actions that should be taken when the player dies, either by battle or otherwise.
-	Normally the game ends when the player dies.
+	Normally the game ends when the player dies. Put no child elements to revert to default behavior.
 	-->
 	<setOnPlayerDeath>
 		<!-- put any number of commands here -->
