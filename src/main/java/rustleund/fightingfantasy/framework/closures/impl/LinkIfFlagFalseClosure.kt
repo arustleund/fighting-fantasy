@@ -18,7 +18,9 @@ class LinkIfFlagFalseClosure(
 
     override fun execute(gameState: GameState): Boolean {
         val flagTrue = testFlagPredicate.test(gameState)
-        if (!flagTrue) {
+        if (flagTrue) {
+            gameState.message = "Cannot follow link, you don't meet the conditions"
+        } else {
             if (setFlagToTrue) {
                 gameState.playerState.setFlag(testFlagPredicate.flagId, true)
             }

@@ -229,6 +229,10 @@ Attributes:
 		id: Required. The id of the <text> element to display.
 	-->
 	<displayText id="0" />
+
+	<!-- Follow the link to the given page, only if the flag represented by the ID is false, optionally setting the
+	 flag to true as well. Useful for making links that only work if the player has not already done them. -->
+	<flaggedLink id="4" page="234" setFlagToTrue="true" />
 	
 	<!-- <initPlayer> initializes the player's state at the beginning of the game. Should be first command called on the first page.
 	Should only be called once per game. No attributes.
