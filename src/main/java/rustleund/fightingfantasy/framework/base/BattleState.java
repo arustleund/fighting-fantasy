@@ -48,7 +48,7 @@ public class BattleState {
     private final Collection<BattleEffects> battleEffectsForNextRound = new ArrayList<>();
 
     public enum BattleMessagePosition {
-        BEGINNING, END
+        BEGINNING, END, IMMEDIATE_END
     }
 
     public BattleState(Element battleTag, PageState pageState, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
@@ -87,6 +87,11 @@ public class BattleState {
 
     public void clearAllAdditionalMessages() {
         this.additionalMessages.clear();
+    }
+
+    public void immediatelyAppendBattleMessage(String message) {
+        appendAtEndOfBattleMessage(message);
+        updateBattleMessageOnPageState();
     }
 
     private void loadEnemies(Element enemiesTag) {
@@ -185,12 +190,16 @@ public class BattleState {
     }
 
     public void doAfterPossibleStaminaChange() {
-        if (getCurrentBattleMessage() != null) {
-            pageState.replacePagetext(BattleState.START_STRING, BattleState.END_STRING, getCurrentBattleMessage());
-        }
+        updateBattleMessageOnPageState();
         if (getEnemies().areDead() || getPlayerState().isDead()) {
             doEndBattle();
             getPageState().getGameState().endBattle();
+        }
+    }
+
+    private void updateBattleMessageOnPageState() {
+        if (getCurrentBattleMessage() != null) {
+            pageState.replacePagetext(BattleState.START_STRING, BattleState.END_STRING, getCurrentBattleMessage());
         }
     }
 

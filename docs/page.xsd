@@ -472,6 +472,7 @@
 				<restriction base="string">
 					<enumeration value="BEGINNING"></enumeration>
 					<enumeration value="END"></enumeration>
+					<enumeration value="IMMEDIATE_END"></enumeration>
 				</restriction>
 			</simpleType>
 		</attribute>

@@ -16,7 +16,11 @@ class AddBattleMessageClosure(element: Element) : Closure {
     private val messageBody = writeTag(element.childNodes.asElementSequence().firstOrNull())
 
     override fun execute(gameState: GameState): Boolean {
-        gameState.battleState.addAdditionalMessage(messagePosition, message + messageBody)
+        if (messagePosition == BattleMessagePosition.IMMEDIATE_END) {
+            gameState.battleState.immediatelyAppendBattleMessage(message + messageBody)
+        } else {
+            gameState.battleState.addAdditionalMessage(messagePosition, message + messageBody)
+        }
         return true
     }
 }
