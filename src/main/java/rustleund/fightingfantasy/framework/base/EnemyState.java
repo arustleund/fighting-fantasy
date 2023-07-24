@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.w3c.dom.Element;
 
 import rustleund.fightingfantasy.framework.closures.Closure;
@@ -19,7 +20,8 @@ public class EnemyState extends AbstractEntityState {
     private final Set<String> types = new HashSet<>();
     private Closure enemyKilled;
 
-    public EnemyState(String name, int skill, int stamina, int poisonedWeaponRounds, int poisonDamage) {
+    @VisibleForTesting
+    EnemyState(String name, int skill, int stamina, int poisonedWeaponRounds, int poisonDamage) {
         this.name = name;
         this.skill = new Scale(0, skill, skill, true);
         this.stamina = new Scale(0, stamina, stamina, true);

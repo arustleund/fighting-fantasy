@@ -1,7 +1,12 @@
 package rustleund.fightingfantasy.framework.base
 
 import org.w3c.dom.Element
+import org.w3c.dom.Node
 import org.w3c.dom.NodeList
+import java.io.StringWriter
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
 
 /**
  * @return A [Sequence] of all [Element]s with the name [childName] that are direct children of the given [parentElement]
@@ -44,4 +49,20 @@ fun NodeList.asElementSequence(): Sequence<Element> =
         .map { this.item(it) }
         .filter { it is Element }
         .map { it as Element }
+
+fun writeTag(tag: Node?): String {
+    return if (tag == null) "" else try {
+        val tFactory = TransformerFactory.newInstance()
+        val transformer = tFactory.newTransformer()
+        transformer.setOutputProperty("omit-xml-declaration", "yes")
+        val source = DOMSource(tag)
+        val writer = StringWriter()
+        val streamResult = StreamResult(writer)
+        transformer.transform(source, streamResult)
+        writer.toString()
+    } catch (e: Exception) {
+        e.printStackTrace()
+        ""
+    }
+}
 

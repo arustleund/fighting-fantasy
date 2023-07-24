@@ -463,7 +463,10 @@
     </complexType>
 
     <complexType name="addBattleMessage">
-    	<attribute name="message" type="string" use="required"></attribute>
+		<sequence>
+			<any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+		</sequence>
+    	<attribute name="message" type="string" use="optional"></attribute>
     	<attribute name="messagePosition" use="optional">
 			<simpleType>
 				<restriction base="string">

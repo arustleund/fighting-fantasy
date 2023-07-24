@@ -89,7 +89,7 @@ public class Item {
 	public void useItem(GameState gameState) {
 		if (useItem != null) {
 			boolean battleInProgress = gameState.isBattleInProgress();
-			if (!battleInProgress || (battleInProgress && canUseInBattle)) {
+			if (!battleInProgress || canUseInBattle) {
 				useItem.execute(gameState);
 			} else {
 				gameState.setMessage("Cannot use " + this.name + " during a battle");

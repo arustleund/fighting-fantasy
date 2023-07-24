@@ -15,7 +15,7 @@ dependencies {
     implementation("com.google.guava:guava:31.0.1-jre")
     implementation("org.springframework:spring-context:5.3.15")
     implementation("net.lingala.zip4j:zip4j:2.9.1")
-    implementation("com.google.code.gson:gson:2.9.0")
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("com.notkamui.libs:keval:0.8.0")
 

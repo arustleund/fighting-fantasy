@@ -60,7 +60,7 @@ public class PageState {
     private void loadPagetext(Document document) {
         Element pageTextElement = XMLUtilKt.getChildElementByName(document.getDocumentElement(), "pagetext");
         if (pageTextElement == null) throw new IllegalArgumentException("Missing pagetext element");
-        pagetext = writeTag(XMLUtilKt.getChildElementByName(pageTextElement, "html"));
+        pagetext = XMLUtilKt.writeTag(XMLUtilKt.getChildElementByName(pageTextElement, "html"));
     }
 
     private void loadKeepMinimum(Document document) {
@@ -92,7 +92,7 @@ public class PageState {
     private void loadTexts(Document document) {
         texts = new HashMap<>();
         XMLUtilKt.getChildElementsByName(document.getDocumentElement(), "text").iterator()
-                .forEachRemaining(e -> texts.put(Integer.valueOf(e.getAttribute("id")), writeTag(e)));
+                .forEachRemaining(e -> texts.put(Integer.valueOf(e.getAttribute("id")), XMLUtilKt.writeTag(e)));
     }
 
     private void loadMultis(Document document) {
@@ -162,28 +162,6 @@ public class PageState {
         } else {
             setPagetext(pagetext.substring(0, startIndex) + replaceString + pagetext.substring(endIndex));
         }
-    }
-
-    private String writeTag(Node tag) {
-        String result = null;
-        try {
-
-            TransformerFactory tFactory = TransformerFactory.newInstance();
-            Transformer transformer = tFactory.newTransformer();
-            transformer.setOutputProperty("omit-xml-declaration", "yes");
-
-            DOMSource source = new DOMSource(tag);
-
-            StringWriter writer = new StringWriter();
-            StreamResult streamResult = new StreamResult(writer);
-
-            transformer.transform(source, streamResult);
-
-            result = writer.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
     }
 
     public GameState getGameState() {

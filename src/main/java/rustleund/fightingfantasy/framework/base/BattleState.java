@@ -92,7 +92,16 @@ public class BattleState {
     private void loadEnemies(Element enemiesTag) {
         this.enemies = new Enemies();
         XMLUtilKt.getChildElementsByName(enemiesTag, "enemy").iterator()
-                .forEachRemaining(e -> enemies.addEnemy(new EnemyState(e, closureLoader)));
+                .forEachRemaining(this::addEnemyToEnemies);
+    }
+
+    private void addEnemyToEnemies(Element e) {
+        EnemyState enemy = new EnemyState(e, closureLoader);
+        if (enemy.isOfType("self")) {
+            enemy.setSkill(getPlayerState().getSkill().deepCopy());
+            enemy.setStamina(getPlayerState().getStamina().deepCopy());
+        }
+        enemies.addEnemy(enemy);
     }
 
     private void loadEffects(Element effectsTag) {
