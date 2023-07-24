@@ -100,10 +100,6 @@ public class PlayerState extends AbstractEntityState {
 		}
 	}
 
-	public void removeAllOfItem(int itemId) {
-		this.items.remove(itemId);
-	}
-
 	public int itemCount(int itemId) {
 		if (this.items.containsKey(itemId)) {
 			return this.items.get(itemId).getCount();

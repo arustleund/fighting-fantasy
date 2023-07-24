@@ -5,6 +5,7 @@ package rustleund.fightingfantasy.framework.closures.impl
 
 import org.w3c.dom.Element
 import rustleund.fightingfantasy.framework.base.GameState
+import rustleund.fightingfantasy.framework.base.optionalIntAttribute
 import rustleund.fightingfantasy.framework.closures.Closure
 
 /**
@@ -13,9 +14,12 @@ import rustleund.fightingfantasy.framework.closures.Closure
 class RemoveItemClosure(element: Element) : Closure {
 
     private val itemId = element.getAttribute("id").toInt()
+    private val amount = element.optionalIntAttribute("amount") ?: 1
 
     override fun execute(gameState: GameState): Boolean {
-        gameState.playerState.removeOneOfItem(itemId)
+        repeat(amount) {
+            gameState.playerState.removeOneOfItem(itemId)
+        }
         return true
     }
 }

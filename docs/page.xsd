@@ -418,6 +418,7 @@
 
     <complexType name="removeItem">
     	<attribute name="id" type="int" use="required"></attribute>
+		<attribute name="amount" type="int" use="optional"></attribute>
     </complexType>
     
     <complexType name="flaggedLink">
