@@ -231,9 +231,6 @@ public class BattleState {
                     getPlayerState().getStamina().adjustCurrentValueNoException(-1);
                 }
                 addPlayerStamina(message, getPlayerState());
-                if (getPlayerState().isDead()) {
-                    pageState.getGameState().playerHasDied();
-                }
             }
             if (existingMessageBuilder == null) {
                 appendAtEndOfBattleMessage(message.toString());
@@ -336,10 +333,11 @@ public class BattleState {
             playerState.takePoisonDamage(poisonDamage);
         }
 
+        int staminaBeforeHit = playerState.getStamina().getCurrentValue();
         playerState.getStamina().adjustCurrentValueNoException(-2);
         doPlayerHit();
 
-        if (!playerState.getLuck().isEmpty()) {
+        if (!playerState.getLuck().isEmpty() && staminaBeforeHit >= 2) {
             if (playerState.isDead()) {
                 message.append("Your Stamina was reduced to 0, Testing Your Luck to save your life...<br>");
                 doTestLuck(false, message);

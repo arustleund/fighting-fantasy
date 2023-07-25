@@ -10,7 +10,7 @@ class AddBattleEffectsToNextBattleRoundClosure(element: Element, battleEffectsLo
     private val battleEffects = battleEffectsLoader.loadAllBattleEffectsFromTag(element)
 
     override fun execute(gameState: GameState): Boolean {
-        gameState.battleState.addBattleEffectsForNextRound(battleEffects)
+        gameState.battleState?.addBattleEffectsForNextRound(battleEffects)
         return true
     }
 }

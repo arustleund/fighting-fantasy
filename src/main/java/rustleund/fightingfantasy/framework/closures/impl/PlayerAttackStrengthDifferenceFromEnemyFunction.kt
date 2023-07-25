@@ -7,9 +7,11 @@ class PlayerAttackStrengthDifferenceFromEnemyFunction : Function<GameState, Int>
 
     override fun apply(t: GameState): Int {
         val battleState = t.battleState
-        val currentAttackStrengths = battleState.currentAttackStrengths
-        val enemyIndex = battleState.enemies.enemies.indexOf(battleState.enemies.firstNonDeadEnemy)
-        val enemyAttackStrength = currentAttackStrengths.getEnemyAttackStrength(enemyIndex)
-        return currentAttackStrengths.playerAttackStrength.total - (enemyAttackStrength?.total ?: 0)
+        return if (battleState != null) {
+            val currentAttackStrengths = battleState.currentAttackStrengths
+            val enemyIndex = battleState.enemies.enemies.indexOf(battleState.enemies.firstNonDeadEnemy)
+            val enemyAttackStrength = currentAttackStrengths.getEnemyAttackStrength(enemyIndex)
+            currentAttackStrengths.playerAttackStrength.total - (enemyAttackStrength?.total ?: 0)
+        } else 0
     }
 }

@@ -13,9 +13,12 @@ class TestEnemyTypesPredicate(element: Element) : Predicate<GameState> {
     private val enemyId = element.getAttribute("enemyId").takeIf { it != "any" }?.toInt() ?: 0
 
     override fun test(input: GameState): Boolean {
-        val enemies = input.battleState.enemies
-        val enemyIsOfAnyType: (EnemyState) -> Boolean = { e -> equalAny.any { e.isOfType(it) } }
-        return if (alwaysCheckAny) enemies.enemies.any(enemyIsOfAnyType)
-        else enemyIsOfAnyType(enemies.enemies[enemyId])
+        val battleState = input.battleState
+        return if (battleState != null) {
+            val enemies = battleState.enemies
+            val enemyIsOfAnyType: (EnemyState) -> Boolean = { e -> equalAny.any { e.isOfType(it) } }
+            if (alwaysCheckAny) enemies.enemies.any(enemyIsOfAnyType)
+            else enemyIsOfAnyType(enemies.enemies[enemyId])
+        } else false
     }
 }

@@ -6,6 +6,7 @@ package rustleund.fightingfantasy.framework.base;
 import java.nio.file.Path;
 import java.util.LinkedList;
 
+import org.jetbrains.annotations.Nullable;
 import rustleund.fightingfantasy.framework.closures.impl.DisplayTextClosure;
 import rustleund.fightingfantasy.gamesave.SavedGame;
 
@@ -117,6 +118,7 @@ public class GameState {
 		this.isBattleInProgress = isBattleInProgress;
 	}
 
+	@Nullable
 	public BattleState getBattleState() {
 		return this.battleState;
 	}

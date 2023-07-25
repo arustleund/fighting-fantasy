@@ -10,7 +10,7 @@ class TestStatPredicate @JvmOverloads constructor(
     element: Element,
     private val entityStateRetriever: (GameState) -> AbstractEntityState = GameState::getPlayerState,
     private val attackStrengthRetriever: (GameState) -> AttackStrength? =
-        { it.battleState.currentAttackStrengths.playerAttackStrength }
+        { it.battleState?.currentAttackStrengths?.playerAttackStrength }
 ) : Predicate<GameState> {
 
     private val comparison = element.toComparison()
@@ -28,8 +28,8 @@ class TestStatPredicate @JvmOverloads constructor(
     private fun getStatValue(entityStateToTest: AbstractEntityState, gameState: GameState): Int? {
         return when (stat) {
             "attackStrength" -> attackStrengthRetriever(gameState)?.total
-            "hitCount" -> gameState.battleState.playerHitCount
-            "battleRound" -> gameState.battleState.battleRound
+            "hitCount" -> gameState.battleState?.playerHitCount
+            "battleRound" -> gameState.battleState?.battleRound
             else -> getNonAttackStrengthStatValue(entityStateToTest)
         }
     }

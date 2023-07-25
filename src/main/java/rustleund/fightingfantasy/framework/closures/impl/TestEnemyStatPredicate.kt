@@ -9,6 +9,6 @@ private fun Element.enemyId() = this.getAttribute("enemyId").toInt()
 class TestEnemyStatPredicate(element: Element) : Predicate<GameState> by
 TestStatPredicate(
     element,
-    { it.battleState.enemies.enemies[element.enemyId()] },
-    { it.battleState.currentAttackStrengths.getEnemyAttackStrength(element.enemyId()) }
+    { it.battleState?.enemies?.enemies?.get(element.enemyId()) ?: throw IllegalStateException("No battle in progress") },
+    { it.battleState?.currentAttackStrengths?.getEnemyAttackStrength(element.enemyId()) }
 )

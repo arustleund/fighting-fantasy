@@ -75,6 +75,12 @@ class AdjustScaleClosure @JvmOverloads constructor(
         if (gameState.playerState.isDead) {
             gameState.playerHasDied()
         }
+        if (gameState.isBattleInProgress) {
+            val battleState = gameState.battleState
+            if (battleState != null && battleState.enemies.areDead()) {
+                battleState.doAfterPossibleStaminaChange()
+            }
+        }
         return true
     }
 

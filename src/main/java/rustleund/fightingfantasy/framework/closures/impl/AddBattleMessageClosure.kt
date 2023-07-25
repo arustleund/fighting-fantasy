@@ -17,9 +17,9 @@ class AddBattleMessageClosure(element: Element) : Closure {
 
     override fun execute(gameState: GameState): Boolean {
         if (messagePosition == BattleMessagePosition.IMMEDIATE_END) {
-            gameState.battleState.immediatelyAppendBattleMessage(message + messageBody)
+            gameState.battleState?.immediatelyAppendBattleMessage(message + messageBody)
         } else {
-            gameState.battleState.addAdditionalMessage(messagePosition, message + messageBody)
+            gameState.battleState?.addAdditionalMessage(messagePosition, message + messageBody)
         }
         return true
     }

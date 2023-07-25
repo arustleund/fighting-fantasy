@@ -15,9 +15,9 @@ class ClearBattleMessageClosure(e: Element) : Closure {
 
     override fun execute(gameState: GameState): Boolean {
         if (positionsToClear == null) {
-            gameState.battleState.clearAllAdditionalMessages()
+            gameState.battleState?.clearAllAdditionalMessages()
         } else {
-            positionsToClear.forEach { gameState.battleState.clearAdditionalMessage(it) }
+            positionsToClear.forEach { gameState.battleState?.clearAdditionalMessage(it) }
         }
         return true
     }

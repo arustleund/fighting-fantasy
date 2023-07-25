@@ -10,7 +10,7 @@ class AddBattleEffectsToCurrentBattleClosure(element: Element, battleEffectsLoad
     private val battleEffects = battleEffectsLoader.loadAllBattleEffectsFromTag(element)
 
     override fun execute(gameState: GameState): Boolean {
-        gameState.battleState.allBattleEffects.addAll(battleEffects)
+        gameState.battleState?.allBattleEffects?.addAll(battleEffects)
         return true
     }
 }

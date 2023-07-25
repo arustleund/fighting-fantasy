@@ -25,13 +25,11 @@ public class Enemies implements Iterable<EnemyState> {
 		enemies.add(enemy);
 	}
 
+	/**
+	 * @return <code>true</code> if all enemies are dead, <code>false</code> otherwise
+	 */
 	public boolean areDead() {
-		for (EnemyState thisEnemy : enemies) {
-			if (!thisEnemy.isDead()) {
-				return false;
-			}
-		}
-		return true;
+		return enemies.stream().allMatch(AbstractEntityState::isDead);
 	}
 
 	public EnemyState getFirstNonDeadEnemy() {
