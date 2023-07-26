@@ -71,9 +71,15 @@ public class Scale {
 		this.savedValues.put(label, this.currentValue);
 	}
 
+	/**
+	 * Restore the saved value for the given label. If no value has been saved under this label,
+	 * nothing happens.
+	 */
 	public void restoreSavedValue(String label) {
-		this.previousValue = this.currentValue;
-		this.currentValue = this.savedValues.get(label);
+		if (this.savedValues.containsKey(label)) {
+			this.previousValue = this.currentValue;
+			this.currentValue = this.savedValues.get(label);
+		}
 	}
 
 	public void restorePreviousValue() {

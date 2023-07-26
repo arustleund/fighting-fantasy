@@ -185,13 +185,14 @@ public class BattleState {
     }
 
     private void doEndBattle() {
+        this.battleStarted = false;
         doBattleStage(this.allBattleEffects, BattleEffects::getEndBattle);
         doBattleStage(itemBattleEffects(), BattleEffects::getEndBattle);
     }
 
     public void doAfterPossibleStaminaChange() {
         updateBattleMessageOnPageState();
-        if (getEnemies().areDead() || getPlayerState().isDead()) {
+        if ((getEnemies().areDead() || getPlayerState().isDead()) && battleStarted) {
             doEndBattle();
             getPageState().getGameState().endBattle();
         }
