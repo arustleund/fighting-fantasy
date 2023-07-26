@@ -4,6 +4,8 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
+import java.nio.charset.StandardCharsets;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
@@ -13,7 +15,6 @@ import javax.swing.JOptionPane;
 import rustleund.fightingfantasy.framework.base.GameController;
 import rustleund.fightingfantasy.framework.base.Item;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.Range;
 import com.google.common.io.CharSource;
 import com.google.common.io.Files;
@@ -23,9 +24,10 @@ import com.google.gson.JsonSyntaxException;
 
 public class LoadAction extends AbstractAction {
 
+	@Serial
 	private static final long serialVersionUID = -4230657785810027591L;
 
-	private GameController gameController;
+	private final transient GameController gameController;
 
 	public LoadAction(GameController gameController) {
 		super("Load Saved Game");
@@ -45,7 +47,7 @@ public class LoadAction extends AbstractAction {
 			gsonBuilder.registerTypeAdapter(Range.class, new IntegerRangeDeserializer());
 
 			Gson gson = gsonBuilder.create();
-			CharSource charSource = Files.asCharSource(saveFile, Charsets.UTF_8);
+			CharSource charSource = Files.asCharSource(saveFile, StandardCharsets.UTF_8);
 
 			try {
 				SavedGame savedGame = gson.fromJson(charSource.read(), SavedGame.class);

@@ -13,35 +13,37 @@ import java.nio.file.Path;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
+import static java.awt.Image.SCALE_AREA_AVERAGING;
+
 public class ImageView extends JComponent {
 
 	@Serial
 	private static final long serialVersionUID = 6915472531410686968L;
 
-	private BufferedImage image;
-	private final int width;
-	private final int height;
+	private transient BufferedImage image;
+	private final int imageWidth;
+	private final int imageHeight;
 
-	public ImageView(int width, int height) {
-		this.width = width;
-		this.height = height;
+	public ImageView(int imageWidth, int imageHeight) {
+		this.imageWidth = imageWidth;
+		this.imageHeight = imageHeight;
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		if (image != null) {
 			Rectangle r = determineDrawRectangle();
-			Image drawableImage = image.getScaledInstance(r.width * 2, r.height * 2, BufferedImage.SCALE_AREA_AVERAGING);
+			Image drawableImage = image.getScaledInstance(r.width * 2, r.height * 2, SCALE_AREA_AVERAGING);
 			g.drawImage(drawableImage, r.x, r.y, r.width, r.height, null);
 		}
 	}
 
 	private Rectangle determineDrawRectangle() {
-		double scale = Math.min(1., Math.min((double) width / image.getWidth(), (double) height / image.getHeight()));
+		double scale = Math.min(1., Math.min((double) imageWidth / image.getWidth(), (double) imageHeight / image.getHeight()));
 		int w = (int) Math.round(image.getWidth() * scale);
 		int h = (int) Math.round(image.getHeight() * scale);
-		int x = (width - w) / 2;
-		int y = (height - h) / 2;
+		int x = (imageWidth - w) / 2;
+		int y = (imageHeight - h) / 2;
 		return new Rectangle(x, y, w, h);
 	}
 

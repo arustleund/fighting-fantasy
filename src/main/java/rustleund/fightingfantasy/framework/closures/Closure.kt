@@ -5,7 +5,7 @@ import rustleund.fightingfantasy.framework.base.GameState
 /**
  * @see [execute]
  */
-interface Closure {
+fun interface Closure {
 
     /**
      * Execute a game task.

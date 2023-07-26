@@ -14,7 +14,7 @@ public abstract class AbstractEntityState {
 	protected int attackStrengthModifier = 0;
 	protected int damageModifier = 0;
 
-	public AbstractEntityState() {
+	protected AbstractEntityState() {
 		// Does nothing
 	}
 

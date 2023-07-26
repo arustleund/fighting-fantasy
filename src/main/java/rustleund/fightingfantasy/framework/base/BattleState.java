@@ -3,21 +3,14 @@
  */
 package rustleund.fightingfantasy.framework.base;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.w3c.dom.Element;
-
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.util.DiceRoller;
+
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * @author rustlea
@@ -34,7 +27,6 @@ public class BattleState {
     private Enemies enemies;
     private boolean battleStarted = false;
     private final boolean canFlee;
-    private final boolean flee = false;
     private boolean fightEnemiesTogether = true;
     private final PageState pageState;
     private final List<BattleEffects> allBattleEffects;
@@ -126,7 +118,7 @@ public class BattleState {
     }
 
     public boolean battleIsNotOver() {
-        return !getPlayerState().isDead() && !enemies.areDead() && !flee;
+        return !getPlayerState().isDead() && !enemies.areDead();
     }
 
     public PlayerState getPlayerState() {
@@ -140,8 +132,6 @@ public class BattleState {
             battleStarted = true;
             this.pageState.getGameState().getPlayerState().setPoisonDamage(0);
             incrementGameState();
-        } else if (flee) {
-            doPlayerFlee();
         } else {
             doStartRound();
             doDamage();
@@ -213,25 +203,9 @@ public class BattleState {
             message.append(lucky ? "lucky" : "unlucky");
             message.append("! ");
             if (enemyHit) {
-                EnemyState firstNonDeadEnemy = enemies.getFirstNonDeadEnemy();
-                message.append(firstNonDeadEnemy.getName());
-                if (lucky) {
-                    message.append(" will take 2 additional points of damage!<br>");
-                    firstNonDeadEnemy.getStamina().adjustCurrentValueNoException(-2);
-                } else {
-                    message.append(" will take 1 less point of damage!<br>");
-                    firstNonDeadEnemy.getStamina().adjustCurrentValueNoException(1);
-                }
-                appendEnemyStamina(message, firstNonDeadEnemy);
+                doEnemyHitOnTestLuck(lucky, message);
             } else {
-                if (lucky) {
-                    message.append("You will take 1 less point of damage!<br>");
-                    getPlayerState().getStamina().adjustCurrentValueNoException(1);
-                } else {
-                    message.append("You will take 1 more point of damage!<br>");
-                    getPlayerState().getStamina().adjustCurrentValueNoException(-1);
-                }
-                addPlayerStamina(message, getPlayerState());
+                doPlayerHitOnTestLuck(lucky, message);
             }
             if (existingMessageBuilder == null) {
                 appendAtEndOfBattleMessage(message.toString());
@@ -240,10 +214,34 @@ public class BattleState {
         }
     }
 
+    private void doPlayerHitOnTestLuck(boolean lucky, StringBuilder message) {
+        if (lucky) {
+            message.append("You will take 1 less point of damage!<br>");
+            getPlayerState().getStamina().adjustCurrentValueNoException(1);
+        } else {
+            message.append("You will take 1 more point of damage!<br>");
+            getPlayerState().getStamina().adjustCurrentValueNoException(-1);
+        }
+        addPlayerStamina(message, getPlayerState());
+    }
+
+    private void doEnemyHitOnTestLuck(boolean lucky, StringBuilder message) {
+        EnemyState firstNonDeadEnemy = enemies.getFirstNonDeadEnemy();
+        message.append(firstNonDeadEnemy.getName());
+        if (lucky) {
+            message.append(" will take 2 additional points of damage!<br>");
+            firstNonDeadEnemy.getStamina().adjustCurrentValueNoException(-2);
+        } else {
+            message.append(" will take 1 less point of damage!<br>");
+            firstNonDeadEnemy.getStamina().adjustCurrentValueNoException(1);
+        }
+        appendEnemyStamina(message, firstNonDeadEnemy);
+    }
+
     private Collection<BattleEffects> itemBattleEffects() {
         Collection<Item> items = pageState.getGameState().getPlayerState().getItems().values();
         Stream<BattleEffects> itemBattleEffects = items.stream().map(Item::getBattleEffects);
-        return itemBattleEffects.filter(Objects::nonNull).collect(Collectors.toList());
+        return itemBattleEffects.filter(Objects::nonNull).toList();
     }
 
     private void doBattleStage(Collection<BattleEffects> battleEffects, Function<BattleEffects, Closure> closureFunction) {

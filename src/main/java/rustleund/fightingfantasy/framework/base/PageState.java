@@ -3,25 +3,18 @@
  */
 package rustleund.fightingfantasy.framework.base;
 
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.ChainedClosure;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author rustlea
@@ -35,7 +28,6 @@ public class PageState {
     private GameState gameState;
     private String pagetext = null;
     private Map<String, Integer> keepMinimums = null;
-    private Map<Integer, Element> testLucks = null;
     private List<Closure> immediateCommands = null;
     private Map<Integer, Closure> multiCommands = null;
     private Map<Integer, String> texts = null;
@@ -53,7 +45,6 @@ public class PageState {
         loadMultis(document);
         loadBattles(document);
         loadTexts(document);
-        loadTestLucks(document);
         loadKeepMinimum(document);
     }
 
@@ -69,12 +60,6 @@ public class PageState {
                 .forEachRemaining(e -> keepMinimums.put(e.getAttribute("scale"), Integer.valueOf(e.getAttribute("value"))));
     }
 
-    private void loadTestLucks(Document document) {
-        testLucks = new HashMap<>();
-        XMLUtilKt.getChildElementsByName(document.getDocumentElement(), "testluck").iterator()
-                .forEachRemaining(e -> testLucks.put(Integer.valueOf(e.getAttribute("id")), e));
-    }
-
     private void loadImmediate(Document document) {
         immediateCommands = new ArrayList<>();
         Element immediateTag = XMLUtilKt.getChildElementByName(document.getDocumentElement(), "immediate");
@@ -82,8 +67,8 @@ public class PageState {
             NodeList immediateCommandTags = immediateTag.getChildNodes();
             for (int i = 0; i < immediateCommandTags.getLength(); i++) {
                 Node thisImmediateCommandTag = immediateCommandTags.item(i);
-                if (thisImmediateCommandTag instanceof Element) {
-                    immediateCommands.add(this.closureLoader.loadClosureFromElement((Element) thisImmediateCommandTag));
+                if (thisImmediateCommandTag instanceof Element e) {
+                    immediateCommands.add(this.closureLoader.loadClosureFromElement(e));
                 }
             }
         }
@@ -104,8 +89,8 @@ public class PageState {
                     List<Closure> subclosures = new ArrayList<>();
                     for (int j = 0; j < thisMultiTagsCommandTags.getLength(); j++) {
                         Node thisMultiTagsCommandTag = thisMultiTagsCommandTags.item(j);
-                        if (thisMultiTagsCommandTag instanceof Element) {
-                            subclosures.add(this.closureLoader.loadClosureFromElement((Element) thisMultiTagsCommandTag));
+                        if (thisMultiTagsCommandTag instanceof Element e) {
+                            subclosures.add(this.closureLoader.loadClosureFromElement(e));
                         }
                     }
                     this.multiCommands.put(thisMultiId, new ChainedClosure(subclosures));

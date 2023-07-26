@@ -4,6 +4,8 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
+import java.nio.charset.StandardCharsets;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
@@ -13,7 +15,6 @@ import javax.swing.JOptionPane;
 import rustleund.fightingfantasy.framework.base.GameState;
 import rustleund.fightingfantasy.framework.base.Item;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.Range;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
@@ -21,9 +22,10 @@ import com.google.gson.GsonBuilder;
 
 public class SaveAction extends AbstractAction {
 
+	@Serial
 	private static final long serialVersionUID = 4973015396772966933L;
 
-	private GameState gameState;
+	private final transient GameState gameState;
 
 	public SaveAction(GameState gameState) {
 		super("Save");
@@ -45,7 +47,7 @@ public class SaveAction extends AbstractAction {
 				Gson gson = gsonBuilder.create();
 				String json = gson.toJson(latestGameProgress);
 				try {
-					Files.asCharSink(saveFile, Charsets.UTF_8).write(json);
+					Files.asCharSink(saveFile, StandardCharsets.UTF_8).write(json);
 				} catch (IOException ioException) {
 					JOptionPane.showMessageDialog(topLevelAncestor, "The game could not be saved", "An error occurred", JOptionPane.ERROR_MESSAGE);
 				}

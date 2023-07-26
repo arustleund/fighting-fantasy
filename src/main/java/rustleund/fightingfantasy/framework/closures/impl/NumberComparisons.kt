@@ -26,4 +26,4 @@ fun Element.toComparison(): Comparison {
 /**
  * @return The result of running this value against the given [Comparison], always `false` if this value is `null`
  */
-fun Int?.testAgainst(comparison: Comparison) = if (this == null) false else comparison.operator.operation(this, comparison.compareAgainst)
+fun Int?.testAgainst(comparison: Comparison) = this != null && comparison.operator.operation(this, comparison.compareAgainst)

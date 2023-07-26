@@ -3,45 +3,28 @@
  */
 package rustleund.fightingfantasy.main;
 
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
-import javax.swing.filechooser.FileFilter;
-
 import net.lingala.zip4j.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
-
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
-import rustleund.fightingfantasy.framework.base.GameController;
-import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.base.SwingGameView;
-import rustleund.fightingfantasy.framework.base.ItemUtil;
-import rustleund.fightingfantasy.framework.base.PlayerState;
+import rustleund.fightingfantasy.framework.base.*;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
 import rustleund.fightingfantasy.gamesave.BackAction;
 import rustleund.fightingfantasy.gamesave.LoadAction;
 import rustleund.fightingfantasy.gamesave.SaveAction;
 import rustleund.fightingfantasy.ioc.SpringContext;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 /**
  * @author rustlea
@@ -54,7 +37,7 @@ public class Main {
 
 		// Create and set up the window.
 		JFrame frame = new JFrame("Fighting Fantasy");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		if (gameDirectory == null) {
 			JFileChooser chooser = new JFileChooser(System.getProperty("user.home"));
@@ -124,10 +107,9 @@ public class Main {
 	}
 
 	private static void unzipToGameDirectory(Path gamesDirectory, Path zipFile) {
-		try {
-			ZipFile zipFile2 = new ZipFile(zipFile.toFile());
+		try (ZipFile zipFile2 = new ZipFile(zipFile.toFile())) {
 			zipFile2.extractAll(gamesDirectory.toFile().getAbsolutePath());
-		} catch (ZipException e) {
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}

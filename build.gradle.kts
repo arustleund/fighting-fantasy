@@ -1,8 +1,10 @@
 plugins {
     java
-    kotlin("jvm") version "1.6.10"
+    kotlin("jvm") version "1.8.22"
     groovy
     application
+    id ("jacoco")
+    id("org.sonarqube") version "4.2.1.3168"
 }
 
 repositories {
@@ -16,7 +18,7 @@ dependencies {
     implementation("org.springframework:spring-context:5.3.15")
     implementation("net.lingala.zip4j:zip4j:2.9.1")
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("com.notkamui.libs:keval:0.8.0")
 
     testImplementation("org.jgrapht:jgrapht-core:1.5.1")
@@ -28,22 +30,21 @@ dependencies {
 }
 
 group = "com.rustleund"
-version = "1.1.0"
+version = "1.1.1"
 description = "fighting-fantasy"
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "17"
-    }
+kotlin {
+    jvmToolchain(17)
 }
 
 application {
     mainClass.set("rustleund.fightingfantasy.main.Main")
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+    }
 }
 
 tasks {

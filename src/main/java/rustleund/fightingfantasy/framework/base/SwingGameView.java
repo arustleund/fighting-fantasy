@@ -35,7 +35,7 @@ public class SwingGameView extends JPanel implements ActionListener, GameView, H
 	@Serial
 	private static final long serialVersionUID = -8223557610157876489L;
 
-	private final GameController controller;
+	private final transient GameController controller;
 	private final JLabel messageLabel;
 
 	private final ImageView imageLabel;
@@ -201,6 +201,7 @@ public class SwingGameView extends JPanel implements ActionListener, GameView, H
 				case "dobattle" -> controller.doBattle(port);
 				case "doflee" -> controller.doFlee(port);
 				case "testluckbattle" -> controller.doTestLuckInBattle(port == 0);
+				default -> throw new IllegalArgumentException("Unknown link type");
 			}
 		}
 	}
