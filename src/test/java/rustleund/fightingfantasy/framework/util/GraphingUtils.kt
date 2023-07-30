@@ -16,6 +16,8 @@ import kotlin.streams.asSequence
 fun main() {
     val pages = pages().map { it.pageNumber() }.use { it.asSequence().toSet() }
     val graph = DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge::class.java)
+    val pagesWithSounds = Files.list(Paths.get("/Users/rustlea/Dropbox/nightdragon/sounds"))
+        .use { it.asSequence().map { p -> p.fileName.toString().substringBefore(".") }.toSet() }
     val labels = mutableMapOf<String, String>()
     pages.forEach { graph.addVertex(it) }
     val documentBuilderFactory = DocumentBuilderFactory.newInstance()
@@ -53,13 +55,16 @@ fun main() {
         }
     }
 
-    println(labels)
     graph.vertexSet().filter { graph.outDegreeOf(it) == 0 }.forEach { println("End: $it ${labels[it]}") }
 
     val exporter: DOTExporter<String, DefaultEdge> = DOTExporter()
     exporter.setVertexAttributeProvider { v: Any ->
         val map = mutableMapOf<String, Attribute>()
         map["label"] = DefaultAttribute.createAttribute("$v: ${labels[v]}")
+        if (pagesWithSounds.contains(v)) {
+            map["style"] = DefaultAttribute.createAttribute("filled")
+            map["fillcolor"] = DefaultAttribute.createAttribute("#ddffdd")
+        }
         map
     }
     Files.newBufferedWriter(Paths.get("/Users/rustlea/Desktop/nightdragon.gv")).use { writer ->
