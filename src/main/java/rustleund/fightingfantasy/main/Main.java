@@ -7,6 +7,7 @@ import net.lingala.zip4j.ZipFile;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import rustleund.fightingfantasy.framework.base.*;
+import rustleund.fightingfantasy.framework.base.audio.AudioPlayer;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
 import rustleund.fightingfantasy.gamesave.BackAction;
@@ -82,6 +83,7 @@ public class Main {
 
 		// Display the window.
 		frame.pack();
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 
@@ -176,6 +178,8 @@ public class Main {
 		final SwingGameView gameView = new SwingGameView(gameController);
 
 		gameController.addView(gameView);
+
+		gameController.addView(new AudioPlayer());
 
 		frame.setJMenuBar(buildMenuBar(gameState, gameController));
 

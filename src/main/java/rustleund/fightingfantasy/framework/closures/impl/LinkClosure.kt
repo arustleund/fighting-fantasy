@@ -4,6 +4,7 @@
 package rustleund.fightingfantasy.framework.closures.impl
 
 import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.base.audio.AudioFile
 import rustleund.fightingfantasy.framework.closures.ClosureLoader
 import rustleund.fightingfantasy.framework.base.BattleEffectsLoader
 import rustleund.fightingfantasy.framework.base.GameState
@@ -12,6 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory
 import rustleund.fightingfantasy.framework.base.PageState
 import rustleund.fightingfantasy.framework.closures.Closure
 import java.nio.file.Files
+import kotlin.io.path.exists
 
 /**
  * @author rustlea
@@ -48,9 +50,17 @@ class LinkClosure(
         }.onFailure { it.printStackTrace() }.getOrNull()?.let { targetPageDocument ->
             gameState.pageState =
                 PageState(pageName, closureLoader, battleEffectsLoader, targetPageDocument, gameState)
+            loadAudioFile(gameState)
             gameState.pageState.immediateCommands.forEach { it.execute(gameState) }
             gameState.isPageLoaded = false
         }
         return true
+    }
+
+    private fun loadAudioFile(gameState: GameState) {
+        val audioFileLocation = gameState.soundsDirectory.resolve("$pageName.mp3")
+        if (audioFileLocation.exists()) {
+            gameState.audioFilesToPlay.add(AudioFile(audioFileLocation, true))
+        }
     }
 }

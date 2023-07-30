@@ -7,10 +7,9 @@ import java.nio.file.Path;
 import java.util.LinkedList;
 
 import org.jetbrains.annotations.Nullable;
+import rustleund.fightingfantasy.framework.base.audio.AudioFile;
 import rustleund.fightingfantasy.framework.closures.impl.DisplayTextClosure;
 import rustleund.fightingfantasy.gamesave.SavedGame;
-
-import com.google.common.collect.Lists;
 
 /**
  * @author rustlea
@@ -24,7 +23,13 @@ public class GameState {
 	private String message;
 	private boolean isBattleInProgress;
 	private boolean pageLoaded;
-	private final LinkedList<SavedGame> gameProgress = Lists.newLinkedList();
+	private final LinkedList<SavedGame> gameProgress = new LinkedList<>();
+
+	private final LinkedList<AudioFile> audioFilesToPlay = new LinkedList<>();
+
+	public LinkedList<AudioFile> getAudioFilesToPlay() {
+		return audioFilesToPlay;
+	}
 
 	public void addGameProgress(SavedGame savedGame) {
 		this.gameProgress.add(savedGame);
@@ -59,6 +64,10 @@ public class GameState {
 	 */
 	public Path getPagesDirectory() {
 		return this.baseDirectory.resolve("pages");
+	}
+
+	public Path getSoundsDirectory() {
+		return this.baseDirectory.resolve("sounds");
 	}
 
 	public void setBaseDirectory(Path baseDirectory) {

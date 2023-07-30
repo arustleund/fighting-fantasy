@@ -149,6 +149,7 @@ public class BattleState {
     }
 
     public void doPlayerFlee() {
+        this.battleStarted = false;
         doBattleStage(this.allBattleEffects, BattleEffects::getPlayerFlee);
         doBattleStage(itemBattleEffects(), BattleEffects::getPlayerFlee);
     }

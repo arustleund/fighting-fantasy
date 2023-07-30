@@ -10,6 +10,9 @@ plugins {
 repositories {
     mavenLocal()
     mavenCentral()
+    flatDir {
+        dirs("libs")
+    }
 }
 
 dependencies {
@@ -20,6 +23,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("com.notkamui.libs:keval:0.8.0")
+    implementation("jaco:jaco-mp3-player:0.10.2")
 
     testImplementation("org.jgrapht:jgrapht-core:1.5.1")
     testImplementation("org.jgrapht:jgrapht-io:1.5.1")
