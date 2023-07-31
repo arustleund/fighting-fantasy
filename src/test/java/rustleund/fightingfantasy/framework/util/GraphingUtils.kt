@@ -10,8 +10,11 @@ import org.jgrapht.nio.dot.DOTExporter
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.util.function.Function
 import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.streams.asSequence
+
+private val COLORS = listOf("#800000", "#469990", "#000075", "#9A6324", "#3cb44b",  "#f58231", "#4363d8", "#000000")
 
 fun main() {
     val pages = pages().map { it.pageNumber() }.use { it.asSequence().toSet() }
@@ -36,11 +39,13 @@ fun main() {
                         val endIndex = fileContents.indexOf("\"", match.range.first + 1)
                         fileContents.substring(startIndex, endIndex)
                     }
+
                     "<flaggedLink" -> {
                         val firstQuote = fileContents.indexOf("page=\"", match.range.first) + 5
                         val secondQuote = fileContents.indexOf("\"", firstQuote + 1)
                         fileContents.substring(firstQuote + 1, secondQuote)
                     }
+
                     else -> {
                         val firstQuote = fileContents.indexOf("\"", match.range.first)
                         val secondQuote = fileContents.indexOf("\"", firstQuote + 1)
@@ -61,16 +66,32 @@ fun main() {
     exporter.setVertexAttributeProvider { v: Any ->
         val map = mutableMapOf<String, Attribute>()
         map["label"] = DefaultAttribute.createAttribute("$v: ${labels[v]}")
+        map["fontname"] = "Helvetica".toAttr()
         if (pagesWithSounds.contains(v)) {
-            map["style"] = DefaultAttribute.createAttribute("filled")
-            map["fillcolor"] = DefaultAttribute.createAttribute("#ddffdd")
+            map["style"] = "filled".toAttr()
+            map["fillcolor"] = "#ddffdd".toAttr()
         }
         map
     }
+    exporter.setEdgeAttributeProvider(object : Function<DefaultEdge, Map<String, Attribute>> {
+        private var i = 0
+
+        override fun apply(t: DefaultEdge): Map<String, Attribute> {
+            val result = mapOf(
+                "color" to COLORS[i].toAttr(),
+                "arrowhead" to "empty".toAttr(),
+                "style" to "bold".toAttr(),
+            )
+            i = (i + 1) % COLORS.size
+            return result
+        }
+    })
     Files.newBufferedWriter(Paths.get("/Users/rustlea/Desktop/nightdragon.gv")).use { writer ->
         exporter.exportGraph(graph, writer)
     }
 }
+
+private fun String.toAttr() = DefaultAttribute.createAttribute(this)
 
 private fun pages() = Files.list(Paths.get("/Users/rustlea/Dropbox/nightdragon/pages")).filter { it.isPage() }
 
