@@ -12,18 +12,20 @@ class AddItemClosure
     private val itemId: Int,
     itemUtil: ItemUtil,
     private val quantity: Int = 1,
+    private val quantityFormula: String? = null,
     private val priceOverride: Int? = null,
     private val pageLimit: Int? = null
 ) : Closure {
 
     private var pageBuys = 0
     private val item = itemUtil.getItem(itemId)
-    private val totalPrice = (priceOverride ?: item.defaultPrice) * quantity
+    private val keval = keval()
 
     constructor(addItemElement: Element, itemUtil: ItemUtil) : this(
         itemId = addItemElement.optionalIntAttribute("id") ?: throw IllegalArgumentException("Missing id"),
         itemUtil = itemUtil,
         quantity = addItemElement.intAttribute("quantity", 1),
+        quantityFormula = addItemElement.optionalAttribute("quantityFormula"),
         priceOverride = addItemElement.optionalIntAttribute("price"),
         pageLimit = addItemElement.optionalIntAttribute("pageLimit")
     )
@@ -31,11 +33,15 @@ class AddItemClosure
     override fun execute(gameState: GameState): Boolean {
         val playerState = gameState.playerState
         val pageState = gameState.pageState
-        if (item.hasLimit() && playerState.itemCount(itemId) + quantity > item.limit) {
+
+        val quantityToUse = quantityFormula?.let { keval.withConstant("AMT", quantity.toDouble()).eval(it).toInt() } ?: quantity
+        val totalPrice = (priceOverride ?: item.defaultPrice) * quantityToUse
+
+        if (item.hasLimit() && playerState.itemCount(itemId) + quantityToUse > item.limit) {
             gameState.message = "Buying the ${item.name} would put you above the maximum amount allowed (${item.limit})"
             return false
         }
-        if (pageLimit != null && pageBuys + quantity > pageLimit) {
+        if (pageLimit != null && pageBuys + quantityToUse > pageLimit) {
             gameState.message = "This location cannot sell any more of the ${item.name}"
             return false
         }
@@ -52,8 +58,8 @@ class AddItemClosure
             return false
         }
         playerState.gold.adjustCurrentValue(totalPrice * -1)
-        repeat(quantity) { playerState.addItem(item) }
-        pageBuys += quantity
+        repeat(quantityToUse) { playerState.addItem(item) }
+        pageBuys += quantityToUse
         return true
     }
 }

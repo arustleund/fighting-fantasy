@@ -327,6 +327,7 @@
     	<attribute name="id" type="int" use="required"></attribute>
     	<attribute name="price" type="int" use="optional"></attribute>
     	<attribute name="quantity" type="int" use="optional"></attribute>
+		<attribute name="quantityFormula" type="string" use="optional"></attribute>
     	<attribute name="pageLimit" type="int" use="optional"></attribute>
     </complexType>
 

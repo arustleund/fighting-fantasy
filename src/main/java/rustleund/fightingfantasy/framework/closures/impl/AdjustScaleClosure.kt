@@ -3,7 +3,6 @@
  */
 package rustleund.fightingfantasy.framework.closures.impl
 
-import com.notkamui.keval.Keval
 import org.apache.commons.beanutils.PropertyUtils
 import org.w3c.dom.Element
 import rustleund.fightingfantasy.framework.base.*
@@ -29,28 +28,7 @@ class AdjustScaleClosure @JvmOverloads constructor(
     private val rollDiceAmount = element.optionalIntAttribute("rollDiceAmount")
     private val formula = element.optionalAttribute("formula")
     private val negate = element.booleanAttribute("negate")
-
-    private val keval = Keval {
-        includeDefault()
-
-        function {
-            name = "roll"
-            arity = 1
-            implementation = { diceRoller(it[0].toInt()).toDouble() }
-        }
-
-        function {
-            name = "floor"
-            arity = 1
-            implementation = { floor(it[0]) }
-        }
-
-        function {
-            name = "ceil"
-            arity = 1
-            implementation = { ceil(it[0]) }
-        }
-    }
+    private val keval = keval(diceRoller)
 
     override fun execute(gameState: GameState): Boolean {
         val scale = runCatching { PropertyUtils.getProperty(entityRetriever(gameState), scaleName) as Scale }
