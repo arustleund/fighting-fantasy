@@ -222,7 +222,7 @@ public class SwingGameView extends JPanel implements ActionListener, GameView, H
 
 		inventoryList.setModel(new DefaultComboBoxModel<>(playerState.getItems().values().toArray(new Item[0])));
 
-		skill.setText(playerState.getSkill().toString());
+		skill.setText(playerState.getSkill().toString() + " (" + playerState.getAttackStrengthModifier() + " AS)");
 		stamina.setText(playerState.getStamina().toString());
 		luck.setText(playerState.getLuck().toString());
 		provisions.setText(playerState.getProvisions().toString());

@@ -258,6 +258,7 @@
 	<complexType name="enemy">
 		<sequence>
 			<element name="onKilled" type="page:commands" minOccurs="0" maxOccurs="1"></element>
+			<element name="onHit" type="page:commands" minOccurs="0" maxOccurs="1"></element>
 		</sequence>
 		<attribute name="name" type="string" use="required">
 			<annotation>

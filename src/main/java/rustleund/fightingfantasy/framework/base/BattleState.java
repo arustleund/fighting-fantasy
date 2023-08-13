@@ -276,8 +276,13 @@ public class BattleState {
                     if (firstEnemyToAttack.getEnemyKilled() != null) {
                         firstEnemyToAttack.getEnemyKilled().execute(pageState.getGameState());
                     }
-                } else if (!playerState.getLuck().isEmpty()) {
-                    battleLuckMessage.append("<a href=\"http://testluckbattle:0\"><i>Test Your Luck</i></a> to try to do add an additional 2 points of damage");
+                } else {
+                    if (firstEnemyToAttack.getEnemyHit() != null) {
+                        firstEnemyToAttack.getEnemyHit().execute(pageState.getGameState());
+                    }
+                    if (!playerState.getLuck().isEmpty()) {
+                        battleLuckMessage.append("<a href=\"http://testluckbattle:0\"><i>Test Your Luck</i></a> to try to do add an additional 2 points of damage");
+                    }
                 }
             } else if (battleRoundResults.getAttackStrengths().getPlayerHit()) {
                 hitPlayer(playerState, battleRoundResults.getAttackStrengths().winningEnemyPoisonDamage(battleRound), battleLuckMessage);

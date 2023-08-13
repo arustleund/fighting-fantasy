@@ -20,6 +20,8 @@ public class EnemyState extends AbstractEntityState {
     private final Set<String> types = new HashSet<>();
     private Closure enemyKilled;
 
+    private Closure enemyHit;
+
     @VisibleForTesting
     EnemyState(String name, int skill, int stamina, int poisonedWeaponRounds, int poisonDamage) {
         this.name = name;
@@ -56,6 +58,11 @@ public class EnemyState extends AbstractEntityState {
         if (onKilledElement != null) {
             this.enemyKilled = closureLoader.loadClosureFromChildren(onKilledElement);
         }
+
+        Element onHitElement = XMLUtilKt.getChildElementByName(enemyTag, "onHit");
+        if (onHitElement != null) {
+            this.enemyHit = closureLoader.loadClosureFromChildren(onHitElement);
+        }
     }
 
     public int getPoisonedWeaponRounds() {
@@ -64,6 +71,10 @@ public class EnemyState extends AbstractEntityState {
 
     public Closure getEnemyKilled() {
         return this.enemyKilled;
+    }
+
+    public Closure getEnemyHit() {
+        return enemyHit;
     }
 
     public int getPoisonDamage() {
