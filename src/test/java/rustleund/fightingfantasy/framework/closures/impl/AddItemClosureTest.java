@@ -34,6 +34,7 @@ public class AddItemClosureTest extends EasyMockSupport {
 		expect(addItemElement.getAttribute("id")).andStubReturn("1");
 		expect(addItemElement.hasAttribute("price")).andStubReturn(false);
 		expect(addItemElement.hasAttribute("quantity")).andStubReturn(false);
+		expect(addItemElement.hasAttribute("quantityFormula")).andStubReturn(false);
 		expect(addItemElement.hasAttribute("pageLimit")).andStubReturn(false);
 		expect(itemUtil.getItem(1)).andReturn(testItem);
 		expect(pageState.hasKeepMinimumForScale("gold")).andStubReturn(false);
