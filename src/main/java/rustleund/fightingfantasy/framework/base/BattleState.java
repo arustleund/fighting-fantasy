@@ -6,6 +6,7 @@ package rustleund.fightingfantasy.framework.base;
 import org.w3c.dom.Element;
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
+import rustleund.fightingfantasy.framework.closures.impl.DisplayTextClosure;
 import rustleund.fightingfantasy.framework.util.DiceRoller;
 
 import java.util.*;
@@ -67,6 +68,13 @@ public class BattleState {
         }
 
         this.additionalMessages = new EnumMap<>(BattleMessagePosition.class);
+
+        Integer displayTextOnEnd = XMLUtilKt.optionalIntAttribute(battleTag, "displayTextOnEnd");
+        if (displayTextOnEnd != null) {
+            BattleEffects displayTextEffects = new BattleEffects();
+            displayTextEffects.setEndBattle(new DisplayTextClosure(displayTextOnEnd));
+            allBattleEffects.add(displayTextEffects);
+        }
     }
 
     public void addAdditionalMessage(BattleMessagePosition position, String message) {

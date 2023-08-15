@@ -247,6 +247,11 @@
 		<attribute name="id" type="int" use="required"></attribute>
 		<attribute name="fightEnemiesTogether" type="boolean" use="optional"></attribute>
 		<attribute name="canFlee" type="boolean" use="optional"></attribute>
+		<attribute name="displayTextOnEnd" type="int" use="optional">
+			<annotation>
+				<documentation>The ID of the "text" block to display when the battle ends</documentation>
+			</annotation>
+		</attribute>
 	</complexType>
 
 	<complexType name="enemies">
