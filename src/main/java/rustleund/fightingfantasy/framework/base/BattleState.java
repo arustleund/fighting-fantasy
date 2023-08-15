@@ -3,6 +3,9 @@
  */
 package rustleund.fightingfantasy.framework.base;
 
+import com.google.common.annotations.VisibleForTesting;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Element;
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
@@ -13,6 +16,10 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static java.util.Spliterators.spliteratorUnknownSize;
+import static java.util.stream.StreamSupport.stream;
+import static rustleund.fightingfantasy.framework.base.XMLUtilKt.*;
+
 /**
  * @author rustlea
  */
@@ -21,16 +28,14 @@ public class BattleState {
     public static final String START_STRING = "<!-- START BATTLE -->";
     public static final String END_STRING = "<!-- END BATTLE -->";
 
-    private final BattleEffectsLoader battleEffectsLoader;
-    private final ClosureLoader closureLoader;
-
-    private Integer id;
-    private Enemies enemies;
-    private boolean battleStarted = false;
+    private final int id;
+    private final Enemies enemies;
     private final boolean canFlee;
-    private boolean fightEnemiesTogether = true;
+    private final boolean fightEnemiesTogether;
     private final PageState pageState;
     private final List<BattleEffects> allBattleEffects;
+
+    private boolean battleStarted = false;
     private String currentBattleMessage;
     private AttackStrengths currentAttackStrengths;
     private int playerHitCount;
@@ -45,35 +50,41 @@ public class BattleState {
     }
 
     public BattleState(Element battleTag, PageState pageState, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
-        this.closureLoader = closureLoader;
-        this.battleEffectsLoader = battleEffectsLoader;
+        this(
+                pageState,
+                Integer.parseInt(battleTag.getAttribute("id")),
+                booleanAttribute(battleTag, "fightEnemiesTogether", true),
+                booleanAttribute(battleTag, "canFlee", false),
+                optionalIntAttribute(battleTag, "displayTextOnEnd"),
+                loadEnemies(getChildElementByName(battleTag, "enemies"), pageState.getGameState().getPlayerState(), closureLoader),
+                createAndLoadMainBattleEffects(battleTag, battleEffectsLoader)
+        );
+    }
 
+    @VisibleForTesting
+    BattleState(
+            PageState pageState,
+            int id, boolean fightEnemiesTogether, boolean canFlee, @Nullable Integer displayTextOnEnd,
+            Enemies enemies,
+            BattleEffects mainBattleEffects
+    ) {
         this.pageState = pageState;
 
-        this.id = Integer.valueOf(battleTag.getAttribute("id"));
+        this.id = id;
+        this.canFlee = canFlee;
+        this.fightEnemiesTogether = fightEnemiesTogether;
 
-        if (battleTag.hasAttribute("fightEnemiesTogether")) {
-            this.fightEnemiesTogether = battleTag.getAttribute("fightEnemiesTogether").equalsIgnoreCase("true");
-        }
-
-        this.canFlee = battleTag.hasAttribute("canFlee") && battleTag.getAttribute("canFlee").equalsIgnoreCase("true");
-
-        loadEnemies(XMLUtilKt.getChildElementByName(battleTag, "enemies"));
+        this.enemies = enemies;
 
         this.allBattleEffects = new ArrayList<>();
-
-        Element effectsTag = XMLUtilKt.getChildElementByName(battleTag, "effects");
-        if (effectsTag != null) {
-            loadEffects(effectsTag);
-        }
+        this.allBattleEffects.add(mainBattleEffects);
 
         this.additionalMessages = new EnumMap<>(BattleMessagePosition.class);
 
-        Integer displayTextOnEnd = XMLUtilKt.optionalIntAttribute(battleTag, "displayTextOnEnd");
         if (displayTextOnEnd != null) {
             BattleEffects displayTextEffects = new BattleEffects();
             displayTextEffects.setEndBattle(new DisplayTextClosure(displayTextOnEnd));
-            allBattleEffects.add(displayTextEffects);
+            this.allBattleEffects.add(displayTextEffects);
         }
     }
 
@@ -94,29 +105,37 @@ public class BattleState {
         updateBattleMessageOnPageState();
     }
 
-    private void loadEnemies(Element enemiesTag) {
-        this.enemies = new Enemies();
-        XMLUtilKt.getChildElementsByName(enemiesTag, "enemy").iterator()
-                .forEachRemaining(this::addEnemyToEnemies);
+    private static Enemies loadEnemies(Element enemiesTag, PlayerState playerState, ClosureLoader closureLoader) {
+        Enemies result = new Enemies();
+        Iterator<Element> enemyElementsIterator = XMLUtilKt.getChildElementsByName(enemiesTag, "enemy").iterator();
+        stream(spliteratorUnknownSize(enemyElementsIterator, Spliterator.ORDERED), false)
+                .map(e -> loadEnemy(e, playerState, closureLoader))
+                .forEach(result::addEnemy);
+        return result;
     }
 
-    private void addEnemyToEnemies(Element e) {
+    private static EnemyState loadEnemy(Element e, PlayerState playerState, ClosureLoader closureLoader) {
         EnemyState enemy = new EnemyState(e, closureLoader);
         if (enemy.isOfType("self")) {
-            enemy.setSkill(getPlayerState().getSkill().deepCopy());
-            enemy.setStamina(getPlayerState().getStamina().deepCopy());
+            enemy.setSkill(playerState.getSkill().deepCopy());
+            enemy.setStamina(playerState.getStamina().deepCopy());
         }
-        enemies.addEnemy(enemy);
+        return enemy;
     }
 
-    private void loadEffects(Element effectsTag) {
-        loadEffectsFromTag(effectsTag);
+    @NotNull
+    private static BattleEffects createAndLoadMainBattleEffects(Element battleTag, BattleEffectsLoader battleEffectsLoader) {
+        Element effectsTag = getChildElementByName(battleTag, "effects");
+        if (effectsTag == null) {
+            return new BattleEffects();
+        }
+        return createAndLoadBattleEffectsFromEffectsTag(effectsTag, battleEffectsLoader);
     }
 
-    private void loadEffectsFromTag(Element effectsTag) {
-        BattleEffects initialBattleEffects = new BattleEffects();
-        battleEffectsLoader.loadBattleEffectsFromTag(initialBattleEffects, effectsTag);
-        this.allBattleEffects.add(initialBattleEffects);
+    private static BattleEffects createAndLoadBattleEffectsFromEffectsTag(Element effectsTag, BattleEffectsLoader battleEffectsLoader) {
+        BattleEffects result = new BattleEffects();
+        battleEffectsLoader.loadBattleEffectsFromTag(result, effectsTag);
+        return result;
     }
 
     private void loadEffectsFromPlayerState(PlayerState playerState) {
@@ -198,8 +217,8 @@ public class BattleState {
     }
 
     private void updateBattleMessageOnPageState() {
-        if (getCurrentBattleMessage() != null) {
-            pageState.replacePagetext(BattleState.START_STRING, BattleState.END_STRING, getCurrentBattleMessage());
+        if (this.currentBattleMessage != null) {
+            pageState.replacePagetext(BattleState.START_STRING, BattleState.END_STRING, this.currentBattleMessage);
         }
     }
 
@@ -269,11 +288,11 @@ public class BattleState {
 
         PlayerState playerState = getPlayerState();
 
-        BattleRoundResults battleRoundResults =
-                BattleRoundResultsKt.determineBattleRoundResults(playerState, enemies, fightEnemiesTogether, () -> DiceRoller.rollDiceResult(2), battleRound);
-        this.currentAttackStrengths = battleRoundResults.getAttackStrengths();
-
         if (battleIsNotOver()) {
+            BattleRoundResults battleRoundResults =
+                    BattleRoundResultsKt.determineBattleRoundResults(playerState, enemies, fightEnemiesTogether, () -> DiceRoller.rollDiceResult(2), battleRound);
+            this.currentAttackStrengths = battleRoundResults.getAttackStrengths();
+
             StringBuilder battleLuckMessage = new StringBuilder();
             if (battleRoundResults.getAttackStrengths().getPlayerWon()) {
                 EnemyState firstEnemyToAttack = enemies.getFirstNonDeadEnemy();
@@ -306,7 +325,7 @@ public class BattleState {
             message.append("<br>");
         }
 
-        message.append("<br><a href=\"http://dobattle:").append(this.id.toString()).append("\">CONTINUE</a>");
+        message.append("<br><a href=\"http://dobattle:").append(this.id).append("\">CONTINUE</a>");
         if (canFlee) {
             message.append("&nbsp;<a href=\"http://doflee:").append(this.id).append("\">FLEE</a>");
         }
@@ -315,16 +334,16 @@ public class BattleState {
 
         message.append(END_STRING);
 
-        setCurrentBattleMessage(message.toString());
+        this.currentBattleMessage = message.toString();
     }
 
     private void appendAtEndOfBattleMessage(String message) {
-        StringBuilder newBattleMessage = new StringBuilder(getCurrentBattleMessage());
+        StringBuilder newBattleMessage = new StringBuilder(this.currentBattleMessage);
         newBattleMessage.setLength(newBattleMessage.length() - END_STRING.length());
         newBattleMessage.append("<br>");
         newBattleMessage.append(message);
         newBattleMessage.append(END_STRING);
-        setCurrentBattleMessage(newBattleMessage.toString());
+        this.currentBattleMessage = newBattleMessage.toString();
     }
 
     private void addPlayerStamina(StringBuilder message, PlayerState playerState) {
@@ -360,28 +379,12 @@ public class BattleState {
         }
     }
 
-    public String getCurrentBattleMessage() {
-        return currentBattleMessage;
-    }
-
-    public void setCurrentBattleMessage(String currentBattleMessage) {
-        this.currentBattleMessage = currentBattleMessage;
-    }
-
     public Enemies getEnemies() {
         return enemies;
     }
 
     public PageState getPageState() {
         return pageState;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public List<BattleEffects> getAllBattleEffects() {
