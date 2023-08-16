@@ -7,15 +7,30 @@ import java.util.function.Predicate
 
 
 class TestStatPredicate @JvmOverloads constructor(
-    element: Element,
+    private val comparison: Comparison,
+    private val stat: String,
+    private val useInitialValue: Boolean = false,
+    private val modifiedByFormula: String? = null,
     private val entityStateRetriever: (GameState) -> AbstractEntityState = GameState::getPlayerState,
     private val attackStrengthRetriever: (GameState) -> AttackStrength? =
         { it.battleState?.currentAttackStrengths?.playerAttackStrength }
 ) : Predicate<GameState> {
 
-    private val comparison = element.toComparison()
-    private val stat = element.getAttribute("stat")
-    private val useInitialValue = element.booleanAttribute("useInitialValue", false)
+    @JvmOverloads constructor(
+        element: Element,
+        entityStateRetriever: (GameState) -> AbstractEntityState = GameState::getPlayerState,
+        attackStrengthRetriever: (GameState) -> AttackStrength? =
+            { it.battleState?.currentAttackStrengths?.playerAttackStrength }
+    ) : this(
+        comparison = element.toComparison(),
+        stat = element.getAttribute("stat"),
+        useInitialValue = element.booleanAttribute("useInitialValue", false),
+        modifiedByFormula = element.optionalAttribute("modifiedByFormula"),
+        entityStateRetriever = entityStateRetriever,
+        attackStrengthRetriever = attackStrengthRetriever
+    )
+
+    private val keval = keval()
 
     override fun test(gameState: GameState): Boolean {
         return runCatching {
@@ -26,12 +41,15 @@ class TestStatPredicate @JvmOverloads constructor(
     }
 
     private fun getStatValue(entityStateToTest: AbstractEntityState, gameState: GameState): Int? {
-        return when (stat) {
+        val rawValue = when (stat) {
             "attackStrength" -> attackStrengthRetriever(gameState)?.total
             "hitCount" -> gameState.battleState?.playerHitCount
             "battleRound" -> gameState.battleState?.battleRound
             else -> getNonAttackStrengthStatValue(entityStateToTest)
         }
+        return modifiedByFormula?.let { formula ->
+            rawValue?.let { rv -> keval.withConstant("AMT", rv.toDouble()).eval(formula).toInt() }
+        } ?: rawValue
     }
 
     private fun getNonAttackStrengthStatValue(entityStateToTest: AbstractEntityState): Int {

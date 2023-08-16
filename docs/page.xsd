@@ -362,6 +362,7 @@
     		<extension base="page:testNumber">
     			<attribute name="stat" type="page:testStatValues" use="required"></attribute>
     			<attribute name="useInitialValue" type="boolean" use="optional"></attribute>
+				<attribute name="modifiedByFormula" type="string" use="optional"></attribute>
     		</extension>
     	</complexContent>
     </complexType>
