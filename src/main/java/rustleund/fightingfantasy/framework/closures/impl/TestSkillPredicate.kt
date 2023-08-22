@@ -4,7 +4,7 @@ import org.w3c.dom.Element
 import rustleund.fightingfantasy.framework.util.DiceRoller.rollDice
 import rustleund.fightingfantasy.framework.base.GameState
 import rustleund.fightingfantasy.framework.base.AbstractEntityState
-import rustleund.fightingfantasy.framework.base.intAttribute
+import rustleund.fightingfantasy.framework.base.optionalAttribute
 import java.util.function.Function
 import java.util.function.Predicate
 
@@ -13,10 +13,17 @@ class TestSkillPredicate(
     private val gameStateToEntity: Function<in GameState, out AbstractEntityState>
 ) : Predicate<GameState> {
 
-    private val diceRollAdjustment = element.intAttribute("diceRollAdjustment", 0)
+    private val diceRollAdjustmentFormula = element.optionalAttribute("diceRollAdjustment")
 
     override fun test(gameState: GameState): Boolean {
         val entity = gameStateToEntity.apply(gameState)
-        return rollDice(2) + diceRollAdjustment <= entity.skill.currentValue
+        val diceRollResult = rollDice(2)
+        val newFormula = diceRollAdjustmentFormula.portOldFormula()
+        val finalResult = if (newFormula == null) diceRollResult else keval()
+            .withPlayerStateVars(gameState.playerState)
+            .withConstant("AMT", diceRollResult.toDouble())
+            .eval(newFormula)
+            .toInt()
+        return finalResult <= entity.skill.currentValue
     }
 }

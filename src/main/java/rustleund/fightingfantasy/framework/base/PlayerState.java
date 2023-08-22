@@ -8,9 +8,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Supplier;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.notkamui.keval.Keval;
+import com.notkamui.keval.KevalDSLException;
+import com.notkamui.keval.KevalInvalidSymbolException;
+import com.notkamui.keval.KevalZeroDivisionException;
+import kotlin.jvm.functions.Function1;
+import kotlin.reflect.KFunction;
 import org.jetbrains.annotations.Nullable;
 import rustleund.fightingfantasy.framework.closures.Closure;
+import rustleund.fightingfantasy.framework.closures.impl.KevalConfigKt;
 import rustleund.fightingfantasy.framework.util.DiceRoller;
 
 import com.google.common.collect.Maps;
@@ -125,8 +134,31 @@ public class PlayerState extends AbstractEntityState {
 		this.nextBattleBattleEffects.add(battleEffects);
 	}
 
-	public boolean testLuck(int diceRollAdjustment) {
-		int rollWithAdjustment = DiceRoller.rollDice(2) + diceRollAdjustment;
+	/**
+	 * Test the player's luck. The player's current luck value will be decremented as a result.
+	 *
+	 * @param diceRollAdjustmentFormula {@code null} for no adjustment
+	 * @return {@code true} if the player was lucky {@code false} for unlucky
+	 */
+	public boolean testLuck(@Nullable String diceRollAdjustmentFormula) {
+		return testLuck(DiceRoller::rollDice, diceRollAdjustmentFormula);
+	}
+
+	@VisibleForTesting
+	boolean testLuck(Function1<? super Integer, Integer> diceRoller, @Nullable String diceRollAdjustmentFormula) {
+		int testLuckDiceRollResult = diceRoller.invoke(2);
+		int rollWithAdjustment;
+		if (diceRollAdjustmentFormula == null) {
+			rollWithAdjustment = testLuckDiceRollResult;
+		} else {
+			try {
+				Keval keval = KevalConfigKt.withPlayerStateVars(KevalConfigKt.keval(diceRoller), this);
+				keval.withConstant("AMT", testLuckDiceRollResult);
+				rollWithAdjustment = (int) keval.eval(diceRollAdjustmentFormula);
+			} catch (Exception e) {
+				throw new RuntimeException("Could not evaluate formula: " + diceRollAdjustmentFormula, e);
+			}
+		}
 		boolean lucky = rollWithAdjustment <= getLuck().getCurrentValue();
 		getLuck().adjustCurrentValueNoException(-1);
 		return lucky;

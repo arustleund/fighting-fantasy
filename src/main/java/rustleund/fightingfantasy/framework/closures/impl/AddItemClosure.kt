@@ -19,7 +19,6 @@ class AddItemClosure
 
     private var pageBuys = 0
     private val item = itemUtil.getItem(itemId)
-    private val keval = keval()
 
     constructor(addItemElement: Element, itemUtil: ItemUtil) : this(
         itemId = addItemElement.optionalIntAttribute("id") ?: throw IllegalArgumentException("Missing id"),
@@ -34,7 +33,7 @@ class AddItemClosure
         val playerState = gameState.playerState
         val pageState = gameState.pageState
 
-        val quantityToUse = quantityFormula?.let { keval.withConstant("AMT", quantity.toDouble()).eval(it).toInt() } ?: quantity
+        val quantityToUse = quantityFormula?.let { keval().withConstant("AMT", quantity.toDouble()).eval(it).toInt() } ?: quantity
         val totalPrice = (priceOverride ?: item.defaultPrice) * quantityToUse
 
         if (item.hasLimit() && playerState.itemCount(itemId) + quantityToUse > item.limit) {

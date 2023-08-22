@@ -224,7 +224,7 @@ public class BattleState {
 
     public void doTestLuck(boolean enemyHit, StringBuilder existingMessageBuilder) {
         if (!testedLuckThisRound) {
-            boolean lucky = getPlayerState().testLuck(0);
+            boolean lucky = getPlayerState().testLuck(null);
             testedLuckThisRound = true;
             StringBuilder message = existingMessageBuilder == null ? new StringBuilder() : existingMessageBuilder;
             message.append("You were ");

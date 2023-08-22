@@ -339,7 +339,18 @@
     <complexType name="testContentWithAdjustment">
     	<complexContent>
     		<extension base="page:testContent">
-    			<attribute name="diceRollAdjustment" type="int" use="optional"></attribute>
+    			<attribute name="diceRollAdjustment" type="string" use="optional">
+					<annotation>
+						<documentation>
+							A formula for adjusting the result of the dice roll. Use the constant AMT to refer to
+							the result of the dice roll.
+							If the value is a simple integer, it will be translated to AMT+int where "int" is the integer
+							(this is for backwards compatibility).
+							Player values are available using the syntax player_gold_currentValue
+							and player_stamina_upperBound. Default is just to use the result of the dice roll.
+						</documentation>
+					</annotation>
+				</attribute>
     		</extension>
     	</complexContent>
     </complexType>

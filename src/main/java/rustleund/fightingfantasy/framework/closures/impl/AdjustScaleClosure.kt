@@ -28,7 +28,6 @@ class AdjustScaleClosure @JvmOverloads constructor(
     private val rollDiceAmount = element.optionalIntAttribute("rollDiceAmount")
     private val formula = element.optionalAttribute("formula")
     private val negate = element.booleanAttribute("negate")
-    private val keval = keval(diceRoller)
 
     override fun execute(gameState: GameState): Boolean {
         val scale = runCatching { PropertyUtils.getProperty(entityRetriever(gameState), scaleName) as Scale }
@@ -75,7 +74,7 @@ class AdjustScaleClosure @JvmOverloads constructor(
             }
         }
         if (formula != null) {
-            amountToAdjust = keval.withConstant("AMT", amountToAdjust.toDouble()).eval(formula).toInt()
+            amountToAdjust = keval(diceRoller).withConstant("AMT", amountToAdjust.toDouble()).eval(formula).toInt()
         }
         return if (negate) amountToAdjust * -1 else amountToAdjust
     }

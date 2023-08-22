@@ -30,8 +30,6 @@ class TestStatPredicate @JvmOverloads constructor(
         attackStrengthRetriever = attackStrengthRetriever
     )
 
-    private val keval = keval()
-
     override fun test(gameState: GameState): Boolean {
         return runCatching {
             val entityStateToTest = entityStateRetriever(gameState)
@@ -48,7 +46,7 @@ class TestStatPredicate @JvmOverloads constructor(
             else -> getNonAttackStrengthStatValue(entityStateToTest)
         }
         return modifiedByFormula?.let { formula ->
-            rawValue?.let { rv -> keval.withConstant("AMT", rv.toDouble()).eval(formula).toInt() }
+            rawValue?.let { rv -> keval().withConstant("AMT", rv.toDouble()).eval(formula).toInt() }
         } ?: rawValue
     }
 
