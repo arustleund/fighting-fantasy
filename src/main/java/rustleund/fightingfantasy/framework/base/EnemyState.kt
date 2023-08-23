@@ -1,87 +1,32 @@
-/*
- * Created on Mar 8, 2004
- */
-package rustleund.fightingfantasy.framework.base;
+package rustleund.fightingfantasy.framework.base
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import org.w3c.dom.Element
+import rustleund.fightingfantasy.framework.closures.Closure
+import rustleund.fightingfantasy.framework.closures.ClosureLoader
 
-import com.google.common.annotations.VisibleForTesting;
-import org.w3c.dom.Element;
+class EnemyState(
+    name: String,
+    skill: Int,
+    stamina: Int,
+    val id: Int?,
+    val poisonedWeaponRounds: Int,
+    val poisonDamage: Int,
+    private val types: Set<String> = setOf(),
+    val enemyKilled: Closure? = null,
+    val enemyHit: Closure? = null
+) : AbstractEntityState(name, skill, stamina) {
 
-import rustleund.fightingfantasy.framework.closures.Closure;
-import rustleund.fightingfantasy.framework.closures.ClosureLoader;
+    constructor(enemyTag: Element, closureLoader: ClosureLoader) : this(
+        name = enemyTag.getAttribute("name"),
+        skill = enemyTag.intAttribute("skill", 0),
+        stamina = enemyTag.intAttribute("stamina", 0),
+        id = enemyTag.optionalIntAttribute("id"),
+        poisonedWeaponRounds = enemyTag.intAttribute("poisonedWeaponRounds", 0),
+        poisonDamage = enemyTag.intAttribute("poisonDamage", 2),
+        types = enemyTag.optionalAttribute("types")?.split(",")?.toSet().orEmpty(),
+        enemyKilled = enemyTag.getChildElementByName("onKilled")?.let { closureLoader.loadClosureFromChildren(it) },
+        enemyHit = enemyTag.getChildElementByName("onHit")?.let { closureLoader.loadClosureFromChildren(it) }
+    )
 
-public class EnemyState extends AbstractEntityState {
-
-    private int poisonedWeaponRounds = 0;
-    private int poisonDamage = 0;
-    private final Set<String> types = new HashSet<>();
-    private Closure enemyKilled;
-
-    private Closure enemyHit;
-
-    @VisibleForTesting
-    EnemyState(String name, int skill, int stamina, int poisonedWeaponRounds, int poisonDamage) {
-        this.name = name;
-        this.skill = new Scale(0, skill, skill, true);
-        this.stamina = new Scale(0, stamina, stamina, true);
-        this.poisonedWeaponRounds = poisonedWeaponRounds;
-        this.poisonDamage = poisonDamage;
-    }
-
-    public EnemyState(Element enemyTag, ClosureLoader closureLoader) {
-
-        this.name = enemyTag.getAttribute("name");
-
-        Integer skillInteger = Integer.valueOf(enemyTag.getAttribute("skill"));
-        this.skill = new Scale(0, skillInteger, skillInteger, true);
-
-        Integer staminaInteger = Integer.valueOf(enemyTag.getAttribute("stamina"));
-        this.stamina = new Scale(0, staminaInteger, staminaInteger, true);
-
-        if (enemyTag.hasAttribute("poisonedWeaponRounds")) {
-            this.poisonedWeaponRounds = Integer.parseInt(enemyTag.getAttribute("poisonedWeaponRounds"));
-            if (enemyTag.hasAttribute("poisonDamage")) {
-                this.poisonDamage = Integer.parseInt(enemyTag.getAttribute("poisonDamage"));
-            } else {
-                this.poisonDamage = 2;
-            }
-        }
-
-        if (enemyTag.hasAttribute("types")) {
-            this.types.addAll(Arrays.asList(enemyTag.getAttribute("types").split(",")));
-        }
-
-        Element onKilledElement = XMLUtilKt.getChildElementByName(enemyTag, "onKilled");
-        if (onKilledElement != null) {
-            this.enemyKilled = closureLoader.loadClosureFromChildren(onKilledElement);
-        }
-
-        Element onHitElement = XMLUtilKt.getChildElementByName(enemyTag, "onHit");
-        if (onHitElement != null) {
-            this.enemyHit = closureLoader.loadClosureFromChildren(onHitElement);
-        }
-    }
-
-    public int getPoisonedWeaponRounds() {
-        return poisonedWeaponRounds;
-    }
-
-    public Closure getEnemyKilled() {
-        return this.enemyKilled;
-    }
-
-    public Closure getEnemyHit() {
-        return enemyHit;
-    }
-
-    public int getPoisonDamage() {
-        return poisonDamage;
-    }
-
-    public boolean isOfType(String type) {
-        return this.types.contains(type);
-    }
+    fun isOfType(type: String) = types.contains(type)
 }

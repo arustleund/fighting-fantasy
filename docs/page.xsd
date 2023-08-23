@@ -265,6 +265,7 @@
 			<element name="onKilled" type="page:commands" minOccurs="0" maxOccurs="1"></element>
 			<element name="onHit" type="page:commands" minOccurs="0" maxOccurs="1"></element>
 		</sequence>
+		<attribute name="id" type="int" use="optional" />
 		<attribute name="name" type="string" use="required">
 			<annotation>
 				<documentation>The name of the enemy.</documentation>

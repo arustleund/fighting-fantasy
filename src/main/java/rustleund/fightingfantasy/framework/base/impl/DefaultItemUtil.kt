@@ -19,7 +19,7 @@ class DefaultItemUtil(
             val documentBuilderFactory = DocumentBuilderFactory.newInstance()
             documentBuilderFactory.isNamespaceAware = true
             val itemDocument = documentBuilderFactory.newDocumentBuilder().parse(itemIs)
-            getChildElementsByName(itemDocument.documentElement, "item")
+            itemDocument.documentElement.getChildElementsByName("item")
                 .map { loadItemTag(it) }
                 .associateBy { it.id }
         }
@@ -44,13 +44,13 @@ class DefaultItemUtil(
     }
 
     private fun loadOnUse(itemElement: Element, item: Item) {
-        getChildElementByName(itemElement, "onUse")?.let {
+        itemElement.getChildElementByName("onUse")?.let {
             item.useItem = closureLoader.loadClosureFromChildren(it)
         }
     }
 
     private fun loadBattleEffects(itemElement: Element, item: Item) {
-        getChildElementByName(itemElement, "battleEffects")?.let { battleEffectsElement ->
+        itemElement.getChildElementByName("battleEffects")?.let { battleEffectsElement ->
             val battleEffects = BattleEffects()
             battleEffectsLoader.loadBattleEffectsFromTag(battleEffects, battleEffectsElement)
             item.battleEffects = battleEffects

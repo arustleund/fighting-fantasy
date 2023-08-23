@@ -8,15 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Supplier;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.notkamui.keval.Keval;
-import com.notkamui.keval.KevalDSLException;
-import com.notkamui.keval.KevalInvalidSymbolException;
-import com.notkamui.keval.KevalZeroDivisionException;
 import kotlin.jvm.functions.Function1;
-import kotlin.reflect.KFunction;
 import org.jetbrains.annotations.Nullable;
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.impl.KevalConfigKt;

@@ -19,7 +19,7 @@ class BattleStateSpec extends Specification {
         pageState.getGameState() >> gameState
 
         def enemies = new Enemies()
-        def enemy = new EnemyState("one", 1, 1, 0, 0)
+        def enemy = new EnemyState("one", 1, 1, null, 0, 0, [].<String> toSet(), null, null)
         enemies.addEnemy(enemy)
         def mainBattleEffects = new BattleEffects()
         def adjustEnemyScaleElement = Stub(Element)

@@ -19,7 +19,7 @@ class RollDiceClosure(element: Element, closureLoader: ClosureLoader) : Closure 
 
     init {
         number = element.intAttribute("number", 1)
-        rollMappings = getChildElementsByName(element, "doActions")
+        rollMappings = element.getChildElementsByName("doActions")
             .flatMap {
                 val actionsForElement = closureLoader.loadClosureFromChildren(it)
                 it.getAttribute("rolls").splitToSequence(',')

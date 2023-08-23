@@ -10,7 +10,7 @@ import rustleund.fightingfantasy.framework.closures.Closure
 
 class AddEnemiesClosure(element: Element, closureLoader: ClosureLoader) : Closure {
 
-    private val enemiesToAdd = getChildElementsByName(element, "enemy")
+    private val enemiesToAdd = element.getChildElementsByName("enemy")
         .map { EnemyState(it, closureLoader) }.toList()
     private val battleId = element.getAncestorByName("battle")?.optionalIntAttribute("id")
         ?: throw IllegalArgumentException("No ancestor battle element or ID found")

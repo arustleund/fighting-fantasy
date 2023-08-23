@@ -9,18 +9,18 @@ import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
 /**
- * @return A [Sequence] of all [Element]s with the name [childName] that are direct children of the given [parentElement]
+ * @return A [Sequence] of all [Element]s with the name [childName] that are direct children of this [Element]
  */
-fun getChildElementsByName(parentElement: Element, childName: String): Sequence<Element> =
-    parentElement.getElementsByTagNameNS("*", childName)
+fun Element.getChildElementsByName(childName: String): Sequence<Element> =
+    getElementsByTagNameNS("*", childName)
         .asElementSequence()
-        .filter { it.parentNode.isSameNode(parentElement) }
+        .filter { it.parentNode.isSameNode(this) }
 
-fun getChildElementByName(parentElement: Element, childName: String): Element? {
-    val childrenNodeList = getChildElementsByName(parentElement, childName).iterator()
+fun Element.getChildElementByName(childName: String): Element? {
+    val childrenNodeList = getChildElementsByName( childName).iterator()
     return if (childrenNodeList.hasNext()) {
         val result = childrenNodeList.next()
-        require(!childrenNodeList.hasNext()) { "There was more than one child for parent: ${parentElement.localName} with child name: $childName" }
+        require(!childrenNodeList.hasNext()) { "There was more than one child for parent: $localName with child name: $childName" }
         result
     } else null
 }

@@ -28,5 +28,5 @@ class DefaultClosureLoader(private val mappings: Map<String, Function<Element, C
     }
 
     override fun loadClosureFromChild(element: Element, childName: String): Closure =
-        getChildElementByName(element, childName)?.let { loadClosureFromChildren(it) } ?: ChainedClosure()
+        element.getChildElementByName(childName)?.let { loadClosureFromChildren(it) } ?: ChainedClosure()
 }

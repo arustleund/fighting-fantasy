@@ -12,7 +12,7 @@ class AttackStrengthsSpec extends Specification {
         diceRoller.invoke() >>> [[pR], [eR]]
         def playerState = new PlayerState("player", pSk, pSt, 0, 0, 0, 0, 0, 0, [])
         def enemies = new Enemies()
-        enemies.addEnemy(new EnemyState("enemy1", eSk, eSt, ePR, 2))
+        enemies.addEnemy(new EnemyState("enemy1", eSk, eSt, null, ePR, 2, [].<String> toSet(), null, null))
 
         expect:
         def testee = AttackStrengthsKt.createAttackStrengths(playerState, enemies, false, diceRoller)
@@ -40,8 +40,8 @@ class AttackStrengthsSpec extends Specification {
         diceRoller.invoke() >>> [[pR], [eR1], [eR2]]
         def playerState = new PlayerState("player", pSk, pSt, 0, 0, 0, 0, 0, 0, [])
         def enemies = new Enemies()
-        enemies.addEnemy(new EnemyState("enemy1", e1Sk, e1St, e1PR, 2))
-        enemies.addEnemy(new EnemyState("enemy2", e2Sk, e2St, e2PR, 3))
+        enemies.addEnemy(new EnemyState("enemy1", e1Sk, e1St, null, e1PR, 2, [].<String> toSet(), null, null))
+        enemies.addEnemy(new EnemyState("enemy2", e2Sk, e2St, null, e2PR, 3, [].<String> toSet(), null, null))
 
         expect:
         def testee = AttackStrengthsKt.createAttackStrengths(playerState, enemies, tog, diceRoller)
@@ -112,7 +112,7 @@ class AttackStrengthsSpec extends Specification {
         diceRoller.invoke() >>> [[2], [2]]
         def playerState = new PlayerState("player", 1, 1, 0, 0, 0, 0, 0, 0, [])
         def enemies = new Enemies()
-        enemies.addEnemy(new EnemyState("enemy1", 1, 1, 0, 0))
+        enemies.addEnemy(new EnemyState("enemy1", 1, 1, null, 0, 0, [].<String> toSet(), null, null))
 
         when:
         def testee = AttackStrengthsKt.createAttackStrengths(playerState, enemies, false, diceRoller)
@@ -126,7 +126,7 @@ class AttackStrengthsSpec extends Specification {
         diceRoller.invoke() >>> [[2], [2]]
         def playerState = new PlayerState("player", 1, 1, 0, 0, 0, 0, 0, 0, [])
         def enemies = new Enemies()
-        enemies.addEnemy(new EnemyState("enemy1", 1, 1, 0, 0))
+        enemies.addEnemy(new EnemyState("enemy1", 1, 1, null, 0, 0, [].<String> toSet(), null, null))
 
         when:
         def testee = AttackStrengthsKt.createAttackStrengths(playerState, enemies, false, diceRoller)
