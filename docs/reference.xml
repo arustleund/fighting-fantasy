@@ -203,11 +203,11 @@ Attributes:
 
 	<!-- <adjustEnemyScale> would typically be used as a battle effect against an enemy. The enemy's skill or stamina can be altered.
 	Attributes:
-		enemyId: Not Required. The index of the enemy in the current battle's enemy list. Defaults to the first non-dead enemy.
+		enemyIdx: Not Required. The index of the enemy in the current battle's enemy list. Defaults to the first non-dead enemy.
 		type: Required. Can be one of "stamina" or "skill". This is the attribute that will be changed.
 		amount: Required. Integer. The amount to adjust the attribute by. Use a negative number to subtract from the value.
 	-->
-	<adjustEnemyScale enemyId="0" type="stamina" amount="-3" />
+	<adjustEnemyScale enemyIdx="0" type="stamina" amount="-3" />
 
 	<!-- <adjustPlayerAttackStrength> permanently modifies the player's attack strength during the current battle and all
 	subsequent battles. To set attack strength back at the end of the battle, use another one of these commands at the endbattle
@@ -312,7 +312,7 @@ Attributes:
 	<testFlagText id="12" success="0" failure="1" />
 
 	<testHighestAttackStrength player="true" />
-	<testHighestAttackStrength enemyId="0" />
+	<testHighestAttackStrength enemyIdx="0" />
 
 	<testItem id="17">
 		<successful>
@@ -346,7 +346,7 @@ Attributes:
 	<!-- Syntactic sugar for a <testStat> combined with a <displayText> for success and failure, put text IDs in the success and failure attributes -->
 	<testStatText stat="stamina" atLeast="20" success="0" failure="1" />
 	
-	<testEnemyStat stat="stamina" atLeast="14" enemyId="0">
+	<testEnemyStat stat="stamina" atLeast="14" enemyIdx="0">
 		<successful>
 			<!-- put any number of commands here -->
 		</successful>

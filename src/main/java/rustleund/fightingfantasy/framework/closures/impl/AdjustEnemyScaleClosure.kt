@@ -10,6 +10,6 @@ class AdjustEnemyScaleClosure(
     element,
     { gameState ->
         val enemies = gameState.battleState?.enemies
-        element.optionalIntAttribute("enemyId")?.let { enemies?.enemies?.getOrNull(it) } ?: enemies?.firstNonDeadEnemy
+        element.optionalIntAttribute("enemyIdx")?.let { enemies?.enemies?.getOrNull(it) } ?: enemies?.firstNonDeadEnemy
     }
 )

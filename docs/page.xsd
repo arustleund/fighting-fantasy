@@ -411,7 +411,7 @@
     <complexType name="testEnemyStat">
     	<complexContent>
     		<extension base="page:testStat">
-				<attribute name="enemyId" type="int" use="required"/>
+				<attribute name="enemyIdx" type="int" use="required"/>
     		</extension>
     	</complexContent>
     </complexType>
@@ -419,7 +419,7 @@
     <complexType name="testEnemySkill">
     	<complexContent>
     		<extension base="page:testContentWithAdjustment">
-				<attribute name="enemyId" type="int" use="required"/>
+				<attribute name="enemyIdx" type="int" use="required"/>
     		</extension>
     	</complexContent>
     </complexType>
@@ -428,7 +428,7 @@
     	<complexContent>
     		<extension base="page:testContent">
 				<attribute name="equalAny" type="string"/>
-				<attribute name="enemyId" type="string" use="required"/>
+				<attribute name="enemyIdx" type="string" use="required"/>
     		</extension>
     	</complexContent>
     </complexType>
@@ -437,7 +437,7 @@
 		<complexContent>
 			<extension base="page:testContent">
 				<attribute name="player" type="boolean" default="false" />
-				<attribute name="enemyId" type="int" />
+				<attribute name="enemyIdx" type="int" />
 			</extension>
 		</complexContent>
 	</complexType>
@@ -494,8 +494,7 @@
     <complexType name="adjustEnemyScale">
     	<complexContent>
     		<extension base="page:adjustScaleBase">
-				<attribute name="enemyId" type="int"/>
-
+				<attribute name="enemyIdx" type="int"/>
 				<attribute name="type" type="page:enemyScales" use="required"/>
     		</extension>
     	</complexContent>

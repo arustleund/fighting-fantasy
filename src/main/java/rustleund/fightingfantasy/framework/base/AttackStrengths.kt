@@ -34,10 +34,10 @@ class AttackStrengths(
     val playerWon = playerAttackStrength > highestEnemyAttackStrength
     val playerHit = playerAttackStrength < highestEnemyAttackStrength
 
-    fun getEnemyAttackStrength(enemyId: Int) = enemyAttackStrengths.getOrDefault(enemyId, null)
+    fun getEnemyAttackStrength(enemyIdx: Int) = enemyAttackStrengths.getOrDefault(enemyIdx, null)
 
-    fun enemyHasHighestAttackStrength(enemyId: Int) =
-        getEnemyAttackStrength(enemyId)?.let { it == highestAttackStrength } ?: false
+    fun enemyHasHighestAttackStrength(enemyIdx: Int) =
+        getEnemyAttackStrength(enemyIdx)?.let { it == highestAttackStrength } ?: false
 
     fun winningEnemyPoisonDamage(currentRound: Int): Int {
         if (!playerHit) return 0

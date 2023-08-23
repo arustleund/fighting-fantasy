@@ -177,7 +177,7 @@ public class SpringContext {
 	}
 
 	private java.util.function.Function<? super GameState, ? extends AbstractEntityState> gameStateToEnemy(Element element) {
-		return gameState -> checkNotNull(gameState.getBattleState()).getEnemies().getEnemies().get(Integer.parseInt(element.getAttribute("enemyId")));
+		return gameState -> checkNotNull(gameState.getBattleState()).getEnemies().getEnemies().get(Integer.parseInt(element.getAttribute("enemyIdx")));
 	}
 
 	@Bean
