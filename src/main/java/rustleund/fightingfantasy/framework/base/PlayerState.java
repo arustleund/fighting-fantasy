@@ -122,13 +122,6 @@ public class PlayerState extends AbstractEntityState {
 		return false;
 	}
 
-	public void addNextBattleBattleEffect(BattleEffects battleEffects) {
-		if (this.nextBattleBattleEffects == null) {
-			this.nextBattleBattleEffects = new ArrayList<>();
-		}
-		this.nextBattleBattleEffects.add(battleEffects);
-	}
-
 	/**
 	 * Test the player's luck. The player's current luck value will be decremented as a result.
 	 *
@@ -157,10 +150,6 @@ public class PlayerState extends AbstractEntityState {
 		boolean lucky = rollWithAdjustment <= getLuck().getCurrentValue();
 		getLuck().adjustCurrentValueNoException(-1);
 		return lucky;
-	}
-
-	public int getPoisonDamage() {
-		return this.poisonDamage;
 	}
 
 	public void setPoisonDamage(int poisonDamage) {
@@ -201,34 +190,6 @@ public class PlayerState extends AbstractEntityState {
 
 	public Scale getTime() {
 		return time;
-	}
-
-	public void setGold(Scale scale) {
-		gold = scale;
-	}
-
-	public void setHonor(Scale scale) {
-		honor = scale;
-	}
-
-	public void setItems(Map<Integer, Item> map) {
-		items = map;
-	}
-
-	public void setLuck(Scale scale) {
-		luck = scale;
-	}
-
-	public void setNemesis(Scale scale) {
-		nemesis = scale;
-	}
-
-	public void setProvisions(Scale scale) {
-		provisions = scale;
-	}
-
-	public void setTime(Scale scale) {
-		time = scale;
 	}
 
 	public boolean isPoisonImmunity() {
