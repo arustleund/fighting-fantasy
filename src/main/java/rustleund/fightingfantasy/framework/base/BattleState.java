@@ -202,17 +202,17 @@ public class BattleState {
         doBattleStage(itemBattleEffects(), BattleEffects::getPlayerHit);
     }
 
-    private void doEndBattle() {
+    public void doEndBattle() {
         this.battleStarted = false;
         doBattleStage(this.allBattleEffects, BattleEffects::getEndBattle);
         doBattleStage(itemBattleEffects(), BattleEffects::getEndBattle);
+        getPageState().getGameState().endBattle();
     }
 
     public void doAfterPossibleStaminaChange() {
         updateBattleMessageOnPageState();
         if ((getEnemies().areDead() || getPlayerState().isDead()) && battleStarted) {
             doEndBattle();
-            getPageState().getGameState().endBattle();
         }
     }
 

@@ -78,6 +78,7 @@ public class GameController {
 			PageState pageState = gameState.getPageState();
 			BattleState battleState = pageState.getBattle(battleId);
 			battleState.doPlayerFlee();
+			battleState.doEndBattle();
 		});
 	}
 

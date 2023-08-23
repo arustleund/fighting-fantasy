@@ -39,6 +39,9 @@ class LinkClosure(
             gameState.message = "Links do not work after the player has died"
             return false
         }
+
+        gameState.battleState?.doEndBattle()
+
         val pageLocation = gameState.pagesDirectory.resolve("$pageName.xml")
         runCatching {
             Files.newInputStream(pageLocation).use { pageIs ->
