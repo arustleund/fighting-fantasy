@@ -40,7 +40,7 @@ class LinkClosure(
             return false
         }
 
-        gameState.battleState?.doEndBattle()
+        if (gameState.isBattleInProgress) gameState.battleState?.doEndBattle()
 
         val pageLocation = gameState.pagesDirectory.resolve("$pageName.xml")
         runCatching {
