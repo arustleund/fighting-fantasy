@@ -84,6 +84,7 @@
 			<element name="removeItem" type="page:removeItem" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="restoreScale" type="page:restoreScale" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="rollDice" type="page:rollDice" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="saveEnemyStamina" type="page:saveEnemyStamina" minOccurs="0" maxOccurs="unbounded" />
 			<element name="saveCurrentScaleValue" type="page:saveCurrentScaleValue" minOccurs="0"
 					 maxOccurs="unbounded"/>
 			<element name="setFlag" type="page:setFlag" minOccurs="0" maxOccurs="unbounded"/>
@@ -181,6 +182,17 @@
 		</annotation>
 		<attribute name="type" type="page:scales" use="required"/>
 		<attribute name="label" type="string" use="required"/>
+	</complexType>
+
+	<complexType name="saveEnemyStamina">
+		<annotation>
+			<documentation>Save the current stamina for the given enemy for recall for a later battle</documentation>
+		</annotation>
+		<attribute name="id" type="int" use="required">
+			<annotation>
+				<documentation>The unique identifier of the enemy</documentation>
+			</annotation>
+		</attribute>
 	</complexType>
 
 	<complexType name="setFlag">

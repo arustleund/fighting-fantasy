@@ -32,6 +32,7 @@ public class PlayerState extends AbstractEntityState {
 	private Scale time;
 	private Map<Integer, Item> items;
 	private Map<Integer, Boolean> flags;
+	private Map<Integer, Scale> savedEnemyStamina;
 	private List<BattleEffects> nextBattleBattleEffects;
 	private int poisonDamage;
 	private boolean poisonImmunity = false;
@@ -69,6 +70,7 @@ public class PlayerState extends AbstractEntityState {
 
 		this.items = new HashMap<>();
 		this.flags = new HashMap<>();
+		this.savedEnemyStamina = new HashMap<>();
 
 		for (Item item : items) {
 			addItem(item);
@@ -208,6 +210,10 @@ public class PlayerState extends AbstractEntityState {
 		this.onPlayerDeathClosure = onPlayerDeathClosure;
 	}
 
+	public Map<Integer, Scale> getSavedEnemyStamina() {
+		return savedEnemyStamina;
+	}
+
 	public PlayerState deepCopy() {
 		PlayerState result = new PlayerState();
 		result.attackStrengthModifier = attackStrengthModifier;
@@ -226,6 +232,7 @@ public class PlayerState extends AbstractEntityState {
 		result.stamina = stamina.deepCopy();
 		result.time = time.deepCopy();
 		result.onPlayerDeathClosure = onPlayerDeathClosure;
+		result.savedEnemyStamina = new HashMap<>(savedEnemyStamina);
 		return result;
 	}
 

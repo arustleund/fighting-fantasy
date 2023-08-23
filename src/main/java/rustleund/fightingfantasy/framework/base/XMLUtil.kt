@@ -36,6 +36,8 @@ fun Element.optionalAttribute(name: String): String? =
 
 fun Element.optionalIntAttribute(name: String) = optionalAttribute(name)?.toInt()
 
+fun Element.intAttribute(name: String) = getAttribute(name).toInt()
+
 fun Element.intAttribute(name: String, default: Int) = optionalAttribute(name)?.toInt() ?: default
 
 /**

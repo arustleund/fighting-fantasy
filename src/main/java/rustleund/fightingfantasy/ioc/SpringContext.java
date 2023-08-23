@@ -1,25 +1,21 @@
 package rustleund.fightingfantasy.ioc;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Predicate;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.w3c.dom.Element;
-
-import rustleund.fightingfantasy.framework.base.AbstractEntityState;
-import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
-import rustleund.fightingfantasy.framework.base.EnemyState;
-import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.base.ItemUtil;
-import rustleund.fightingfantasy.framework.base.PlayerState;
+import rustleund.fightingfantasy.framework.base.*;
 import rustleund.fightingfantasy.framework.base.impl.DefaultBattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.impl.DefaultItemUtil;
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 @Configuration
 public class SpringContext {
@@ -52,6 +48,7 @@ public class SpringContext {
 		mappings.put("restoreScale", RestoreScaleClosure::new);
 		mappings.put("rollDice", rollDiceClosureFunction());
 		mappings.put("saveCurrentScaleValue", SaveCurrentScaleValueClosure::new);
+		mappings.put("saveEnemyStamina", SaveEnemyStaminaClosure::new);
 		mappings.put("setFlag", SetFlagClosure::new);
 		mappings.put("setOnPlayerDeath", e -> new SetOnPlayerDeathClosure(e, closureLoader()));
 		mappings.put("setPoisonImmunity", SetPoisonImmunity::new);
@@ -82,7 +79,7 @@ public class SpringContext {
 	@Bean
 	public Function<Element, Closure> adjustFirstNonDeadEnemyAttackStrengthClosureFunction() {
 		return element -> new AdjustByAmountClosure(element, firstNonDeadEnemyStateFromGameState().andThen(EnemyState::getAttackStrengthModifier),
-				(gameState, newValue) -> gameState.getBattleState().getEnemies().getFirstNonDeadEnemy().setAttackStrengthModifier(newValue));
+				(gameState, newValue) -> checkNotNull(gameState.getBattleState()).getEnemies().getFirstNonDeadEnemy().setAttackStrengthModifier(newValue));
 	}
 
 	@Bean
@@ -98,7 +95,7 @@ public class SpringContext {
 
 	@Bean
 	public java.util.function.Function<GameState, EnemyState> firstNonDeadEnemyStateFromGameState() {
-		return gameState -> gameState.getBattleState().getEnemies().getFirstNonDeadEnemy();
+		return gameState -> checkNotNull(gameState.getBattleState()).getEnemies().getFirstNonDeadEnemy();
 	}
 
 	@Bean
@@ -180,7 +177,7 @@ public class SpringContext {
 	}
 
 	private java.util.function.Function<? super GameState, ? extends AbstractEntityState> gameStateToEnemy(Element element) {
-		return gameState -> gameState.getBattleState().getEnemies().getEnemies().get(Integer.parseInt(element.getAttribute("enemyId")));
+		return gameState -> checkNotNull(gameState.getBattleState()).getEnemies().getEnemies().get(Integer.parseInt(element.getAttribute("enemyId")));
 	}
 
 	@Bean

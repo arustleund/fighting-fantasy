@@ -120,6 +120,10 @@ public class BattleState {
             enemy.setSkill(playerState.getSkill().deepCopy());
             enemy.setStamina(playerState.getStamina().deepCopy());
         }
+        Integer enemyId = enemy.getId();
+        if (enemyId != null && playerState.getSavedEnemyStamina().containsKey(enemyId)) {
+            enemy.setStamina(playerState.getSavedEnemyStamina().get(enemyId).deepCopy());
+        }
         return enemy;
     }
 
