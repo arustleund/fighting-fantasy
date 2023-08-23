@@ -12,7 +12,7 @@
         	<documentation>The main element of a page.</documentation>
         </annotation>
         <sequence>
-			<element name="pagetext" type="page:pagetextContent" maxOccurs="1" minOccurs="1">
+			<element name="pagetext" type="page:pagetextContent">
 				<annotation>
 					<documentation>This contains the main text that will be displayed to the user when the page loads.</documentation>
 				</annotation></element>
@@ -39,7 +39,7 @@
         	<documentation>The HTML content of the page text. Must be contained within an <![CDATA[<html>]]> tag.</documentation>
         </annotation>
         <sequence>
-			<element name="html" type="page:pagetextHtmlContent" maxOccurs="1" minOccurs="1"></element>
+			<element name="html" type="page:pagetextHtmlContent"/>
 		</sequence>
 	</complexType>
 
@@ -48,83 +48,89 @@
 		<sequence>
 			<any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
 		</sequence>
-		<attribute name="id" type="int" use="required"></attribute>
+		<attribute name="id" type="int" use="required"/>
 	</complexType>
 
 	<complexType name="commands">
 		<choice minOccurs="0" maxOccurs="unbounded">
-			<element name="addBattleEffectsForNextBattle" type="page:addBattleEffects" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="addBattleEffectsToCurrentBattle" type="page:addBattleEffects" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="addBattleEffectsToNextBattleRound" type="page:addBattleEffects" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="addBattleMessage" type="page:addBattleMessage" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="addEnemies" type="page:addEnemies" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="addItem" type="page:addItem" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="adjustEnemyScale" type="page:adjustEnemyScale" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="adjustFirstNonDeadEnemyAttackStrength" type="page:adjustByAmount" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="adjustPlayerAttackStrength" type="page:adjustByAmount" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="adjustPlayerDamageModifier" type="page:adjustByAmount" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="adjustScale" type="page:adjustScale" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="clearBattleMessage" type="page:clearBattleMessage" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="addBattleEffectsForNextBattle" type="page:addBattleEffects" minOccurs="0"
+					 maxOccurs="unbounded"/>
+			<element name="addBattleEffectsToCurrentBattle" type="page:addBattleEffects" minOccurs="0"
+					 maxOccurs="unbounded"/>
+			<element name="addBattleEffectsToNextBattleRound" type="page:addBattleEffects" minOccurs="0"
+					 maxOccurs="unbounded"/>
+			<element name="addBattleMessage" type="page:addBattleMessage" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="addEnemies" type="page:addEnemies" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="addItem" type="page:addItem" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="adjustEnemyScale" type="page:adjustEnemyScale" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="adjustFirstNonDeadEnemyAttackStrength" type="page:adjustByAmount" minOccurs="0"
+					 maxOccurs="unbounded"/>
+			<element name="adjustPlayerAttackStrength" type="page:adjustByAmount" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="adjustPlayerDamageModifier" type="page:adjustByAmount" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="adjustScale" type="page:adjustScale" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="clearBattleMessage" type="page:clearBattleMessage" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="clearPoisonDamage" minOccurs="0" maxOccurs="unbounded">
-				<complexType></complexType>
+				<complexType/>
 			</element>
-			<element name="displayText" type="page:displayText" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="displayEnemies" type="page:displayEnemies" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="doBattle" type="page:doBattle" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="flaggedLink" type="page:flaggedLink" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="displayText" type="page:displayText" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="displayEnemies" type="page:displayEnemies" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="doBattle" type="page:doBattle" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="flaggedLink" type="page:flaggedLink" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="initPlayer" minOccurs="0" maxOccurs="unbounded">
-				<complexType></complexType>
+				<complexType/>
 			</element>
-			<element name="link" type="page:link" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="mustEatMeal" type="page:mustEatMeal" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="removeItem" type="page:removeItem" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="restoreScale" type="page:restoreScale" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="rollDice" type="page:rollDice" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="saveCurrentScaleValue" type="page:saveCurrentScaleValue" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="setFlag" type="page:setFlag" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="link" type="page:link" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="mustEatMeal" type="page:mustEatMeal" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="removeItem" type="page:removeItem" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="restoreScale" type="page:restoreScale" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="rollDice" type="page:rollDice" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="saveCurrentScaleValue" type="page:saveCurrentScaleValue" minOccurs="0"
+					 maxOccurs="unbounded"/>
+			<element name="setFlag" type="page:setFlag" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="setOnPlayerDeath" type="page:commands" minOccurs="0" maxOccurs="unbounded"/>
-			<element name="setPoisonImmunity" type="page:setPoisonImmunity" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="setPoisonImmunity" type="page:setPoisonImmunity" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="takePoisonDamage" type="page:takePoisonDamage" minOccurs="0" maxOccurs="unbounded" />
-			<element name="testAnyFlag" type="page:testAnyFlag" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="testFlag" type="page:testFlag" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testAnyFlag" type="page:testAnyFlag" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="testFlag" type="page:testFlag" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="testFlagText" type="page:testFlagText" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="testHighestAttackStrength" type="page:testHighestAttackStrength" minOccurs="0" maxOccurs="unbounded" />
-			<element name="testItem" type="page:testItem" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="testLuck" type="page:testContentWithAdjustment" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="testSkill" type="page:testContentWithAdjustment" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="testStat" type="page:testStat" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="testStatText" type="page:testStatText" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="testEnemySkill" type="page:testEnemySkill" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="testEnemyStat" type="page:testEnemyStat" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="testEnemyTypes" type="page:testEnemyTypes" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="testPlayerAttackStrengthDifferenceFromEnemy" type="page:testNumber" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="testItem" type="page:testItem" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="testLuck" type="page:testContentWithAdjustment" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="testSkill" type="page:testContentWithAdjustment" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="testStat" type="page:testStat" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="testStatText" type="page:testStatText" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="testEnemySkill" type="page:testEnemySkill" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="testEnemyStat" type="page:testEnemyStat" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="testEnemyTypes" type="page:testEnemyTypes" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="testPlayerAttackStrengthDifferenceFromEnemy" type="page:testNumber" minOccurs="0"
+					 maxOccurs="unbounded"/>
 		</choice>
 	</complexType>
 
 	<complexType name="adjustScale">
 		<complexContent>
 			<extension base="page:adjustScaleBase">
-				<attribute name="type" use="required" type="page:scales"></attribute>
+				<attribute name="type" use="required" type="page:scales"/>
 			</extension>
 		</complexContent>
 	</complexType>
 
 	<complexType name="adjustScaleBase">
-		<attribute name="amount" type="double" use="required"></attribute>
-		<attribute name="promptOnFail" type="boolean" use="optional"></attribute>
-		<attribute name="useAmountAsValue" type="boolean" use="optional"></attribute>
-		<attribute name="useAmountAsPercent" type="boolean" use="optional"></attribute>
-		<attribute name="round" use="optional">
+		<attribute name="amount" type="double" use="required"/>
+		<attribute name="promptOnFail" type="boolean"/>
+		<attribute name="useAmountAsValue" type="boolean"/>
+		<attribute name="useAmountAsPercent" type="boolean"/>
+		<attribute name="round">
 			<simpleType>
 				<restriction base="string">
-					<enumeration value="up"></enumeration>
-					<enumeration value="down"></enumeration>
+					<enumeration value="up"/>
+					<enumeration value="down"/>
 				</restriction>
 			</simpleType>
 		</attribute>
-		<attribute name="adjustInitialValue" type="boolean" use="optional"></attribute>
-		<attribute name="rollDiceAmount" type="int" use="optional" />
-		<attribute name="formula" type="string" use="optional">
+		<attribute name="adjustInitialValue" type="boolean"/>
+		<attribute name="rollDiceAmount" type="int"/>
+		<attribute name="formula" type="string">
 			<annotation>
 				<documentation>
 					A mathematical formula to apply to the amount, after dice rolling, but before negation.
@@ -137,35 +143,35 @@
 				</documentation>
 			</annotation>
 		</attribute>
-		<attribute name="negate" type="boolean" use="optional" default="false" />
+		<attribute name="negate" type="boolean" default="false" />
 	</complexType>
 
 	<simpleType name="scales">
 		<restriction base="string">
-			<enumeration value="skill"></enumeration>
-			<enumeration value="stamina"></enumeration>
-			<enumeration value="time"></enumeration>
-			<enumeration value="gold"></enumeration>
-			<enumeration value="luck"></enumeration>
-			<enumeration value="provisions"></enumeration>
-			<enumeration value="honor"></enumeration>
-			<enumeration value="nemesis"></enumeration>
+			<enumeration value="skill"/>
+			<enumeration value="stamina"/>
+			<enumeration value="time"/>
+			<enumeration value="gold"/>
+			<enumeration value="luck"/>
+			<enumeration value="provisions"/>
+			<enumeration value="honor"/>
+			<enumeration value="nemesis"/>
 		</restriction>
 	</simpleType>
 	
 	<simpleType name="testStatValues">
 		<restriction base="string">
-			<enumeration value="attackStrength"></enumeration>
-			<enumeration value="hitCount"></enumeration>
-			<enumeration value="battleRound"></enumeration>
-			<enumeration value="skill"></enumeration>
-			<enumeration value="stamina"></enumeration>
-			<enumeration value="time"></enumeration>
-			<enumeration value="gold"></enumeration>
-			<enumeration value="luck"></enumeration>
-			<enumeration value="provisions"></enumeration>
-			<enumeration value="honor"></enumeration>
-			<enumeration value="nemesis"></enumeration>
+			<enumeration value="attackStrength"/>
+			<enumeration value="hitCount"/>
+			<enumeration value="battleRound"/>
+			<enumeration value="skill"/>
+			<enumeration value="stamina"/>
+			<enumeration value="time"/>
+			<enumeration value="gold"/>
+			<enumeration value="luck"/>
+			<enumeration value="provisions"/>
+			<enumeration value="honor"/>
+			<enumeration value="nemesis"/>
 		</restriction>
 	</simpleType>
 
@@ -173,8 +179,8 @@
 		<annotation>
 			<documentation>Save the current value of the current scale so that it can be restored later. See companion "restoreScale"</documentation>
 		</annotation>
-		<attribute name="type" type="page:scales" use="required"></attribute>
-		<attribute name="label" type="string" use="required"></attribute>
+		<attribute name="type" type="page:scales" use="required"/>
+		<attribute name="label" type="string" use="required"/>
 	</complexType>
 
 	<complexType name="setFlag">
@@ -186,13 +192,13 @@
 				<documentation>The unique identifier of the flag to set.</documentation>
 			</annotation>
 		</attribute>
-		<attribute name="value" type="boolean" use="optional"></attribute>
+		<attribute name="value" type="boolean"/>
 	</complexType>
 
 	<complexType name="testFlag">
 		<complexContent>
 			<extension base="page:testContent">
-				<attribute name="id" type="int" use="required"></attribute>
+				<attribute name="id" type="int" use="required"/>
 
 			</extension>
 		</complexContent>
@@ -205,49 +211,49 @@
 	</complexType>
 	
 	<complexType name="testNumberAttributes">
-		<attribute name="lessThan" type="int" use="optional"></attribute>
-		<attribute name="greaterThan" type="int" use="optional"></attribute>
-		<attribute name="atLeast" type="int" use="optional"></attribute>
-		<attribute name="atMost" type="int" use="optional"></attribute>
-		<attribute name="equal" type="int" use="optional"></attribute>
-		<attribute name="notEqual" type="int" use="optional"></attribute>
+		<attribute name="lessThan" type="int"/>
+		<attribute name="greaterThan" type="int"/>
+		<attribute name="atLeast" type="int"/>
+		<attribute name="atMost" type="int"/>
+		<attribute name="equal" type="int"/>
+		<attribute name="notEqual" type="int"/>
 	</complexType>
 
 	<complexType name="testNumber">
 		<complexContent>
 			<extension base="page:testNumberAttributes">
-				<sequence minOccurs="1" maxOccurs="1">
-					<element name="successful" type="page:commands" minOccurs="1" maxOccurs="1"></element>
-					<element name="unsuccessful" type="page:commands" minOccurs="1" maxOccurs="1"></element>
+				<sequence>
+					<element name="successful" type="page:commands"/>
+					<element name="unsuccessful" type="page:commands"/>
 				</sequence>
 			</extension>
 		</complexContent>
 	</complexType>
 
 	<complexType name="testContent">
-		<sequence minOccurs="1" maxOccurs="1">
-			<element name="successful" type="page:commands" minOccurs="1" maxOccurs="1"></element>
-			<element name="unsuccessful" type="page:commands" minOccurs="1" maxOccurs="1"></element>
+		<sequence>
+			<element name="successful" type="page:commands"/>
+			<element name="unsuccessful" type="page:commands"/>
 		</sequence>
 	</complexType>
 
 	<complexType name="displayText">
-		<attribute name="id" type="int" use="required"></attribute>
+		<attribute name="id" type="int" use="required"/>
 	</complexType>
 	
 	<complexType name="displayEnemies">
-		<attribute name="battleId" type="int" use="required"></attribute>
+		<attribute name="battleId" type="int" use="required"/>
 	</complexType>
 
 	<complexType name="battle">
 		<sequence>
-			<element name="enemies" type="page:enemies" minOccurs="1" maxOccurs="1"></element>
-			<element name="effects" type="page:battleEffects" minOccurs="0" maxOccurs="1"></element>
+			<element name="enemies" type="page:enemies"/>
+			<element name="effects" type="page:battleEffects" minOccurs="0"/>
 		</sequence>
-		<attribute name="id" type="int" use="required"></attribute>
-		<attribute name="fightEnemiesTogether" type="boolean" use="optional"></attribute>
-		<attribute name="canFlee" type="boolean" use="optional"></attribute>
-		<attribute name="displayTextOnEnd" type="int" use="optional">
+		<attribute name="id" type="int" use="required"/>
+		<attribute name="fightEnemiesTogether" type="boolean"/>
+		<attribute name="canFlee" type="boolean"/>
+		<attribute name="displayTextOnEnd" type="int">
 			<annotation>
 				<documentation>The ID of the "text" block to display when the battle ends</documentation>
 			</annotation>
@@ -256,16 +262,16 @@
 
 	<complexType name="enemies">
 		<sequence>
-			<element name="enemy" type="page:enemy" minOccurs="1" maxOccurs="unbounded"></element>
+			<element name="enemy" type="page:enemy" maxOccurs="unbounded"/>
 		</sequence>
 	</complexType>
 
 	<complexType name="enemy">
 		<sequence>
-			<element name="onKilled" type="page:commands" minOccurs="0" maxOccurs="1"></element>
-			<element name="onHit" type="page:commands" minOccurs="0" maxOccurs="1"></element>
+			<element name="onKilled" type="page:commands" minOccurs="0"/>
+			<element name="onHit" type="page:commands" minOccurs="0"/>
 		</sequence>
-		<attribute name="id" type="int" use="optional" />
+		<attribute name="id" type="int"/>
 		<attribute name="name" type="string" use="required">
 			<annotation>
 				<documentation>The name of the enemy.</documentation>
@@ -277,7 +283,7 @@
 			</annotation>
 			<simpleType>
 				<restriction base="int">
-					<minInclusive value="0"></minInclusive>
+					<minInclusive value="0"/>
 				</restriction>
 			</simpleType>
 		</attribute>
@@ -287,60 +293,60 @@
 			</annotation>
 			<simpleType>
 				<restriction base="int">
-					<minInclusive value="1"></minInclusive>
+					<minInclusive value="1"/>
 				</restriction>
 			</simpleType>
 		</attribute>
-		<attribute name="poisonedWeaponRounds" type="int" use="optional">
+		<attribute name="poisonedWeaponRounds" type="int">
 			<annotation>
 				<documentation>The number of rounds the enemy's weapon is poisoned for</documentation>
 			</annotation>
 		</attribute>
-		<attribute name="poisonDamage" type="int" use="optional">
+		<attribute name="poisonDamage" type="int">
 			<annotation>
 				<documentation>The amount of extra damage that is done by a poison attack</documentation>
 			</annotation>
 		</attribute>
-		<attribute name="types" type="string" use="optional" />
+		<attribute name="types" type="string"/>
 	</complexType>
 
     <complexType name="battleEffects">
     	<sequence>
-    		<element name="startBattle" type="page:commands" minOccurs="0" maxOccurs="1"></element>
-    		<element name="startRound" type="page:commands" minOccurs="0" maxOccurs="1"></element>
-    		<element name="playerFlee" type="page:commands" minOccurs="0" maxOccurs="1"></element>
-    		<element name="playerHit" type="page:commands" minOccurs="0" maxOccurs="1"></element>
-    		<element name="endRound" type="page:commands" minOccurs="0" maxOccurs="1"></element>
-    		<element name="endBattle" type="page:commands" minOccurs="0" maxOccurs="1"></element>
+			<element name="startBattle" type="page:commands" minOccurs="0"/>
+			<element name="startRound" type="page:commands" minOccurs="0"/>
+			<element name="playerFlee" type="page:commands" minOccurs="0"/>
+			<element name="playerHit" type="page:commands" minOccurs="0"/>
+			<element name="endRound" type="page:commands" minOccurs="0"/>
+			<element name="endBattle" type="page:commands" minOccurs="0"/>
     	</sequence>
     </complexType>
 
     <complexType name="restoreScale">
-    	<attribute name="type" type="page:scales" use="required"></attribute>
-		<attribute name="label" type="string" use="optional" />
+		<attribute name="type" type="page:scales" use="required"/>
+		<attribute name="label" type="string"/>
     </complexType>
 
     <complexType name="multicommand">
     	<complexContent>
     		<extension base="page:commands">
-    			<attribute name="id" type="int" use="required"></attribute>
+				<attribute name="id" type="int" use="required"/>
 
     		</extension>
     	</complexContent>
     </complexType>
 
     <complexType name="addItem">
-    	<attribute name="id" type="int" use="required"></attribute>
-    	<attribute name="price" type="int" use="optional"></attribute>
-    	<attribute name="quantity" type="int" use="optional"></attribute>
-		<attribute name="quantityFormula" type="string" use="optional"></attribute>
-    	<attribute name="pageLimit" type="int" use="optional"></attribute>
+		<attribute name="id" type="int" use="required"/>
+		<attribute name="price" type="int"/>
+		<attribute name="quantity" type="int"/>
+		<attribute name="quantityFormula" type="string"/>
+		<attribute name="pageLimit" type="int"/>
     </complexType>
 
     <complexType name="testContentWithAdjustment">
     	<complexContent>
     		<extension base="page:testContent">
-    			<attribute name="diceRollAdjustment" type="string" use="optional">
+    			<attribute name="diceRollAdjustment" type="string">
 					<annotation>
 						<documentation>
 							A formula for adjusting the result of the dice roll. Use the constant AMT to refer to
@@ -357,14 +363,14 @@
     </complexType>
 
     <complexType name="keepminimum">
-    	<attribute name="scale" type="page:scales" use="required"></attribute>
-    	<attribute name="value" type="int" use="required"></attribute>
+		<attribute name="scale" type="page:scales" use="required"/>
+		<attribute name="value" type="int" use="required"/>
     </complexType>
 
     <complexType name="testItem">
     	<complexContent>
     		<extension base="page:testNumber">
-    			<attribute name="id" type="int" use="required"></attribute>
+				<attribute name="id" type="int" use="required"/>
     		</extension>
     	</complexContent>
     </complexType>
@@ -372,9 +378,9 @@
     <complexType name="testStat">
     	<complexContent>
     		<extension base="page:testNumber">
-    			<attribute name="stat" type="page:testStatValues" use="required"></attribute>
-    			<attribute name="useInitialValue" type="boolean" use="optional"></attribute>
-				<attribute name="modifiedByFormula" type="string" use="optional"></attribute>
+				<attribute name="stat" type="page:testStatValues" use="required"/>
+				<attribute name="useInitialValue" type="boolean"/>
+				<attribute name="modifiedByFormula" type="string"/>
     		</extension>
     	</complexContent>
     </complexType>
@@ -382,10 +388,10 @@
 	<complexType name="testStatText">
 		<complexContent>
 			<extension base="page:testNumberAttributes">
-				<attribute name="stat" type="page:testStatValues" use="required"></attribute>
-				<attribute name="useInitialValue" type="boolean" use="optional"></attribute>
-				<attribute name="success" type="int" use="required"></attribute>
-				<attribute name="failure" type="int" use="required"></attribute>
+				<attribute name="stat" type="page:testStatValues" use="required"/>
+				<attribute name="useInitialValue" type="boolean"/>
+				<attribute name="success" type="int" use="required"/>
+				<attribute name="failure" type="int" use="required"/>
 			</extension>
 		</complexContent>
 	</complexType>
@@ -393,7 +399,7 @@
     <complexType name="testEnemyStat">
     	<complexContent>
     		<extension base="page:testStat">
-    			<attribute name="enemyId" type="int" use="required"></attribute>
+				<attribute name="enemyId" type="int" use="required"/>
     		</extension>
     	</complexContent>
     </complexType>
@@ -401,7 +407,7 @@
     <complexType name="testEnemySkill">
     	<complexContent>
     		<extension base="page:testContentWithAdjustment">
-    			<attribute name="enemyId" type="int" use="required"></attribute>
+				<attribute name="enemyId" type="int" use="required"/>
     		</extension>
     	</complexContent>
     </complexType>
@@ -409,8 +415,8 @@
     <complexType name="testEnemyTypes">
     	<complexContent>
     		<extension base="page:testContent">
-    			<attribute name="equalAny" type="string" use="optional"></attribute>
-    			<attribute name="enemyId" type="string" use="required"></attribute>
+				<attribute name="equalAny" type="string"/>
+				<attribute name="enemyId" type="string" use="required"/>
     		</extension>
     	</complexContent>
     </complexType>
@@ -425,20 +431,20 @@
 	</complexType>
 
     <complexType name="link">
-    	<attribute name="page" type="string" use="required"></attribute>
+		<attribute name="page" type="string" use="required"/>
     </complexType>
 
     <complexType name="testAnyFlag">
     	<complexContent>
     		<extension base="page:testContent">
-    			<attribute name="ids" type="string" use="required"></attribute>
+				<attribute name="ids" type="string" use="required"/>
     		</extension>
     	</complexContent>
     </complexType>
 
     <complexType name="removeItem">
-    	<attribute name="id" type="int" use="required"></attribute>
-		<attribute name="amount" type="int" use="optional"></attribute>
+		<attribute name="id" type="int" use="required"/>
+		<attribute name="amount" type="int"/>
     </complexType>
     
     <complexType name="flaggedLink">
@@ -448,37 +454,37 @@
     </complexType>
 
     <complexType name="mustEatMeal">
-    	<attribute name="amount" type="int" use="optional"></attribute>
+		<attribute name="amount" type="int"/>
     </complexType>
 
     <complexType name="rollDice">
     	<sequence>
-    		<element name="doActions" minOccurs="1" maxOccurs="unbounded">
+    		<element name="doActions" maxOccurs="unbounded">
     			<complexType>
     				<complexContent>
     					<extension base="page:commands">
-    						<attribute name="rolls" type="string" use="required"></attribute>
+							<attribute name="rolls" type="string" use="required"/>
     					</extension>
     				</complexContent>
     			</complexType>
     		</element>
     	</sequence>
-    	<attribute name="number" type="int" use="optional"></attribute>
+		<attribute name="number" type="int"/>
     </complexType>
 
     <simpleType name="enemyScales">
     	<restriction base="string">
-    		<enumeration value="skill"></enumeration>
-    		<enumeration value="stamina"></enumeration>
+			<enumeration value="skill"/>
+			<enumeration value="stamina"/>
     	</restriction>
     </simpleType>
 
     <complexType name="adjustEnemyScale">
     	<complexContent>
     		<extension base="page:adjustScaleBase">
-    			<attribute name="enemyId" type="int" use="optional"></attribute>
+				<attribute name="enemyId" type="int"/>
 
-    			<attribute name="type" type="page:enemyScales" use="required"></attribute>
+				<attribute name="type" type="page:enemyScales" use="required"/>
     		</extension>
     	</complexContent>
     </complexType>
@@ -487,51 +493,51 @@
 		<sequence>
 			<any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
 		</sequence>
-    	<attribute name="message" type="string" use="optional"></attribute>
-    	<attribute name="messagePosition" use="optional">
+		<attribute name="message" type="string"/>
+    	<attribute name="messagePosition">
 			<simpleType>
 				<restriction base="string">
-					<enumeration value="BEGINNING"></enumeration>
-					<enumeration value="END"></enumeration>
-					<enumeration value="IMMEDIATE_END"></enumeration>
+					<enumeration value="BEGINNING"/>
+					<enumeration value="END"/>
+					<enumeration value="IMMEDIATE_END"/>
 				</restriction>
 			</simpleType>
 		</attribute>
     </complexType>
 
     <complexType name="clearBattleMessage">
-    	<attribute name="positionsToClear" type="string" use="optional"></attribute>
+		<attribute name="positionsToClear" type="string"/>
     </complexType>
 
     <complexType name="adjustByAmount">
-    	<attribute name="amount" type="int" use="required"></attribute>
+		<attribute name="amount" type="int" use="required"/>
     </complexType>
 
     <complexType name="addBattleEffects">
     	<sequence>
-    		<element name="battleEffects" type="page:battleEffects" minOccurs="1" maxOccurs="unbounded"></element>
+			<element name="battleEffects" type="page:battleEffects" maxOccurs="unbounded"/>
     	</sequence>
     </complexType>
 
     <complexType name="addEnemies">
     	<sequence>
-    		<element name="enemy" type="page:enemy" minOccurs="1" maxOccurs="unbounded"></element>
+			<element name="enemy" type="page:enemy" maxOccurs="unbounded"/>
     	</sequence>
     	<attribute name="wait" use="required">
     		<simpleType>
     			<restriction base="int">
-    				<minInclusive value="0"></minInclusive>
+					<minInclusive value="0"/>
     			</restriction>
     		</simpleType>
     	</attribute>
     </complexType>
 
     <complexType name="setPoisonImmunity">
-    	<attribute name="immune" type="boolean" use="required"></attribute>
+		<attribute name="immune" type="boolean" use="required"/>
     </complexType>
     
     <complexType name="doBattle">
-    	<attribute name="id" type="int" use="required"></attribute>
+		<attribute name="id" type="int" use="required"/>
     </complexType>
 
 	<complexType name="takePoisonDamage">
