@@ -8,15 +8,20 @@ import org.w3c.dom.Element
 import rustleund.fightingfantasy.framework.base.GameState
 import rustleund.fightingfantasy.framework.base.Scale
 import rustleund.fightingfantasy.framework.base.optionalAttribute
-import rustleund.fightingfantasy.framework.closures.Closure
+import rustleund.fightingfantasy.gamesave.SerializableClosure
 
 /**
  * @author rustlea
  */
-class RestoreScaleClosure(element: Element) : Closure {
+class RestoreScaleClosure(
+    private val scaleName: String,
+    private val label: String?
+) : SerializableClosure {
 
-    private val scaleName = element.getAttribute("type")
-    private val label = element.optionalAttribute("label")
+    constructor(element: Element) : this(
+        scaleName = element.getAttribute("type"),
+        label = element.optionalAttribute("label")
+    )
 
     override fun execute(gameState: GameState): Boolean {
         val scale = PropertyUtils.getProperty(gameState.playerState, scaleName) as Scale

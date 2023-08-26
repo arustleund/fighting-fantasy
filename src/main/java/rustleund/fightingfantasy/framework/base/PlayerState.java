@@ -32,7 +32,7 @@ public class PlayerState extends AbstractEntityState {
 	private Scale time;
 	private Map<Integer, Item> items;
 	private Map<Integer, Boolean> flags;
-	private Map<Integer, Scale> savedEnemyStamina;
+	private Map<Integer, Scale> savedEnemyStamina = new HashMap<>();
 	private List<BattleEffects> nextBattleBattleEffects;
 	private int poisonDamage;
 	private boolean poisonImmunity = false;
@@ -70,7 +70,6 @@ public class PlayerState extends AbstractEntityState {
 
 		this.items = new HashMap<>();
 		this.flags = new HashMap<>();
-		this.savedEnemyStamina = new HashMap<>();
 
 		for (Item item : items) {
 			addItem(item);

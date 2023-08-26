@@ -151,7 +151,6 @@ public class Main {
 	}
 
 	private static SwingGameView initializeGame(Path baseDirectory, JFrame frame) {
-		@SuppressWarnings("resource")
 		ConfigurableApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringContext.class);
 		applicationContext.registerShutdownHook();
 		SpringContext springContext = applicationContext.getBean(SpringContext.class);
@@ -181,7 +180,7 @@ public class Main {
 
 		gameController.addView(new AudioPlayer());
 
-		frame.setJMenuBar(buildMenuBar(gameState, gameController));
+		frame.setJMenuBar(buildMenuBar(gameState, gameController, closureLoader, battleEffectsLoader));
 
 		new LinkClosure("doStats", closureLoader, battleEffectsLoader).execute(gameState);
 
@@ -190,17 +189,17 @@ public class Main {
 		return gameView;
 	}
 
-	private static JMenuBar buildMenuBar(GameState gameState, GameController gameController) {
+	private static JMenuBar buildMenuBar(GameState gameState, GameController gameController, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
 		JMenuBar result = new JMenuBar();
-		buildFileMenu(gameState, gameController, result);
+		buildFileMenu(gameState, gameController, closureLoader, battleEffectsLoader, result);
 		buildNavigateMenu(result, gameController);
 		return result;
 	}
 
-	private static void buildFileMenu(GameState gameState, GameController gameController, JMenuBar result) {
+	private static void buildFileMenu(GameState gameState, GameController gameController, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader, JMenuBar result) {
 		JMenu menu = new JMenu("File");
 
-		JMenuItem loadMenuItem = new JMenuItem(new LoadAction(gameController));
+		JMenuItem loadMenuItem = new JMenuItem(new LoadAction(gameController, closureLoader, battleEffectsLoader));
 		loadMenuItem.setMnemonic(KeyEvent.VK_O);
 		loadMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.META_DOWN_MASK));
 		menu.add(loadMenuItem);

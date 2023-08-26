@@ -17,7 +17,7 @@ fun Element.getChildElementsByName(childName: String): Sequence<Element> =
         .filter { it.parentNode.isSameNode(this) }
 
 fun Element.getChildElementByName(childName: String): Element? {
-    val childrenNodeList = getChildElementsByName( childName).iterator()
+    val childrenNodeList = getChildElementsByName(childName).iterator()
     return if (childrenNodeList.hasNext()) {
         val result = childrenNodeList.next()
         require(!childrenNodeList.hasNext()) { "There was more than one child for parent: $localName with child name: $childName" }
@@ -51,6 +51,8 @@ fun NodeList.asElementSequence(): Sequence<Element> =
         .map { this.item(it) }
         .filter { it is Element }
         .map { it as Element }
+
+fun Element.hasChildElements(): Boolean = childNodes.asElementSequence().none()
 
 fun writeTag(tag: Node?): String {
     return if (tag == null) "" else try {

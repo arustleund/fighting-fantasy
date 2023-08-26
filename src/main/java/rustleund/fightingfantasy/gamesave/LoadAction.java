@@ -12,6 +12,7 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.GameController;
 import rustleund.fightingfantasy.framework.base.Item;
 
@@ -21,6 +22,9 @@ import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import rustleund.fightingfantasy.framework.closures.Closure;
+import rustleund.fightingfantasy.framework.closures.ClosureLoader;
+import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
 
 public class LoadAction extends AbstractAction {
 
@@ -28,10 +32,14 @@ public class LoadAction extends AbstractAction {
 	private static final long serialVersionUID = -4230657785810027591L;
 
 	private final transient GameController gameController;
+	private final transient ClosureLoader closureLoader;
+	private final transient BattleEffectsLoader battleEffectsLoader;
 
-	public LoadAction(GameController gameController) {
+	public LoadAction(GameController gameController, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
 		super("Load Saved Game");
 		this.gameController = gameController;
+		this.closureLoader = closureLoader;
+		this.battleEffectsLoader = battleEffectsLoader;
 	}
 
 	@Override
@@ -45,6 +53,8 @@ public class LoadAction extends AbstractAction {
 			GsonBuilder gsonBuilder = new GsonBuilder();
 			gsonBuilder.registerTypeAdapter(Item.class, new ItemDeserializer(gameController));
 			gsonBuilder.registerTypeAdapter(Range.class, new IntegerRangeDeserializer());
+			gsonBuilder.registerTypeAdapter(Closure.class, new ClosureDeserializer());
+			gsonBuilder.registerTypeAdapter(LinkClosure.class, new LinkClosureDeserializer(closureLoader, battleEffectsLoader));
 
 			Gson gson = gsonBuilder.create();
 			CharSource charSource = Files.asCharSource(saveFile, StandardCharsets.UTF_8);

@@ -3,6 +3,9 @@
  */
 package rustleund.fightingfantasy.framework.closures.impl
 
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.google.gson.JsonSerializationContext
 import org.w3c.dom.Element
 import rustleund.fightingfantasy.framework.base.audio.AudioFile
 import rustleund.fightingfantasy.framework.closures.ClosureLoader
@@ -11,7 +14,7 @@ import rustleund.fightingfantasy.framework.base.GameState
 import rustleund.fightingfantasy.gamesave.SavedGame
 import javax.xml.parsers.DocumentBuilderFactory
 import rustleund.fightingfantasy.framework.base.PageState
-import rustleund.fightingfantasy.framework.closures.Closure
+import rustleund.fightingfantasy.gamesave.SerializableClosure
 import java.nio.file.Files
 import kotlin.io.path.exists
 
@@ -22,7 +25,7 @@ class LinkClosure(
     private val pageName: String,
     private val closureLoader: ClosureLoader,
     private val battleEffectsLoader: BattleEffectsLoader
-) : Closure {
+) : SerializableClosure {
 
     constructor(element: Element, closureLoader: ClosureLoader, battleEffectsLoader: BattleEffectsLoader) : this(
         element.getAttribute("page"),
@@ -65,5 +68,11 @@ class LinkClosure(
         if (audioFileLocation.exists()) {
             gameState.audioFilesToPlay.add(AudioFile(audioFileLocation, true))
         }
+    }
+
+    override fun serialize(context: JsonSerializationContext): JsonElement {
+        val result = JsonObject()
+        result.addProperty("page", pageName)
+        return result
     }
 }

@@ -44,6 +44,7 @@ public class SaveAction extends AbstractAction {
 				GsonBuilder gsonBuilder = new GsonBuilder();
 				gsonBuilder.registerTypeAdapter(Item.class, new ItemSerializer());
 				gsonBuilder.registerTypeAdapter(Range.class, new IntegerRangeSerializer());
+				gsonBuilder.registerTypeHierarchyAdapter(SerializableClosure.class, new ClosureSerializer());
 				Gson gson = gsonBuilder.create();
 				String json = gson.toJson(latestGameProgress);
 				try {
