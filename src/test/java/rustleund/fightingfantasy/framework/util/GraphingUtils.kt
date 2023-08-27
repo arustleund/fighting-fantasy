@@ -22,6 +22,7 @@ fun main() {
     val pagesWithSounds = Files.list(Paths.get("/Users/rustlea/Dropbox/nightdragon/sounds"))
         .use { it.asSequence().map { p -> p.fileName.toString().substringBefore(".") }.toSet() }
     val labels = mutableMapOf<String, String>()
+    val deadends = mutableSetOf<String>()
     pages.forEach { graph.addVertex(it) }
     val documentBuilderFactory = DocumentBuilderFactory.newInstance()
     documentBuilderFactory.isNamespaceAware = true
@@ -60,7 +61,10 @@ fun main() {
         }
     }
 
-    graph.vertexSet().filter { graph.outDegreeOf(it) == 0 }.forEach { println("End: $it ${labels[it]}") }
+    graph.vertexSet().filter { graph.outDegreeOf(it) == 0 }.forEach {
+        deadends += it
+        println("End: $it ${labels[it]}")
+    }
 
     val exporter: DOTExporter<String, DefaultEdge> = DOTExporter()
     exporter.setVertexAttributeProvider { v: Any ->
@@ -70,6 +74,9 @@ fun main() {
         if (pagesWithSounds.contains(v)) {
             map["style"] = "filled".toAttr()
             map["fillcolor"] = "#ddffdd".toAttr()
+        } else if (deadends.contains(v)) {
+            map["style"] = "filled".toAttr()
+            map["fillcolor"] = "#ffdddd".toAttr()
         }
         map
     }
