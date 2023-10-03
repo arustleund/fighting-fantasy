@@ -25,8 +25,6 @@ dependencies {
     implementation("com.notkamui.libs:keval:0.8.0")
     implementation("jaco:jaco-mp3-player:0.10.2")
 
-    testImplementation("org.jgrapht:jgrapht-core:1.5.1")
-    testImplementation("org.jgrapht:jgrapht-io:1.5.1")
     testImplementation("org.easymock:easymock:4.3")
     testImplementation("org.spockframework:spock-core:2.1-groovy-3.0")
     testImplementation("org.codehaus.groovy:groovy-all:3.0.10")
