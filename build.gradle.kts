@@ -29,6 +29,9 @@ dependencies {
     testImplementation("org.spockframework:spock-core:2.1-groovy-3.0")
     testImplementation("org.codehaus.groovy:groovy-all:3.0.10")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    testImplementation("io.strikt:strikt-core:0.34.1")
+    testImplementation("io.kotest:kotest-runner-junit5:5.7.2")
+    testImplementation("io.kotest:kotest-framework-datatest:5.7.2")
 }
 
 group = "com.rustleund"
