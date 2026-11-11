@@ -159,6 +159,14 @@ class AdjustScaleClosureTest : FunSpec({
                     expectedValueAfterChange = 10,
                     diceRoller = { 2 }
                 ),
+                "time = 0 formula using player provisions" to TestData(
+                    attributes = mapOf(
+                        "type" to "time",
+                        "amount" to "0",
+                        "formula" to "AMT+max(0,ceil(player_provisions_currentValue/10)-1)"
+                    ),
+                    expectedValueAfterChange = 1
+                ),
             )
         ) { testData ->
             val element = TestElement(testData.attributes)

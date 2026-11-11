@@ -141,6 +141,8 @@
 					Additional dice rolls are available using the roll(n)
 					function, where n is the number of dice to roll.
 					The amount so far can be referenced using the constant AMT.
+					Player values are available using the syntax player_time_currentValue
+					and player_stamina_upperBound.
 				</documentation>
 			</annotation>
 		</attribute>

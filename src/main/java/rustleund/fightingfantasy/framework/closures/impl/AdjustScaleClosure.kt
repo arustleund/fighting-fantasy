@@ -34,7 +34,7 @@ class AdjustScaleClosure @JvmOverloads constructor(
             .onFailure { it.printStackTrace() }
             .getOrNull() ?: return false
 
-        val amountToAdjust: Int = getAmountToAdjustBy(scale)
+        val amountToAdjust: Int = getAmountToAdjustBy(scale, gameState)
         if (promptOnFail) {
             return try {
                 scale.adjustCurrentValue(amountToAdjust)
@@ -61,7 +61,7 @@ class AdjustScaleClosure @JvmOverloads constructor(
         return true
     }
 
-    private fun getAmountToAdjustBy(scale: Scale): Int {
+    private fun getAmountToAdjustBy(scale: Scale, gameState: GameState): Int {
         var amountToAdjust: Int
         if (useAmountAsPercent) {
             amountToAdjust = getAmountToAdjustByAsPercent(scale)
@@ -74,7 +74,11 @@ class AdjustScaleClosure @JvmOverloads constructor(
             }
         }
         if (formula != null) {
-            amountToAdjust = keval(diceRoller).withConstant("AMT", amountToAdjust.toDouble()).eval(formula).toInt()
+            amountToAdjust = keval(diceRoller)
+                .withPlayerStateVars(gameState.playerState)
+                .withConstant("AMT", amountToAdjust.toDouble())
+                .eval(formula)
+                .toInt()
         }
         return if (negate) amountToAdjust * -1 else amountToAdjust
     }
