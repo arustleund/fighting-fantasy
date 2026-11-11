@@ -28,3 +28,11 @@ The game will start at an intro page: `pages/intro.xml`
 See the `docs` directory in this repository for items and page schemas. See 
 the `docs/reference.xml` file for an example page that demonstrates the different
 tags.
+
+# Checking a game directory
+`tools/check_game.py` reports missing pages, broken links, missing sounds, and
+files the game will never load:
+
+```
+python3 tools/check_game.py /path/to/game [--max-page 400]
+```
