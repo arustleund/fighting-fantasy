@@ -9,8 +9,8 @@ Checks:
   * gaps in numbered pages (1..N, where N defaults to the highest numbered page)
   * links (http://link:N, <link page>, <flaggedLink page>) to pages that don't exist
   * pages that nothing links to
-  * pages without a page sound (sounds/<page>.mp3)
-  * <text> blocks without a sound (sounds/<page>.<id>.mp3)
+  * pages with text but without a page sound (sounds/<page>.mp3)
+  * <text> blocks without a sound (sounds/<page>.<id>.mp3), except a lone BEGIN BATTLE link
   * sounds and images that the engine will never load
 """
 import argparse
@@ -51,11 +51,21 @@ def main():
 
     links = {}  # target page -> pages linking to it
     text_ids = {}  # page -> ids of its <text> blocks
+    narrated_text_ids = {}  # page -> ids of its <text> blocks that should have a sound
+    narrated_pages = set()  # pages whose <pagetext> has words in it
     for f in (d / "pages").glob("*.xml"):
         src = f.read_text(errors="replace")
         for target in re.findall(r'http://link:([^"\'\s>]+)', src) + re.findall(r'\bpage="([^"]+)"', src):
             links.setdefault(target, set()).add(f.stem)
         text_ids[f.stem] = set(re.findall(r'<text\b[^>]*\bid="([^"]+)"', src))
+        pagetext = re.search(r"<pagetext>(.*?)</pagetext>", src, re.S)
+        if pagetext and re.sub(r"<[^>]+>", " ", pagetext.group(1)).strip():
+            narrated_pages.add(f.stem)
+        # A <text> block holding only the BEGIN BATTLE link isn't narrated
+        narrated_text_ids[f.stem] = {
+            i for i, body in re.findall(r'<text\b[^>]*\bid="([^"]+)"[^>]*>(.*?)</text>', src, re.S)
+            if " ".join(re.sub(r"<[^>]+>", " ", body).split()).upper() != "BEGIN BATTLE"
+        }
 
     numbered = [int(p) for p in pages if p.isdigit()]
     max_page = args.max_page or max(numbered, default=0)
@@ -70,9 +80,9 @@ def main():
 
     game_pages = pages - NON_GAME_PAGES
     show("Pages nothing links to", [p for p in game_pages if p not in links and p != "intro"])
-    show("Pages without a page sound", [p for p in game_pages if f"{p}.mp3" not in sounds])
+    show("Pages without a page sound", [p for p in game_pages & narrated_pages if f"{p}.mp3" not in sounds])
     show("<text> blocks without a sound",
-         [f"{p}.{i}" for p, ids in text_ids.items() if p in game_pages for i in ids if f"{p}.{i}.mp3" not in sounds])
+         [f"{p}.{i}" for p, ids in narrated_text_ids.items() if p in game_pages for i in ids if f"{p}.{i}.mp3" not in sounds])
 
     unused_sounds = []
     for s in sounds:
