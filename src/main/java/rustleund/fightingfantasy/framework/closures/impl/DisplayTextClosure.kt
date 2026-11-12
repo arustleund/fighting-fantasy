@@ -32,7 +32,7 @@ class DisplayTextClosure(
         textId?.let {
             val newFileToPlay = gameState.soundsDirectory.resolve("${gameState.pageState.pageName}.$it.mp3")
             if (newFileToPlay.exists()) {
-                gameState.audioFilesToPlay.add(AudioFile(newFileToPlay, false))
+                gameState.queueNarration(AudioFile(newFileToPlay, false))
             }
         }
         return true

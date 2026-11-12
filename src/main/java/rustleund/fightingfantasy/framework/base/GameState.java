@@ -31,6 +31,14 @@ public class GameState {
 		return audioFilesToPlay;
 	}
 
+	/**
+	 * Queues narration to be played and remembers it on the current page so it can be replayed.
+	 */
+	public void queueNarration(AudioFile audioFile) {
+		audioFilesToPlay.add(audioFile);
+		pageState.getNarrationFiles().add(audioFile);
+	}
+
 	public void addGameProgress(SavedGame savedGame) {
 		this.gameProgress.add(savedGame);
 	}

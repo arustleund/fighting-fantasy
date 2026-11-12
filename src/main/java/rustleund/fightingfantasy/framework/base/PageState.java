@@ -7,6 +7,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import rustleund.fightingfantasy.framework.base.audio.AudioFile;
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.ChainedClosure;
@@ -32,6 +33,7 @@ public class PageState {
     private Map<Integer, Closure> multiCommands = null;
     private Map<Integer, String> texts = null;
     private Map<Integer, BattleState> battles = null;
+    private final List<AudioFile> narrationFiles = new ArrayList<>();
 
     public PageState(String pageName, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader, Document document, GameState gameState) {
         this.closureLoader = closureLoader;
@@ -159,6 +161,13 @@ public class PageState {
 
     public Map<Integer, String> getTexts() {
         return texts;
+    }
+
+    /**
+     * Narration files queued so far for this page, in the order they were queued, so they can be replayed.
+     */
+    public List<AudioFile> getNarrationFiles() {
+        return narrationFiles;
     }
 
     public String getPageName() {
