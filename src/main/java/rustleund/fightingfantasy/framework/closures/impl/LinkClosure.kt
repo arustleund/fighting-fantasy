@@ -66,7 +66,7 @@ class LinkClosure(
     private fun loadAudioFile(gameState: GameState) {
         val audioFileLocation = gameState.soundsDirectory.resolve("$pageName.mp3")
         if (audioFileLocation.exists()) {
-            gameState.audioFilesToPlay.add(AudioFile(audioFileLocation, true))
+            gameState.queueNarration(AudioFile(audioFileLocation, true))
         }
     }
 

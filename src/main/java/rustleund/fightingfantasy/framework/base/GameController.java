@@ -6,6 +6,7 @@ package rustleund.fightingfantasy.framework.base;
 import java.util.ArrayList;
 import java.util.List;
 
+import rustleund.fightingfantasy.framework.base.audio.AudioFile;
 import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.AddItemClosure;
@@ -91,6 +92,18 @@ public class GameController {
 
 	public void addItemToInventory(int itemId) {
         doGameStateUpdatingAction(() -> new AddItemClosure(itemId, itemUtil).execute(gameState));
+	}
+
+	/**
+	 * Re-reads all narration queued so far for the current page, interrupting anything already playing.
+	 */
+	public void replayNarration() {
+		doGameStateUpdatingAction(() -> {
+			List<AudioFile> narrationFiles = gameState.getPageState().getNarrationFiles();
+			for (int i = 0; i < narrationFiles.size(); i++) {
+				gameState.getAudioFilesToPlay().add(new AudioFile(narrationFiles.get(i).getPath(), i == 0));
+			}
+		});
 	}
 
 	public void goToPage(String pageId) {

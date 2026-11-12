@@ -178,9 +178,10 @@ public class Main {
 
 		gameController.addView(gameView);
 
-		gameController.addView(new AudioPlayer());
+		AudioPlayer audioPlayer = new AudioPlayer();
+		gameController.addView(audioPlayer);
 
-		frame.setJMenuBar(buildMenuBar(gameState, gameController, closureLoader, battleEffectsLoader));
+		frame.setJMenuBar(buildMenuBar(gameState, gameController, closureLoader, battleEffectsLoader, audioPlayer));
 
 		new LinkClosure("doStats", closureLoader, battleEffectsLoader).execute(gameState);
 
@@ -189,10 +190,11 @@ public class Main {
 		return gameView;
 	}
 
-	private static JMenuBar buildMenuBar(GameState gameState, GameController gameController, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader) {
+	private static JMenuBar buildMenuBar(GameState gameState, GameController gameController, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader, AudioPlayer audioPlayer) {
 		JMenuBar result = new JMenuBar();
 		buildFileMenu(gameState, gameController, closureLoader, battleEffectsLoader, result);
 		buildNavigateMenu(result, gameController);
+		buildNarrationMenu(result, gameController, audioPlayer);
 		return result;
 	}
 
@@ -217,6 +219,34 @@ public class Main {
 
 		JMenuItem backMenuItem = new JMenuItem(new BackAction(gameController));
 		menu.add(backMenuItem);
+
+		menuBar.add(menu);
+	}
+
+	private static void buildNarrationMenu(JMenuBar menuBar, GameController gameController, AudioPlayer audioPlayer) {
+		JMenu menu = new JMenu("Narration");
+
+		JMenuItem replayMenuItem = new JMenuItem("Re-read Page");
+		replayMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.META_DOWN_MASK));
+		replayMenuItem.addActionListener(e -> gameController.replayNarration());
+
+		JMenuItem stopMenuItem = new JMenuItem("Stop Reading");
+		stopMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, InputEvent.META_DOWN_MASK));
+		stopMenuItem.addActionListener(e -> audioPlayer.stopNarration());
+
+		JCheckBoxMenuItem enabledMenuItem = new JCheckBoxMenuItem("Read Pages Aloud", audioPlayer.getNarrationEnabled());
+		enabledMenuItem.addItemListener(e -> {
+			audioPlayer.setNarrationEnabled(enabledMenuItem.isSelected());
+			replayMenuItem.setEnabled(enabledMenuItem.isSelected());
+			stopMenuItem.setEnabled(enabledMenuItem.isSelected());
+		});
+		replayMenuItem.setEnabled(enabledMenuItem.isSelected());
+		stopMenuItem.setEnabled(enabledMenuItem.isSelected());
+
+		menu.add(enabledMenuItem);
+		menu.addSeparator();
+		menu.add(replayMenuItem);
+		menu.add(stopMenuItem);
 
 		menuBar.add(menu);
 	}
