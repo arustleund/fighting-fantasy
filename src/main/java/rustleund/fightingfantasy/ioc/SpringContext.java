@@ -52,6 +52,7 @@ public class SpringContext {
 		mappings.put("setFlag", SetFlagClosure::new);
 		mappings.put("setOnPlayerDeath", e -> new SetOnPlayerDeathClosure(e, closureLoader()));
 		mappings.put("setPoisonImmunity", SetPoisonImmunity::new);
+		mappings.put("showImage", ShowImageClosure::new);
 		mappings.put("takePoisonDamage", TakePoisonDamageClosure::new);
 		mappings.put("testAnyFlag", testAnyFlagClosureFunction());
 		mappings.put("testHighestAttackStrength", testHighestAttackStrengthClosureFunction());

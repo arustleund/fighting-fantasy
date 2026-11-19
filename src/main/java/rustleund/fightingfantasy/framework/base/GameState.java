@@ -3,6 +3,7 @@
  */
 package rustleund.fightingfantasy.framework.base;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedList;
 
@@ -37,6 +38,20 @@ public class GameState {
 	public void queueNarration(AudioFile audioFile) {
 		audioFilesToPlay.add(audioFile);
 		pageState.getNarrationFiles().add(audioFile);
+	}
+
+	/**
+	 * Shows <code>images/&lt;fileName&gt;</code> on the current page if that file exists; otherwise the current image is left alone.
+	 *
+	 * @return <code>true</code> if the image exists and is now showing
+	 */
+	public boolean showImageIfExists(String fileName) {
+		Path image = getImagesDirectory().resolve(fileName);
+		if (Files.exists(image)) {
+			pageState.setCurrentImage(image);
+			return true;
+		}
+		return false;
 	}
 
 	public void addGameProgress(SavedGame savedGame) {

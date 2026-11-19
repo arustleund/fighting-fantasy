@@ -25,6 +25,15 @@ game
 
 The game will start at an intro page: `pages/intro.xml`
 
+## Images
+The picture for a page is `images/<page>.png`. It can change while the player is on the page:
+
+* `images/<page>.<id>.png` is shown when `<displayText id="<id>"/>` displays that text block
+* `images/<page>.<name>.png` is shown by a `<showImage name="<name>"/>` command, which can go anywhere other
+  commands do (e.g. in a `<multicommand>` behind a link)
+
+When a file doesn't exist the current picture stays. Going to another page starts over with that page's picture.
+
 See the `docs` directory in this repository for items and page schemas. See 
 the `docs/reference.xml` file for an example page that demonstrates the different
 tags.

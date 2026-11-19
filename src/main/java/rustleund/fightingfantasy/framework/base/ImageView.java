@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.Serial;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
@@ -21,6 +22,7 @@ public class ImageView extends JComponent {
 	private static final long serialVersionUID = 6915472531410686968L;
 
 	private transient BufferedImage image;
+	private transient Path loadedImageLocation;
 	private final int imageWidth;
 	private final int imageHeight;
 
@@ -48,8 +50,11 @@ public class ImageView extends JComponent {
 	}
 
 	public void update(GameState gameState) {
-		Path imageLocation = gameState.getImagesDirectory().resolve(gameState.getPageState().getPageName() + ".png");
-		if (Files.exists(imageLocation)) {
+		Path imageLocation = gameState.getPageState().getCurrentImage();
+		if (Objects.equals(imageLocation, loadedImageLocation)) {
+			return;
+		}
+		if (imageLocation != null && Files.exists(imageLocation)) {
 			try (InputStream is = Files.newInputStream(imageLocation)) {
 				image = ImageIO.read(is);
 			} catch (IOException e) {
@@ -58,5 +63,6 @@ public class ImageView extends JComponent {
 		} else {
 			image = null;
 		}
+		loadedImageLocation = imageLocation;
 	}
 }

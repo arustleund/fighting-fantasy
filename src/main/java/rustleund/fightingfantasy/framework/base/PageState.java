@@ -12,6 +12,7 @@ import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.ChainedClosure;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,7 @@ public class PageState {
     private Map<Integer, String> texts = null;
     private Map<Integer, BattleState> battles = null;
     private final List<AudioFile> narrationFiles = new ArrayList<>();
+    private Path currentImage = null;
 
     public PageState(String pageName, ClosureLoader closureLoader, BattleEffectsLoader battleEffectsLoader, Document document, GameState gameState) {
         this.closureLoader = closureLoader;
@@ -172,5 +174,16 @@ public class PageState {
 
     public String getPageName() {
         return this.pageName;
+    }
+
+    /**
+     * The image currently shown for this page, or <code>null</code> if there is none.
+     */
+    public Path getCurrentImage() {
+        return currentImage;
+    }
+
+    public void setCurrentImage(Path currentImage) {
+        this.currentImage = currentImage;
     }
 }

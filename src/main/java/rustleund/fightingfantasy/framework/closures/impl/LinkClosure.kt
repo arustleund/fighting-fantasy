@@ -57,6 +57,7 @@ class LinkClosure(
             gameState.pageState =
                 PageState(pageName, closureLoader, battleEffectsLoader, targetPageDocument, gameState)
             loadAudioFile(gameState)
+            gameState.showImageIfExists("$pageName.png")
             gameState.pageState.immediateCommands.forEach { it.execute(gameState) }
             gameState.isPageLoaded = false
         }
