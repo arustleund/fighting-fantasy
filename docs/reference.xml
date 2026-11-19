@@ -225,10 +225,18 @@ Attributes:
 	<clearPoisonDamage />
 	
 	<!-- <displayText> immediately displays the <text> element with the given id at the bottom of the text area.
+	If the file images/<page>.<id>.png exists, the picture switches to it when the text is displayed.
 	Attributes:
 		id: Required. The id of the <text> element to display.
 	-->
 	<displayText id="0" />
+
+	<!-- <showImage> switches the picture to images/<page>.<name>.png. If that file does not exist, the picture stays
+	as it was. The picture returns to images/<page>.png when the player goes to another page.
+	Attributes:
+		name: Required. The name part of the image file, e.g. "dragon" for images/78.dragon.png on page 78.
+	-->
+	<showImage name="dragon" />
 
 	<!-- Follow the link to the given page, only if the flag represented by the ID is false, optionally setting the
 	 flag to true as well. Useful for making links that only work if the player has not already done them. -->

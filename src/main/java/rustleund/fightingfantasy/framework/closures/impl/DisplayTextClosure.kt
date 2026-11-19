@@ -34,6 +34,7 @@ class DisplayTextClosure(
             if (newFileToPlay.exists()) {
                 gameState.queueNarration(AudioFile(newFileToPlay, false))
             }
+            gameState.showImageIfExists("${gameState.pageState.pageName}.$it.png")
         }
         return true
     }

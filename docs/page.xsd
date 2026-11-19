@@ -90,6 +90,7 @@
 			<element name="setFlag" type="page:setFlag" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="setOnPlayerDeath" type="page:commands" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="setPoisonImmunity" type="page:setPoisonImmunity" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="showImage" type="page:showImage" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="takePoisonDamage" type="page:takePoisonDamage" minOccurs="0" maxOccurs="unbounded" />
 			<element name="testAnyFlag" type="page:testAnyFlag" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="testFlag" type="page:testFlag" minOccurs="0" maxOccurs="unbounded"/>
@@ -253,6 +254,13 @@
 
 	<complexType name="displayText">
 		<attribute name="id" type="int" use="required"/>
+	</complexType>
+
+	<complexType name="showImage">
+		<annotation>
+			<documentation>Switches the picture to images/&lt;page&gt;.&lt;name&gt;.png. If the file does not exist the current picture stays.</documentation>
+		</annotation>
+		<attribute name="name" type="string" use="required"/>
 	</complexType>
 	
 	<complexType name="displayEnemies">

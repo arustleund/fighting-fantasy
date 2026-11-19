@@ -11,6 +11,7 @@ Checks:
   * pages that nothing links to
   * pages with text but without a page sound (sounds/<page>.mp3)
   * <text> blocks without a sound (sounds/<page>.<id>.mp3), except a lone BEGIN BATTLE link
+  * <showImage> commands without an image (images/<page>.<name>.png)
   * sounds and images that the engine will never load
 """
 import argparse
@@ -51,6 +52,7 @@ def main():
 
     links = {}  # target page -> pages linking to it
     text_ids = {}  # page -> ids of its <text> blocks
+    show_images = {}  # page -> names used by its <showImage> commands
     narrated_text_ids = {}  # page -> ids of its <text> blocks that should have a sound
     narrated_pages = set()  # pages whose <pagetext> has words in it
     for f in (d / "pages").glob("*.xml"):
@@ -58,6 +60,7 @@ def main():
         for target in re.findall(r'http://link:([^"\'\s>]+)', src) + re.findall(r'\bpage="([^"]+)"', src):
             links.setdefault(target, set()).add(f.stem)
         text_ids[f.stem] = set(re.findall(r'<text\b[^>]*\bid="([^"]+)"', src))
+        show_images[f.stem] = set(re.findall(r'<showImage\b[^>]*\bname="([^"]+)"', src))
         pagetext = re.search(r"<pagetext>(.*?)</pagetext>", src, re.S)
         if pagetext and re.sub(r"<[^>]+>", " ", pagetext.group(1)).strip():
             narrated_pages.add(f.stem)
@@ -91,7 +94,16 @@ def main():
         if page not in pages or (text_id is not None and text_id not in text_ids.get(page, set())):
             unused_sounds.append(s)
     show("Sounds that will never play", unused_sounds)
-    show("Images that will never show", [f"{i}.png" for i in images if i not in pages])
+
+    def image_is_used(stem):
+        if stem in pages:
+            return True
+        page, _, suffix = stem.rpartition(".")
+        return page in pages and suffix in text_ids[page] | show_images[page]
+
+    show("<showImage> commands without an image",
+         [f"{p}.{n}" for p, names in show_images.items() if p in game_pages for n in names if f"{p}.{n}" not in images])
+    show("Images that will never show", [f"{i}.png" for i in images if not image_is_used(i)])
 
 
 if __name__ == "__main__":
