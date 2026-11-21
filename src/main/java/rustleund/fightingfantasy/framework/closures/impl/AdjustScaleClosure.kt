@@ -4,6 +4,7 @@
 package rustleund.fightingfantasy.framework.closures.impl
 
 import org.apache.commons.beanutils.PropertyUtils
+import org.apache.commons.logging.LogFactory
 import org.w3c.dom.Element
 import rustleund.fightingfantasy.framework.base.*
 import rustleund.fightingfantasy.framework.closures.Closure
@@ -31,7 +32,7 @@ class AdjustScaleClosure @JvmOverloads constructor(
 
     override fun execute(gameState: GameState): Boolean {
         val scale = runCatching { PropertyUtils.getProperty(entityRetriever(gameState), scaleName) as Scale }
-            .onFailure { it.printStackTrace() }
+            .onFailure { log.error("Unable to get scale $scaleName", it) }
             .getOrNull() ?: return false
 
         val amountToAdjust: Int = getAmountToAdjustBy(scale, gameState)
@@ -92,5 +93,9 @@ class AdjustScaleClosure @JvmOverloads constructor(
             "down" -> floor(percentResult).toInt()
             else -> percentResult.toInt()
         }
+    }
+
+    private companion object {
+        private val log = LogFactory.getLog(AdjustScaleClosure::class.java)
     }
 }

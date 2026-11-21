@@ -1,6 +1,7 @@
 package rustleund.fightingfantasy.framework.closures.impl
 
 import org.apache.commons.beanutils.PropertyUtils
+import org.apache.commons.logging.LogFactory
 import org.w3c.dom.Element
 import rustleund.fightingfantasy.framework.base.*
 import java.util.function.Predicate
@@ -35,7 +36,7 @@ class TestStatPredicate @JvmOverloads constructor(
             val entityStateToTest = entityStateRetriever(gameState)
             val statValue = getStatValue(entityStateToTest, gameState)
             statValue.testAgainst(comparison)
-        }.onFailure { it.printStackTrace() }.getOrDefault(false)
+        }.onFailure { log.error("Unable to test stat $stat", it) }.getOrDefault(false)
     }
 
     private fun getStatValue(entityStateToTest: AbstractEntityState, gameState: GameState): Int? {
@@ -53,5 +54,9 @@ class TestStatPredicate @JvmOverloads constructor(
     private fun getNonAttackStrengthStatValue(entityStateToTest: AbstractEntityState): Int {
         val statScale = PropertyUtils.getProperty(entityStateToTest, stat) as Scale
         return if (useInitialValue) statScale.upperBound!! else statScale.currentValue
+    }
+
+    private companion object {
+        private val log = LogFactory.getLog(TestStatPredicate::class.java)
     }
 }

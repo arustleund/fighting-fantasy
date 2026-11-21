@@ -6,6 +6,7 @@ package rustleund.fightingfantasy.framework.closures.impl
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonSerializationContext
+import org.apache.commons.logging.LogFactory
 import org.w3c.dom.Element
 import rustleund.fightingfantasy.framework.base.audio.AudioFile
 import rustleund.fightingfantasy.framework.closures.ClosureLoader
@@ -53,7 +54,7 @@ class LinkClosure(
                 val documentBuilder = documentBuilderFactory.newDocumentBuilder()
                 documentBuilder.parse(pageIs)
             }
-        }.onFailure { it.printStackTrace() }.getOrNull()?.let { targetPageDocument ->
+        }.onFailure { log.error("Unable to load page $pageName", it) }.getOrNull()?.let { targetPageDocument ->
             gameState.pageState =
                 PageState(pageName, closureLoader, battleEffectsLoader, targetPageDocument, gameState)
             loadAudioFile(gameState)
@@ -75,5 +76,9 @@ class LinkClosure(
         val result = JsonObject()
         result.addProperty("page", pageName)
         return result
+    }
+
+    private companion object {
+        private val log = LogFactory.getLog(LinkClosure::class.java)
     }
 }
