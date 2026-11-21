@@ -1,5 +1,6 @@
 package rustleund.fightingfantasy.framework.closures.impl
 
+import org.apache.commons.logging.LogFactory
 import org.w3c.dom.Element
 import rustleund.fightingfantasy.framework.base.GameState
 import rustleund.fightingfantasy.framework.closures.Closure
@@ -19,8 +20,12 @@ class ShowImageClosure(private val name: String) : Closure {
     override fun execute(gameState: GameState): Boolean {
         val fileName = "${gameState.pageState.pageName}.$name.png"
         if (!gameState.showImageIfExists(fileName)) {
-            System.err.println("showImage: missing image $fileName")
+            log.warn("showImage: missing image $fileName")
         }
         return true
+    }
+
+    private companion object {
+        private val log = LogFactory.getLog(ShowImageClosure::class.java)
     }
 }

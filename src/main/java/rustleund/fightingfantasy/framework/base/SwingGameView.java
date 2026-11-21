@@ -13,6 +13,9 @@ import java.io.Serial;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -31,6 +34,8 @@ import javax.swing.text.html.StyleSheet;
  * @author rustlea
  */
 public class SwingGameView extends JPanel implements ActionListener, GameView, HyperlinkListener {
+
+	private static final Log log = LogFactory.getLog(SwingGameView.class);
 
 	@Serial
 	private static final long serialVersionUID = -8223557610157876489L;
@@ -172,7 +177,7 @@ public class SwingGameView extends JPanel implements ActionListener, GameView, H
 		try {
 			result = new URL("file:///" + System.getProperty("user.dir") + "/");
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			log.error("Unable to determine base URL", e);
 		}
 		return result;
 	}

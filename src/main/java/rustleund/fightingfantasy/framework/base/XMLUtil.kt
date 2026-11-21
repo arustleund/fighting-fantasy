@@ -1,5 +1,6 @@
 package rustleund.fightingfantasy.framework.base
 
+import org.apache.commons.logging.LogFactory
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
@@ -7,6 +8,8 @@ import java.io.StringWriter
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
+
+private val log = LogFactory.getLog("rustleund.fightingfantasy.framework.base.XMLUtil")
 
 /**
  * @return A [Sequence] of all [Element]s with the name [childName] that are direct children of this [Element]
@@ -65,7 +68,7 @@ fun writeTag(tag: Node?): String {
         transformer.transform(source, streamResult)
         writer.toString()
     } catch (e: Exception) {
-        e.printStackTrace()
+        log.error("Unable to write XML tag", e)
         ""
     }
 }
