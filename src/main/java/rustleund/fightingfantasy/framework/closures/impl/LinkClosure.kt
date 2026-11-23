@@ -35,19 +35,65 @@ class LinkClosure(
     )
 
     override fun execute(gameState: GameState): Boolean {
-        // first save our state until this point, unless it's the special "DEAD" state
-        if ("0" != pageName) {
-            gameState.addGameProgress(SavedGame(pageName, gameState.playerState.deepCopy()))
-        }
         if (gameState.playerState.isDead) {
             gameState.message = "Links do not work after the player has died"
             return false
         }
 
-        if (gameState.isBattleInProgress) gameState.battleState?.doEndBattle()
+        endBattle(gameState)
 
+        val pageState = enterPage(gameState) ?: return true
+        loadAudioFile(gameState)
+        gameState.showImageIfExists("$pageName.png")
+        pageState.immediateCommands.forEach { it.execute(gameState) }
+        gameState.isPageLoaded = false
+
+        // Save our state once the immediate commands have run, so that restoring it doesn't run them again. Unless it's
+        // the special "DEAD" page, or an immediate command already sent the player on to another page (which saved itself).
+        if ("0" != pageName && gameState.pageState === pageState) {
+            gameState.addGameProgress(
+                SavedGame(
+                    pageName,
+                    gameState.playerState.deepCopy(),
+                    pageState.pagetext,
+                    pageState.currentImage?.fileName?.toString(),
+                    pageState.narrationFiles.map { it.path.fileName.toString() }
+                )
+            )
+        }
+        return true
+    }
+
+    /**
+     * Puts the player back on the page exactly as it was when [savedGame] was taken, without running the page's immediate
+     * commands. The caller is responsible for restoring the player state.
+     */
+    fun restore(savedGame: SavedGame, gameState: GameState) {
+        endBattle(gameState)
+
+        val pageState = enterPage(gameState) ?: return
+        savedGame.pageText()?.let { pageState.pagetext = it }
+        savedGame.image()?.let { gameState.showImageIfExists(it) }
+        savedGame.narration()?.forEachIndexed { index, fileName ->
+            val narrationFile = gameState.soundsDirectory.resolve(fileName)
+            if (narrationFile.exists()) {
+                gameState.queueNarration(AudioFile(narrationFile, index == 0))
+            }
+        }
+        gameState.isPageLoaded = false
+        gameState.addGameProgress(savedGame)
+    }
+
+    private fun endBattle(gameState: GameState) {
+        if (gameState.isBattleInProgress) gameState.battleState?.doEndBattle()
+    }
+
+    /**
+     * Loads the page and makes it the current one, or returns `null` (leaving the current page alone) if it can't be loaded.
+     */
+    private fun enterPage(gameState: GameState): PageState? {
         val pageLocation = gameState.pagesDirectory.resolve("$pageName.xml")
-        runCatching {
+        return runCatching {
             Files.newInputStream(pageLocation).use { pageIs ->
                 val documentBuilderFactory = DocumentBuilderFactory.newInstance()
                 documentBuilderFactory.isNamespaceAware = true
@@ -55,14 +101,9 @@ class LinkClosure(
                 documentBuilder.parse(pageIs)
             }
         }.onFailure { log.error("Unable to load page $pageName", it) }.getOrNull()?.let { targetPageDocument ->
-            gameState.pageState =
-                PageState(pageName, closureLoader, battleEffectsLoader, targetPageDocument, gameState)
-            loadAudioFile(gameState)
-            gameState.showImageIfExists("$pageName.png")
-            gameState.pageState.immediateCommands.forEach { it.execute(gameState) }
-            gameState.isPageLoaded = false
+            PageState(pageName, closureLoader, battleEffectsLoader, targetPageDocument, gameState)
+                .also { gameState.pageState = it }
         }
-        return true
     }
 
     private fun loadAudioFile(gameState: GameState) {

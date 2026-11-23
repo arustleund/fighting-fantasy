@@ -12,6 +12,7 @@ import rustleund.fightingfantasy.framework.closures.ClosureLoader;
 import rustleund.fightingfantasy.framework.closures.impl.AddItemClosure;
 import rustleund.fightingfantasy.framework.closures.impl.DoBattleClosure;
 import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
+import rustleund.fightingfantasy.gamesave.SavedGame;
 
 /**
  * @author rustlea
@@ -108,6 +109,23 @@ public class GameController {
 
 	public void goToPage(String pageId) {
         doGameStateUpdatingAction(() -> new LinkClosure(pageId, closureLoader, battleEffectsLoader).execute(gameState));
+	}
+
+	/**
+	 * Puts the game back to a previously saved point. Doesn't run the page's immediate commands again, so nothing is
+	 * re-rolled, unless the saved game predates snapshots of the loaded page.
+	 */
+	public void restoreGame(SavedGame savedGame) {
+		doGameStateUpdatingAction(() -> {
+			// copy it so that playing on doesn't change the snapshot that is kept in the game progress
+			gameState.setPlayerState(savedGame.playerState().deepCopy());
+			LinkClosure link = new LinkClosure(savedGame.pageId(), closureLoader, battleEffectsLoader);
+			if (savedGame.hasPageSnapshot()) {
+				link.restore(savedGame, gameState);
+			} else {
+				link.execute(gameState);
+			}
+		});
 	}
 
 	public GameState getGameState() {
