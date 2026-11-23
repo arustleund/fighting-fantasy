@@ -141,9 +141,9 @@ public class PlayerState extends AbstractEntityState {
 			rollWithAdjustment = testLuckDiceRollResult;
 		} else {
 			try {
-				Keval keval = KevalConfigKt.withPlayerStateVars(KevalConfigKt.keval(diceRoller), this);
-				keval.withConstant("AMT", testLuckDiceRollResult);
-				rollWithAdjustment = (int) keval.eval(diceRollAdjustmentFormula);
+				Keval<Double> keval = KevalConfigKt.withPlayerStateVars(KevalConfigKt.keval(diceRoller), this)
+						.withConstant("AMT", (double) testLuckDiceRollResult);
+				rollWithAdjustment = keval.eval(diceRollAdjustmentFormula).intValue();
 			} catch (Exception e) {
 				throw new RuntimeException("Could not evaluate formula: " + diceRollAdjustmentFormula, e);
 			}

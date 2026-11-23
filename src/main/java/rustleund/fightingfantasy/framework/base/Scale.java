@@ -5,7 +5,7 @@ package rustleund.fightingfantasy.framework.base;
 
 import com.google.common.collect.Range;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
