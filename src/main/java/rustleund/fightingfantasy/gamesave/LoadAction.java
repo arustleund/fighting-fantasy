@@ -61,8 +61,7 @@ public class LoadAction extends AbstractAction {
 
 			try {
 				SavedGame savedGame = gson.fromJson(charSource.read(), SavedGame.class);
-				gameController.getGameState().setPlayerState(savedGame.playerState());
-				gameController.goToPage(savedGame.pageId());
+				gameController.restoreGame(savedGame);
 			} catch (JsonSyntaxException | IOException ex) {
 				JOptionPane.showMessageDialog(topLevelAncestor, "The saved game could not be loaded", "An error occurred", JOptionPane.ERROR_MESSAGE);
 			}

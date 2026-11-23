@@ -11,8 +11,7 @@ class BackAction(private val gameController: GameController) : AbstractAction("B
         gameState.popGameProgress()
         val latestGameProgress = gameState.popGameProgress()
         if (latestGameProgress != null) {
-            gameState.playerState = latestGameProgress.playerState()
-            gameController.goToPage(latestGameProgress.pageId())
+            gameController.restoreGame(latestGameProgress)
         }
     }
 }
