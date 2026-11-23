@@ -1,6 +1,15 @@
 # About
 A framework and UI for playing games in the Fighting Fantasy book format.
 
+# Building
+The project builds with the Gradle wrapper and compiles for Java 25. Gradle itself needs JDK 17 or
+newer to run; if JDK 25 isn't installed, Gradle downloads it automatically.
+
+```
+./gradlew build
+./gradlew run
+```
+
 # Game
 To play, the game expects a zip file or a directory containing game files. The folder
 should contain the following structure:

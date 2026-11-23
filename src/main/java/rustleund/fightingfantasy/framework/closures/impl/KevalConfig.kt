@@ -1,12 +1,13 @@
 package rustleund.fightingfantasy.framework.closures.impl
 
 import com.notkamui.keval.Keval
+import com.notkamui.keval.KevalNumbers
 import rustleund.fightingfantasy.framework.base.PlayerState
 import rustleund.fightingfantasy.framework.util.DiceRoller
 import kotlin.math.ceil
 import kotlin.math.floor
 
-fun keval(diceRoller: (Int) -> Int = { DiceRoller.rollDice(it) }) = Keval {
+fun keval(diceRoller: (Int) -> Int = { DiceRoller.rollDice(it) }): Keval<Double> = Keval.create(KevalNumbers.real) {
     includeDefault()
 
     function {
@@ -62,12 +63,10 @@ private val playerStateMappings = listOf(
  * Constant names will be in the form: `player_gold_currentValue` and
  * `player_stamina_upperBound`
  */
-fun Keval.withPlayerStateVars(playerState: PlayerState): Keval {
-    playerStateMappings.forEach { mapping ->
-        mapping.second(playerState)?.toDouble()?.let { value -> withConstant(mapping.first, value) }
+fun Keval<Double>.withPlayerStateVars(playerState: PlayerState): Keval<Double> =
+    playerStateMappings.fold(this) { keval, (name, getter) ->
+        getter(playerState)?.let { value -> keval.withConstant(name, value.toDouble()) } ?: keval
     }
-    return this
-}
 
 fun String?.portOldFormula(): String? = this?.let { f ->
     f.toIntOrNull()?.let { i -> "AMT+$i" } ?: f
