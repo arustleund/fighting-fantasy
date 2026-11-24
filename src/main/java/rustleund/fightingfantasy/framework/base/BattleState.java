@@ -157,20 +157,24 @@ public class BattleState {
     }
 
     public void incrementGameState() {
-        if (!battleStarted) {
-            loadEffectsFromPlayerState(pageState.getGameState().getPlayerState());
-            doStartBattle();
-            battleStarted = true;
-            this.pageState.getGameState().getPlayerState().setPoisonDamage(0);
-            incrementGameState();
-        } else {
+        GameState gameState = pageState.getGameState();
+        gameState.setBattleRoundInProgress(true);
+        try {
+            if (!battleStarted) {
+                loadEffectsFromPlayerState(gameState.getPlayerState());
+                doStartBattle();
+                battleStarted = true;
+                gameState.getPlayerState().setPoisonDamage(0);
+            }
             doStartRound();
             doDamage();
             doEndRound();
+        } finally {
+            gameState.setBattleRoundInProgress(false);
+        }
 
-            if (getPlayerState().isDead()) {
-                pageState.getGameState().playerHasDied();
-            }
+        if (getPlayerState().isDead()) {
+            gameState.playerHasDied();
         }
     }
 

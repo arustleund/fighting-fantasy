@@ -23,6 +23,7 @@ public class GameState {
 	private BattleState battleState;
 	private String message;
 	private boolean isBattleInProgress;
+	private boolean battleRoundInProgress;
 	private boolean pageLoaded;
 	private final LinkedList<SavedGame> gameProgress = new LinkedList<>();
 
@@ -148,6 +149,18 @@ public class GameState {
 
 	public void setBattleInProgress(boolean isBattleInProgress) {
 		this.isBattleInProgress = isBattleInProgress;
+	}
+
+	/**
+	 * Whether a round of battle is being resolved. During a round the player can drop to 0 stamina and then be saved
+	 * (by a playerHit effect or by Testing Their Luck), so the player's death is only handled once the round is over.
+	 */
+	public boolean isBattleRoundInProgress() {
+		return battleRoundInProgress;
+	}
+
+	public void setBattleRoundInProgress(boolean battleRoundInProgress) {
+		this.battleRoundInProgress = battleRoundInProgress;
 	}
 
 	@Nullable

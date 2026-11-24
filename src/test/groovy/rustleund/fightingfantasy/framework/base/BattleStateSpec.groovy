@@ -3,6 +3,7 @@ package rustleund.fightingfantasy.framework.base
 import org.w3c.dom.Element
 import rustleund.fightingfantasy.framework.closures.Closure
 import rustleund.fightingfantasy.framework.closures.impl.AdjustEnemyScaleClosure
+import rustleund.fightingfantasy.framework.closures.impl.AdjustScaleClosure
 import rustleund.fightingfantasy.framework.closures.impl.DoBattleClosure
 import spock.lang.Specification
 
@@ -68,6 +69,52 @@ class BattleStateSpec extends Specification {
         then:
         gameState.playerState.isDead()
         !endBattleRan
+    }
+
+    def "A playerHit effect does not handle the player's death before Test Your Luck can save them"() {
+        given: "a player on 2 stamina who is always lucky, against an enemy who always hits"
+        def gameState = Spy(GameState)
+        def testee = enemyAlwaysHitsBattle(gameState, 2, 12)
+
+        when:
+        new DoBattleClosure(0).execute(gameState)
+
+        then: "the hit takes them to 0, the playerHit effect runs, then the luck test saves them"
+        0 * gameState.playerHasDied()
+        !gameState.playerState.isDead()
+        gameState.playerState.skill.currentValue == 0
+        testee.battleIsNotOver()
+    }
+
+    def "A playerHit effect does not handle the player's death twice"() {
+        given: "a player on 2 stamina with no luck, against an enemy who always hits"
+        def gameState = Spy(GameState)
+        enemyAlwaysHitsBattle(gameState, 2, 0)
+
+        when:
+        new DoBattleClosure(0).execute(gameState)
+
+        then:
+        1 * gameState.playerHasDied()
+        gameState.playerState.isDead()
+    }
+
+    private BattleState enemyAlwaysHitsBattle(GameState gameState, int playerStamina, int playerLuck) {
+        def playerState = new PlayerState("player", 1, playerStamina, playerLuck, 12, 0, 0, 0, 0, [])
+        gameState.setPlayerState(playerState)
+        gameState.setPageState(pageState)
+        pageState.getGameState() >> gameState
+
+        def enemies = new Enemies()
+        enemies.addEnemy(new EnemyState("one", 30, 10, null, 0, 0, [].<String> toSet(), null, null))
+        def loseSkillElement = Stub(Element)
+        loseSkillElement.getAttribute("type") >> "skill"
+        loseSkillElement.getAttribute("amount") >> "-1"
+        def mainBattleEffects = new BattleEffects()
+        mainBattleEffects.setPlayerHit(new AdjustScaleClosure(loseSkillElement))
+        def testee = new BattleState(pageState, 0, true, false, null, enemies, mainBattleEffects)
+        pageState.getBattle(0) >> testee
+        testee
     }
 
     private GameState gameStateWithPlayerStamina(int stamina) {
