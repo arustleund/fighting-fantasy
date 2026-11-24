@@ -58,7 +58,7 @@ fun NodeList.asElementSequence(): Sequence<Element> =
         .filter { it is Element }
         .map { it as Element }
 
-fun Element.hasChildElements(): Boolean = childNodes.asElementSequence().none()
+fun Element.hasChildElements(): Boolean = childNodes.asElementSequence().any()
 
 fun writeTag(tag: Node?): String {
     return if (tag == null) "" else try {
