@@ -208,8 +208,12 @@ public class BattleState {
 
     public void doEndBattle() {
         this.battleStarted = false;
-        doBattleStage(this.allBattleEffects, BattleEffects::getEndBattle);
-        doBattleStage(itemBattleEffects(), BattleEffects::getEndBattle);
+        // The end-of-battle effects (e.g. displayTextOnEnd) describe the aftermath of surviving the battle, so they make
+        // no sense when the battle ended because the player died.
+        if (!getPlayerState().isDead()) {
+            doBattleStage(this.allBattleEffects, BattleEffects::getEndBattle);
+            doBattleStage(itemBattleEffects(), BattleEffects::getEndBattle);
+        }
         getPageState().getGameState().endBattle();
     }
 
