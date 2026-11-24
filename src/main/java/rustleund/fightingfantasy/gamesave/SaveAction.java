@@ -12,18 +12,19 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import rustleund.fightingfantasy.framework.base.GameState;
-import rustleund.fightingfantasy.framework.base.Item;
 
-import com.google.common.collect.Range;
 import com.google.common.io.Files;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 
 public class SaveAction extends AbstractAction {
 
 	@Serial
 	private static final long serialVersionUID = 4973015396772966933L;
+
+	private static final Log log = LogFactory.getLog(SaveAction.class);
 
 	private final transient GameState gameState;
 
@@ -41,15 +42,11 @@ public class SaveAction extends AbstractAction {
 			File saveFile = fileChooser.getSelectedFile();
 			SavedGame latestGameProgress = this.gameState.getLatestGameProgress();
 			if (latestGameProgress != null) {
-				GsonBuilder gsonBuilder = new GsonBuilder();
-				gsonBuilder.registerTypeAdapter(Item.class, new ItemSerializer());
-				gsonBuilder.registerTypeAdapter(Range.class, new IntegerRangeSerializer());
-				gsonBuilder.registerTypeHierarchyAdapter(SerializableClosure.class, new ClosureSerializer());
-				Gson gson = gsonBuilder.create();
-				String json = gson.toJson(latestGameProgress);
 				try {
+					String json = SavedGameGson.forSaving().toJson(latestGameProgress);
 					Files.asCharSink(saveFile, StandardCharsets.UTF_8).write(json);
-				} catch (IOException ioException) {
+				} catch (IOException | JsonIOException exception) {
+					log.error("Unable to save the game", exception);
 					JOptionPane.showMessageDialog(topLevelAncestor, "The game could not be saved", "An error occurred", JOptionPane.ERROR_MESSAGE);
 				}
 			}

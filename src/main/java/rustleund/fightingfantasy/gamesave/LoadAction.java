@@ -12,24 +12,20 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import rustleund.fightingfantasy.framework.base.BattleEffectsLoader;
 import rustleund.fightingfantasy.framework.base.GameController;
-import rustleund.fightingfantasy.framework.base.Item;
 
-import com.google.common.collect.Range;
-import com.google.common.io.CharSource;
 import com.google.common.io.Files;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
-import rustleund.fightingfantasy.framework.closures.Closure;
 import rustleund.fightingfantasy.framework.closures.ClosureLoader;
-import rustleund.fightingfantasy.framework.closures.impl.LinkClosure;
 
 public class LoadAction extends AbstractAction {
 
 	@Serial
 	private static final long serialVersionUID = -4230657785810027591L;
+
+	private static final Log log = LogFactory.getLog(LoadAction.class);
 
 	private final transient GameController gameController;
 	private final transient ClosureLoader closureLoader;
@@ -50,21 +46,17 @@ public class LoadAction extends AbstractAction {
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File saveFile = fileChooser.getSelectedFile();
 
-			GsonBuilder gsonBuilder = new GsonBuilder();
-			gsonBuilder.registerTypeAdapter(Item.class, new ItemDeserializer(gameController));
-			gsonBuilder.registerTypeAdapter(Range.class, new IntegerRangeDeserializer());
-			gsonBuilder.registerTypeAdapter(Closure.class, new ClosureDeserializer());
-			gsonBuilder.registerTypeAdapter(LinkClosure.class, new LinkClosureDeserializer(closureLoader, battleEffectsLoader));
-
-			Gson gson = gsonBuilder.create();
-			CharSource charSource = Files.asCharSource(saveFile, StandardCharsets.UTF_8);
-
+			SavedGame savedGame;
 			try {
-				SavedGame savedGame = gson.fromJson(charSource.read(), SavedGame.class);
-				gameController.restoreGame(savedGame);
-			} catch (JsonSyntaxException | IOException ex) {
+				String json = Files.asCharSource(saveFile, StandardCharsets.UTF_8).read();
+				savedGame = SavedGameGson.forLoading(gameController, closureLoader, battleEffectsLoader).fromJson(json, SavedGame.class);
+			} catch (IOException | RuntimeException exception) {
+				// Gson reports a save it can't make sense of with all sorts of RuntimeExceptions, not just JsonParseException
+				log.error("Unable to load the saved game " + saveFile, exception);
 				JOptionPane.showMessageDialog(topLevelAncestor, "The saved game could not be loaded", "An error occurred", JOptionPane.ERROR_MESSAGE);
+				return;
 			}
+			gameController.restoreGame(savedGame);
 		}
 	}
 }

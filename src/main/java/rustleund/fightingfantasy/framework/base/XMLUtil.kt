@@ -4,7 +4,10 @@ import org.apache.commons.logging.LogFactory
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import org.w3c.dom.NodeList
+import org.xml.sax.InputSource
+import java.io.StringReader
 import java.io.StringWriter
+import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
@@ -55,7 +58,7 @@ fun NodeList.asElementSequence(): Sequence<Element> =
         .filter { it is Element }
         .map { it as Element }
 
-fun Element.hasChildElements(): Boolean = childNodes.asElementSequence().none()
+fun Element.hasChildElements(): Boolean = childNodes.asElementSequence().any()
 
 fun writeTag(tag: Node?): String {
     return if (tag == null) "" else try {
@@ -73,3 +76,13 @@ fun writeTag(tag: Node?): String {
     }
 }
 
+/**
+ * Parses the given XML (such as that written by [writeTag]) with namespaces, as pages are.
+ *
+ * @return the root [Element]
+ */
+fun parseElement(xml: String): Element {
+    val documentBuilderFactory = DocumentBuilderFactory.newInstance()
+    documentBuilderFactory.isNamespaceAware = true
+    return documentBuilderFactory.newDocumentBuilder().parse(InputSource(StringReader(xml))).documentElement
+}

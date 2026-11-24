@@ -1,8 +1,15 @@
 package rustleund.fightingfantasy.framework.base;
 
+import org.jetbrains.annotations.Nullable;
 import rustleund.fightingfantasy.framework.closures.Closure;
 
 public class BattleEffects {
+
+	/**
+	 * The XML of the tag these effects were loaded from, so that they can be written to a saved game and loaded again from
+	 * it (the closures themselves can't be serialized). <code>null</code> if they weren't loaded from a tag.
+	 */
+	private @Nullable String sourceXml;
 
 	private Closure startBattle;
 	private Closure startRound;
@@ -59,4 +66,11 @@ public class BattleEffects {
 		this.endRound = endRound;
 	}
 
+	public @Nullable String getSourceXml() {
+		return this.sourceXml;
+	}
+
+	public void setSourceXml(@Nullable String sourceXml) {
+		this.sourceXml = sourceXml;
+	}
 }
