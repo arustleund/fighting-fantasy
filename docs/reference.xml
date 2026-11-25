@@ -4,48 +4,50 @@ Attributes:
 	label: Optional. A label for the page that helps in debugging or reporting. Not used in the game.
 -->
 <page label="Intro">
-	<!-- 
+	<!--
 	<pagetext> is required. This is the text that will display when the user first goes to the page.
 	No attributes. HTML content. Must start with a <html> tag.
 	 -->
 	<pagetext>
 		<html>
 			<!-- Some commands are supported within hyperlinks -->
-			
+
 			<!-- Goes to the pagenumber specified by the port. -->
 			<a href="http://link:14">Go to page 14</a>
-			
-			<!-- Buys the item with the ID specified by the port. -->
+
+			<!-- Buys the item with the ID specified by the port, at the item's default price. -->
 			<a href="http://buyItem:21">Buy Item 21</a>
-			
+
 			<!-- Tests Luck in battle, 0 for if an enemy was just hit, 1 for player -->
 			<a href="http://testluckbattle:0">Test Luck In Battle, try to damage enemy more</a>
 			<a href="http://testluckbattle:1">Test Luck In Battle, try to reduce player damage</a>
-			
+
 			<!-- Performs the <multicommand> with the ID specified by the port. -->
 			<a href="http://domulti:0">Perform multicommand 0</a>
-			
+
 			<!-- Starts the <battle> with the ID specified by the port. -->
 			<a href="http://dobattle:0">Start battle 0</a>
-			
+
 			<!-- Flees the <battle> with the ID specified by the port. -->
 			<a href="http://doflee:0">Flee battle 0</a>
 		</html>
 	</pagetext>
 
-	<!-- 
+	<!--
 	<battle> defines a battle that can be fought on this page. More than one <battle> can be defined. Not required.
 	Attributes:
 		id: Required. unique (to this page) identifier that can be referred to by links and other commands.
 		canFlee: Not Required. Default: false. Set to "true" if the player can flee the battle, "false" if they are not allowed to
 		fightEnemiesTogether: Not Required. Default: true. Set to "true" if all enemies should attack at once, "false" if the enemies
 		can be battled one at a time.
+		displayTextOnEnd: Not Required. The id of a <text> element to display when the player wins the battle. A shortcut for
+		putting a <displayText> in the <endBattle> effects. Not displayed if the player died.
 	-->
-	<battle id="0" canFlee="false">
+	<battle id="0" canFlee="false" displayTextOnEnd="1">
 		<!-- <enemies> defines the enemies to be fought in this battle. It is Required, and there can be only one. -->
 		<enemies>
 			<!-- List all of the enemies here. No limit. At least one is required. -->
-			<!-- 
+			<!--
 			<enemy> defines an enemy to be fought in the battle.
 			Attributes:
 				name: Required. The name that will be displayed for this enemy during the battle.
@@ -54,9 +56,27 @@ Attributes:
 				poisonedWeaponRounds: Not Required. Default: 0. The number of rounds the enemy's weapon is poisoned.
 				poisonDamage: Not Required. Default: 0 if poisonedWeaponRounds is absent, 2 if poisonedWeaponRound is present.
 					The amount of extra damage that the enemy's attack does due to poison.
+				id: Not Required. Integer. An identifier for this enemy that lasts across pages. Used with <saveEnemyStamina>: if a
+					stamina value has been saved for this id, the enemy starts the battle with that stamina instead of the stamina
+					attribute.
+				types: Not Required. A comma-separated list of types for this enemy (for example "undead,human"), which can be
+					checked with <testEnemyTypes>. The special type "self" makes the enemy a copy of the player: it gets the
+					player's current skill and stamina, and the skill and stamina attributes are ignored.
+			Child elements (both Not Required):
+				<onHit>: commands to run when the player wounds this enemy without killing it.
+				<onKilled>: commands to run when the player kills this enemy.
 			 -->
 			<enemy name="GREEN STALKER" skill="10" stamina="10" />
 			<enemy name="GREEN STALKER W POISON" skill="12" stamina="8" poisonedWeaponRounds="2" poisonDamage="3" />
+			<enemy name="ZOMBIE" skill="7" stamina="6" id="3" types="undead">
+				<onHit>
+					<addBattleMessage message="The ZOMBIE doesn't seem to feel the blow." />
+				</onHit>
+				<onKilled>
+					<setFlag id="15" />
+				</onKilled>
+			</enemy>
+			<enemy name="MIRROR DEMON" skill="0" stamina="0" types="self,demon" />
 		</enemies>
 		<!-- <effects> defines any effects that should be executed at certain times in the battle. Not required. -->
 		<effects>
@@ -64,27 +84,27 @@ Attributes:
 			<startBattle>
 				<!-- put any number of commands here (see command reference below) -->
 			</startBattle>
-			
+
 			<!-- executed at the start of every round of battle before any attacks. Not Required. -->
 			<startRound>
 				<!-- put any number of commands here (see command reference below) -->
 			</startRound>
-			
+
 			<!-- executed every time the player is hit with an attack. Not Required. -->
 			<playerHit>
 				<!-- put any number of commands here (see command reference below) -->
 			</playerHit>
-			
+
 			<!-- executed at the end of every round of battle after all attacks. Not Required. -->
 			<endRound>
 				<!-- put any number of commands here (see command reference below) -->
 			</endRound>
-			
+
 			<!-- executed at the end of the battle when all enemies are dead. Not Required. -->
 			<endBattle>
 				<!-- put any number of commands here (see command reference below) -->
 			</endBattle>
-			
+
 			<!-- executed if/when the player flees the battle. Not Required. -->
 			<playerFlee>
 				<!-- put any number of commands here (see command reference below) -->
@@ -93,20 +113,20 @@ Attributes:
 	</battle>
 
 	<!-- <immediate> defines any commands that should be executed as soon as the page loads. Not Required. No limit.
-	No attributes. -->
+	No attributes. Each command here runs even if an earlier one fails. -->
 	<immediate>
 		<!-- put any number of commands here (see command reference below) -->
 	</immediate>
-	
+
 	<!-- <keepminimum> places a hard limit on a player scale. Used to control the <addItem> action. <addItem> action will
 	not succeed unless the player can keep at least the number specified by <keepminimum>. Not Required. No limit.
 	Attributes:
 		scale: the player scale to test. Required.
 		value: the minimum value required to satisfy the requirement. Required. -->
 	<keepminimum scale="gold" value="2" />
-	
-	<!-- <multicommand> allows the user to specify a set of commands to be executed by a user action on the page (usually 
-	a hyperlink). Not Required. No limit. 
+
+	<!-- <multicommand> allows the user to specify a set of commands to be executed by a user action on the page (usually
+	a hyperlink). Not Required. No limit.
 	Attributes:
 		id: a unique (to this page) identifier that can be referenced by hyperlinks in the text. Required.
 	-->
@@ -114,41 +134,56 @@ Attributes:
 		<!-- put any number of commands here (see command reference below) -->
 	</multicommand>
 
+	<!-- Example: pay the ferryman 3 Gold Pieces to cross the river. The <link> only runs if the player could pay. -->
+	<multicommand id="1">
+		<adjustScale type="gold" amount="-3" promptOnFail="true" />
+		<link page="112" />
+	</multicommand>
+
 	<!-- <text> defines a group of page text to be displayed at a later time, triggered by an action (usually a hyperlink).
 	First child element will usually be a <p> element. Not Required. No limit.
 	Attributes:
 		id: a unique (to this page) identifier that can be referenced by hyperlinks in the text. Required.
-	 -->	
+	 -->
 	<text id="0">
 		<p>
 			This text will be displayed when an action displays it.
 		</p>
 	</text>
-	
-	<!-- <testluck> defines a "Test Your Luck" instance that can be referenced by other commands or a link.
-	Not required. No Limit.
-	Attributes:
-		id: a unique (to this page) identifier that can be referenced by hyperlinks in the text. Required.
-	-->
-	<testluck id="0">
-		<!-- Text to display if the test is successful. The first child must be a <p> element. -->
-		<successful>
-			<p>
-				Text that displays if the test was successful.
-			</p>
-		</successful>
-		<!-- Text to display if the test is unsuccessful. The first child must be a <p> element. -->
-		<unsuccessful>
-			<p>
-				Text that displays if the test was unsuccessful.
-			</p>
-		</unsuccessful>
-	</testluck>
-	
-	<!-- COMMAND REFERENCE -->
-	<!-- The following commands can be included anywhere a command is valid -->
 
-	<!-- Adds the listed battle effects to the next battle that the player is in. -->
+	<text id="1">
+		<p>
+			The last of your foes falls to the ground.
+		</p>
+	</text>
+
+	<!-- COMMAND REFERENCE -->
+	<!-- The following commands can be included anywhere a command is valid: <immediate>, <multicommand>, battle effects,
+	the <successful>/<unsuccessful> sections of the test commands, and so on.
+
+	Commands in a group run in order, and the group stops at the first command that fails. For example, an <addItem> the
+	player can't afford, or an <adjustScale> with promptOnFail="true" that goes out of bounds, stops the commands after it.
+	(<immediate> is the exception: each of its commands runs regardless.)
+
+	PLAYER SCALES: commands that take a scale name (type, stat or scale attributes) accept any of:
+		skill, stamina, luck, provisions, gold, time, honor, nemesis
+
+	NUMBER COMPARISONS: <testItem>, <testStat>, <testStatText>, <testEnemyStat> and
+	<testPlayerAttackStrengthDifferenceFromEnemy> compare a number using exactly one of these attributes:
+		lessThan, greaterThan, atLeast, atMost, equal, notEqual
+	If none is given, the comparison is atLeast="1".
+
+	FORMULAS: some attributes take a formula, which is an arithmetic expression (+, -, *, /, parentheses) that can use:
+		AMT: the starting number, described by each command that takes a formula
+		roll(n): the total of rolling n dice
+		floor(x), ceil(x), max(x, y), min(x, y)
+		player_<scale>_currentValue, player_<scale>_upperBound: the player's scale values, e.g. player_luck_currentValue
+			(available in adjustScale, testSkill, testEnemySkill and testLuck formulas)
+	For a dice roll adjustment (diceRollAdjustment), a plain integer N means "AMT+N", so diceRollAdjustment="2" adds 2 to the roll.
+	-->
+
+	<!-- Adds the listed battle effects to the next battle that the player is in. Any number of <battleEffects> can be
+	listed. They are discarded when that battle ends. -->
 	<addBattleEffectsForNextBattle>
 		<!-- Set children that specify the effects (see <effects> tag under <battle> for more information). -->
 		<battleEffects>
@@ -157,7 +192,19 @@ Attributes:
 			</startBattle>
 		</battleEffects>
 	</addBattleEffectsForNextBattle>
-	
+
+	<!-- Example: a blessing that makes the player's next battle easier. -->
+	<addBattleEffectsForNextBattle>
+		<battleEffects>
+			<startBattle>
+				<adjustPlayerAttackStrength amount="1" />
+			</startBattle>
+			<endBattle>
+				<adjustPlayerAttackStrength amount="-1" />
+			</endBattle>
+		</battleEffects>
+	</addBattleEffectsForNextBattle>
+
 	<!-- Immediately adds the listed battle effects to the current battle that the player is in. Player must be in battle. -->
 	<addBattleEffectsToCurrentBattle>
 		<!-- Set children that specify the effects (see <effects> tag under <battle> for more information). -->
@@ -167,18 +214,38 @@ Attributes:
 			</startBattle>
 		</battleEffects>
 	</addBattleEffectsToCurrentBattle>
-	
+
+	<!-- <addBattleEffectsToNextBattleRound> adds the listed battle effects to the next round of the current battle only.
+	Only the <startRound> and <endRound> sections are used, and the effects are discarded at the end of that round.
+	Does nothing if the player is not in a battle. -->
+	<addBattleEffectsToNextBattleRound>
+		<!-- Example: the enemy is stunned for one round. -->
+		<battleEffects>
+			<startRound>
+				<adjustFirstNonDeadEnemyAttackStrength amount="-3" />
+			</startRound>
+			<endRound>
+				<adjustFirstNonDeadEnemyAttackStrength amount="3" />
+			</endRound>
+		</battleEffects>
+	</addBattleEffectsToNextBattleRound>
+
 	<!-- <addBattleMessage> adds a message to the current battle text. Only one message can be displayed in a position at one time.
 	Attributes:
-		message: Required. The message to display.
-		messagePosition: Not Required. Defaults to END. If present, must be one of BEGINNING or END. Defines where the message should
-		be displayed in relation to the existing battle text.
+		message: Not Required. The message to display.
+		messagePosition: Not Required. Defaults to END. If present, must be one of BEGINNING, END or IMMEDIATE_END. Defines where
+		the message should be displayed in relation to the existing battle text. BEGINNING and END keep the message in that
+		position until it is replaced or cleared. IMMEDIATE_END adds it to the end of the battle text right away.
+	Child elements: Not Required. A single HTML element (e.g. a <p>) that is displayed after the message attribute.
 	-->
 	<addBattleMessage message="This is the message to display." messagePosition="END" />
-	
+	<addBattleMessage messagePosition="BEGINNING">
+		<p><b>The floor is slippery with blood.</b></p>
+	</addBattleMessage>
+
 	<!-- <addEnemies> adds the <enemy>s defined to the current battle after the specified number of rounds. This command would
 	normally be added under the <startRound> section of a battle effects. If the battle is over before the wait time is over,
-	the enemies will not appear and the battle will be over normally.
+	the enemies will not appear and the battle will be over normally. Must be inside a <battle> element.
 	Attributes:
 		wait: Required. The number of rounds to wait before adding the enemies. For example, if wait is set to 4, there will be 4
 		rounds without the listed enemies. They will appear in the 5th round.
@@ -191,45 +258,120 @@ Attributes:
 	The following requirements must be met for the item to be added:
 	1. The player must have enough money for the item.
 	2. If the item has a limit on the number that can be carried (total limit or page limit), the player cannot exceed that limit.
-	3. If the page specifies a minimum amount of gold that the player must keep (using a <keepMinimum> tag, see above), that 
+	3. If the page specifies a minimum amount of gold that the player must keep (using a <keepMinimum> tag, see above), that
 	minimum must be satisfied.
 	Attributes:
 		id: Required. The unique identifier of the item to add.
 		price: Not Required. The price of the item for this page. Overrides the default price set on the item configuration if present.
+		Use price="0" to give the item to the player for free.
 		quantity: Not Required. The number of this item to add to the inventory. Defaults to 1.
+		quantityFormula: Not Required. A formula (see FORMULAS above) for the number to add, where AMT is the quantity.
 		pageLimit: Not Required. The maximum number of times this item can be bought on this page. Defaults to unlimited.
 	-->
 	<addItem id="21" price="4" quantity="2" pageLimit="4" />
+	<!-- Example: find 1-6 arrows lying on the ground. -->
+	<addItem id="8" price="0" quantity="0" quantityFormula="AMT+roll(1)" />
 
 	<!-- <adjustEnemyScale> would typically be used as a battle effect against an enemy. The enemy's skill or stamina can be altered.
-	Attributes:
+	It accepts the same attributes as <adjustScale> (below), plus:
 		enemyIdx: Not Required. The index of the enemy in the current battle's enemy list. Defaults to the first non-dead enemy.
 		type: Required. Can be one of "stamina" or "skill". This is the attribute that will be changed.
 		amount: Required. Integer. The amount to adjust the attribute by. Use a negative number to subtract from the value.
 	-->
 	<adjustEnemyScale enemyIdx="0" type="stamina" amount="-3" />
 
+	<!-- <adjustFirstNonDeadEnemyAttackStrength> modifies the attack strength of the first enemy in the current battle that is
+	still alive, for the rest of the battle.
+	Attributes:
+		amount: Required. Integer. The amount to modify the enemy's attack strength by. Use a negative number to lessen it.
+	-->
+	<adjustFirstNonDeadEnemyAttackStrength amount="-1" />
+
 	<!-- <adjustPlayerAttackStrength> permanently modifies the player's attack strength during the current battle and all
 	subsequent battles. To set attack strength back at the end of the battle, use another one of these commands at the endbattle
 	battle effect.
 	Attributes:
-		amount: Required. Integer. The amount to modifier the player's attack strength by. Use a negative number to lessen the attack 
-		strength. 
+		amount: Required. Integer. The amount to modifier the player's attack strength by. Use a negative number to lessen the attack
+		strength.
 	-->
 	<adjustPlayerAttackStrength amount="-2" />
-	
+
+	<!-- <adjustPlayerDamageModifier> permanently modifies the damage the player does when they wound an enemy (normally 2), in
+	the current battle and all subsequent battles. Like <adjustPlayerAttackStrength>, undo it with another one of these commands
+	if it should only last for one battle.
+	Attributes:
+		amount: Required. Integer. The amount to add to the player's damage. Use a negative number to do less damage.
+	-->
+	<adjustPlayerDamageModifier amount="1" />
+
+	<!-- <adjustScale> changes one of the player's scales (see PLAYER SCALES above). By default the value is kept within the
+	scale's bounds (e.g. stamina can't go above its initial value or below 0), and the command always succeeds. The amount
+	is worked out in this order: amount (or a percent of it), plus rollDiceAmount, then formula, then negate.
+	If the player's stamina reaches 0, the player dies.
+	Attributes:
+		type: Required. The name of the scale to change.
+		amount: Required. Integer. The amount to adjust the scale by. Use a negative number to subtract from the value.
+		promptOnFail: Not Required. Default: false. If "true" and the change would go outside the scale's bounds, the player is
+			shown "You cannot perform this action" and the command fails, so the commands after it don't run. Gold is left
+			unchanged; other scales are set to their limit. Useful for making the player pay for something.
+		useAmountAsValue: Not Required. Default: false. If "true", sets the scale to amount instead of adjusting it by amount.
+			Can't be combined with useAmountAsPercent or rollDiceAmount.
+		useAmountAsPercent: Not Required. Default: false. If "true", amount is a fraction of the scale's initial value
+			(e.g. "0.5" for half, "-0.5" to lose half). The scale must have an initial value (gold and time do not).
+		round: Not Required. Used with useAmountAsPercent. "up" or "down" to round the result; otherwise it is truncated.
+		adjustInitialValue: Not Required. Default: false. If "true", changes the scale's initial (maximum) value instead of
+			its current value. If the current value is above the new maximum, it is lowered to match.
+		rollDiceAmount: Not Required. Integer. Rolls this many dice and adds the total to amount.
+		formula: Not Required. A formula (see FORMULAS above) for the final amount, where AMT is the amount worked out so far.
+		negate: Not Required. Default: false. If "true", the final amount is negated. Handy with rollDiceAmount for losing
+			a random amount.
+	-->
 	<adjustScale type="time" amount="2" promptOnFail="true" />
-	
+	<!-- Lose 1-6 stamina -->
+	<adjustScale type="stamina" amount="0" rollDiceAmount="1" negate="true" />
+	<!-- Set gold to exactly 10 -->
+	<adjustScale type="gold" amount="10" useAmountAsValue="true" />
+	<!-- Restore luck to its initial value (add 100% of the initial value; the scale's bound stops it going over) -->
+	<adjustScale type="luck" amount="1" useAmountAsPercent="true" />
+	<!-- Lose half of your initial stamina; with round="down", -5.5 becomes -6 -->
+	<adjustScale type="stamina" amount="-0.5" useAmountAsPercent="true" round="down" />
+	<!-- Increase initial skill by 1 -->
+	<adjustScale type="skill" amount="1" adjustInitialValue="true" />
+	<!-- Gain gold equal to twice your current luck -->
+	<adjustScale type="gold" amount="0" formula="player_luck_currentValue * 2" />
+
+	<!-- <clearBattleMessage> removes messages added with <addBattleMessage>.
+	Attributes:
+		positionsToClear: Not Required. A comma-separated list of positions to clear (BEGINNING, END). If absent, all
+		positions are cleared.
+	-->
 	<clearBattleMessage positionsToClear="BEGINNING" />
-	
+	<clearBattleMessage />
+
+	<!-- <clearPoisonDamage> cures the player of poison: all of the stamina lost to poison (from <takePoisonDamage> or poisoned
+	enemy weapons) is given back, and the poison damage is reset to 0. No attributes. -->
 	<clearPoisonDamage />
-	
+
+	<!-- <displayEnemies> adds a table of the enemies in a battle on this page, with their SKILL and STAMINA, to the page text.
+	Attributes:
+		battleId: Required. The id of the <battle> whose enemies should be displayed.
+	-->
+	<displayEnemies battleId="0" />
+
 	<!-- <displayText> immediately displays the <text> element with the given id at the bottom of the text area.
 	If the file images/<page>.<id>.png exists, the picture switches to it when the text is displayed.
+	If the file sounds/<page>.<id>.mp3 exists, it is queued to play as narration.
 	Attributes:
 		id: Required. The id of the <text> element to display.
 	-->
 	<displayText id="0" />
+
+	<!-- <doBattle> starts the <battle> with the given id, or fights its next round if it's already started. The same as a
+	http://dobattle link.
+	Attributes:
+		id: Required. The id of the <battle> to fight.
+	-->
+	<doBattle id="0" />
 
 	<!-- <showImage> switches the picture to images/<page>.<name>.png. If that file does not exist, the picture stays
 	as it was. The picture returns to images/<page>.png when the player goes to another page.
@@ -238,37 +380,74 @@ Attributes:
 	-->
 	<showImage name="dragon" />
 
-	<!-- Follow the link to the given page, only if the flag represented by the ID is false, optionally setting the
-	 flag to true as well. Useful for making links that only work if the player has not already done them. -->
+	<!-- <flaggedLink> follows the link to the given page, only if the flag represented by the ID is false, optionally setting
+	the flag to true as well. Useful for making links that only work if the player has not already done them. If the flag is
+	true, the player is shown "Cannot follow link, you don't meet the conditions" instead.
+	Attributes:
+		id: Required. Integer. The id of the flag to test.
+		page: Required. The page id to send the player to.
+		setFlagToTrue: Not Required. Default: false. If "true", the flag is set to true when the link is followed.
+	-->
 	<flaggedLink id="4" page="234" setFlagToTrue="true" />
-	
+
 	<!-- <initPlayer> initializes the player's state at the beginning of the game. Should be first command called on the first page.
 	Should only be called once per game. No attributes.
 	-->
 	<initPlayer />
-	
-	<!-- <link> immediately sends the player to the specified page.
+
+	<!-- <link> immediately sends the player to the specified page. If the file sounds/<page>.mp3 exists, it is played
+	as narration. Links don't work once the player has died.
 	Attributes:
 		page: Required. The page id to send the player to.
 	-->
 	<link page="208" />
-	
+
 	<!-- <mustEatMeal> forces the player to consume the given number of provisions (specified by the amount attribute).
 	If the player does not have enough provisions, 2 stamina is lost for each meal that is missing. This may kill the player.
 	Attributes:
 		amount: Not Required. Integer. The amount of provisions that must be consumed. Defaults to 1.
 	 -->
 	<mustEatMeal amount="2" />
-	
-	<removeItem id="11" />
 
-	<!-- Save the current value of the given scale under the given label, can be restored with "restoreScale" -->
+	<!-- <removeItem> removes an item from the player's inventory. Does nothing if the player doesn't have the item.
+	Attributes:
+		id: Required. The unique identifier of the item to remove.
+		amount: Not Required. Integer. The number of the item to remove. Defaults to 1.
+	-->
+	<removeItem id="11" />
+	<removeItem id="8" amount="3" />
+
+	<!-- Save the current value of the given scale under the given label, can be restored with "restoreScale"
+	Attributes:
+		type: Required. The name of the scale to save (see PLAYER SCALES above).
+		label: Required. The name to save the value under.
+	-->
 	<saveCurrentScaleValue type="stamina" label="dreamtime" />
 
-	<!-- Can use an optional attribute, "label" that restores a saved value
-	(from "saveCurrentScaleValue"), otherwise with no label, restores the previous value -->
+	<!-- <restoreScale> sets a scale back to an earlier value.
+	Attributes:
+		type: Required. The name of the scale to restore (see PLAYER SCALES above).
+		label: Not Required. Restores the value saved under this label by <saveCurrentScaleValue>. Does nothing if no value
+		was saved under the label. Without a label, the scale goes back to the value it had before its most recent change.
+	-->
 	<restoreScale type="gold" />
-	
+	<restoreScale type="stamina" label="dreamtime" />
+
+	<!-- <saveEnemyStamina> saves the current stamina of an enemy in the current battle, so the enemy keeps its wounds if it is
+	fought again later. When a later battle has an <enemy> with the same id, it starts with the saved stamina. Fails if there
+	is no enemy with that id in the current battle.
+	Attributes:
+		id: Required. Integer. The id attribute of the <enemy> whose stamina should be saved.
+	-->
+	<saveEnemyStamina id="3" />
+
+	<!-- <rollDice> rolls dice and runs the commands for the total that was rolled. If no <doActions> matches the total,
+	nothing happens.
+	Attributes:
+		number: Not Required. Integer. The number of dice to roll. Defaults to 1.
+	Child elements:
+		<doActions>: any number. Attribute rolls: Required. A comma-separated list of totals that run this group of commands.
+	-->
 	<rollDice number="1">
 		<doActions rolls="1">
 			<!-- put any number of commands here -->
@@ -285,19 +464,45 @@ Attributes:
 		value: Not Required. Boolean. The value to set the flag to. Defaults to true.
 	 -->
 	<setFlag id="0" />
+	<setFlag id="0" value="false" />
 
 	<!--
 	This is used to override any actions that should be taken when the player dies, either by battle or otherwise.
-	Normally the game ends when the player dies. Put no child elements to revert to default behavior.
+	Normally the game ends when the player dies ("You have died, and your adventure ends here."). The override is only
+	used once: after it runs, the next death uses the default behavior unless another <setOnPlayerDeath> is run.
+	Put no child elements to revert to default behavior.
 	-->
 	<setOnPlayerDeath>
 		<!-- put any number of commands here -->
 	</setOnPlayerDeath>
+	<!-- Example: the player wakes up from a dream instead of dying -->
+	<setOnPlayerDeath>
+		<restoreScale type="stamina" label="dreamtime" />
+		<link page="301" />
+	</setOnPlayerDeath>
 
+	<!-- <setPoisonImmunity> makes the player immune to poison (or not). While immune, <takePoisonDamage> has no effect.
+	Attributes:
+		immune: Not Required. Boolean. Defaults to true.
+	-->
 	<setPoisonImmunity immune="false" />
 
+	<!-- <takePoisonDamage> makes the player lose stamina to poison, unless they are immune (see <setPoisonImmunity>).
+	Poison damage is tracked, so it can be given back with <clearPoisonDamage>.
+	Attributes:
+		amount: Required. Integer. The amount of stamina to lose.
+	-->
 	<takePoisonDamage amount="2" />
-	
+
+	<!-- TEST COMMANDS
+	Most test commands have <successful> and <unsuccessful> child elements, each containing any number of commands. The
+	commands in <successful> run if the test passes, and those in <unsuccessful> run if it fails. Either can be left out.
+	-->
+
+	<!-- <testAnyFlag> passes if any of the given flags is true.
+	Attributes:
+		ids: Required. A comma-separated list of flag ids.
+	-->
 	<testAnyFlag ids="8,9">
 		<successful>
 			<!-- put any number of commands here -->
@@ -306,7 +511,54 @@ Attributes:
 			<!-- put any number of commands here -->
 		</unsuccessful>
 	</testAnyFlag>
-	
+
+	<!-- <testEnemySkill> tests an enemy's skill: rolls two dice, and passes if the total is no more than the enemy's current
+	skill. Player must be in battle.
+	Attributes:
+		enemyIdx: Required. The index of the enemy in the current battle's enemy list.
+		diceRollAdjustment: Not Required. A formula (see FORMULAS above) applied to the roll, where AMT is the dice total.
+	-->
+	<testEnemySkill enemyIdx="0">
+		<successful>
+			<!-- the enemy dodges -->
+		</successful>
+		<unsuccessful>
+			<adjustEnemyScale enemyIdx="0" type="stamina" amount="-4" />
+		</unsuccessful>
+	</testEnemySkill>
+
+	<!-- <testEnemyStat> is like <testStat>, but tests an enemy in the current battle. Player must be in battle.
+	Attributes:
+		enemyIdx: Required. The index of the enemy in the current battle's enemy list.
+		stat, useInitialValue, modifiedByFormula and a comparison: see <testStat>. stat="attackStrength" uses the enemy's
+		attack strength for the current round.
+	-->
+	<testEnemyStat stat="stamina" atLeast="14" enemyIdx="0">
+		<successful>
+			<!-- put any number of commands here -->
+		</successful>
+		<unsuccessful>
+			<!-- put any number of commands here -->
+		</unsuccessful>
+	</testEnemyStat>
+
+	<!-- <testEnemyTypes> passes if an enemy in the current battle has any of the given types (see the types attribute of
+	<enemy>). Fails if the player is not in a battle.
+	Attributes:
+		equalAny: Required. A comma-separated list of types.
+		enemyIdx: Required. The index of the enemy to test, or "any" to pass if any enemy in the battle has one of the types.
+	-->
+	<testEnemyTypes equalAny="undead,demon" enemyIdx="any">
+		<successful>
+			<!-- e.g. the holy sword does extra damage -->
+			<adjustPlayerDamageModifier amount="1" />
+		</successful>
+	</testEnemyTypes>
+
+	<!-- <testFlag> passes if the given flag is true.
+	Attributes:
+		id: Required. Integer. The id of the flag to test.
+	-->
 	<testFlag id="12">
 		<successful>
 			<!-- put any number of commands here -->
@@ -316,12 +568,32 @@ Attributes:
 		</unsuccessful>
 	</testFlag>
 
-	<!-- Display a different <text> block based on whether a flag is set or not -->
+	<!-- Display a different <text> block based on whether a flag is set or not
+	Attributes:
+		id: Required. Integer. The id of the flag to test.
+		success: Required. The id of the <text> to display if the flag is true.
+		failure: Required. The id of the <text> to display if the flag is false.
+	-->
 	<testFlagText id="12" success="0" failure="1" />
 
+	<!-- <testHighestAttackStrength> tests who won the current round of battle. Typically used in <endRound> or <playerHit>.
+	Fails if the player is not in a battle.
+	Attributes (use one):
+		player: "true" to pass if the player was not wounded this round.
+		enemyIdx: Integer. Defaults to 0. Passes if the enemy with this index had the highest attack strength this round.
+	-->
 	<testHighestAttackStrength player="true" />
-	<testHighestAttackStrength enemyIdx="0" />
+	<testHighestAttackStrength enemyIdx="0">
+		<successful>
+			<takePoisonDamage amount="1" />
+		</successful>
+	</testHighestAttackStrength>
 
+	<!-- <testItem> tests how many of an item the player has. By default it passes if the player has at least one.
+	Attributes:
+		id: Required. The unique identifier of the item to count.
+		a comparison: Not Required. See NUMBER COMPARISONS above. Defaults to atLeast="1".
+	-->
 	<testItem id="17">
 		<successful>
 			<!-- put any number of commands here -->
@@ -330,9 +602,51 @@ Attributes:
 			<!-- put any number of commands here -->
 		</unsuccessful>
 	</testItem>
-	
-	<testLuckCommand id="0" />
-	
+	<!-- Example: the player needs 3 or more arrows -->
+	<testItem id="8" atLeast="3">
+		<successful>
+			<link page="50" />
+		</successful>
+	</testItem>
+
+	<!-- <testLuck> makes the player Test their Luck: rolls two dice, and passes if the total is no more than the player's
+	current luck. The player's luck goes down by 1 whether they pass or not.
+	Attributes:
+		diceRollAdjustment: Not Required. A formula (see FORMULAS above) applied to the roll, where AMT is the dice total.
+	-->
+	<testLuck>
+		<successful>
+			<displayText id="0" />
+		</successful>
+		<unsuccessful>
+			<displayText id="1" />
+			<adjustScale type="stamina" amount="-2" />
+		</unsuccessful>
+	</testLuck>
+	<!-- Example: a harder test, adding 2 to the roll -->
+	<testLuck diceRollAdjustment="2">
+		<successful>
+			<!-- put any number of commands here -->
+		</successful>
+	</testLuck>
+
+	<!-- <testPlayerAttackStrengthDifferenceFromEnemy> compares the player's attack strength for the current round with that
+	of the first enemy that is still alive (the player's attack strength minus the enemy's). Player must be in battle.
+	Attributes:
+		a comparison: Not Required. See NUMBER COMPARISONS above. Defaults to atLeast="1".
+	-->
+	<testPlayerAttackStrengthDifferenceFromEnemy atLeast="4">
+		<successful>
+			<!-- e.g. a mighty blow that does extra damage -->
+			<adjustEnemyScale type="stamina" amount="-2" />
+		</successful>
+	</testPlayerAttackStrengthDifferenceFromEnemy>
+
+	<!-- <testSkill> makes the player Test their Skill: rolls two dice, and passes if the total is no more than the player's
+	current skill.
+	Attributes:
+		diceRollAdjustment: Not Required. A formula (see FORMULAS above) applied to the roll, where AMT is the dice total.
+	-->
 	<testSkill diceRollAdjustment="2">
 		<successful>
 			<!-- put any number of commands here -->
@@ -341,7 +655,20 @@ Attributes:
 			<!-- put any number of commands here -->
 		</unsuccessful>
 	</testSkill>
+	<!-- Example: roll three dice instead of two -->
+	<testSkill diceRollAdjustment="AMT+roll(1)" />
 
+	<!-- <testStat> compares a player stat with a number.
+	Attributes:
+		stat: Required. The stat to test. Any player scale (see PLAYER SCALES above), or one of these battle stats:
+			attackStrength: the player's attack strength for the current round
+			hitCount: the number of times the player has been hit in the current battle
+			battleRound: the current round of the battle
+		a comparison: Not Required. See NUMBER COMPARISONS above. Defaults to atLeast="1".
+		useInitialValue: Not Required. Default: false. If "true", tests the scale's initial value instead of its current value.
+		modifiedByFormula: Not Required. A formula (see FORMULAS above) applied to the stat before it's compared, where AMT is
+			the stat's value. Player scale values can't be used in this formula.
+	-->
 	<testStat stat="stamina" atLeast="20">
 		<successful>
 			<!-- put any number of commands here -->
@@ -350,17 +677,16 @@ Attributes:
 			<!-- put any number of commands here -->
 		</unsuccessful>
 	</testStat>
+	<!-- Example: is the player's initial skill 10 or more? -->
+	<testStat stat="skill" useInitialValue="true" atLeast="10" />
+	<!-- Example: end the battle early after the third round -->
+	<testStat stat="battleRound" atLeast="3">
+		<successful>
+			<link page="88" />
+		</successful>
+	</testStat>
 
 	<!-- Syntactic sugar for a <testStat> combined with a <displayText> for success and failure, put text IDs in the success and failure attributes -->
 	<testStatText stat="stamina" atLeast="20" success="0" failure="1" />
-	
-	<testEnemyStat stat="stamina" atLeast="14" enemyIdx="0">
-		<successful>
-			<!-- put any number of commands here -->
-		</successful>
-		<unsuccessful>
-			<!-- put any number of commands here -->
-		</unsuccessful>
-	</testEnemyStat>
 
 </page>
