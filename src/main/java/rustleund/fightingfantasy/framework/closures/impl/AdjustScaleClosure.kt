@@ -50,7 +50,8 @@ class AdjustScaleClosure @JvmOverloads constructor(
         } else {
             scale.adjustCurrentValueNoException(amountToAdjust)
         }
-        if (gameState.playerState.isDead) {
+        // During a battle round the player may still be saved, so the round handles their death once it's over
+        if (gameState.playerState.isDead && !gameState.isBattleRoundInProgress) {
             gameState.playerHasDied()
         }
         if (gameState.isBattleInProgress) {
