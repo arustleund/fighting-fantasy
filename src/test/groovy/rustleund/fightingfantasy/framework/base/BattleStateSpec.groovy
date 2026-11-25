@@ -99,6 +99,22 @@ class BattleStateSpec extends Specification {
         gameState.playerState.isDead()
     }
 
+    def "Dying from an unlucky Test Your Luck link after being hit is handled"() {
+        given: "a player on 3 stamina who is always unlucky, against an enemy who always hits"
+        def gameState = Spy(GameState)
+        def testee = enemyAlwaysHitsBattle(gameState, 3, 1)
+
+        and: "the hit takes them to 1 stamina, so they're offered Test Your Luck"
+        new DoBattleClosure(0).execute(gameState)
+
+        when: "they follow the link and are unlucky"
+        testee.doTestLuck(false, null)
+
+        then:
+        1 * gameState.playerHasDied()
+        gameState.playerState.isDead()
+    }
+
     private BattleState enemyAlwaysHitsBattle(GameState gameState, int playerStamina, int playerLuck) {
         def playerState = new PlayerState("player", 1, playerStamina, playerLuck, 12, 0, 0, 0, 0, [])
         gameState.setPlayerState(playerState)

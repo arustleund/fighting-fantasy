@@ -248,7 +248,11 @@ public class BattleState {
                 doPlayerHitOnTestLuck(lucky, message);
             }
             if (existingMessageBuilder == null) {
+                // Testing Luck from a link, after the round is over, so nothing else will handle the player's death
                 appendAtEndOfBattleMessage(message.toString());
+                if (getPlayerState().isDead()) {
+                    pageState.getGameState().playerHasDied();
+                }
                 doAfterPossibleStaminaChange();
             }
         }
